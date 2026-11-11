@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trajviz"
+version = "0.1.0"
+description = "Local agent trajectory analysis and comparison"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.5,<3",
+  "PyYAML>=6,<7",
+  "typer>=0.15,<1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+trajviz = "backend.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["backend*", "schema*", "config"]
+
+[tool.setuptools.package-data]
+schema = ["*.json"]
+config = ["*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

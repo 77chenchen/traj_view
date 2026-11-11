@@ -1,0 +1,229 @@
+{
+  "id": "canonical-slug",
+  "source_format": "canonical",
+  "task_id": "swe-slug-019",
+  "model": "orion-4",
+  "agent": "fixture",
+  "condition": "with skill",
+  "outcome": {
+    "label": "pass",
+    "passed": true,
+    "partial_score": null,
+    "finish_reason": null
+  },
+  "limits": {
+    "max_steps": 8,
+    "wall_clock_s": null
+  },
+  "usage": null,
+  "meta": {
+    "final_message": "Fixed and tested."
+  },
+  "steps": [
+    {
+      "idx": 0,
+      "ts": null,
+      "thought": null,
+      "action": {
+        "tool": "shell",
+        "args": {},
+        "command": "pwd",
+        "targets": []
+      },
+      "observation": {
+        "text": "/workspace/slug-lab",
+        "truncated": false,
+        "error": false,
+        "exit_code": 0
+      },
+      "tokens": null,
+      "raw_ref": {
+        "file": "canonical-slug.json",
+        "line": 1
+      },
+      "phase": null,
+      "phase_source": null,
+      "tags": []
+    },
+    {
+      "idx": 1,
+      "ts": null,
+      "thought": null,
+      "action": {
+        "tool": "shell",
+        "args": {},
+        "command": "cat skills/python/SKILL.md",
+        "targets": [
+          "skills/python/SKILL.md"
+        ]
+      },
+      "observation": {
+        "text": "Run the targeted test after editing.",
+        "truncated": false,
+        "error": false,
+        "exit_code": 0
+      },
+      "tokens": null,
+      "raw_ref": {
+        "file": "canonical-slug.json",
+        "line": 2
+      },
+      "phase": null,
+      "phase_source": null,
+      "tags": []
+    },
+    {
+      "idx": 2,
+      "ts": null,
+      "thought": null,
+      "action": {
+        "tool": "shell",
+        "args": {},
+        "command": "sed -n '1,120p' src/slug.py",
+        "targets": [
+          "src/slug.py"
+        ]
+      },
+      "observation": {
+        "text": "def slugify(text): …",
+        "truncated": false,
+        "error": false,
+        "exit_code": 0
+      },
+      "tokens": null,
+      "raw_ref": {
+        "file": "canonical-slug.json",
+        "line": 3
+      },
+      "phase": null,
+      "phase_source": null,
+      "tags": []
+    },
+    {
+      "idx": 3,
+      "ts": null,
+      "thought": null,
+      "action": {
+        "tool": "shell",
+        "args": {},
+        "command": "pytest tests/test_slug.py -q",
+        "targets": [
+          "tests/test_slug.py"
+        ]
+      },
+      "observation": {
+        "text": "AssertionError: '-agent-log-' != 'agent-log'\nSee src/slug.py",
+        "truncated": false,
+        "error": true,
+        "exit_code": 1
+      },
+      "tokens": null,
+      "raw_ref": {
+        "file": "canonical-slug.json",
+        "line": 4
+      },
+      "phase": null,
+      "phase_source": null,
+      "tags": []
+    },
+    {
+      "idx": 4,
+      "ts": null,
+      "thought": null,
+      "action": {
+        "tool": "shell",
+        "args": {},
+        "command": "pytest tests/test_slug.py -q",
+        "targets": [
+          "tests/test_slug.py"
+        ]
+      },
+      "observation": {
+        "text": "AssertionError: '-agent-log-' != 'agent-log'\nSee src/slug.py",
+        "truncated": false,
+        "error": true,
+        "exit_code": 1
+      },
+      "tokens": null,
+      "raw_ref": {
+        "file": "canonical-slug.json",
+        "line": 5
+      },
+      "phase": null,
+      "phase_source": null,
+      "tags": []
+    },
+    {
+      "idx": 5,
+      "ts": null,
+      "thought": null,
+      "action": {
+        "tool": "shell",
+        "args": {},
+        "command": "apply_patch src/slug.py",
+        "targets": [
+          "src/slug.py"
+        ]
+      },
+      "observation": {
+        "text": "Updated src/slug.py",
+        "truncated": false,
+        "error": false,
+        "exit_code": 0
+      },
+      "tokens": null,
+      "raw_ref": {
+        "file": "canonical-slug.json",
+        "line": 6
+      },
+      "phase": null,
+      "phase_source": null,
+      "tags": []
+    },
+    {
+      "idx": 6,
+      "ts": null,
+      "thought": null,
+      "action": {
+        "tool": "shell",
+        "args": {},
+        "command": "pytest tests/test_slug.py -q",
+        "targets": [
+          "tests/test_slug.py",
+          "src/slug.py"
+        ]
+      },
+      "observation": {
+        "text": "3 passed in 0.08s",
+        "truncated": false,
+        "error": false,
+        "exit_code": 0
+      },
+      "tokens": null,
+      "raw_ref": {
+        "file": "canonical-slug.json",
+        "line": 7
+      },
+      "phase": null,
+      "phase_source": null,
+      "tags": []
+    },
+    {
+      "idx": 7,
+      "ts": null,
+      "thought": "Fixed and tested.",
+      "action": null,
+      "observation": null,
+      "tokens": null,
+      "raw_ref": {
+        "file": "canonical-slug.json",
+        "line": null
+      },
+      "phase": null,
+      "phase_source": null,
+      "tags": [
+        "final_message"
+      ]
+    }
+  ]
+}

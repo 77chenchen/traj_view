@@ -1,0 +1,52 @@
+phases:
+  - id: orient
+    label: Orient
+    symbol: O
+    color: "#5470a2"
+  - id: skill_read
+    label: Skill read
+    symbol: S
+    color: "#9161b3"
+  - id: localize
+    label: Localize
+    symbol: L
+    color: "#278b9f"
+  - id: edit
+    label: Edit
+    symbol: E
+    color: "#b26a32"
+  - id: validate
+    label: Validate
+    symbol: V
+    color: "#4b8856"
+  - id: finalize
+    label: Finalize
+    symbol: F
+    color: "#6b62ad"
+  - id: other
+    label: Other
+    symbol: X
+    color: "#7b8593"
+# Rules are evaluated in this order. Any supplied selector can match.
+rules:
+  - phase: finalize
+    tags: [final_message]
+    tools: [finish, submit, final]
+  - phase: skill_read
+    tags: [skill_read]
+    paths: ['(^|/)(SKILL\.md|AGENTS\.md)$']
+    commands: ['(?i)\b(?:cat|head|sed|rg)\b[^\n]*(?:SKILL|AGENTS)\.md\b']
+  - phase: validate
+    tags: [validate]
+    tools: [run_tests, test, validate, lint]
+    commands: ['(?i)(?:^|[;&|]\s*|\s-m\s+|\buv run\s+|\bnpm run\s+)(?:pytest|unittest|ruff|mypy|vitest|jest|test|lint|check|build)\b', '(?i)\b(?:npm|pnpm|yarn|cargo|go|make|bun)\s+(?:test|check|lint|build)\b']
+  - phase: edit
+    tags: [edit]
+    tools: [apply_patch, edit, write, write_file, replace, str_replace, create_file]
+    commands: ['(?i)\b(?:apply_patch|patch|touch|mkdir|mv|cp|rm)\b', '(?i)\bsed\s+-i\b', '(?i)(?:^|\s)>>?\s*[^&\s]']
+  - phase: orient
+    tools: [update_plan, plan, list_tools]
+    commands: ['(?i)(?:^|[;&|]\s*)(?:pwd|ls|git\s+status|git\s+branch)\b']
+  - phase: localize
+    tools: [read, read_file, grep, search, glob, find, list_files, web_search]
+    commands: ['(?i)\b(?:cat|head|tail|rg|grep|find|stat|nl|less)\b', '(?i)\bsed\s+-n\b', '(?i)\bgit\s+(?:diff|show|log)\b']
