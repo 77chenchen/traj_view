@@ -22,11 +22,6 @@ class Phase(TypedDict):
     color: str
 
 
-def _compile(pattern: str) -> re.Pattern[str]:
-    # The phase config stores doubled regex escapes inside YAML single quotes.
-    return re.compile(pattern.replace(r"\\", "\\"))
-
-
 @dataclass(frozen=True)
 class _Rule:
     phase: str
@@ -78,8 +73,8 @@ class PhaseClassifier:
                 phase=rule["phase"],
                 tags=frozenset(rule.get("tags", ())),
                 tools=frozenset(tool.lower() for tool in rule.get("tools", ())),
-                paths=tuple(_compile(pattern) for pattern in rule.get("paths", ())),
-                commands=tuple(_compile(pattern) for pattern in rule.get("commands", ())),
+                paths=tuple(re.compile(pattern) for pattern in rule.get("paths", ())),
+                commands=tuple(re.compile(pattern) for pattern in rule.get("commands", ())),
             )
             for rule in config.get("rules", ())
         )

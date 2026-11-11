@@ -26,6 +26,7 @@ _SHELLS = frozenset("bash sh zsh fish dash ksh".split())
 _VALIDATORS = frozenset(
     "pytest unittest ruff mypy vitest jest tox nox test lint check build".split()
 )
+_TEST_COMMANDS = frozenset("pytest unittest vitest jest tox nox test".split())
 _BUILD_TOOLS = frozenset("npm pnpm yarn cargo go make bun".split())
 _BUILD_ACTIONS = frozenset("test check lint build".split())
 _RUN_WRAPPERS = {
@@ -232,6 +233,21 @@ def _command_category(command: _Command) -> str:
     return "shell"
 
 
+def _validation_signature(command: _Command) -> str:
+    name, *arguments = _command_words(command)
+    if name.startswith("python") and arguments[:1] == ["-m"] and len(arguments) > 1:
+        name = arguments[1]
+    elif name in _BUILD_TOOLS:
+        name = next(word for word in arguments[:2] if word in _BUILD_ACTIONS)
+    if name in _TEST_COMMANDS:
+        return "validate:test"
+    if name in {"lint", "ruff"}:
+        return "validate:lint"
+    if name == "build":
+        return "validate:build"
+    return "validate:check"
+
+
 def _command_paths(command: _Command, category: str) -> tuple[list[str], list[str]]:
     if command.name == "cd":
         return [], []
@@ -281,10 +297,11 @@ class NormalizedAction:
     targets: tuple[str, ...]
     writes: tuple[str, ...]
     commands: tuple[str, ...]
+    signature_tool: str | None = None
 
     @property
     def signature(self) -> str:
-        tool = self.category if self.is_shell else self.tool
+        tool = self.signature_tool or (self.category if self.is_shell else self.tool)
         return json.dumps([tool, self.target], ensure_ascii=False, separators=(",", ":"))
 
     @property
@@ -295,7 +312,7 @@ class NormalizedAction:
     def label(self) -> str:
         if self.tool is None:
             return "Message"
-        tool = self.category if self.is_shell else self.tool
+        tool = self.signature_tool or (self.category if self.is_shell else self.tool)
         return f"{tool} · {self.target}" if self.target else tool or "Tool"
 
 
@@ -345,11 +362,12 @@ def normalize_action(action: Action | None) -> NormalizedAction:
         shlex.join(_command_words(commands[effective])) if effective is not None
         else " ".join(command.split())
     )
-    target = next(iter(explicit or arg_targets or patch_paths or primary_paths), fallback)
+    signature_tool = _validation_signature(commands[effective]) if effective is not None and category == "validate" else None
+    target = next(iter(explicit or arg_targets or patch_paths or primary_paths), "" if signature_tool else fallback)
     writes = tuple(dict.fromkeys(
         (*patch_paths, *(path for _, paths in command_paths for path in paths))
     ))
     simple_edit = len(commands) == 1 and not commands[0].outputs and commands[0].name != "cp"
     if category == "edit" and explicit and (not writes or simple_edit):
         writes = explicit
-    return NormalizedAction(tool, category, target, targets, writes, commands_for_rules)
+    return NormalizedAction(tool, category, target, targets, writes, commands_for_rules, signature_tool)

@@ -50,8 +50,8 @@ def test_normalized_signatures_use_shell_category_and_first_target():
     ))
     nodes = graph["expanded"]["nodes"]
     assert [node["signature"] for node in nodes] == [
-        '["validate","tests/test_slug.py"]',
-        '["validate","tests/test_slug.py"]',
+        '["validate:test","tests/test_slug.py"]',
+        '["validate:test","tests/test_slug.py"]',
         '["read","src/file name.py"]',
         '["read","src/slug.py"]',
         '["read","src/slug.py"]',
@@ -65,6 +65,17 @@ def test_normalized_signatures_use_shell_category_and_first_target():
     assert [node["step_indices"] for node in graph["aggregated"]["nodes"]] == [
         [2, 5], [9], [12, 18], [20], [25],
     ]
+
+
+def test_test_commands_ignore_launcher_and_flags_without_targets():
+    graphs = build_graphs(trajectory(
+        step(0, "shell", command="pytest -m smoke"),
+        step(1, "shell", command="python3 -m unittest -v"),
+        step(2, "shell", command="npm test"),
+    ))
+    node, = graphs["aggregated"]["nodes"]
+    assert node["signature"] == '["validate:test",""]'
+    assert node["count"] == 3
 
 
 def test_forward_edges_follow_latest_writes_observations_and_failed_actions():
@@ -127,7 +138,7 @@ def test_dependencies_distinguish_written_paths_from_other_shell_operands():
         step(18, "read_file", targets=["src/copied.py"]),
     )
     expanded = build_graphs(trace)["expanded"]
-    assert expanded["nodes"][0]["signature"] == '["validate","tests/test_slug.py"]'
+    assert expanded["nodes"][0]["signature"] == '["validate:test","tests/test_slug.py"]'
     assert expanded["nodes"][3]["signature"] == '["edit","src/actual.py"]'
     assert edges(expanded, "dependency") == {
         ("step-2", "step-7"): 1,
