@@ -21,8 +21,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --configLoader runner",
     "check": "tsc --noEmit",
-    "build": "vite build"
+    "build": "vite build --configLoader runner"
   }
 }
