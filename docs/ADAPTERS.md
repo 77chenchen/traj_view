@@ -12,9 +12,9 @@ Keep one experiment run per input when using the per-file metadata manifest. Run
 
 ## Preservation
 
-The complete source text is in `meta.raw_text`. Structured step data supports graphing, inspection, and metrics. JSONL references identify the filename and physical line. Chat message JSON files can use a null line reference. Both the canonical data and its derived files honor build redaction.
+The complete source text is in `meta.raw_text`. Structured step data supports graphing, inspection, and metrics. JSONL references identify the filename and physical line. Chat message JSON files can use a null line reference. Both the canonical data and its derived files honor build redaction. Redaction reserializes structured source data and masks malformed JSONL lines while preserving physical line numbering.
 
-The programmatic adapter exposes recoverable parse diagnostics in `meta.parse_errors`. The CLI reports malformed input before replacing an existing dataset.
+The adapter keeps recoverable parse diagnostics in `meta.parse_errors`, and the CLI reports them while building the usable records. Unreadable inputs, invalid UTF-8, and wholly malformed inputs produce an error.
 
 ## Add an adapter
 

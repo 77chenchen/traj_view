@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useResource } from './data';
-import { phaseColor, sourceIndex, type GraphNode, type Phase, type Run, type Step } from './model';
+import { phaseColor, sourceIndex, type GraphNode, type Phase, type Run, type Step, type StepIndex } from './model';
 import { CopyButton, Icon, LoadError, Loading } from './ui';
 
 const previewLength = 1000;
@@ -50,8 +50,8 @@ function StepContent({ step, phases }: { step: Step; phases: Phase[] }) {
 }
 
 export function Inspector({ run, node, index, select, clear, phases }: {
-  run: Run; node?: GraphNode; index: number | null;
-  select: (index: number) => void; clear: () => void; phases: Phase[];
+  run: Run; node?: GraphNode; index: StepIndex | null;
+  select: (index: StepIndex) => void; clear: () => void; phases: Phase[];
 }) {
   const resource = useResource<{ steps: Step[] }>(node ? [run.steps_file] : [], true);
   const steps = resource.state.status === 'ready' ? resource.state.data.steps : undefined;
@@ -62,7 +62,7 @@ export function Inspector({ run, node, index, select, clear, phases }: {
     let low = 0, high = steps.length;
     while (low < high) {
       const middle = Math.floor((low + high) / 2);
-      if (steps[middle].idx < index) low = middle + 1;
+      if (BigInt(steps[middle].idx) < BigInt(index)) low = middle + 1;
       else high = middle;
     }
     if (steps[low]?.idx === index) step = steps[low];
@@ -81,7 +81,10 @@ export function Inspector({ run, node, index, select, clear, phases }: {
         <div>
           <button className="button small icon-button" aria-label="Previous member step" disabled={member <= 0}
             onClick={() => select(members[member - 1])}><Icon name="left" size={15} /></button>
-          <select id="member-step" value={index ?? members[0]} onChange={(event) => select(Number(event.target.value))}>
+          <select id="member-step" value={index ?? members[0]} onChange={(event) => {
+            const value = members.find((item) => String(item) === event.target.value);
+            if (value !== undefined) select(value);
+          }}>
             {members.map((item) => <option key={item} value={item}>Source step {sourceIndex(item)}</option>)}
           </select>
           <button className="button small icon-button" aria-label="Next member step" disabled={member >= members.length - 1}

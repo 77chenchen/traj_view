@@ -25,43 +25,16 @@ function preset(graph: Graph, reason?: string): Layout {
   return { positions, name: 'Preset', reason };
 }
 
-async function elkLayout(graph: Graph): Promise<Layout> {
-  const { default: ELK } = await import('elkjs/lib/elk.bundled.js');
-  const elk = new ELK();
-  const ids = new Map(graph.nodes.map((node, index) => [node.id, `n${index}`]));
-  const result = await elk.layout({
-    id: 'root',
-    layoutOptions: {
-      'elk.algorithm': 'layered',
-      'elk.direction': 'RIGHT',
-      'elk.spacing.nodeNode': '72',
-      'elk.layered.spacing.nodeNodeBetweenLayers': '76',
-      'elk.layered.cycleBreaking.strategy': 'GREEDY_MODEL_ORDER',
-      'elk.randomSeed': '1',
-    },
-    children: graph.nodes.map((node) => ({ id: ids.get(node.id)!, width: nodeWidth, height: nodeHeight })),
-    edges: graph.edges.filter((edge) => edge.source !== edge.target && ids.has(edge.source) && ids.has(edge.target))
-      .map((edge, index) => ({ id: `e${index}`, sources: [ids.get(edge.source)!], targets: [ids.get(edge.target)!] })),
-  });
-  const positions = new Map<string, Point>();
-  const placed = new Map(result.children?.map((child) => [child.id, child]));
-  for (const [id, key] of ids) {
-    const child = placed.get(key);
-    if (child?.x == null || child.y == null) throw new Error('ELK returned an incomplete layout');
-    positions.set(id, { x: child.x + nodeWidth / 2, y: child.y + nodeHeight / 2 });
-  }
-  return { positions, name: 'ELK' };
-}
-
-async function dagreLayout(graph: Graph): Promise<Layout> {
-  const [{ default: cytoscape }, { default: dagre }] = await Promise.all([
-    import('cytoscape'), import('cytoscape-dagre'),
+async function cytoscapeLayout(graph: Graph, engine: 'elk' | 'dagre'): Promise<Layout> {
+  const [{ default: cytoscape }, { default: extension }] = await Promise.all([
+    import('cytoscape'), engine === 'elk' ? import('cytoscape-elk') : import('cytoscape-dagre'),
   ]);
-  if (!cytoscape('layout', 'dagre')) cytoscape.use(dagre);
+  if (!cytoscape('layout', engine)) cytoscape.use(extension);
   const ids = new Map(graph.nodes.map((node, index) => [node.id, `n${index}`]));
   const cy = cytoscape({
     headless: true,
     styleEnabled: true,
+    layout: { name: 'preset' },
     style: [{ selector: 'node', style: { width: nodeWidth, height: nodeHeight } }],
     elements: [
       ...graph.nodes.map((node) => ({ data: { id: ids.get(node.id) } })),
@@ -70,10 +43,25 @@ async function dagreLayout(graph: Graph): Promise<Layout> {
     ],
   });
   try {
-    const options = { name: 'dagre', rankDir: 'LR', nodeSep: 88, rankSep: 76, fit: false, ranker: 'tight-tree' };
-    cy.layout(options).run();
+    const options = engine === 'elk' ? {
+      name: 'elk', fit: false,
+      elk: {
+        algorithm: 'layered',
+        'elk.direction': 'RIGHT',
+        'elk.spacing.nodeNode': '72',
+        'elk.layered.spacing.nodeNodeBetweenLayers': '76',
+        'elk.layered.cycleBreaking.strategy': 'GREEDY_MODEL_ORDER',
+        'elk.randomSeed': '1',
+      },
+    } : {
+      name: 'dagre', rankDir: 'LR', nodeSep: 88, rankSep: 76, fit: false, ranker: 'tight-tree',
+    };
+    const layout = cy.layout(options);
+    const stopped = layout.promiseOn('layoutstop');
+    layout.run();
+    await stopped;
     const positions = new Map(Array.from(ids, ([id, key]) => [id, cy.getElementById(key).position()]));
-    return { positions, name: 'Dagre' };
+    return { positions, name: engine === 'elk' ? 'ELK' : 'Dagre' };
   } finally {
     cy.destroy();
   }
@@ -85,7 +73,8 @@ async function arrange(graph: Graph) {
     return preset(graph, 'Large graph · time-order layout');
   }
   try {
-    const layout = await (graph.nodes.length <= 36 && graph.edges.length <= 160 ? elkLayout(graph) : dagreLayout(graph));
+    const engine = graph.nodes.length <= 36 && graph.edges.length <= 160 ? 'elk' : 'dagre';
+    const layout = await cytoscapeLayout(graph, engine);
     if (layout.positions.size !== graph.nodes.length ||
       [...layout.positions.values()].some(({ x, y }) => !Number.isFinite(x) || !Number.isFinite(y))) {
       throw new Error('Invalid layout positions');

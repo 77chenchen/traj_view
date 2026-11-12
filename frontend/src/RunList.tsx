@@ -1,5 +1,6 @@
 import { useDeferredValue, useMemo, useState } from 'react';
 import { useResource } from './data';
+import { useLangutory } from './langutory';
 import { type Dataset, type Run, number, percent } from './model';
 import { Empty, exportMetrics, Heading, Icon, LoadError, OutcomeBadge, PassStat, Stat } from './ui';
 
@@ -64,17 +65,14 @@ export function RunList({ dataset, selected, onSelect, openGraph, openCompare }:
   const query = useDeferredValue(search.trim().toLowerCase());
   const fullText = useResource<Record<string, string>>(search.trim() ? [dataset.search_file] : [], true);
   const textIndex = fullText.state.status === 'ready' ? fullText.state.data : undefined;
-  const pattern = useMemo(() => {
-    try { return { value: regex ? new RegExp(regex) : null }; }
-    catch (error) { return { error: error instanceof Error ? error.message : 'Invalid regular expression' }; }
-  }, [regex]);
+  const pattern = useLangutory(regex, runs);
   const catalog = useMemo(() => ({
     metadata: new Map(runs.map((run) => [run.id, runMetadata(run)])),
     options: fields.map((field) => [...new Set(runs.map(field.get))].sort((a, b) => a.localeCompare(b))),
   }), [runs]);
   const matches = useMemo(() => runs.filter((run) =>
     fields.every((field) => !filters[field.key]?.length || filters[field.key]?.includes(field.get(run))) &&
-    (!pattern.value || pattern.value.test(run.langutory)) &&
+    (!pattern.matches || pattern.matches.has(run.id)) &&
     (!query || catalog.metadata.get(run.id)?.includes(query) ||
       (Object.hasOwn(textIndex ?? {}, run.id) && textIndex?.[run.id]?.toLowerCase().includes(query)))),
   [runs, filters, pattern, query, catalog, textIndex]);
@@ -139,44 +137,48 @@ export function RunList({ dataset, selected, onSelect, openGraph, openCompare }:
             setPage(0);
           }} />
         <span id="regex-help" className={pattern.error ? 'error-text' : 'muted'} role={pattern.error ? 'alert' : undefined}>
-          {pattern.error ? `Invalid pattern. ${pattern.error}` : 'Matches the space-separated phase symbols.'}
+          {pattern.error ? pattern.error : 'Matches the space-separated phase symbols.'}
         </span>
       </div>
       {fullText.state.status === 'loading' && <p className="inline-status" role="status">Loading full-text index…</p>}
       {fullText.state.status === 'error' && <div className="panel-inset"><LoadError
         message={`Full-text search unavailable. ${fullText.state.message}`} retry={fullText.retry} /></div>}
 
-      {matches.length ? <div className="table-scroll">
-        <table className="runs-table">
-          <thead><tr>
-            <th scope="col"><span className="sr-only">Select run</span></th>
-            <th scope="col">Run / Task</th><th scope="col">Model</th><th scope="col">Condition</th>
-            <th scope="col">Outcome</th><th scope="col" className="numeric">Steps</th>
-            <th scope="col" className="numeric">Error rate</th><th scope="col" className="numeric">Cycles</th>
-          </tr></thead>
-          <tbody>
-            {matches.slice(start, start + pageSize).map((run) => {
-              const checked = selectedIds.has(run.id);
-              const unavailable = !checked && (task != null && run.task_id !== task ? 'Compare requires runs of the same task.'
-                : selected.length >= 4 ? 'Up to four runs can be selected.' : '');
-              return <tr key={run.id} className={checked ? 'row-selected' : ''}>
-                <td><span title={unavailable || undefined}>
-                  <input type="checkbox" aria-label={`Select ${run.id}`} checked={checked}
-                    aria-describedby="selection-help" disabled={Boolean(unavailable)} onChange={() => onSelect(run.id)} />
-                </span></td>
-                <th scope="row">
-                  <button className="text-button run-name" title={run.id} onClick={() => openGraph(run.id)}>{run.id}</button>
-                  <span className="run-task" title={run.task_id}>{run.task_id}</span>
-                </th>
-                <td>{run.model}</td><td>{run.condition}</td><td><OutcomeBadge outcome={run.outcome} /></td>
-                <td className="numeric">{number.format(run.metrics.steps)}</td>
-                <td className="numeric">{percent.format(run.metrics.error_rate)}</td>
-                <td className="numeric">{number.format(run.metrics.cycles)}</td>
-              </tr>;
-            })}
-          </tbody>
-        </table>
-      </div> : <Empty icon={runs.length ? 'search' : 'database'}
+      {matches.length ? <>
+        <p className="catalog-scroll-hint">Scroll the table to see all columns.</p>
+        <div className="table-scroll">
+          <table className="runs-table">
+            <thead><tr>
+              <th scope="col"><span className="sr-only">Select run</span></th>
+              <th scope="col">Run / Task</th><th scope="col">Model</th><th scope="col">Condition</th>
+              <th scope="col">Outcome</th><th scope="col" className="numeric">Steps</th>
+              <th scope="col" className="numeric">Error rate</th><th scope="col" className="numeric">Cycles</th>
+            </tr></thead>
+            <tbody>
+              {matches.slice(start, start + pageSize).map((run) => {
+                const checked = selectedIds.has(run.id);
+                const unavailable = !checked && (task != null && run.task_id !== task ? 'Compare requires runs of the same task.'
+                  : selected.length >= 4 ? 'Up to four runs can be selected.' : '');
+                return <tr key={run.id} className={checked ? 'row-selected' : ''}>
+                  <td><span title={unavailable || undefined}>
+                    <input type="checkbox" aria-label={`Select ${run.id}`} checked={checked}
+                      aria-describedby="selection-help" disabled={Boolean(unavailable)} onChange={() => onSelect(run.id)} />
+                  </span></td>
+                  <th scope="row">
+                    <button className="text-button run-name" title={run.id} onClick={() => openGraph(run.id)}>{run.id}</button>
+                    <span className="run-task" title={run.task_id}>{run.task_id}</span>
+                  </th>
+                  <td className="run-value">{run.model}</td><td className="run-value">{run.condition}</td>
+                  <td><OutcomeBadge outcome={run.outcome} /></td>
+                  <td className="numeric">{number.format(run.metrics.steps)}</td>
+                  <td className="numeric">{percent.format(run.metrics.error_rate)}</td>
+                  <td className="numeric">{number.format(run.metrics.cycles)}</td>
+                </tr>;
+              })}
+            </tbody>
+          </table>
+        </div>
+      </> : <Empty icon={runs.length ? 'search' : 'database'}
         title={runs.length ? (fullText.state.status === 'loading' ? 'Searching runs' : 'No matching runs') : 'No runs in this dataset'}
         actions={activeFilters && <button className="button" onClick={reset}>Clear filters</button>}>
         {runs.length ? (fullText.state.status === 'loading' ? 'Step text will be searched when the index is ready.' :

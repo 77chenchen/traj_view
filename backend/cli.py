@@ -76,6 +76,16 @@ def read_metadata(path: Path) -> dict[str, dict[str, str]]:
     return data
 
 
+def unique_label(base: str, assigned: set[str]) -> str:
+    label = base
+    suffix = 1
+    while label in assigned:
+        suffix += 1
+        label = f"{base}-{suffix}"
+    assigned.add(label)
+    return label
+
+
 @app.command()
 def build(
     source: Annotated[Path, typer.Argument(help="UTF-8 trace file or directory of traces")],
@@ -116,6 +126,9 @@ def build(
         redactor = Redactor(redact_pattern or []) if redact or redact_pattern else None
         trajectories = []
         ids: set[str] = set()
+        export_ids: set[str] = set()
+        export_task_ids: set[str] = set()
+        task_labels: dict[str, str] = {}
         defaults = {
             key: value
             for key, value in {"task_id": task_id, "model": model, "condition": condition}.items()
@@ -130,20 +143,27 @@ def build(
             raise ValueError(f"metadata refers to an input file that was not found: {sorted(unknown_files)[0]}")
         for path in paths:
             overrides = {**defaults, **per_file.get(path.relative_to(base).as_posix(), {})}
+            warned = False
             for trajectory in load(path, source_format=source_format):
                 diagnostics = trajectory.meta.get("parse_errors")
-                if isinstance(diagnostics, list) and diagnostics and isinstance(diagnostics[0], dict):
+                if not warned and isinstance(diagnostics, list) and diagnostics and isinstance(diagnostics[0], dict):
                     detail = diagnostics[0]
                     location = detail.get("line", detail.get("message_index"))
                     where = f" at record {location}" if type(location) is int else ""
-                    raise ValueError(f"{path.name}: malformed JSON or message{where}")
-                if overrides:
-                    trajectory = trajectory.model_copy(update=overrides)
-                if redactor:
-                    trajectory = redactor.trajectory(trajectory)
+                    typer.echo(f"Warning: {path.name}: {len(diagnostics)} malformed record(s), first{where}", err=True)
+                    warned = True
                 if trajectory.id in ids:
                     raise ValueError(f"duplicate run id while reading {path.name}")
                 ids.add(trajectory.id)
+                if overrides:
+                    trajectory = trajectory.model_copy(update=overrides)
+                if redactor:
+                    original_task = trajectory.task_id
+                    trajectory = redactor.trajectory(trajectory)
+                    trajectory.id = unique_label(trajectory.id, export_ids)
+                    if original_task not in task_labels:
+                        task_labels[original_task] = unique_label(trajectory.task_id, export_task_ids)
+                    trajectory.task_id = task_labels[original_task]
                 trajectories.append(trajectory)
         if not trajectories:
             raise ValueError("the input did not contain any runs")
@@ -183,7 +203,7 @@ def serve(
         if not (frontend / "index.html").is_file():
             raise ValueError("build the frontend with npm --prefix frontend run build, or pass --frontend")
         with make_server(host, port, frontend.resolve(), output.resolve()) as server:
-            typer.echo(f"TrajViz at http://{host}:{server.server_port}", color=False)
+            print(f"TrajViz at http://{host}:{server.server_port}", flush=True)
             try:
                 server.serve_forever()
             except KeyboardInterrupt:

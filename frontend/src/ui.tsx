@@ -104,7 +104,7 @@ export function download(content: Blob, filename: string) {
 
 function csvCell(value: unknown) {
   let cell = value == null ? '' : typeof value === 'object' ? JSON.stringify(value) : String(value);
-  if (typeof value === 'string' && /^[\s\uFEFF]*[=+@-]/u.test(cell)) cell = "'" + cell;
+  if (typeof value === 'string' && /^[\s\uFEFF]*[=+@-]/u.test(cell.normalize('NFKC'))) cell = "'" + cell;
   return '"' + cell.replaceAll('"', '""') + '"';
 }
 

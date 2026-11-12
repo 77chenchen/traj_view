@@ -11,3 +11,15 @@ The initial read-only workspace scan found no agent logs. The input formats belo
 Tool arguments, environment assignments, command output, file paths, prompts, and wrapper metadata may all contain sensitive material. The examples under `fixtures/input` are synthetic and reviewable.
 
 The user specified an isolated SWE capture via the `soclaas` profile after the initial scan. [Live SWE capture](swe-capture.md) documents the observed Codex event records and independent verification. No original runner-events or OpenAI-messages captures were provided.
+
+## Codex exec sample
+
+This abbreviated JSONL excerpt follows the captured record shapes. Thread identifiers, command output and token counts have been substituted.
+
+```jsonl
+{"type":"thread.started","thread_id":"swe-sample-thread"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_1","type":"command_execution","command":"python3 -m unittest -v","aggregated_output":"Ran 3 tests. OK.","exit_code":0,"status":"completed"}}
+{"type":"item.completed","item":{"id":"item_2","type":"agent_message","text":"Fixed separator trimming and verified the tests."}}
+{"type":"turn.completed","usage":{"input_tokens":2000,"output_tokens":160,"cached_input_tokens":0}}
+```

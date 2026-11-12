@@ -4,7 +4,7 @@ import { actionSequence, comparePair } from './graphData';
 import { GraphLegend, type Theme } from './graphDrawing';
 import { EdgeControls, GraphView, useEdgeTypes } from './GraphView';
 import { formatMetric, metricColumns, number, percent, phaseColor, sourceIndex,
-  type GraphNode, type Metrics, type Phase, type Run, type RunGraphs } from './model';
+  type GraphNode, type Metrics, type Phase, type Run, type RunGraphs, type StepIndex } from './model';
 import { exportMetrics, Heading, Icon, LoadError, Loading, OutcomeBadge } from './ui';
 
 function Difference({ metric, current, baseline }: {
@@ -47,7 +47,7 @@ function MetricsTable({ runs }: { runs: Run[] }) {
   </section>;
 }
 
-interface Segment { phase: string; start: number; end: number; first: number; last: number }
+interface Segment { phase: string; start: number; end: number; first: StepIndex; last: StepIndex }
 
 function makeSegments(nodes: GraphNode[]) {
   const segments: Segment[] = [];
@@ -185,8 +185,8 @@ export function Compare({ runs, phases, theme }: { runs: Run[]; phases: Phase[];
       {graphs.state.status === 'loading' && <Loading>Loading comparison graphs…</Loading>}
       {graphs.state.status === 'error' && <LoadError message={graphs.state.message} retry={graphs.retry} />}
       {graphs.state.status === 'ready' && <>
-        <Pairwise runs={runs} graphs={graphs.state.data} />
         <PhaseLanes runs={runs} graphs={graphs.state.data} phases={phases} />
+        <Pairwise runs={runs} graphs={graphs.state.data} />
         <GraphComparison runs={runs} graphs={graphs.state.data} phases={phases} theme={theme} />
       </>}
     </div>

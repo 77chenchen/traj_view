@@ -4,7 +4,7 @@ import { foldGraph } from './graphData';
 import { type Theme } from './graphDrawing';
 import { EdgeControls, GraphView, useEdgeTypes } from './GraphView';
 import { Inspector } from './Inspector';
-import { number, percent, phaseColor, sourceIndex, type GraphNode, type Phase, type Run, type RunGraphs } from './model';
+import { number, percent, phaseColor, sourceIndex, type GraphNode, type Phase, type Run, type RunGraphs, type StepIndex } from './model';
 import { exportMetrics, Heading, Icon, LoadError, Loading, OutcomeBadge } from './ui';
 
 const foldThreshold = 2000;
@@ -12,7 +12,7 @@ const graphModes = ['expanded', 'aggregated'] as const;
 
 function Timeline({ nodes, position, change, phases, inspect }: {
   nodes: GraphNode[]; position: number; change: (position: number) => void; phases: Phase[];
-  inspect: (index: number) => void;
+  inspect: (index: StepIndex) => void;
 }) {
   const [playing, setPlaying] = useState(false);
   const total = nodes.length;
@@ -73,7 +73,7 @@ function LoadedGraph({ run, graphs, phases, theme }: {
 }) {
   const [mode, setMode] = useStored('trajviz-graph-mode', 'expanded', graphModes);
   const [unfolded, setUnfolded] = useState(false);
-  const [index, setIndex] = useState<number | null>(null);
+  const [index, setIndex] = useState<StepIndex | null>(null);
   const [position, setPosition] = useState(graphs.expanded.nodes.length);
   const { enabled, toggle } = useEdgeTypes();
   const canFold = graphs.expanded.nodes.length >= foldThreshold;
@@ -81,7 +81,7 @@ function LoadedGraph({ run, graphs, phases, theme }: {
   const savings = graphs.expanded.nodes.length - folded.nodes.length;
   const graph = mode === 'aggregated' ? graphs.aggregated : unfolded ? graphs.expanded : folded;
   const byIndex = useMemo(() => {
-    const result = new Map<number, GraphNode>();
+    const result = new Map<StepIndex, GraphNode>();
     for (const node of graph.nodes) for (const step of node.step_indices) result.set(step, node);
     return result;
   }, [graph]);

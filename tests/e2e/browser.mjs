@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const fixtureRuns = [
@@ -6,6 +7,7 @@ const fixtureRuns = [
   'slug-empty', 'slug-messages-pass', 'slug-messages-provider', 'slug-skill-pass',
 ];
 export const renderSizes = [500, 2000];
+export const foldedRun = 'qa-folded-2000';
 const timeoutRun = 'slug-baseline-timeout';
 
 // Keep the UI locators here so presentation and integration changes have one adjustment point.
@@ -67,7 +69,7 @@ export async function checkRunList(page, url, index, artifacts, requests) {
   await page.goto(url);
   await visible(role(page, 'heading', /^Runs$/i));
   const ids = index.runs.map((run) => run.id);
-  await checkRows(page, ids, [...fixtureRuns, ...renderSizes.map((size) => `qa-render-${size}`)]);
+  await checkRows(page, ids, [...fixtureRuns, ...renderSizes.map((size) => `qa-render-${size}`), foldedRun, 'qa-exact-indices']);
   assert.ok(!requests.some((path) => /\/(runs|steps)\/|\/search\.json$/.test(path)),
     'Opening the catalog fetched graph, step, or search data before it was needed');
   await page.screenshot({ path: join(artifacts, 'runs.png'), fullPage: true });
@@ -89,6 +91,8 @@ export async function checkRunList(page, url, index, artifacts, requests) {
   const pattern = '^' + escapeRegex(index.runs.find((run) => run.id === timeoutRun).langutory) + '$';
   await regex.fill(pattern);
   await checkRows(page, ids, index.runs.filter((run) => new RegExp(pattern).test(run.langutory)).map((run) => run.id));
+  await regex.fill('^(.*)*Z$');
+  await visible(page.getByText(/Pattern search timed out/));
   await regex.fill('');
 }
 
@@ -114,6 +118,14 @@ export async function checkGraph(page, url, graph, steps, artifacts, requests) {
   assert.ok(!requests.some((path) => path.includes('/steps/')), 'Steps were fetched before inspection');
   await inspectFirstNode(page, graph, steps);
   await page.screenshot({ path: join(artifacts, 'graph-inspector.png') });
+  const png = await downloadFile(page, /^Download PNG of/i);
+  assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
+  const svg = (await downloadFile(page, /^Download SVG of/i)).toString('utf8');
+  assert.match(svg, /^<svg\b/);
+  assert.match(svg, /<path\b/);
+  const csv = (await downloadFile(page, /^Export CSV$/i)).toString('utf8');
+  assert.match(csv, /slug-baseline-timeout/);
+
 
   const repeated = graph.aggregated.nodes.find((node) => node.count > 1);
   assert.ok(repeated, 'Fixture should have a repeated action');
@@ -143,6 +155,56 @@ export async function checkGraph(page, url, graph, steps, artifacts, requests) {
   assert.match(current.description, new RegExp(`source index ${sourceIndex}\\b`, 'i'));
 }
 
+async function downloadFile(page, name) {
+  const [download] = await Promise.all([page.waitForEvent('download'), button(page, name).click()]);
+  return readFileSync(await download.path());
+}
+
+export async function checkFolded(page, url, artifacts) {
+  await page.goto(url);
+  await runButton(page, foldedRun).click();
+  await visible(page.getByText(/1,960 consecutive repeat steps folded/));
+  await graphNode(page, 1).click();
+  const inspector = role(page, 'complementary', /step inspector/i);
+  await visible(button(inspector, /show all.*characters/i));
+  assert.equal(await inspector.getByText(/qa-end-of-observation/).count(), 0);
+  await button(inspector, /show all.*characters/i).click();
+  await visible(inspector.getByText(/qa-end-of-observation/));
+  await role(inspector, 'combobox', /member step/i).selectOption('3');
+  await visible(inspector.getByText('Check synthetic module 1.', { exact: true }));
+  await button(page, /^Expand all steps$/i).click();
+  await visible(page.getByText('All source steps are shown.', { exact: true }));
+  await button(page, /^Fold repeats$/i).click();
+  await visible(page.getByText(/1,960 consecutive repeat steps folded/));
+  await page.screenshot({ path: join(artifacts, 'folded.png') });
+  await page.goto(url);
+  await runButton(page, 'qa-exact-indices').click();
+  await graphNode(page, '9007199254740993').click();
+  await visible(inspector.getByText('Check synthetic module 1.', { exact: true }));
+  await button(page, /^Aggregated$/i).click();
+  await role(inspector, 'combobox', /member step/i).selectOption('9007199254740992');
+  await visible(inspector.getByText('Check synthetic module 0.', { exact: true }));
+
+}
+
+export async function checkNarrow(page, url, artifacts) {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(url);
+  await visible(role(page, 'heading', /^Runs$/i));
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  await visible(page.getByText('Scroll the table to see all columns.', { exact: true }));
+  const model = role(page, 'cell', exact('qa-model')).first();
+  assert.equal(await model.evaluate((cell) => {
+    const text = document.createRange();
+    text.selectNodeContents(cell);
+    return new Set(Array.from(text.getClientRects(), (rect) => rect.top)).size;
+  }), 1, 'A short model label wraps across lines');
+  await page.screenshot({ path: join(artifacts, 'narrow.png'), fullPage: true });
+  await runButton(page, timeoutRun).click();
+  await visible(page.locator(graphNodes));
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+}
+
 export async function checkCompare(page, url, artifacts) {
   await page.goto(url);
   await selection(page, timeoutRun).check();
@@ -152,7 +214,7 @@ export async function checkCompare(page, url, artifacts) {
   await selection(page, 'slug-codex-pass').check();
   await button(page, /^Compare runs$/i).click();
   await visible(role(page, 'heading', /compar/i));
-  await visible(page.getByText('swe-slug-019', { exact: false }));
+  await visible(page.getByText('swe-slug-019 · 3 selected runs', { exact: true }));
   const pairs = page.getByRole('table').filter({ hasText: /Jaccard|divergence/i }).first();
   await visible(pairs);
   const pairRows = pairs.getByRole('row').filter({ hasText: /slug-/ });
@@ -190,6 +252,20 @@ export async function checkSankey(page, url, index, artifacts) {
     const link = role(chart, 'img', exact(`${label(from)} → ${label(to)} · ${count.toLocaleString('en-US')} transitions`));
     assert.match(await link.getAttribute('d'), /^M.+/);
   }
+  await button(page, /^Side by side$/i).click();
+  await role(page, 'combobox', /^Second group$/i).selectOption('orion-4');
+  const secondChart = role(page, 'group', exact('Phase transitions for orion-4'));
+  await visible(secondChart);
+  await visible(chart);
+  const scale = async (groupChart, group) => {
+    const count = index.runs.filter((run) => run.model === group)
+      .reduce((total, run) => total + (run.metrics.phase_transitions.edit?.validate ?? 0), 0);
+    assert.ok(count > 0);
+    const band = role(groupChart, 'img', exact(`Edit → Validate · ${count} transitions`));
+    return Number(await band.getAttribute('stroke-width')) / count;
+  };
+  assert.ok(Math.abs(await scale(chart, model) - await scale(secondChart, 'orion-4')) < 0.01,
+    'Both Sankey panels must use the same count scale');
   await page.screenshot({ path: join(artifacts, 'sankey.png'), fullPage: true });
 }
 
@@ -222,6 +298,12 @@ export async function checkOffline(page, fileUrl, index, graph, steps, artifacts
   const ids = index.runs.map((run) => run.id);
   await checkRows(page, ids, ids);
   await checkTextSearch(page, ids, index);
+  await button(page, /^Langutory$/i).click();
+  const regex = page.getByLabel(/Langutory regex/i);
+  const phaseSequence = index.runs.find((run) => run.id === timeoutRun).langutory;
+  await regex.fill('^' + escapeRegex(phaseSequence) + '$');
+  await checkRows(page, ids, index.runs.filter((run) => run.langutory === phaseSequence).map((run) => run.id));
+  await regex.fill('');
   await runButton(page, timeoutRun).click();
   await inspectFirstNode(page, graph, steps);
   assert.deepEqual(external, [], 'Portable report requested resources outside its HTML file');
@@ -257,6 +339,8 @@ export async function timeFirstGraph(page, url, size, artifacts, timeout) {
   assert.ok(Number.isFinite(ms) && ms > 0, 'Missing graph paint timestamp');
   const graph = role(page, 'group', exact(`Process graph for qa-render-${size}-expanded`));
   await visible(graph);
+  await page.mouse.move(1, 1);
+  if (size === 500) assert.ok(ms < 3000, '500-node first graph paint exceeded 3 s');
   await visible(page.getByText(new RegExp(`^${size.toLocaleString('en-US')} nodes ·`)));
   await page.screenshot({ path: join(artifacts, `first-render-${size}.png`) });
   return ms;

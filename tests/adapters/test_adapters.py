@@ -287,3 +287,27 @@ def test_parse_errors_are_contextual_and_redacted(tmp_path, raw, context):
         load(path)
     assert context in str(exc.value)
     assert "fixture-only" not in str(exc.value)
+
+
+def test_wholly_malformed_jsonl_rejected(tmp_path):
+    path = tmp_path / "bad.events.jsonl"
+    path.write_text("{\nnull\n")
+    with pytest.raises(AdapterError, match="no usable records"):
+        load(path)
+
+
+def test_codex_failed_turn_does_not_reuse_prior_final_message(tmp_path):
+    path = tmp_path / "multi.codex.jsonl"
+    rows = [
+        {"type": "thread.started", "thread_id": "multi"},
+        {"type": "turn.started"},
+        {"type": "turn.completed", "meta": {"final_message": "First turn done"}},
+        {"type": "turn.started"},
+        {"type": "turn.failed", "error": {"message": "Second turn failed"}},
+    ]
+    path.write_text("".join(json.dumps(row) + "\n" for row in rows))
+    run, = load(path)
+    assert len(run.steps) == 1
+    assert run.steps[0].thought == "First turn done"
+    assert "final_message" not in run.meta
+    assert "final_message" not in run.steps[0].tags

@@ -6,7 +6,7 @@ import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 import {
-  checkCompare, checkGraph, checkOffline, checkRunList, checkSankey, checkTheme, renderSizes, timeFirstGraph,
+  checkCompare, checkFolded, checkGraph, checkNarrow, checkOffline, checkRunList, checkSankey, checkTheme, renderSizes, timeFirstGraph,
 } from '../tests/e2e/browser.mjs';
 import { frontendRequire, results, root } from './frontend-dependencies.mjs';
 
@@ -152,6 +152,8 @@ async function main() {
       await scenario(browser, 'compare', (page) => checkCompare(page, url, artifacts));
       await scenario(browser, 'sankey', (page) => checkSankey(page, url, index, artifacts));
       await scenario(browser, 'theme', (page) => checkTheme(page, url, artifacts));
+      await scenario(browser, 'folding', (page) => checkFolded(page, url, artifacts));
+      await scenario(browser, 'narrow', (page) => checkNarrow(page, url, artifacts));
       const report = { chrome: browser.version(), timeoutMs: renderTimeout, runs: [] };
       for (const size of renderSizes) {
         const sample = await scenario(browser, `first-render-${size}`,

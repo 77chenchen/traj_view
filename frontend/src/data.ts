@@ -2,8 +2,17 @@ import { useEffect, useState } from 'react';
 
 const embedded = document.getElementById('trajviz-data');
 export const isOffline = Boolean(embedded);
-let offlineData: Record<string, unknown> | undefined;
+let offlineFiles: Record<string, string> | undefined;
 const cache = new Map<string, Promise<unknown>>();
+
+function parsePayload(raw: string) {
+  // Keep exact integer tokens when they cannot fit in a JavaScript number.
+  if (/\d{16}/.test(raw)) {
+    raw = raw.replace(/"(?:\\.|[^"\\])*"|-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?/g, (token) =>
+      /^-?\d{16,}$/.test(token) && !Number.isSafeInteger(Number(token)) ? JSON.stringify(token) : token);
+  }
+  return JSON.parse(raw);
+}
 
 export function readData<T>(relativePath: string): Promise<T> {
   const previous = cache.get(relativePath);
@@ -11,11 +20,13 @@ export function readData<T>(relativePath: string): Promise<T> {
 
   const request = Promise.resolve().then(async () => {
     if (embedded) {
-      offlineData ??= JSON.parse(embedded.textContent ?? '');
-      if (!offlineData || !Object.hasOwn(offlineData, relativePath)) {
+      offlineFiles ??= JSON.parse(embedded.textContent ?? '').files;
+      const payload = offlineFiles && Object.hasOwn(offlineFiles, relativePath)
+        ? document.getElementById(offlineFiles[relativePath]) : null;
+      if (!payload) {
         throw new Error(`Embedded data is missing ${relativePath}.`);
       }
-      return offlineData[relativePath];
+      return parsePayload(payload.textContent ?? '');
     }
 
     const base = new URL('/data/', window.location.origin);
@@ -25,7 +36,7 @@ export function readData<T>(relativePath: string): Promise<T> {
     }
     const response = await fetch(url);
     if (!response.ok) throw new Error(`${relativePath} returned HTTP ${response.status}.`);
-    return response.json();
+    return parsePayload(await response.text());
   }).catch((error: unknown) => {
     cache.delete(relativePath);
     throw error;

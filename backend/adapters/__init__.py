@@ -43,6 +43,8 @@ def _load(source: Source, source_format: str | None) -> list[Trajectory]:
         return openai_messages.parse(source)
 
     lines = source.json_lines()
+    if not lines and source.parse_errors:
+        raise AdapterError(f"{path.name}: malformed JSONL with no usable records")
     if source_format is None:
         kinds = {string(record.get("type")) for _, record in lines}
         if kinds & (codex_cli.EXEC_TYPES | codex_cli.ROLLOUT_TYPES) or (

@@ -205,3 +205,15 @@ def test_compare_different_targets_and_shorter_sequences():
     assert compare(trajectory(), trajectory(step(0))) == {
         "jaccard": 1.0, "first_divergence": None, "left_idx": None, "right_idx": None,
     }
+
+
+def test_grep_patterns_that_look_like_paths_are_not_targets():
+    trace = trajectory(
+        step(0, "shell", command="rg needle.py src/"),
+        step(1, "shell", command="rg -n -g '*.py' needle.py tests/"),
+        step(2, "shell", command="grep -r -e needle.py src/"),
+    )
+    graphs = build_graphs(trace)
+    assert [node["signature"] for node in graphs["expanded"]["nodes"]] == [
+        '["read","src"]', '["read","tests"]', '["read","src"]',
+    ]

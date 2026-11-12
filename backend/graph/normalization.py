@@ -248,12 +248,50 @@ def _validation_signature(command: _Command) -> str:
     return "validate:check"
 
 
+_SEARCH_OPTIONS_WITH_VALUES = {
+    "-A", "-B", "-C", "-g", "-m", "-t", "-T",
+    "--after-context", "--before-context", "--context", "--glob", "--iglob", "--max-count",
+    "--type", "--type-not", "--encoding", "--color",
+}
+
+
+def _search_paths(words: tuple[str, ...]) -> list[str]:
+    operands: list[str] = []
+    pattern_files: list[str] = []
+    explicit_pattern = False
+    options = True
+    pending = ""
+    for word in words:
+        if pending:
+            if pending in {"-f", "--file"}:
+                pattern_files.append(word)
+            pending = ""
+        elif options and word == "--":
+            options = False
+        elif options and word in {"-e", "--regexp", "-f", "--file"}:
+            explicit_pattern = True
+            pending = word
+        elif options and word.startswith(("-e", "--regexp=", "-f", "--file=")):
+            explicit_pattern = True
+            if word.startswith(("-f", "--file=")):
+                pattern_files.append(word[7:] if word.startswith("--file=") else word[2:])
+        elif options and word == "--files":
+            explicit_pattern = True
+        elif options and word in _SEARCH_OPTIONS_WITH_VALUES:
+            pending = word
+        elif not options or not word.startswith("-"):
+            operands.append(word)
+    return [*(operands if explicit_pattern else operands[1:]), *pattern_files]
+
+
 def _command_paths(command: _Command, category: str) -> tuple[list[str], list[str]]:
     if command.name == "cd":
         return [], []
     words = () if command.name in ("echo", "printf") else _command_words(command)[1:]
+    if command.name in {"rg", "grep"}:
+        words = _search_paths(words)
     bare_operands = command.name in _EDIT_COMMANDS or command.name in {
-        "cat", "head", "tail", "stat", "nl", "less",
+        "cat", "head", "tail", "stat", "nl", "less", "rg", "grep",
     }
     operands = [path for word in words if (path := _path_token(word, allow_bare=bare_operands))]
     inputs = [path for word in command.inputs if (path := _path_token(word, allow_bare=True))]

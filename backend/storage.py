@@ -8,6 +8,7 @@ import re
 from shutil import copy2, copytree
 from tempfile import TemporaryDirectory
 from typing import Any
+from unicodedata import normalize
 
 from schema import Trajectory
 
@@ -50,6 +51,17 @@ def dataset_index(directory: Path) -> dict:
 
 
 def searchable_text(summary: dict, steps: list[dict]) -> str:
+    def strings(value: Any):
+        if isinstance(value, str):
+            yield value
+        elif isinstance(value, list):
+            for item in value:
+                yield from strings(item)
+        elif isinstance(value, dict):
+            for key, item in value.items():
+                yield key
+                yield from strings(item)
+
     parts = [
         str(summary.get(key, "")) for key in ("id", "task_id", "source_format", "model", "agent", "condition")
     ]
@@ -58,7 +70,7 @@ def searchable_text(summary: dict, steps: list[dict]) -> str:
         if step["thought"]:
             parts.append(step["thought"])
         if step["action"]:
-            parts.append(json.dumps(step["action"], ensure_ascii=False))
+            parts.extend(strings(step["action"]))
         if step["observation"]:
             parts.append(step["observation"]["text"])
     return "\n".join(parts)
@@ -149,7 +161,7 @@ def safe_child(root: Path, relative: str) -> Path:
 def csv_cell(value: Any) -> Any:
     if isinstance(value, (dict, list)):
         return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
-    if isinstance(value, str) and value.lstrip().startswith(("=", "+", "-", "@")):
+    if isinstance(value, str) and re.match(r"^[\s\ufeff]*[=+@-]", normalize("NFKC", value)):
         return "'" + value
     return value
 
@@ -169,19 +181,25 @@ def export_csv(index: dict, destination: Path) -> None:
 
 def export_html(directory: Path, index: dict, frontend: Path, destination: Path) -> None:
     shell = (frontend / "index.html").read_text(encoding="utf-8")
-    files = {"index.json": index}
-    references = [index["search_file"]]
+    references = ["index.json", index["search_file"]]
     for run in index["runs"]:
         references.extend(run[field] for field in ("file", "steps_file", "canonical_file"))
-    for reference in references:
-        files[reference] = read_json(safe_child(directory, reference))
-    embedded = json.dumps(files, ensure_ascii=False, allow_nan=False, separators=(",", ":")).replace("<", "\\u003c")
-    data_tag = f'<script id="trajviz-data" type="application/json">{embedded}</script>'
+    files = {reference: f"trajviz-data-{number}" for number, reference in enumerate(dict.fromkeys(references))}
+
+    def data_tag(tag_id: str, data: str) -> str:
+        escaped = data.replace("<", "\\u003c")
+        return f'<script id="{tag_id}" type="application/json">{escaped}</script>'
+
+    embedded = [data_tag("trajviz-data", json.dumps({"files": files}, ensure_ascii=False))]
+    embedded.extend(
+        data_tag(tag_id, safe_child(directory, reference).read_text(encoding="utf-8"))
+        for reference, tag_id in files.items()
+    )
 
     def inline_script(match: re.Match) -> str:
         js = safe_child(frontend, match[1].lstrip("./")).read_text(encoding="utf-8")
         js = re.sub(r"</script", lambda found: r"<\/" + found[0][2:], js, flags=re.IGNORECASE)
-        return data_tag + f'<script type="module">{js}</script>'
+        return "\n".join(embedded) + f'<script type="module">{js}</script>'
 
     def inline_style(match: re.Match) -> str:
         css = safe_child(frontend, match[1].lstrip("./")).read_text(encoding="utf-8")

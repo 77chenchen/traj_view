@@ -6,6 +6,7 @@ from typer.testing import CliRunner
 
 from backend.cli import app
 from backend.redaction import Redactor
+from backend.storage import csv_cell, searchable_text
 
 
 runner = CliRunner()
@@ -102,6 +103,49 @@ def test_redaction_covers_shell_and_serialized_tool_arguments():
     )
     for example in examples:
         assert "example" not in redactor.text(example)
+
+
+def test_redaction_covers_escaped_keys_and_nested_credentials_in_raw_input(tmp_path):
+    source = tmp_path / "input.events.jsonl"
+    source.write_text(
+        r'{"type":"run.start","id":"redact","meta":{"pass\u0077ord":"synthetic-a","credentials":{"nested":"synthetic-b"}}}'
+        "\n" + r'{"type":"step","action":{"tool":"shell","args":{"data":"{\"pass\\u0077ord\":\"synthetic-c\"}"}}}'
+        "\n",
+        encoding="utf-8",
+    )
+    output = tmp_path / "out"
+    result = runner.invoke(app, ["build", str(source), "-o", str(output), "--redact"])
+    assert result.exit_code == 0, result.output
+    for file in output.rglob("*.json"):
+        assert "synthetic-" not in file.read_text()
+
+
+def test_redacted_identity_collisions_keep_tasks_distinct(tmp_path):
+    source = tmp_path / "input.events.jsonl"
+    source.write_text(
+        '{"type":"run.start","id":"private-1","task_id":"private-3"}\n'
+        '{"type":"run.start","id":"private-2","task_id":"private-4"}\n'
+        '{"type":"run.start","id":"private-5","task_id":"private-4"}\n',
+        encoding="utf-8",
+    )
+    output = tmp_path / "out"
+    result = runner.invoke(app, ["build", str(source), "-o", str(output), "--redact-pattern", r"private-\d"])
+    assert result.exit_code == 0, result.output
+    first, second, third = json.loads((output / "index.json").read_text())["runs"]
+    assert len({first["id"], second["id"], third["id"]}) == 3
+    assert first["task_id"] != second["task_id"] == third["task_id"]
+
+
+def test_literal_action_paths_are_searchable():
+    target = r"C:\repo\file.txt"
+    summary = {"outcome": {}}
+    steps = [{"thought": None, "action": {"args": {"path": target}}, "observation": None}]
+    assert target in searchable_text(summary, steps)
+
+
+def test_csv_guards_normalized_spreadsheet_formula_prefixes():
+    assert csv_cell("\ufeff ＝1+1") == "'\ufeff ＝1+1"
+    assert csv_cell(-1) == -1
 
 
 def test_label_manifest_keeps_original_source(tmp_path):

@@ -13,6 +13,8 @@ type Node = { id: string; phase: string; layer: 0 | 1; order: number };
 type Link = Record<never, never>;
 const width = 550;
 const height = 336;
+const inset = 16;
+const flowHeight = height - 2 * inset;
 
 function flows(runs: Run[], phases: Phase[]) {
   const pairs = new Map<string, { source: string; target: string; value: number }>();
@@ -35,21 +37,34 @@ function flows(runs: Run[], phases: Phase[]) {
   }
   const links = [...pairs.values()];
   if (!links.length) return null;
-  const layout = sankey<Node, Link>()
+  const columns = [...nodes.values()];
+  const fromCount = columns.filter((node) => node.layer === 0).length;
+  const gaps = Math.max(fromCount, columns.length - fromCount) - 1;
+  return { nodes: columns, links, gaps, total: links.reduce((sum, link) => sum + link.value, 0) };
+}
+
+type Flow = NonNullable<ReturnType<typeof flows>>;
+
+function layoutFlow(flow: Flow, pixelsPerCount: number, padding: number) {
+  const contentHeight = flow.total * pixelsPerCount + flow.gaps * padding;
+  const top = (height - contentHeight) / 2;
+  return sankey<Node, Link>()
     .nodeId((node) => node.id)
     .nodeAlign((node) => node.layer)
     .nodeSort((a, b) => a.order - b.order || a.phase.localeCompare(b.phase))
     .nodeWidth(15)
-    .nodePadding(14)
-    .extent([[104, 16], [width - 104, height - 16]]);
-  return {
-    graph: layout({ nodes: [...nodes.values()], links }),
-    total: links.reduce((sum, link) => sum + link.value, 0),
-  };
+    .nodePadding(padding)
+    .extent([[104, top], [width - 104, height - top]])({
+      nodes: flow.nodes.map((node) => ({ ...node })),
+      links: flow.links.map((link) => ({ ...link })),
+    });
 }
 
-function SankeyChart({ label, runs, phases }: { label: string; runs: Run[]; phases: Phase[] }) {
-  const flow = useMemo(() => flows(runs, phases), [runs, phases]);
+function SankeyChart({ label, runCount, flow, phases, pixelsPerCount, padding, shared }: {
+  label: string; runCount: number; flow: Flow | null; phases: Phase[];
+  pixelsPerCount: number; padding: number; shared: boolean;
+}) {
+  const graph = useMemo(() => flow && layoutFlow(flow, pixelsPerCount, padding), [flow, pixelsPerCount, padding]);
   const map = new Map(phases.map((phase) => [phase.id, phase]));
   const [detail, setDetail] = useState('');
   const phaseName = (node: Node) => map.get(node.phase)?.label ?? node.phase;
@@ -64,22 +79,22 @@ function SankeyChart({ label, runs, phases }: { label: string; runs: Run[]; phas
 
   return <section className="panel sankey-panel" aria-label={`Phase transitions for ${label}`}>
     <div className="panel-head"><div><h2>{label || '(blank)'}</h2>
-      <p>{number.format(runs.length)} {runs.length === 1 ? 'run' : 'runs'} · {number.format(flow?.total ?? 0)} transitions</p></div></div>
-    {flow ? <>
+      <p>{number.format(runCount)} {runCount === 1 ? 'run' : 'runs'} · {number.format(flow?.total ?? 0)} transitions</p></div></div>
+    {graph ? <>
       <div className="sankey-scroll">
         <div className="sankey-layers"><span>From phase</span><span>Next phase</span></div>
         <svg className="sankey-svg" viewBox={`0 0 ${width} ${height}`} role="group" aria-label={`Phase transitions for ${label}`}>
-          {flow.graph.links.map((link) => {
+          {graph.links.map((link) => {
             const from = link.source as SankeyNode<Node, Link>;
             const detailText = linkDetails(link);
             return <path key={link.index} className="sankey-link" d={path(link) ?? undefined} fill="none"
-              stroke={phaseFill(from)} strokeWidth={Math.max(1, link.width ?? 1)} tabIndex={0}
+              stroke={phaseFill(from)} strokeWidth={link.width ?? 0} tabIndex={0}
               aria-label={detailText} role="img" onPointerEnter={() => setDetail(detailText)} onPointerLeave={() => setDetail('')}
               onFocus={() => setDetail(detailText)} onBlur={() => setDetail('')}>
               <title>{detailText}</title>
             </path>;
           })}
-          {flow.graph.nodes.map((node) => {
+          {graph.nodes.map((node) => {
             const { x0 = 0, x1 = 0, y0 = 0, y1 = 0 } = node;
             const detailText = `${node.layer ? 'Next phase' : 'From phase'} · ${phaseName(node)} · ${number.format(node.value ?? 0)} transitions`;
             const name = phaseName(node);
@@ -87,14 +102,15 @@ function SankeyChart({ label, runs, phases }: { label: string; runs: Run[]; phas
               onPointerEnter={() => setDetail(detailText)} onPointerLeave={() => setDetail('')}
               onFocus={() => setDetail(detailText)} onBlur={() => setDetail('')}>
               <title>{detailText}</title>
-              <rect x={x0} y={y0} width={x1 - x0} height={Math.max(1, y1 - y0)} rx={2} fill={phaseFill(node)} />
+              <rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} rx={2} fill={phaseFill(node)} />
               <text x={node.layer ? x1 + 8 : x0 - 8} y={(y0 + y1) / 2} dominantBaseline="central"
                 textAnchor={node.layer ? 'start' : 'end'}>{name.length > 14 ? name.slice(0, 13) + '…' : name}</text>
             </g>;
           })}
         </svg>
       </div>
-      <div className="graph-caption sankey-caption"><span className="graph-tip">{detail || 'Band width represents transition count.'}</span></div>
+      <div className="graph-caption sankey-caption"><span className="graph-tip">{detail ||
+        (shared ? 'Both charts use the same count scale.' : 'Band width represents transition count.')}</span></div>
     </> : <Empty icon="sankey" title="No phase transitions">This group contains no recorded phase transitions.</Empty>}
   </section>;
 }
@@ -119,6 +135,14 @@ export function Sankey({ runs, phases }: { runs: Run[]; phases: Phase[] }) {
   const other = options.filter((option) => option !== first);
   const second = other.includes(right) ? right : other[0];
   const sideBySide = two && other.length > 0;
+  const firstFlow = useMemo(() => flows(groups.get(first) ?? [], phases), [groups, first, phases]);
+  const secondFlow = useMemo(() => sideBySide ? flows(groups.get(second) ?? [], phases) : null, [groups, second, phases, sideBySide]);
+  const maxGaps = Math.max(1, firstFlow?.gaps ?? 0, secondFlow?.gaps ?? 0);
+  const padding = Math.min(14, flowHeight / (2 * maxGaps));
+  const pixelsPerCount = Math.min(
+    firstFlow ? (flowHeight - firstFlow.gaps * padding) / firstFlow.total : Infinity,
+    secondFlow ? (flowHeight - secondFlow.gaps * padding) / secondFlow.total : Infinity,
+  );
 
   return <>
     <Heading title="Phase transitions">Explore how phases follow one another across groups of runs.</Heading>
@@ -141,8 +165,10 @@ export function Sankey({ runs, phases }: { runs: Run[]; phases: Phase[] }) {
         </button>
       </div>
       <div className={`sankey-grid ${sideBySide ? 'two' : ''}`}>
-        <SankeyChart key={JSON.stringify([dimension, first])} label={first} runs={groups.get(first)!} phases={phases} />
-        {sideBySide && <SankeyChart key={JSON.stringify([dimension, second])} label={second} runs={groups.get(second)!} phases={phases} />}
+        <SankeyChart key={JSON.stringify([dimension, first])} label={first} runCount={groups.get(first)!.length}
+          flow={firstFlow} phases={phases} pixelsPerCount={pixelsPerCount} padding={padding} shared={sideBySide} />
+        {sideBySide && <SankeyChart key={JSON.stringify([dimension, second])} label={second} runCount={groups.get(second)!.length}
+          flow={secondFlow} phases={phases} pixelsPerCount={pixelsPerCount} padding={padding} shared />}
       </div>
     </>}
   </>;

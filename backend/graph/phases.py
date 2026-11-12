@@ -68,6 +68,28 @@ class PhaseClassifier:
         or None. Without either input, annotation uses only the loaded rules.
         """
         config = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+        if not isinstance(config, dict) or not isinstance(config.get("phases"), list):
+            raise ValueError("phase config must contain a phases list")
+        phases = config["phases"]
+        for phase in phases:
+            if not isinstance(phase, dict) or any(
+                not isinstance(phase.get(field), str) or not phase[field]
+                for field in ("id", "label", "symbol", "color")
+            ):
+                raise ValueError("each phase needs an id, label, symbol and color")
+        phase_ids = {phase["id"] for phase in phases}
+        if len(phase_ids) != len(phases) or "other" not in phase_ids:
+            raise ValueError("phase IDs must be unique and include other")
+        rule_configs = config.get("rules", [])
+        if not isinstance(rule_configs, list):
+            raise ValueError("phase rules must be a list")
+        for rule in rule_configs:
+            if not isinstance(rule, dict) or not isinstance(rule.get("phase"), str) or rule["phase"] not in phase_ids:
+                raise ValueError("each phase rule must reference a configured phase ID")
+            for field in ("tags", "tools", "paths", "commands"):
+                values = rule.get(field, [])
+                if not isinstance(values, list) or any(not isinstance(value, str) for value in values):
+                    raise ValueError(f"phase rule {field} must be a list of strings")
         rules = tuple(
             _Rule(
                 phase=rule["phase"],
@@ -76,9 +98,9 @@ class PhaseClassifier:
                 paths=tuple(re.compile(pattern) for pattern in rule.get("paths", ())),
                 commands=tuple(re.compile(pattern) for pattern in rule.get("commands", ())),
             )
-            for rule in config.get("rules", ())
+            for rule in rule_configs
         )
-        return cls(config["phases"], rules, llm_cache, llm_classifier)
+        return cls(phases, rules, llm_cache, llm_classifier)
 
     @staticmethod
     def cache_key(step: Step) -> str:

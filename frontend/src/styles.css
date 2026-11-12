@@ -250,6 +250,7 @@ main { padding: 30px clamp(20px, 3.2vw, 44px) 42px; max-width: 1700px; margin: 0
 .inline-status.error-text { color: var(--bad); }
 
 .table-scroll { overflow-x: auto; }
+.catalog-scroll-hint { display: none; }
 table { border-collapse: collapse; width: 100%; font-size: 13px; text-align: left; }
 th, td { padding: 10px 13px; border-bottom: 1px solid var(--line); }
 thead th {
@@ -263,6 +264,7 @@ tbody th { font-weight: 600; }
 .runs-table th:last-child, .runs-table td:last-child { padding-right: 17px; }
 .runs-table tbody tr:hover, .runs-table tr.row-selected { background: var(--surface-hover); }
 .runs-table td { overflow-wrap: anywhere; }
+.runs-table .run-value { min-width: 98px; overflow-wrap: break-word; }
 .run-name, .run-task { display: block; max-width: clamp(170px, 23vw, 320px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .run-task { color: var(--muted); font-size: 11px; margin-top: 3px; font-weight: 450; }
 .selection-bar {
@@ -428,6 +430,7 @@ tbody th { font-weight: 600; }
 }
 @media (max-width: 680px) {
   .comparison-grid, .sankey-grid.two { grid-template-columns: minmax(0, 1fr); }
+  .catalog-scroll-hint { display: block; padding: 0 13px 8px; color: var(--muted); font-size: 11px; }
   .selection-bar { align-items: flex-start; flex-direction: column; }
   .stat { padding: 11px; }
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }

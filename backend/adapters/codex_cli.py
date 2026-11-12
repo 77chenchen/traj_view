@@ -87,7 +87,8 @@ def _exec(source: Source, lines: list[Line]) -> Trajectory:
                 if turn_usage is not None:
                     for key, value in turn_usage.model_dump(exclude_none=True).items():
                         turn_totals[key] = turn_totals.get(key, 0) + value
-            run.final(record.get("final_message", run.meta.get("final_message")), line, ts)
+            current_meta = {**as_record(record.get("metadata")), **as_record(record.get("meta"))}
+            run.final(record.get("final_message", current_meta.get("final_message")), line, ts)
 
     if turn_totals:
         run.usage = usage(turn_totals)

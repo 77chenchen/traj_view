@@ -1,6 +1,5 @@
 import { existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -8,7 +7,6 @@ export const root = fileURLToPath(new URL('../', import.meta.url));
 export const results = join(root, 'test-results');
 
 const require = createRequire(import.meta.url);
-const sharedModules = join(homedir(), 'Documents/ChatGPT/traj/frontend/node_modules');
 
 export function resolveFrontendDependency(name, override) {
   if (override) {
@@ -18,7 +16,7 @@ export function resolveFrontendDependency(name, override) {
 
   const candidates = process.env.FRONTEND_NODE_MODULES
     ? [resolve(process.env.FRONTEND_NODE_MODULES)]
-    : [join(root, 'frontend/node_modules'), sharedModules];
+    : [join(root, 'frontend/node_modules')];
 
   for (const modules of candidates) {
     const path = join(modules, name);

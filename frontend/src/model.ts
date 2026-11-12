@@ -5,6 +5,8 @@ export interface Phase {
   color: string;
 }
 
+export type StepIndex = number | string;
+
 export interface Outcome {
   label: string;
   passed: boolean | null;
@@ -21,14 +23,14 @@ export interface Metrics {
   cycles: number;
   repeated_actions: number;
   error_rate: number;
-  first_edit: number | null;
-  first_validate: number | null;
+  first_edit: StepIndex | null;
+  first_validate: StepIndex | null;
   validated_after_last_edit: boolean | null;
-  edit_validate_edit: boolean;
+  edit_validate_edit: number;
   phase_transitions: Record<string, Record<string, number>>;
   max_steps_hit: boolean;
   empty_termination: boolean;
-  skill_read_steps: number[];
+  skill_read_steps: StepIndex[];
   skill_read_count: number;
 }
 
@@ -69,8 +71,8 @@ export interface GraphNode {
   category: Category;
   phase: string;
   count: number;
-  first_idx: number;
-  step_indices: number[];
+  first_idx: StepIndex;
+  step_indices: StepIndex[];
   error: boolean;
   phase_counts: Record<string, number>;
 }
@@ -95,7 +97,7 @@ export interface RunGraphs {
 }
 
 export interface Step {
-  idx: number;
+  idx: StepIndex;
   ts: string | null;
   thought: string | null;
   action: { tool: string; args: Record<string, unknown>; command: string | null; targets: string[] } | null;
@@ -110,7 +112,7 @@ export interface Step {
 export const number = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
 export const percent = new Intl.NumberFormat(undefined, { style: 'percent', maximumFractionDigits: 1 });
 export const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
-export const sourceIndex = (value: number | null | undefined) => value == null ? '—' : `#${value}`;
+export const sourceIndex = (value: StepIndex | null | undefined) => value == null ? '—' : `#${value}`;
 export const phaseColor = (phase?: Phase) =>
   phase && /^#[0-9a-f]{6}$/i.test(phase.color) ? phase.color : '#77758e';
 
@@ -130,7 +132,7 @@ export const metricColumns: { key: keyof Metrics; label: string }[] = [
 export function formatMetric(key: keyof Metrics, value: Metrics[keyof Metrics]): string {
   if (value == null) return '—';
   if (key === 'error_rate') return percent.format(value as number);
-  if (key === 'first_edit' || key === 'first_validate') return sourceIndex(value as number);
+  if (key === 'first_edit' || key === 'first_validate') return sourceIndex(value as StepIndex);
   if (typeof value === 'number') return number.format(value);
   if (typeof value === 'boolean') return value ? 'Yes' : 'No';
   return JSON.stringify(value);
