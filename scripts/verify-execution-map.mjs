@@ -4,10 +4,12 @@ import {mkdirSync,readFileSync,writeFileSync} from 'node:fs';
 import {resolve,join,relative} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {frontendRequire,root} from './frontend-dependencies.mjs';
+import {checkExecutionReturn} from '../tests/e2e/execution-map.mjs';
 const args=process.argv.slice(2),option=(key,fallback)=>{const i=args.indexOf(key);return i<0?fallback:args[i+1];};
+const navigationOnly=args.includes('--navigation-only');
 const url=option('--url','http://127.0.0.1:8766');assert.match(url,/^http:\/\/127\.0\.0\.1:\d+\/?$/);
 const dataset=resolve(option('--dataset','.workers/local/nl2repo-50-out'));
-const output=resolve(option('--output','.workers/local/long-graph-qa'));
+const output=resolve(option('--output',navigationOnly?'.workers/local/execution-return-qa':'.workers/local/long-graph-qa'));
 assert.ok(relative(join(root,'.workers/local'),output)&&!relative(join(root,'.workers/local'),output).startsWith('..'),'Real screenshots must stay in ignored local directory');
 const html=option('--html','.workers/local/nl2repo-long-graph.html');
 mkdirSync(output,{recursive:true});
@@ -29,6 +31,12 @@ try{
     const graph=page.getByRole('group',{name:`Process graph for ${run.id}-expanded`,exact:true});
     await graph.locator('[data-node]').first().waitFor();
     const pause=page.getByRole('button',{name:'Pause updates',exact:true});if(await pause.count())await pause.click();
+    if(navigationOnly){
+      const navigation=await checkExecutionReturn(page,graph,state=>capture(page,`run-${i}-${state}`));
+      let narrow;
+      if(i===0){await page.setViewportSize({width:1280,height:800});narrow=await checkExecutionReturn(page,graph,state=>capture(page,`run-${i}-${state}-1280`));await page.setViewportSize({width:1586,height:912});}
+      assert.deepEqual(errors,[]);report.runs.push({run:run.id,sourceSteps:data.nodes.length,navigation,narrow,pageErrors:errors.length});continue;
+    }
     assert.ok(await graph.locator('[data-node]').count()<=4);await capture(page,`after-${i}-overview`);
     if(i===0){await page.setViewportSize({width:1280,height:800});await capture(page,'after-0-overview-1280');await page.setViewportSize({width:1586,height:912});}
     await graph.getByRole('button',{name:/source section/}).first().click();await settle(page);await capture(page,`after-${i}-section`);
@@ -91,7 +99,10 @@ try{
   }
   await context.close();
   const offline=await browser.newContext({viewport:{width:1586,height:912},offline:true,serviceWorkers:'block'});await offline.route(/^https?:\/\//,r=>r.abort());const page2=await offline.newPage();let requests=0;const errors=[];page2.on('request',r=>{if(/^https?:/.test(r.url()))requests++;});page2.on('pageerror',e=>errors.push(e.message));
-  await page2.goto(pathToFileURL(resolve(html)).href+'#view=graph&run='+encodeURIComponent(runs[0].id));await page2.locator('[data-node]').first().waitFor();await capture(page2,'offline-overview');
-  await page2.getByRole('button',{name:'Next failure',exact:true}).click();await page2.getByRole('complementary',{name:'Step inspector',exact:true}).getByRole('button',{name:'Error Output',exact:true}).click();await capture(page2,'offline-failure');assert.equal(requests,0);assert.deepEqual(errors,[]);report.offline={httpRequests:requests,pageErrors:errors.length};await offline.close();
-  writeFileSync(join(output,'verification.json'),JSON.stringify(report,null,2)+'\n');console.log(`PASS real NL2Repo: ${runs.length} long traces, ${report.captures.length} private screenshots, exact source/Inspector/zoom/SVG; offline HTTP 0`);
+  await page2.goto(pathToFileURL(resolve(html)).href+'#view=graph&run='+encodeURIComponent(runs[0].id));await page2.locator('[data-node]').first().waitFor();
+  let offlineNavigation;
+  if(navigationOnly)offlineNavigation=await checkExecutionReturn(page2,page2.getByRole('group',{name:`Process graph for ${runs[0].id}-expanded`,exact:true}),state=>capture(page2,`offline-${state}`));
+  else{await capture(page2,'offline-overview');await page2.getByRole('button',{name:'Next failure',exact:true}).click();await page2.getByRole('complementary',{name:'Step inspector',exact:true}).getByRole('button',{name:'Error Output',exact:true}).click();await capture(page2,'offline-failure');}
+  assert.equal(requests,0);assert.deepEqual(errors,[]);report.offline={httpRequests:requests,pageErrors:errors.length,...(offlineNavigation?{navigation:offlineNavigation}:{})};await offline.close();
+  writeFileSync(join(output,'verification.json'),JSON.stringify(report,null,2)+'\n');console.log(`PASS real NL2Repo: ${runs.length} long traces, ${report.captures.length} private screenshots, ${navigationOnly?'parent navigation/source/focus':'exact source/Inspector/zoom/SVG'}; offline HTTP 0`);
 }finally{await browser.close();}

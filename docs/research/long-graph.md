@@ -111,3 +111,25 @@ This is an ordinary extension of the existing Operate interface. The final captu
 ## Remaining data limits
 
 Real logs lack usable complete timestamps for these inspected records; the map therefore reads source order. v1 does not supply per-call duration, authoritative subagent parentage, complete file versions, cost or attempt counts. Generic phase labels remain generic. Dependencies retain the existing file/observation heuristic and retries retain the project's signature rule; neither establishes a proven causal graph. Outcomes remain `unknown` when the source does not record a final outcome. These captured records include interrupted/provider-limited attempts and must not be presented as 50 completed benchmarks.
+
+## Parent-navigation follow-up · 2026-11-14
+
+User feedback identified that drill-down did not provide a discoverable way back. The prior small range buttons were the only return entry. Selecting a visible leaf also recomputed its search path, which could replace the range actually opened with a different overlapping leaf range.
+
+The navigation now begins with a persistent **Back one level** button; it is disabled at the root. **Alt+↑** works when focus is in the graph or its navigation and leaves text-input/select behavior alone. A named, separator-delimited breadcrumb provides direct ancestor jumps. Selecting an already visible original call retains the visited path. Returning restores exactly the previous source interval and visible nodes, keeps the inspected source/deep link and details, and moves focus to the return button or root breadcrumb. Scope changes retain the existing camera framing behavior.
+
+Reproduce private real-data navigation after rebuilding and exporting the HTML:
+
+```sh
+node scripts/verify-execution-map.mjs --navigation-only
+```
+
+The command writes only to ignored `.workers/local/execution-return-qa/`. It checks the three longest real records (324 / 172 / 87 steps), their actual four / three / three visited levels, the 324-step record at 1280×800, and the exact offline HTML with HTTP blocked. Its 15 full-page captures are named `run-N-return-leaf.png`, `run-N-return-parent.png`, `run-N-return-overview.png`, the three `run-0-…-1280.png` counterparts and the three `offline-return-….png` states. All 15 were opened and checked; source text and run IDs stay private.
+
+`checkExecutionReturn` in `tests/e2e/execution-map.mjs` independently compares every prior visible node set and breadcrumb, selects a leaf without changing the path, tests both button and shortcut, checks exact source/Inspector/deep-link retention, keyboard focus, disabled-root state and direct ancestor navigation. It runs on 500-source-step and exact-index public fixtures online/offline, and is reused by the private verifier. One initial harness locator rebound to the next section; it was corrected to wait on the clicked node's stable ID before the final full run.
+
+Final follow-up checks: **81 Python tests passed in 7.19s**, TypeScript/build passed, **28 Chrome scenarios passed** including both navigation chains and the exact delivered HTML offline. Existing pure checks remain **855 DAG checks, 2,089 scopes, 3,161 exact paths and 4,529 routes**. The real navigation verifier recorded zero page errors; its offline chain made **0 HTTP requests**. The existing large-bundle warning remains. Latest overview first-paint single samples are **95.5 / 137.8 ms** for 500 / 2,000 source steps, with the same four-node, app-already-loaded definition above.
+
+Public screenshots: [selected leaf](long-graph/execution-return-leaf.png), [returned parent](long-graph/execution-return-parent.png), [returned overview](long-graph/execution-return-overview.png). [Raw smoke results](long-graph/navigation-scenarios.json), [first-paint samples](long-graph/navigation-first-render.json) and [sanitized real navigation assertions](long-graph/navigation-verification.json) accompany them. These are direct browser captures using the labeled synthetic fixture; origin metadata is embedded and pixels are unchanged.
+
+The follow-up preserves `DESIGN.md`, `.impeccable/design.json`, the existing type/control styles and evidence contract. Its one task-scoped detector run returned `[]`. The fresh independent reviewer returned **ship** for this parent-navigation correction after opening all 15 private and three public captures and reviewing the source. At 1280px the deepest path wraps the source count onto a second line, retaining readable, nonoverlapping controls. The reviewer did not operate the browser; shortcut/focus/restoration rely on the supplied passing assertions. No whole-app, mobile or dark-theme approval is implied. See [the scoped review record](long-graph/navigation-review.md).

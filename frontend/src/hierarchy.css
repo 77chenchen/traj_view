@@ -32,6 +32,12 @@
 .execution-path { display:flex; align-items:center; gap:5px; min-height:26px; flex-wrap:wrap; }
 .execution-path .button { font-size:11px; padding:3px 6px; min-height:25px; }
 .execution-path .button[aria-current] { color:var(--text); background:var(--surface-2); }
+.execution-back { flex:none; gap:5px; }
+.execution-breadcrumbs { min-width:0; }
+.execution-breadcrumbs ol { display:flex; align-items:center; flex-wrap:wrap; gap:2px; margin:0; padding:0; list-style:none; }
+.execution-breadcrumbs li { display:flex; align-items:center; gap:2px; min-width:0; }
+.execution-breadcrumbs li > svg { flex:none; color:var(--muted); }
+.execution-breadcrumbs .button[aria-current] { font-weight:650; }
 .execution-path > span { margin-left:auto; font:11px ui-monospace,monospace; color:var(--muted); }
 .execution-overview-strip { display:flex; height:20px; gap:1px; padding-block:4px; margin-block:5px; }
 .execution-overview-strip > button { flex:1; min-width:0; padding:0; border:0; background:var(--line-strong); border-radius:1px; }

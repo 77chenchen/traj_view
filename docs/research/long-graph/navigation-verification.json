@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-14",
+  "chrome": "157.0.8103.52",
+  "privateCaptureCount": 15,
+  "evidencePolicy": "Private IDs, source text and all real-data screenshots stay in ignored local storage.",
+  "runs": [
+    {
+      "sourceSteps": 324,
+      "navigation": {
+        "levels": 4,
+        "leafPathPreserved": true,
+        "exactParentRestored": true,
+        "sourcePreserved": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "ancestorJump": true
+      },
+      "narrow": {
+        "levels": 4,
+        "leafPathPreserved": true,
+        "exactParentRestored": true,
+        "sourcePreserved": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "ancestorJump": true
+      },
+      "pageErrors": 0
+    },
+    {
+      "sourceSteps": 172,
+      "navigation": {
+        "levels": 3,
+        "leafPathPreserved": true,
+        "exactParentRestored": true,
+        "sourcePreserved": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "ancestorJump": true
+      },
+      "pageErrors": 0
+    },
+    {
+      "sourceSteps": 87,
+      "navigation": {
+        "levels": 3,
+        "leafPathPreserved": true,
+        "exactParentRestored": true,
+        "sourcePreserved": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "ancestorJump": true
+      },
+      "pageErrors": 0
+    }
+  ],
+  "offline": {
+    "httpRequests": 0,
+    "pageErrors": 0,
+    "navigation": {
+      "levels": 4,
+      "leafPathPreserved": true,
+      "exactParentRestored": true,
+      "sourcePreserved": true,
+      "keyboard": true,
+      "focusRestored": true,
+      "ancestorJump": true
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useResource } from './data';
 import { filterGraph, foldGraph } from './graphData';
 import { type Theme } from './graphDrawing';
@@ -87,6 +87,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   const [hierarchy, setHierarchy] = useState(false);
   const [overview, setOverview] = useState(graphs.expanded.nodes.length >= executionThreshold);
   const [scopePath, setScopePath] = useState<ExecutionScope[]>(() => initialIndex == null ? [] : executionPath(graphs.expanded,initialIndex));
+  const executionNavigation = useRef<HTMLDivElement>(null);
   const [allConnections, setAllConnections] = useState(graphs.expanded.nodes.length < executionThreshold);
   const [locateRequest, setLocateRequest] = useState(0);
   const [navigatorFocus, setNavigatorFocus] = useState(0);
@@ -126,9 +127,13 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
     setPosition((ordinals.get(idx) ?? 0) + 1);
   }, [ordinals, onInspect]);
   const selectIndex = useCallback((idx: StepIndex) => {
-    if (overview) setScopePath(executionPath(graphs.expanded,idx));
+    // Selecting a call already visible in this leaf must preserve the path the
+    // reader drilled through. Search/context still open other source ranges.
+    if (overview && !executionView.nodes.some(node => !node.view && node.first_idx === idx)) {
+      setScopePath(executionPath(graphs.expanded,idx));
+    }
     chooseIndex(idx);
-  }, [overview,graphs,chooseIndex]);
+  }, [overview,graphs,executionView,chooseIndex]);
   const locate = useCallback((idx: StepIndex) => {
     setPhase(''); setCategory(''); setErrors(false); setLayers(new Set(['reasoning','tools','results']));
     setSidebarTab('Details');
@@ -215,13 +220,31 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
     setIndex(null);setActiveId(null);onInspect(null);
     requestAnimationFrame(()=>document.querySelector<SVGGElement>(`.graph-panel svg [data-source-index="${selectedIndex}"]`)?.focus({preventScroll:true}));
   }
+  function returnToLevel(depth: number) {
+    setScopePath(previous => previous.slice(0, depth));
+    setActiveId(null);
+    requestAnimationFrame(() => executionNavigation.current?.querySelector<HTMLButtonElement>(
+      depth ? '.execution-back' : '.execution-root',
+    )?.focus({preventScroll:true}));
+  }
   return <>
     <RunMetadata run={run} date={steps.find(s => !!s.ts)?.ts}/>
     <div className="graph-stage-previews"><StageSnapshots steps={steps} nodes={graphs.expanded.nodes} selected={index} select={locate} kind="graph"/></div>
     <div className="graph-workspace">
-      <section className="panel graph-panel" aria-label="Run process graph">
-        {overview && canvasMode==='graph' && <div className="execution-navigation" aria-label="Execution map navigation">
-          <div className="execution-path"><button className="button small quiet" aria-current={!scope?'location':undefined} onClick={()=>{setScopePath([]);setActiveId(null);}}>Run overview</button>{scopePath.map((range,i)=><button key={`${range.start}-${range.end}`} className="button small quiet" aria-current={i===scopePath.length-1?'location':undefined} onClick={()=>{setScopePath(previous=>previous.slice(0,i+1));setActiveId(null);}}>Steps {range.start+1}–{range.end}</button>)}<button className="button small quiet" disabled={!nextFailure} onClick={()=>nextFailure&&locate(nextFailure.first_idx)}>Next failure</button><span>{scope ? scope.end-scope.start : graphs.expanded.nodes.length} / {graphs.expanded.nodes.length} source steps</span></div>
+      <section className="panel graph-panel" aria-label="Run process graph" onKeyDownCapture={event => {
+        if (!overview || canvasMode !== 'graph' || !scopePath.length || !event.altKey || event.key !== 'ArrowUp') return;
+        if (event.target instanceof Element && event.target.closest('input,textarea,select,[contenteditable="true"]')) return;
+        event.preventDefault();event.stopPropagation();returnToLevel(scopePath.length-1);
+      }}>
+        {overview && canvasMode==='graph' && <div ref={executionNavigation} className="execution-navigation" aria-label="Execution map navigation">
+          <div className="execution-path">
+            <button className="button small execution-back" disabled={!scopePath.length} title={scope ? 'Back one level (Alt+↑)' : 'Already at run overview'} aria-keyshortcuts="Alt+ArrowUp" onClick={() => returnToLevel(scopePath.length-1)}><Icon name="left" size={14}/>Back one level</button>
+            <nav className="execution-breadcrumbs" aria-label="Execution map path"><ol>
+              <li><button className="button small quiet execution-root" aria-current={!scope?'location':undefined} onClick={()=>returnToLevel(0)}>Run overview</button></li>
+              {scopePath.map((range,i)=><li key={`${range.start}-${range.end}`}><Icon name="right" size={12}/><button className="button small quiet" aria-current={i===scopePath.length-1?'location':undefined} onClick={()=>returnToLevel(i+1)}>Steps {range.start+1}–{range.end}</button></li>)}
+            </ol></nav>
+            <button className="button small quiet" disabled={!nextFailure} onClick={()=>nextFailure&&locate(nextFailure.first_idx)}>Next failure</button><span>{scope ? scope.end-scope.start : graphs.expanded.nodes.length} / {graphs.expanded.nodes.length} source steps</span>
+          </div>
           <div className="execution-overview-strip" role="toolbar" aria-label="Source step navigator. Use arrow keys, Home or End, then Enter to locate.">{navigatorRanges.map((range,i)=><button key={range.start} tabIndex={i===navigatorFocus?0:-1} title={`Steps ${range.start+1}–${range.end} · source ${sourceIndex(range.first.first_idx)} → ${sourceIndex(range.last.first_idx)}${range.failure?' · contains failure':''}`} aria-label={`Locate ${range.failure?'failure in ':''}source range ${sourceIndex(range.first.first_idx)} to ${sourceIndex(range.last.first_idx)}`} className={`${range.failure?'failed':''} ${range.selected?'selected':''} ${scope&&range.start<scope.end&&range.end>scope.start?'in-scope':''}`} onFocus={()=>setNavigatorFocus(i)} onKeyDown={event=>{
             const next=event.key==='Home'?0:event.key==='End'?navigatorRanges.length-1:event.key==='ArrowRight'?Math.min(i+1,navigatorRanges.length-1):event.key==='ArrowLeft'?Math.max(i-1,0):null;
             if(next==null)return;event.preventDefault();setNavigatorFocus(next);event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('button')[next]?.focus();
