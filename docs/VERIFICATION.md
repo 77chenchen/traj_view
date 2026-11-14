@@ -12,7 +12,17 @@ PYTHON="$(command -v python)" node scripts/smoke-e2e.mjs
 
 Set `CHROME_PATH` if Chrome is installed elsewhere. The smoke command runs pure graph-transform checks, builds the public fixtures plus generated performance traces, launches system Chrome, stops the server, then opens both a fresh single-file export and the delivered report in offline browser contexts. Screenshots, `scenarios.json` and `first-render.json` go to `test-results/e2e/`. See [browser QA](../tests/e2e/README.md) for details and report regeneration commands.
 
-## Content-based execution Graph · 2026-11-14
+## Inline execution Graph · 2026-11-14
+
+Merged sections now expand **inside the same canvas**, retaining siblings and original rolled-up edges. Named containment boundaries support independent/nested expansion, header collapse, Collapse last / Alt+↑ and Collapse all. Toggling preserves zoom and screen position, including when the compact-width hint wraps. Exact source/Inspector/URL survive collapse; search adds only its required path. Enclosures are frontend metadata, not duplicate execution nodes. See [semantics, function mapping, reproduction and screenshots](research/inline-graph.md).
+
+Final checks: **81 Python tests (3.69s)**, TypeScript/build and **28 Chrome scenarios passed**. Pure checks include **855 DAG sorts**, **1,908 scopes / 3,161 exact paths / 5,189 routes** and **61 inline states / 1,735 forward routes**, plus filtering, containment and source/edge-count invariants. Default overview first graph paint was **94.7 / 131.0 ms** for **500 / 2,000 source steps**, respectively, drawing three merged nodes per sample after app load. Bundle loading and full-source rendering are excluded. The 2,000-step chain retained zoom, empty-filter recovery and last-source Inspector access.
+
+The real verifier checked **324 / 172 / 87-step** records and **379 / 193 / 188** source edges, with **33 private screenshots** in ignored `.workers/local/inline-graph-qa/`. It covers normal-zoom expansion, largest/nested/multiple sections, collapse/camera/source/focus, failed/final sources, repeated search, SVG, 1280px and exact offline HTML (**0 HTTP / 0 page errors**). Ten public full-page PNGs use only the synthetic fixture. The single task-scoped detector returned `[]`. Run `node scripts/verify-execution-map.mjs --output .workers/local/inline-graph-qa` against the authorized existing local dataset. Detailed results are in [inline-graph/](research/inline-graph/).
+
+The fresh independent [finish review](research/inline-graph/review.md) opened all 43 PNGs and returned **ship** for this desktop extension, with no material fixes or recapture. It reviewed source and supplied assertions without operating a browser or rerunning tests. The incumbent system files remain unchanged.
+
+## Historical content-grouping snapshot · 2026-11-14
 
 Overview now groups contiguous recorded operations using activity, command families, literal script imports and qualified file subjects. It displays up to three content sections per level, with original calls at a maximum of four. Each merged node shows an operation summary, counts, subject and errors. Section contents exposes the basis and exact source examples. No strong content change produces an explicitly qualified continuation batch, rather than an inferred task. Parent return, exact source selection, filtering and old graph modes remain available. See [rules, entry mapping and current screenshots](research/semantic-graph.md).
 

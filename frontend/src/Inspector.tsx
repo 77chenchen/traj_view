@@ -77,7 +77,7 @@ export function Inspector({ run, node, index, select, clear, clearLabel = 'Clear
   const resource = useResource<{ steps: Step[] }>(node ? [run.steps_file] : [], true);
   const steps = resource.state.status === 'ready' ? resource.state.data.steps : undefined;
   const members = node?.step_indices ?? [];
-  const member = index == null ? 0 : members.indexOf(index);
+  const member = index == null ? -1 : members.indexOf(index);
   const sourceNodes = new Map(relatedGraph?.nodes.map((item) => [item.id, item]));
   const selectedIds = new Set(relatedGraph?.nodes.filter((item) => members.includes(item.first_idx)).map((item) => item.id));
   const relations = relatedGraph?.edges.filter((edge) => selectedIds.has(edge.source) !== selectedIds.has(edge.target)) ?? [];
@@ -104,15 +104,16 @@ export function Inspector({ run, node, index, select, clear, clearLabel = 'Clear
       {node.view?.summary&&<ExecutionContents node={node} locate={locate??select}/>}
       {members.length > 1 && <div className="member-control">
         <p className="muted">Continuous source interval {sourceIndex(members[0])} → {sourceIndex(members.at(-1))} · {members.length} source steps</p>
-        {expand && <button className="button small" onClick={expand}>Expand this block</button>}
-        <label htmlFor="member-step">Member step <span className="muted">{member + 1} / {members.length}</span></label>
+        {expand && <button className="button small" onClick={expand}>{node.view?.kind==='section' ? node.view.open ? 'Collapse this section' : 'Expand this section in place' : 'Expand this block'}</button>}
+        <label htmlFor="member-step">Member step <span className="muted">{member < 0 ? '—' : member + 1} / {members.length}</span></label>
         <div>
           <button className="button small icon-button" aria-label="Previous member step" disabled={member <= 0}
             onClick={() => select(members[member - 1])}><Icon name="left" size={15} /></button>
-          <select id="member-step" value={index ?? members[0]} onChange={(event) => {
+          <select id="member-step" value={index ?? ''} onChange={(event) => {
             const value = members.find((item) => String(item) === event.target.value);
             if (value !== undefined) select(value);
           }}>
+            {index == null && <option value="" disabled>Select a source step…</option>}
             {members.map((item) => <option key={item} value={item}>Source step {sourceIndex(item)}</option>)}
           </select>
           <button className="button small icon-button" aria-label="Next member step" disabled={member >= members.length - 1}
@@ -151,7 +152,7 @@ export function Inspector({ run, node, index, select, clear, clearLabel = 'Clear
         })}</div>
         {relations.length > 100 && <p className="muted">Showing the first 100 relationships.</p>}
       </details>}
-      {steps && !step && <p className="panel-inset muted">This step is missing from the step file.</p>}
+      {steps && !step && <p className="panel-inset muted">{index == null ? 'Select a source member or recorded example to inspect its saved evidence.' : 'This step is missing from the step file.'}</p>}
     </>}
   </aside>;
 }

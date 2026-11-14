@@ -1,6 +1,7 @@
 import { memo, type ReactNode } from 'react';
 import { nodeHeight, nodeWidth, nodeSize, type Box, type Point } from './layout';
 import { executionRoutes } from './edgeRouting';
+import { executionBoxes, type SectionBox } from './executionGeometry';
 import {
   categories, edgeTypes, capitalize, phaseColor, sourceIndex,
   type Category, type EdgeType, type Graph, type GraphEdge, type GraphNode, type Phase,
@@ -93,7 +94,7 @@ interface DrawnEdge {
 }
 
 interface DrawnNode { node: GraphNode; point: Point; bounds: Box }
-export interface Drawing { edges: DrawnEdge[]; nodes: DrawnNode[]; bounds: Box }
+export interface Drawing { edges: DrawnEdge[]; nodes: DrawnNode[]; bounds: Box; groups: SectionBox[] }
 
 function edgeCurve(edge: GraphEdge, from: Point, to: Point, parallel: number, total: number, reverse: boolean): DrawnEdge {
   if (edge.source === edge.target) {
@@ -128,7 +129,8 @@ export function makeDrawing(graph: Graph, positions: Map<string, Point>, executi
     if (group) group.push(edge);
     else groups.set(key, [edge]);
   }
-  const edges: DrawnEdge[] = execution ? executionRoutes(graph,positions,nodeWidth,nodeHeight,new Map(graph.nodes.map(node=>[node.id,nodeSize(node)]))) : [];
+  const sections=execution?executionBoxes(graph,positions,nodeSize):[];
+  const edges: DrawnEdge[] = execution ? executionRoutes(graph,positions,nodeWidth,nodeHeight,new Map(graph.nodes.map(node=>[node.id,nodeSize(node)])),sections.map(s=>s.bounds)) : [];
   for (const group of execution ? [] : groups.values()) {
     const { source, target } = group[0];
     const from = positions.get(source);
@@ -147,7 +149,8 @@ export function makeDrawing(graph: Graph, positions: Map<string, Point>, executi
   const first = nodes[0]?.bounds ?? { x: 0, y: 0, width: 1, height: 1 };
   let bounds = nodes.reduce((box, node) => joinBoxes(box, node.bounds), first);
   bounds = edges.reduce((box, edge) => joinBoxes(box, edge.bounds), bounds);
-  return { nodes, edges, bounds: { x: bounds.x - 22, y: bounds.y - 22, width: bounds.width + 44, height: bounds.height + 44 } };
+  bounds = sections.reduce((box, section) => joinBoxes(box, section.bounds), bounds);
+  return { nodes, edges, groups:sections, bounds: { x: bounds.x - 22, y: bounds.y - 22, width: bounds.width + 44, height: bounds.height + 44 } };
 }
 
 function overlaps(a: Box, b: Box) {
@@ -180,7 +183,7 @@ export interface DrawingOptions {
 export function nodeDescription(node: GraphNode, phases: Map<string, Phase>) {
   return [node.label || node.tool || 'Message', phases.get(node.phase)?.label ?? node.phase, capitalize(node.category),
     `${node.count} ${node.count === 1 ? 'step' : 'steps'}`, `first source step ${sourceIndex(node.first_idx)}`,
-    node.view && (node.view.kind === 'section' ? `source section · ${node.view.errors} errors · ${node.view.summary?.description} · ${node.view.summary?.focus} · select to drill down` : `${node.view.kind} group · ${node.view.open ? 'expanded' : 'collapsed'} · select to toggle`), node.error && 'Contains error'].filter(Boolean).join(' · ');
+    node.view && (node.view.kind === 'section' ? `source section · ${node.view.errors} errors · ${node.view.summary?.description} · ${node.view.summary?.focus} · select to expand in place` : `${node.view.kind} group · ${node.view.open ? 'expanded' : 'collapsed'} · select to toggle`), node.error && 'Contains error'].filter(Boolean).join(' · ');
 }
 
 export const GraphDrawing = memo(function GraphDrawing({
@@ -213,6 +216,7 @@ export const GraphDrawing = memo(function GraphDrawing({
     return <g key={node.id} transform={`translate(${point.x} ${point.y})`} className={onNode ? 'graph-node' : undefined}
       data-node={onNode ? '' : undefined} data-node-id={node.id} data-source-index={node.first_idx} data-signature={node.signature} role={onNode ? 'button' : undefined} tabIndex={onNode ? 0 : undefined}
       aria-label={onNode ? description : undefined} aria-pressed={onNode ? active : undefined}
+      aria-expanded={onNode&&node.view?.kind==='section'?false:undefined}
       onClick={onNode ? () => onNode(node) : undefined}
       onKeyDown={onNode ? (event) => {
         if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onNode(node); }
@@ -260,6 +264,21 @@ export const GraphDrawing = memo(function GraphDrawing({
       markerWidth={7} markerHeight={7} orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0 0 8 4 0 8Z" fill={palette.edges[type]} />
     </marker>)}</defs>
+    {drawing.groups.map(({node,bounds})=><g key={node.id} data-expanded-section={node.id}>
+      <rect {...bounds} rx={8} pointerEvents="none" fill={palette.surface} fillOpacity={.65} stroke={selected===node.id?palette.selected:palette.muted} strokeOpacity={selected===node.id?1:.4}/>
+      <g className="graph-section-toggle" data-section-toggle={node.id} role={onNode?'button':undefined} tabIndex={onNode?0:undefined}
+        aria-label={onNode?`Collapse ${node.label} section · ${node.count} source steps`:undefined} aria-expanded={onNode?true:undefined}
+        onClick={onNode?()=>onNode(node):undefined}
+        onKeyDown={onNode?event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();onNode(node);}}:undefined}
+        onFocus={onTip?()=>onTip(`Expanded ${node.label} · ${node.count} source steps · click header to collapse`):undefined}
+        onBlur={onTip?()=>onTip(''):undefined}>
+        <title>{node.label} · {node.count} source steps · click header to collapse</title>
+        <rect x={bounds.x} y={bounds.y} width={bounds.width} height={28} rx={6} fill={palette.node}/>
+        <path d={`M${bounds.x+11} ${bounds.y+11}l4 5 4-5`} stroke={palette.selected} strokeWidth={1.5} fill="none"/>
+        <text x={bounds.x+27} y={bounds.y+18} fontSize={12} fontWeight={600} fill={palette.text}>{shortened(node.label,Math.max(12,Math.floor((Math.min(bounds.width,620)-170)/6.5)))}</text>
+        <text x={bounds.x+Math.min(bounds.width,620)-12} y={bounds.y+18} textAnchor="end" fontSize={10.5} fill={palette.selected}>{node.count} steps · Collapse</text>
+      </g>
+    </g>)}
     {drawing.edges.map(({ edge, path, bounds, label }) => enabled.has(edge.type) && inView(bounds) &&
       <g key={edge.id} data-edge-type={edge.type} data-source={edge.source} data-target={edge.target} opacity={unreached(edge.source) || unreached(edge.target) ? 0.16 : 0.82}>
         <title>{`${capitalize(edge.type)} · ${edge.count}`}</title>

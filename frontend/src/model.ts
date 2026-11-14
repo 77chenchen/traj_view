@@ -102,6 +102,8 @@ export interface GraphEdge {
 export interface Graph {
   nodes: GraphNode[];
   edges: GraphEdge[];
+  // Frontend-only enclosures. They are not execution nodes or v1 records.
+  groups?: { node: GraphNode; members: string[]; parent?: string; depth: number }[];
 }
 
 export interface RunGraphs {

@@ -1,5 +1,7 @@
 # Content-based execution Graph · 2026-11-14
 
+This report records the content-grouping revision. Its replacement-scope navigation and screenshots are historical: the [inline expansion follow-up](inline-graph.md) keeps the same content tree and summaries but expands/collapses sections inside one canvas. Use that report for current interactions, measurements and screenshots.
+
 The prior overview divided a trace into four equal source ranges. Its headings expressed position rather than execution content. This revision replaces that partition with an ordered change-point tree and puts an evidence summary on every merged node. It preserves the existing light Graph workspace and parent-navigation correction. The earlier [long-graph report](long-graph.md) is historical.
 
 ## Direction and reading order

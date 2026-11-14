@@ -31,15 +31,13 @@
 .execution-navigation { padding:10px 14px 9px; border-bottom:1px solid var(--line); }
 .execution-path { display:flex; align-items:center; gap:5px; min-height:26px; flex-wrap:wrap; }
 .execution-path .button { font-size:11px; padding:3px 6px; min-height:25px; }
-.execution-path .button[aria-current] { color:var(--text); background:var(--surface-2); }
 .execution-back { flex:none; gap:5px; }
-.execution-breadcrumbs { flex:1; min-width:120px; overflow-x:auto; }
-.execution-breadcrumbs ol { display:flex; align-items:center; gap:2px; margin:0; padding:0; list-style:none; width:max-content; }
-.execution-breadcrumbs li { display:flex; align-items:center; gap:2px; min-width:0; }
-.execution-breadcrumbs .button { white-space:nowrap; }
-.execution-breadcrumbs li > svg { flex:none; color:var(--muted); }
-.execution-breadcrumbs .button[aria-current] { font-weight:650; }
 .execution-path > span { margin-left:auto; font:11px ui-monospace,monospace; color:var(--muted); }
+.execution-path > .execution-expanded-count { margin-left:4px; margin-right:auto; font-size:11px; font-family:inherit; }
+.graph-section-toggle { cursor:pointer; }
+.graph-section-toggle:hover > rect { fill:var(--accent-soft); }
+.graph-section-toggle:focus-visible { outline:none; }
+.graph-section-toggle:focus-visible > rect { stroke:var(--accent); stroke-width:2px; }
 .execution-overview-strip { display:flex; height:20px; gap:1px; padding-block:4px; margin-block:5px; }
 .execution-overview-strip > button { flex:1; min-width:0; padding:0; border:0; background:var(--line-strong); border-radius:1px; }
 .execution-overview-strip > button:hover,.execution-overview-strip > button.in-scope { background:var(--accent-line); }
@@ -179,7 +177,6 @@
   .graph-workspace .graph-panel { border:0; border-radius:0; }
   .trace-sidebar { border:0; border-left:1px solid var(--line); border-radius:0; }
   .graph-panel > .graph-frame { min-height:320px; }
-  .graph-panel:has(.execution-navigation .execution-contents[open]) > .graph-frame { min-height:220px; }
   .graph-toolbar { padding:10px 12px; border-bottom:1px solid var(--line); }
   .graph-toolbar .button,.graph-toolbar .segments button { font-size:11px; min-height:29px; padding:5px 8px; }
   .graph-toolbar .graph-toolbar-actions { flex:none; }

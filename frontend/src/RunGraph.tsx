@@ -4,8 +4,7 @@ import { filterGraph, foldGraph } from './graphData';
 import { type Theme } from './graphDrawing';
 import { EdgeControls, GraphView, useEdgeTypes } from './GraphView';
 import { hierarchyGraph } from './hierarchy';
-import { executionGraph, executionPath, executionSection, executionThreshold, type ExecutionScope } from './executionMap';
-import { ExecutionContents } from './ExecutionContents';
+import { inlineExecutionGraph, executionPath, executionSection, executionThreshold } from './executionMap';
 import { Inspector } from './Inspector';
 import { TraceOverview } from './TraceOverview';
 import { RunMetadata, StageSnapshots } from './Evidence';
@@ -87,8 +86,9 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   const [openBlocks, setOpenBlocks] = useState<ReadonlySet<string>>(new Set());
   const [hierarchy, setHierarchy] = useState(false);
   const [overview, setOverview] = useState(graphs.expanded.nodes.length >= executionThreshold);
-  const [scopePath, setScopePath] = useState<ExecutionScope[]>(() => initialIndex == null ? [] : executionPath(graphs.expanded,initialIndex));
-  const executionNavigation = useRef<HTMLDivElement>(null);
+  const [expandedSections,setExpandedSections]=useState<string[]>([]);
+  const [expansionRequest,setExpansionRequest]=useState<{id:string;open:boolean;sequence:number}>();
+  const [resetVersion,setResetVersion]=useState(0);
   const [allConnections, setAllConnections] = useState(graphs.expanded.nodes.length < executionThreshold);
   const [locateRequest, setLocateRequest] = useState(0);
   const [navigatorFocus, setNavigatorFocus] = useState(0);
@@ -105,14 +105,15 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   const folded = useMemo(() => foldGraph(graphs.expanded, openBlocks), [graphs, openBlocks]);
   const savings = graphs.expanded.nodes.length - allFolded.nodes.length;
   const hierarchyView = useMemo(() => hierarchyGraph(graphs.expanded, openGroups), [graphs, openGroups]);
-  const scope = scopePath.at(-1);
-  const executionView = useMemo(()=>executionGraph(graphs.expanded,scope,steps),[graphs,scope,steps]);
-  const scopeSection = useMemo(()=>scope?executionSection(graphs.expanded,scope,steps):undefined,[graphs,scope,steps]);
-  const initialEvidence = useRef(false);
+  const executionView = useMemo(()=>inlineExecutionGraph(graphs.expanded,new Set(expandedSections),steps),[graphs,expandedSections,steps]);
+  const sourcePath=useCallback((idx:StepIndex)=>executionPath(graphs.expanded,idx,steps).flatMap(range=>executionSection(graphs.expanded,range,steps)?.id??[]),[graphs,steps]);
+  const initialEvidence = useRef<{graphs:RunGraphs;steps:Step[]} | undefined>(undefined);
   useEffect(()=>{
     if(details.state.status!=='ready')return;
-    if(!initialEvidence.current||scope&&!scopeSection){setScopePath(index==null?[]:executionPath(graphs.expanded,index,steps));initialEvidence.current=true;}
-  },[details.state.status,graphs,index,scope,scopeSection,steps]);
+    if(initialEvidence.current?.graphs===graphs&&initialEvidence.current.steps===steps)return;
+    if(index!=null)setExpandedSections(previous=>[...new Set([...previous,...sourcePath(index)])]);
+    initialEvidence.current={graphs,steps};
+  },[details.state.status,graphs,index,steps,sourcePath]);
   const intervals = overview ? executionView : hierarchy ? hierarchyView : unfolded ? graphs.expanded : folded;
   const matches = useMemo(() => new Set(graphs.expanded.nodes.filter((node) =>
     (!phase || node.phase === phase) && (!category || node.category === category) && (!errors || node.error) && layers.has(finalIndices.has(String(node.first_idx)) ? 'results' : node.category === 'plan' || node.category === 'message' ? 'reasoning' : 'tools'))
@@ -125,7 +126,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   }, [graph]);
   const ordinals = useMemo(() => new Map(graphs.expanded.nodes.map((node, ordinal) => [node.first_idx, ordinal])), [graphs]);
   const positionsInTime = useMemo(() => new Map(graph.nodes.map((node) => [node.id, ordinals.get(node.first_idx) ?? 0])), [graph, ordinals]);
-  const selected = graph.nodes.find((node) => node.id === activeId) ?? (index == null ? undefined : byIndex.get(index));
+  const selected = graph.nodes.find((node) => node.id === activeId) ?? graph.groups?.find(group=>group.node.id===activeId)?.node ?? (index == null ? undefined : byIndex.get(index));
   const chooseIndex = useCallback((idx: StepIndex) => {
     setSidebarTab('Details');
     setActiveId(null);
@@ -134,23 +135,29 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
     setPosition((ordinals.get(idx) ?? 0) + 1);
   }, [ordinals, onInspect]);
   const selectIndex = useCallback((idx: StepIndex) => {
-    // Selecting a call already visible in this leaf must preserve the path the
-    // reader drilled through. Search/context still open other source ranges.
-    if (overview && !executionView.nodes.some(node => !node.view && node.first_idx === idx)) {
-      setScopePath(executionPath(graphs.expanded,idx,steps));
-    }
+    if (overview && !executionView.nodes.some(node => !node.view && node.first_idx === idx))
+      setExpandedSections(previous=>[...new Set([...previous,...sourcePath(idx)])]);
     chooseIndex(idx);
-  }, [overview,graphs,executionView,chooseIndex,steps]);
+  }, [overview,executionView,chooseIndex,sourcePath]);
   const locate = useCallback((idx: StepIndex) => {
     setPhase(''); setCategory(''); setErrors(false); setLayers(new Set(['reasoning','tools','results']));
     setSidebarTab('Details');
     setLocateRequest(previous=>previous+1);
     selectIndex(idx);
   }, [selectIndex]);
+  const toggleSection=useCallback((node:GraphNode)=>{
+    const open=!executionView.groups?.some(group=>group.node.id===node.id);
+    if(open)setExpandedSections(previous=>[...previous.filter(id=>id!==node.id),node.id]);
+    else{
+      const descendants=new Set(executionView.groups?.filter(group=>group.node.view!.start!>=node.view!.start!&&group.node.view!.end!<=node.view!.end!).map(group=>group.node.id));
+      setExpandedSections(previous=>previous.filter(id=>!descendants.has(id)));
+    }
+    if(index==null)setActiveId(node.id);
+    setExpansionRequest(previous=>({id:node.id,open,sequence:(previous?.sequence??0)+1}));
+  },[executionView,index]);
   const selectNode = useCallback((node: GraphNode) => {
     if (overview && node.view?.kind === 'section') {
-      setScopePath(previous=>[...previous,{start:node.view!.start!,end:node.view!.end!}]);
-      setActiveId(null);
+      toggleSection(node);
       return;
     }
     selectIndex(node.step_indices[0] ?? node.first_idx);
@@ -162,11 +169,14 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
         return next;
       });
     }
-  }, [selectIndex,overview]);
-  const connectionGraph = useMemo(()=>allConnections ? graph : {...graph,edges:graph.edges.filter(edge=>edge.type!=='dependency'||edge.source===selected?.id||edge.target===selected?.id)},[graph,allConnections,selected]);
+  }, [selectIndex,overview,toggleSection]);
+  const selectedFrontier = useMemo(()=>{
+    const indices=new Set(selected?.step_indices);
+    return new Set(graph.nodes.filter(node=>node.step_indices.some(idx=>indices.has(idx))).map(node=>node.id));
+  },[graph,selected]);
+  const connectionGraph = useMemo(()=>allConnections ? graph : {...graph,edges:graph.edges.filter(edge=>edge.type!=='dependency'||selectedFrontier.has(edge.source)||selectedFrontier.has(edge.target))},[graph,allConnections,selectedFrontier]);
   const hiddenConnections = graph.edges.length-connectionGraph.edges.length;
-  const scopeMembers = useMemo(()=>new Set(graphs.expanded.nodes.slice(scope?.start ?? 0,scope?.end).map(node=>node.id)),[graphs,scope]);
-  const outsideConnections = overview && scope ? graphs.expanded.edges.filter(edge=>scopeMembers.has(edge.source)!==scopeMembers.has(edge.target)).length : 0;
+  const lastExpanded=expandedSections.slice().reverse().flatMap(id=>executionView.groups?.find(group=>group.node.id===id)?.node??[])[0];
   const navigatorRanges = useMemo(()=>{
     const nodes=graphs.expanded.nodes, size=Math.max(1,Math.ceil(nodes.length/96));
     return Array.from({length:Math.ceil(nodes.length/size)},(_,i)=>{
@@ -214,7 +224,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
         <EdgeControls enabled={enabled} toggle={toggle} theme={theme} />
         <label className="connection-detail"><input type="checkbox" checked={allConnections} onChange={event=>setAllConnections(event.target.checked)}/>All dependency connections <small>Otherwise only connections of the selected node. Retry and sequence links stay visible.</small></label>
           <div className="segments" role="group" aria-label="DAG detail level">
-            <button aria-pressed={overview} onClick={() => { setOverview(true);setHierarchy(false);setScopePath([]);setActiveId(null); }}>Overview</button>
+            <button aria-pressed={overview} onClick={() => { setOverview(true);setHierarchy(false);setExpandedSections([]);setResetVersion(v=>v+1);setActiveId(null); }}>Overview</button>
             <button aria-pressed={!overview&&!hierarchy} onClick={() => { setOverview(false);setHierarchy(false); setActiveId(null); }}>Steps</button>
             <button aria-pressed={!overview&&hierarchy} onClick={() => { setOverview(false);setHierarchy(true); setActiveId(null); }}>Hierarchy</button>
           </div>
@@ -223,16 +233,13 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
     <button className="button small" aria-expanded={showLegend} onClick={() => setShowLegend(!showLegend)}>Legend <Icon name="info" size={13}/></button>
   </>;
   function clearSelection() {
-    const selectedIndex=index;
+    const selectedIndex=index,selectedId=selected?.id;
     setIndex(null);setActiveId(null);onInspect(null);
-    requestAnimationFrame(()=>document.querySelector<SVGGElement>(`.graph-panel svg [data-source-index="${selectedIndex}"]`)?.focus({preventScroll:true}));
+    requestAnimationFrame(()=>Array.from(document.querySelectorAll<SVGGElement>('.graph-panel svg [data-node-id],.graph-panel svg [data-section-toggle]'))
+      .find(element=>element.getAttribute('data-node-id')===selectedId||element.getAttribute('data-section-toggle')===selectedId||element.getAttribute('data-source-index')===String(selectedIndex))?.focus({preventScroll:true}));
   }
-  function returnToLevel(depth: number) {
-    setScopePath(previous => previous.slice(0, depth));
-    setActiveId(null);
-    requestAnimationFrame(() => executionNavigation.current?.querySelector<HTMLButtonElement>(
-      depth ? '.execution-back' : '.execution-root',
-    )?.focus({preventScroll:true}));
+  function collapseAll() {
+    setExpandedSections([]);setActiveId(null);setResetVersion(v=>v+1);
   }
   if(overview&&details.state.status==='loading')return <Loading>Loading execution evidence…</Loading>;
   if(overview&&details.state.status==='error')return <LoadError message={details.state.message} retry={details.retry}/>;
@@ -241,30 +248,27 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
     <div className="graph-stage-previews"><StageSnapshots steps={steps} nodes={graphs.expanded.nodes} selected={index} select={locate} kind="graph"/></div>
     <div className="graph-workspace">
       <section className="panel graph-panel" aria-label="Run process graph" onKeyDownCapture={event => {
-        if (!overview || canvasMode !== 'graph' || !scopePath.length || !event.altKey || event.key !== 'ArrowUp') return;
+        if (!overview || canvasMode !== 'graph' || !lastExpanded || !event.altKey || event.key !== 'ArrowUp') return;
         if (event.target instanceof Element && event.target.closest('input,textarea,select,[contenteditable="true"]')) return;
-        event.preventDefault();event.stopPropagation();returnToLevel(scopePath.length-1);
+        event.preventDefault();event.stopPropagation();toggleSection(lastExpanded);
       }}>
-        {overview && canvasMode==='graph' && <div ref={executionNavigation} className="execution-navigation" aria-label="Execution map navigation">
+        {overview && canvasMode==='graph' && <div className="execution-navigation" aria-label="Execution map navigation">
           <div className="execution-path">
-            <button className="button small execution-back" disabled={!scopePath.length} title={scope ? 'Back one level (Alt+↑)' : 'Already at run overview'} aria-keyshortcuts="Alt+ArrowUp" onClick={() => returnToLevel(scopePath.length-1)}><Icon name="left" size={14}/>Back one level</button>
-            <nav className="execution-breadcrumbs" aria-label="Execution map path"><ol>
-              <li><button className="button small quiet execution-root" aria-current={!scope?'location':undefined} onClick={()=>returnToLevel(0)}>Run overview</button></li>
-              {scopePath.map((range,i)=><li key={`${range.start}-${range.end}`}><Icon name="right" size={12}/><button className="button small quiet" title={`Steps ${range.start+1}–${range.end}`} aria-current={i===scopePath.length-1?'location':undefined} onClick={()=>returnToLevel(i+1)}>{executionSection(graphs.expanded,range,steps)?.label??'Recorded section'}</button></li>)}
-            </ol></nav>
-            <button className="button small quiet" disabled={!nextFailure} onClick={()=>nextFailure&&locate(nextFailure.first_idx)}>Next failure</button><span>{scope ? scope.end-scope.start : graphs.expanded.nodes.length} / {graphs.expanded.nodes.length} source steps</span>
+            <button className="button small execution-back" disabled={!lastExpanded} title="Collapse the most recently expanded section (Alt+↑)" aria-keyshortcuts="Alt+ArrowUp" onClick={() => lastExpanded&&toggleSection(lastExpanded)}><Icon name="left" size={14}/>Collapse last</button>
+            <button className="button small quiet execution-root" disabled={!executionView.groups?.length} onClick={collapseAll}>Collapse all</button>
+            <span className="execution-expanded-count">{executionView.groups?.length??0} sections expanded</span>
+            <button className="button small quiet" disabled={!nextFailure} onClick={()=>nextFailure&&locate(nextFailure.first_idx)}>Next failure</button><span>{graphs.expanded.nodes.length} / {graphs.expanded.nodes.length} source steps</span>
           </div>
-          <div className="execution-overview-strip" role="toolbar" aria-label="Source step navigator. Use arrow keys, Home or End, then Enter to locate.">{navigatorRanges.map((range,i)=><button key={range.start} tabIndex={i===navigatorFocus?0:-1} title={`Steps ${range.start+1}–${range.end} · source ${sourceIndex(range.first.first_idx)} → ${sourceIndex(range.last.first_idx)}${range.failure?' · contains failure':''}`} aria-label={`Locate ${range.failure?'failure in ':''}source range ${sourceIndex(range.first.first_idx)} to ${sourceIndex(range.last.first_idx)}`} className={`${range.failure?'failed':''} ${range.selected?'selected':''} ${scope&&range.start<scope.end&&range.end>scope.start?'in-scope':''}`} onFocus={()=>setNavigatorFocus(i)} onKeyDown={event=>{
+          <div className="execution-overview-strip" role="toolbar" aria-label="Source step navigator. Use arrow keys, Home or End, then Enter to locate.">{navigatorRanges.map((range,i)=><button key={range.start} tabIndex={i===navigatorFocus?0:-1} title={`Steps ${range.start+1}–${range.end} · source ${sourceIndex(range.first.first_idx)} → ${sourceIndex(range.last.first_idx)}${range.failure?' · contains failure':''}`} aria-label={`Locate ${range.failure?'failure in ':''}source range ${sourceIndex(range.first.first_idx)} to ${sourceIndex(range.last.first_idx)}`} className={`${range.failure?'failed':''} ${range.selected?'selected':''} ${executionView.groups?.some(group=>range.start<group.node.view!.end!&&range.end>group.node.view!.start!)?'in-scope':''}`} onFocus={()=>setNavigatorFocus(i)} onKeyDown={event=>{
             const next=event.key==='Home'?0:event.key==='End'?navigatorRanges.length-1:event.key==='ArrowRight'?Math.min(i+1,navigatorRanges.length-1):event.key==='ArrowLeft'?Math.max(i-1,0):null;
             if(next==null)return;event.preventDefault();setNavigatorFocus(next);event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('button')[next]?.focus();
           }} onClick={()=>locate((range.failure??range.first).first_idx)} />)}</div>
-          <p>Related recorded activity · click a section to open its calls · search covers all steps.{hiddenConnections>0&&` ${hiddenConnections} dependency ${hiddenConnections===1?'link':'links'} hidden; select a node or enable all in Layers.`}{outsideConnections>0&&` ${outsideConnections} links cross this range; follow them in Inspector → Context.`}</p>
-          {scopeSection&&<ExecutionContents key={scopeSection.id} node={scopeSection} locate={locate}/>}
+          <p>Expand a section in place · click its header to collapse · other sections stay on the canvas.{hiddenConnections>0&&` ${hiddenConnections} dependency ${hiddenConnections===1?'link':'links'} hidden; select a node or enable all in Layers.`}</p>
         </div>}
         {canvasMode === 'timeline' ? <><div className="graph-toolbar">{commands}</div><EventTimeline runId={run.id} steps={steps} nodes={graphs.expanded.nodes} selected={index ?? steps[0]?.idx ?? 0} select={locate}/></> : <GraphView toolbar={commands} graph={connectionGraph} phases={phases} theme={theme} enabled={enabled}
           name={`${run.id}-expanded`} onNode={selectNode} selected={selected?.id}
           execution={overview} searchGraph={overview?graphs.expanded:undefined} onLocate={overview?node=>locate(node.first_idx):undefined} locateRequest={locateRequest}
-          framingKey={`${overview?'overview':hierarchy?'hierarchy':'steps'}-${overview?scopePath.map(range=>`${range.start}:${range.end}`).join('/') : ''}`}
+          expansionRequest={overview?expansionRequest:undefined} framingKey={`${overview?'overview':hierarchy?'hierarchy':'steps'}-${resetVersion}`}
           positionsInTime={positionsInTime} reached={overview?undefined:position} legend={false} />}
         {showLegend && <div className="execution-legend" aria-label="Execution graph semantics"><span><Icon name="spark" size={15}/>Reasoning / text</span><span><Icon name="user" size={15}/>Sub-Agent · unrecorded</span><span><Icon name="terminal" size={15}/>Tool Call</span><span className="error-text"><Icon name="info" size={15}/>Failure</span><span><Icon name="retry" size={15}/>Retry · forward dashed edge</span><span><Icon name="graph" size={15}/>Merge · dependency join</span><span className="success-text"><Icon name="check" size={15}/>Completion · final record</span></div>}
         <details className="graph-activity-disclosure"><summary>Agent activity <span>Playback · {number.format(graphs.expanded.nodes.length)} source steps</span></summary>
@@ -277,7 +281,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
         <div className="graph-side-content" hidden={sidebarTab!=='Details'}><Inspector run={run} node={selected} index={index} select={selectIndex} locate={locate}
           clear={clearSelection} phases={phases}
           relatedGraph={graphs.expanded} internalEdges={internalEdges} variant="node" expand={selected && selected.count > 1 ? () => {
-            if (selected.view?.kind === 'section') {setScopePath(previous=>[...previous,{start:selected.view!.start!,end:selected.view!.end!}]);return;}
+            if (selected.view?.kind === 'section') {toggleSection(selected);return;}
             if (selected.view) { setOpenGroups((previous) => new Set([...previous, selected.id])); return; }
             const ids = graphs.expanded.nodes.filter((node) => selected.step_indices.includes(node.first_idx)).map((node) => node.id);
             setOpenBlocks((previous) => new Set([...previous, ...ids]));

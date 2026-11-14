@@ -1,0 +1,278 @@
+{
+  "chrome": "157.0.8103.52",
+  "privateEvidence": true,
+  "datasetRuns": 50,
+  "runs": [
+    {
+      "sourceSteps": 324,
+      "sourceEdges": 379,
+      "rootNodes": 3,
+      "largestSectionSteps": 265,
+      "inline": {
+        "sameCanvas": true,
+        "siblingsPreserved": true,
+        "nested": true,
+        "multipleBranches": true,
+        "headerCollapse": true,
+        "zoomAndAnchorPreserved": true,
+        "exactSourcePreserved": true,
+        "searchPreservesBranches": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "collapseAll": true,
+        "collapses": 5
+      },
+      "smaller": {
+        "sameCanvas": true,
+        "siblingsPreserved": true,
+        "nested": true,
+        "multipleBranches": true,
+        "headerCollapse": true,
+        "zoomAndAnchorPreserved": true,
+        "exactSourcePreserved": true,
+        "searchPreservesBranches": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "collapseAll": true,
+        "collapses": 5
+      },
+      "exactFailureAndLastSource": true,
+      "repeatedSearch": true,
+      "currentStateSvg": true,
+      "pageErrors": 0
+    },
+    {
+      "sourceSteps": 172,
+      "sourceEdges": 193,
+      "rootNodes": 3,
+      "largestSectionSteps": 136,
+      "inline": {
+        "sameCanvas": true,
+        "siblingsPreserved": true,
+        "nested": true,
+        "multipleBranches": true,
+        "headerCollapse": true,
+        "zoomAndAnchorPreserved": true,
+        "exactSourcePreserved": true,
+        "searchPreservesBranches": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "collapseAll": true,
+        "collapses": 4
+      },
+      "exactFailureAndLastSource": true,
+      "repeatedSearch": true,
+      "currentStateSvg": true,
+      "pageErrors": 0
+    },
+    {
+      "sourceSteps": 87,
+      "sourceEdges": 188,
+      "rootNodes": 3,
+      "largestSectionSteps": 50,
+      "inline": {
+        "sameCanvas": true,
+        "siblingsPreserved": true,
+        "nested": true,
+        "multipleBranches": true,
+        "headerCollapse": true,
+        "zoomAndAnchorPreserved": true,
+        "exactSourcePreserved": true,
+        "searchPreservesBranches": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "collapseAll": true,
+        "collapses": 6
+      },
+      "exactFailureAndLastSource": true,
+      "repeatedSearch": true,
+      "currentStateSvg": true,
+      "pageErrors": 0
+    }
+  ],
+  "captures": [
+    {
+      "file": "run-0-closed.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-0-readable-before.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-0-readable-after.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-0-largest-open.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-0-largest-nested.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-0-failure.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-0-context.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-0-inline-open.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-0-inline-nested.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-0-inline-multiple.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-0-inline-collapsed.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-0-inline-open-1280.png",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "run-0-inline-multiple-1280.png",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "run-1-closed.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-1-largest-open.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-1-largest-nested.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-1-failure.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-1-context.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-1-inline-open.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-1-inline-nested.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-1-inline-multiple.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-1-inline-collapsed.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-2-closed.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-2-largest-open.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-2-largest-nested.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-2-failure.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-2-context.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-2-inline-open.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-2-inline-nested.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-2-inline-multiple.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "run-2-inline-collapsed.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "offline-inline-open.png",
+      "width": 1586,
+      "height": 912
+    },
+    {
+      "file": "offline-inline-multiple.png",
+      "width": 1586,
+      "height": 912
+    }
+  ],
+  "offline": {
+    "httpRequests": 0,
+    "pageErrors": 0,
+    "inline": {
+      "sameCanvas": true,
+      "siblingsPreserved": true,
+      "nested": true,
+      "multipleBranches": true,
+      "headerCollapse": true,
+      "zoomAndAnchorPreserved": true,
+      "exactSourcePreserved": true,
+      "searchPreservesBranches": true,
+      "keyboard": true,
+      "focusRestored": true,
+      "collapseAll": true,
+      "collapses": 5
+    }
+  }
+}

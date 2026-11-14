@@ -186,3 +186,31 @@ export function executionGraph(source:Graph,scope?:ExecutionScope,steps?:readonl
   for(const edge of source.edges){const from=representative.get(edge.source),to=representative.get(edge.target);if(!from||!to||from===to)continue;const id=JSON.stringify([from,to,edge.type]),old=edges.get(id);if(old)old.count+=edge.count;else edges.set(id,{...edge,id:'section-edge-'+id,source:from,target:to});}
   return {nodes,edges:[...edges.values()]};
 }
+
+// Expand only the chosen intervals, keeping every sibling in the same DAG.
+// Enclosures carry containment and collapse controls, never duplicate steps.
+export function inlineExecutionGraph(source:Graph,expanded:ReadonlySet<string>,steps?:readonly Step[]):Graph{
+  const nodes:GraphNode[]=[],groups:NonNullable<Graph['groups']>=[];
+  function visit(scope?:ExecutionScope,parent?:string,depth=0):string[]{
+    const members:string[]=[];
+    for(const node of executionGraph(source,scope,steps).nodes){
+      if(node.view?.kind==='section'&&expanded.has(node.id)){
+        const children=visit({start:node.view.start!,end:node.view.end!},node.id,depth+1);
+        groups.push({node:{...node,view:{...node.view,open:true,depth}},members:children,parent,depth});
+        members.push(...children);
+      }else{nodes.push(node);members.push(node.id);}
+    }
+    return members;
+  }
+  visit();
+  const representative=new Map<string,string>(),byIndex=new Map(nodes.flatMap(node=>node.step_indices.map(idx=>[String(idx),node.id] as const)));
+  for(const node of source.nodes){const id=byIndex.get(String(node.first_idx));if(id)representative.set(node.id,id);}
+  const edges=new Map<string,GraphEdge>();
+  for(const edge of source.edges){
+    const from=representative.get(edge.source),to=representative.get(edge.target);
+    if(!from||!to||from===to)continue;
+    const id=JSON.stringify([from,to,edge.type]),old=edges.get(id);
+    if(old)old.count+=edge.count;else edges.set(id,{...edge,id:'inline-edge-'+id,source:from,target:to});
+  }
+  return {nodes,edges:[...edges.values()],groups};
+}

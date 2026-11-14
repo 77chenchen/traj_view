@@ -42,7 +42,8 @@ export function foldGraph(graph: Graph, expanded: ReadonlySet<string> = new Set(
 export function filterGraph(graph: Graph, keep: (node: GraphNode) => boolean): Graph {
   const nodes = graph.nodes.filter(keep);
   const ids = new Set(nodes.map((node) => node.id));
-  return { nodes, edges: graph.edges.filter((edge) => ids.has(edge.source) && ids.has(edge.target)) };
+  return { ...graph, nodes, edges: graph.edges.filter((edge) => ids.has(edge.source) && ids.has(edge.target)),
+    ...(graph.groups ? {groups:graph.groups.map(group=>({...group,members:group.members.filter(id=>ids.has(id))})).filter(group=>group.members.length)} : {}) };
 }
 
 export function normalizeRecordedPath(value: string) {

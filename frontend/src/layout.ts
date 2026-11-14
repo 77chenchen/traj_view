@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Graph, GraphNode } from './model';
+import { executionPositions } from './executionGeometry';
 
 export const nodeWidth = 164;
 export const nodeHeight = 48;
@@ -67,12 +68,7 @@ async function cytoscapeLayout(graph: Graph, engine: 'elk' | 'dagre'): Promise<L
 
 async function arrange(graph: Graph, execution = false): Promise<Layout> {
   if (execution) {
-    const lane = { plan:0, message:0, read:1, shell:1, tool:1, edit:2, validate:3 };
-    let x=0;
-    return { positions:new Map(graph.nodes.map((node,i)=>{
-      if(i)x+=(nodeSize(graph.nodes[i-1]).width+nodeSize(node).width)/2+48;
-      return [node.id,{x,y:node.view?.kind==='section'?0:lane[node.category]*56}];
-    })),
+    return { positions:executionPositions(graph,nodeSize),
       name:'Execution', reason:'Source order → · category spacing, not concurrency' };
   }
   if (graph.nodes.some((node) => node.view)) return {

@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import {
   edgeDashes, GraphDrawing, GraphLegend, makeDrawing, nodeDescription, palettes, type Drawing, type Theme,
 } from './graphDrawing';
 import { exportGraph } from './graphExport';
 import { signatureTarget } from './graphData';
-import { useLayout, type Box, type Point } from './layout';
+import { nodeSize, useLayout, type Box, type Point } from './layout';
 import { capitalize, edgeTypes, number, type EdgeType, type Graph, type GraphNode, type Phase } from './model';
 import { Empty, Icon, Loading } from './ui';
 import { fullScreen } from './Evidence';
@@ -40,18 +40,29 @@ export function EdgeControls({ enabled, toggle, theme }: {
 }
 
 interface Camera extends Point { scale: number }
+interface ExpansionRequest { id: string; open: boolean; sequence: number }
+type Viewport = Pick<DOMRect, 'left' | 'top' | 'width' | 'height'>;
+
+function sectionAnchor(drawing: Drawing, id: string): Point | undefined {
+  const section = drawing.groups.find(group => group.node.id === id);
+  if (section) return section.anchor;
+  const item = drawing.nodes.find(item => item.node.id === id);
+  if (!item) return;
+  const size = nodeSize(item.node);
+  return { x: item.point.x - size.width / 2, y: item.point.y - size.height / 2 };
+}
 
 function contains(box: Box, point: Point) {
   return point.x >= box.x && point.x <= box.x + box.width && point.y >= box.y && point.y <= box.y + box.height;
 }
 
 function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, signature, membership, positionsInTime,
-  reached, divergence, compact, name, layoutName, layoutReason, toolbar, searchGraph, onLocate, framingKey, locateRequest = 0 }: {
+  reached, divergence, compact, name, layoutName, layoutReason, toolbar, searchGraph, onLocate, framingKey, locateRequest = 0, expansionRequest }: {
   drawing: Drawing; phases: Map<string, Phase>; theme: Theme; enabled: ReadonlySet<EdgeType>;
   onNode: (node: GraphNode) => void; selected?: string | null; signature?: string | null;
   membership?: ReadonlyMap<string, number>; positionsInTime?: ReadonlyMap<string, number>; reached?: number;
   divergence?: ReadonlySet<string>; compact?: boolean; name: string; layoutName: string; layoutReason?: string; toolbar?: ReactNode;
-  searchGraph?: Graph; onLocate?: (node: GraphNode) => void; framingKey?: string; locateRequest?: number;
+  searchGraph?: Graph; onLocate?: (node: GraphNode) => void; framingKey?: string; locateRequest?: number; expansionRequest?: ExpansionRequest;
 }) {
   const frame = useRef<HTMLDivElement>(null);
   const canvas = useRef<SVGSVGElement>(null);
@@ -66,6 +77,10 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   const previousSignature = useRef<string | null | undefined>(null);
   const previousSelection = useRef<string | null | undefined>(null);
   const previousLocateRequest = useRef(-1);
+  const snapshot = useRef<{ drawing: Drawing; camera: Camera; viewport: Viewport } | undefined>(undefined);
+  const expansionSequence = useRef(0);
+  const pendingExpansion = useRef<{ request: ExpansionRequest; screen: Point; camera: Camera } | undefined>(undefined);
+  const expansionFocus = useRef<number | undefined>(undefined);
   const prefix = 'graph-' + useId().replace(/[^a-z0-9_-]/gi, '');
   const { bounds } = drawing;
   const fitScale = Math.min(size.width / bounds.width, size.height / bounds.height, 1.4);
@@ -94,7 +109,60 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
 
   useEffect(() => { setCamera(null); previousSelection.current = undefined; }, [framingKey]);
 
+  useLayoutEffect(() => {
+    const viewport = canvas.current?.getBoundingClientRect();
+    if (!viewport?.width || !viewport.height) return;
+    if (expansionRequest && expansionRequest.sequence !== expansionSequence.current) {
+      expansionSequence.current = expansionRequest.sequence;
+      const before = snapshot.current ?? { drawing, camera: current, viewport };
+      const anchor = sectionAnchor(before.drawing, expansionRequest.id);
+      if (anchor) {
+        const screen = {
+          x: before.viewport.left + before.viewport.width / 2 + (anchor.x - before.camera.x) * before.camera.scale,
+          y: before.viewport.top + before.viewport.height / 2 + (anchor.y - before.camera.y) * before.camera.scale,
+        };
+        pendingExpansion.current = { request: expansionRequest, screen, camera: before.camera };
+        // Freeze the resolved fit camera while the new frontier is arranged.
+        setCamera(before.camera);
+      }
+    }
+    const pending = pendingExpansion.current;
+    const ready = pending && (pending.request.open
+      ? drawing.groups.some(group => group.node.id === pending.request.id)
+      : drawing.nodes.some(item => item.node.id === pending.request.id));
+    if (pending && ready) {
+      const anchor = sectionAnchor(drawing, pending.request.id)!;
+      const next = { ...pending.camera,
+        x: anchor.x - (pending.screen.x - viewport.left - viewport.width / 2) / pending.camera.scale,
+        y: anchor.y - (pending.screen.y - viewport.top - viewport.height / 2) / pending.camera.scale };
+      // Filters/hints can change toolbar height at the compact desktop width.
+      // Match the actual SVG viewport before preserving its screen anchor.
+      if (Math.abs(size.width-viewport.width)>.1 || Math.abs(size.height-viewport.height)>.1)
+        setSize({ width: viewport.width, height: viewport.height });
+      setCamera(next);
+      pendingExpansion.current = undefined;
+      previousSelection.current = selected;
+      previousLocateRequest.current = locateRequest;
+      snapshot.current = { drawing, camera: next, viewport };
+      const attribute = pending.request.open ? 'data-section-toggle' : 'data-node-id';
+      const id = pending.request.id;
+      if (expansionFocus.current != null) cancelAnimationFrame(expansionFocus.current);
+      expansionFocus.current = requestAnimationFrame(() => {
+        const target = Array.from(canvas.current?.querySelectorAll<SVGGElement>(`[${attribute}]`) ?? [])
+          .find(item => item.getAttribute(attribute) === id);
+        target?.focus({ preventScroll: true });
+      });
+      return;
+    }
+    snapshot.current = { drawing, camera: current, viewport };
+  }, [drawing, expansionRequest, current.x, current.y, current.scale, selected, locateRequest, size.width, size.height]);
+
+  useEffect(() => () => {
+    if (expansionFocus.current != null) cancelAnimationFrame(expansionFocus.current);
+  }, []);
+
   useEffect(() => {
+    if (pendingExpansion.current) return;
     if (signature === previousSignature.current) return;
     previousSignature.current = signature;
     if (!signature) return;
@@ -103,6 +171,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   }, [drawing, focusNode, signature, view]);
 
   useEffect(() => {
+    if (pendingExpansion.current) return;
     if (selected === previousSelection.current && locateRequest === previousLocateRequest.current) return;
     const item = drawing.nodes.find(({ node }) => node.id === selected);
     // A retained drawing may not contain the requested source yet. Consume the
@@ -239,7 +308,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
           setCamera({ ...current, x: current.x + direction.x * 70 / current.scale, y: current.y + direction.y * 70 / current.scale });
         }}
         onPointerDown={(event) => {
-          if (event.button !== 0 || (event.target instanceof Element && event.target.closest('[data-node]'))) return;
+          if (event.button !== 0 || (event.target instanceof Element && event.target.closest('[data-node],[data-section-toggle]'))) return;
           event.currentTarget.setPointerCapture(event.pointerId);
           drag.current = { pointer: event.pointerId, client: { x: event.clientX, y: event.clientY }, camera: current };
         }}
@@ -269,12 +338,12 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
 }
 
 export function GraphView({ graph, phases, theme, enabled, name, selected, signature, membership, onNode,
-  positionsInTime, reached, divergence, compact, controls, toolbar, legend = true, execution = false, searchGraph, onLocate, framingKey, locateRequest }: {
+  positionsInTime, reached, divergence, compact, controls, toolbar, legend = true, execution = false, searchGraph, onLocate, framingKey, locateRequest, expansionRequest }: {
   graph: Graph; phases: Phase[]; theme: Theme; enabled: ReadonlySet<EdgeType>; name: string;
   selected?: string | null; signature?: string | null; membership?: ReadonlyMap<string, number>;
   onNode: (node: GraphNode) => void; positionsInTime?: ReadonlyMap<string, number>; reached?: number; toolbar?: ReactNode;
   divergence?: ReadonlySet<string>; compact?: boolean; controls?: ReactNode; legend?: boolean;
-  execution?: boolean; searchGraph?: Graph; onLocate?: (node: GraphNode) => void; framingKey?: string; locateRequest?: number;
+  execution?: boolean; searchGraph?: Graph; onLocate?: (node: GraphNode) => void; framingKey?: string; locateRequest?: number; expansionRequest?: ExpansionRequest;
 }) {
   const layout = useLayout(graph,execution);
   const phaseMap = useMemo(() => new Map(phases.map((phase) => [phase.id, phase])), [phases]);
@@ -291,7 +360,7 @@ export function GraphView({ graph, phases, theme, enabled, name, selected, signa
       : displayed ? <GraphViewport drawing={displayed.drawing} phases={phaseMap} theme={theme} enabled={enabled} name={name} toolbar={toolbar}
         onNode={onNode} selected={selected} signature={signature} membership={membership}
         positionsInTime={positionsInTime} reached={reached} divergence={divergence} compact={compact}
-        searchGraph={searchGraph} onLocate={onLocate} framingKey={framingKey} locateRequest={locateRequest}
+        searchGraph={searchGraph} onLocate={onLocate} framingKey={framingKey} locateRequest={locateRequest} expansionRequest={expansionRequest}
         layoutName={displayed.layout.name} layoutReason={displayed.layout.reason} />
       : <Loading>Laying out graph…</Loading>}
     {legend && graph.nodes.length > 0 && <GraphLegend phases={phases} theme={theme} />}
