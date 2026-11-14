@@ -1,0 +1,19 @@
+{
+  "chrome": "157.0.8103.52",
+  "replay": true,
+  "recordedPatch": true,
+  "annotations": true,
+  "playback": true,
+  "timeline": true,
+  "sourceIndex": "9007199254740993",
+  "offline": true,
+  "httpRequests": 0,
+  "pageErrors": [],
+  "widths": [
+    1440,
+    1024,
+    768,
+    390,
+    320
+  ]
+}

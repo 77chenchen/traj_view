@@ -7,6 +7,7 @@ import { signatureTarget } from './graphData';
 import { useLayout, type Box, type Point } from './layout';
 import { capitalize, edgeTypes, number, type EdgeType, type Graph, type GraphNode, type Phase } from './model';
 import { Empty, Icon, Loading } from './ui';
+import { fullScreen } from './Evidence';
 
 export function useEdgeTypes() {
   const [enabled, setEnabled] = useState<ReadonlySet<EdgeType>>(() => new Set(edgeTypes));
@@ -45,11 +46,11 @@ function contains(box: Box, point: Point) {
 }
 
 function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, signature, membership, positionsInTime,
-  reached, compact, name, layoutName, layoutReason }: {
+  reached, divergence, compact, name, layoutName, layoutReason, toolbar }: {
   drawing: Drawing; phases: Map<string, Phase>; theme: Theme; enabled: ReadonlySet<EdgeType>;
   onNode: (node: GraphNode) => void; selected?: string | null; signature?: string | null;
   membership?: ReadonlyMap<string, number>; positionsInTime?: ReadonlyMap<string, number>; reached?: number;
-  compact?: boolean; name: string; layoutName: string; layoutReason?: string;
+  divergence?: ReadonlySet<string>; compact?: boolean; name: string; layoutName: string; layoutReason?: string; toolbar?: ReactNode;
 }) {
   const frame = useRef<HTMLDivElement>(null);
   const canvas = useRef<SVGSVGElement>(null);
@@ -62,6 +63,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   const [saving, setSaving] = useState(false);
   const [exportError, setExportError] = useState('');
   const previousSignature = useRef<string | null | undefined>(null);
+  const previousSelection = useRef<string | null | undefined>(null);
   const prefix = 'graph-' + useId().replace(/[^a-z0-9_-]/gi, '');
   const { bounds } = drawing;
   const fitScale = Math.min(size.width / bounds.width, size.height / bounds.height, 1.4);
@@ -94,6 +96,13 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   }, [drawing, focusNode, signature, view]);
 
   useEffect(() => {
+    if (selected === previousSelection.current) return;
+    previousSelection.current = selected;
+    const item = drawing.nodes.find(({ node }) => node.id === selected);
+    if (item) focusNode(item.point);
+  }, [drawing, focusNode, selected]);
+
+  useEffect(() => {
     if (!frame.current) return;
     const observer = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect;
@@ -102,6 +111,15 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
     observer.observe(frame.current);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    // Expanded hierarchy levels must be visible after a group changes.
+    // Source-step/live graphs retain their camera across data refreshes.
+    if (drawing.nodes.some(item => item.node.view || item.node.depth != null)) {
+      setCamera({ x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2,
+        scale: Math.min(size.width / bounds.width, size.height / bounds.height, 1.4) });
+    }
+  }, [drawing, bounds.x, bounds.y, bounds.width, bounds.height, size.width, size.height]);
 
   const minZoom = Math.min(fitScale, .2);
   useEffect(() => {
@@ -125,7 +143,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
 
   const searchIndex = useMemo(() => drawing.nodes.map((item) => ({
     item,
-    haystack: `${item.node.label} ${item.node.tool ?? ''} ${signatureTarget(item.node.signature)} ${item.node.signature} ${item.node.phase} #${item.node.first_idx}`.toLowerCase(),
+    haystack: `${item.node.label} ${item.node.tool ?? ''} ${signatureTarget(item.node.signature)} ${item.node.signature} ${item.node.phase} #${item.node.step_indices.join(' #')}`.toLowerCase(),
   })), [drawing]);
   const query = search.trim().toLowerCase();
   const found = query ? searchIndex.filter(({ haystack }) => haystack.includes(query)) : [];
@@ -144,7 +162,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
     setExportError('');
     setSaving(true);
     try {
-      await exportGraph(format, name, { drawing, phases, theme, enabled, selected, signature, membership, positionsInTime, reached });
+      await exportGraph(format, name, { drawing, phases, theme, enabled, selected, signature, membership, positionsInTime, reached, divergence });
     } catch (error) {
       setExportError(error instanceof Error ? error.message : 'Graph export failed.');
     } finally {
@@ -154,6 +172,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
 
   return <>
     <div className="graph-toolbar">
+      {toolbar}
       <div className="node-search" onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setSearchOpen(false);
       }}>
@@ -177,12 +196,6 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
         </div>
       </div>
       <div className="graph-toolbar-actions">
-        <button className="button small icon-button" aria-label="Zoom out" title="Zoom out" onClick={() => zoom(1 / 1.3)}>
-          <Icon name="minus" size={16} /></button>
-        <button className="button small icon-button" aria-label="Zoom in" title="Zoom in" onClick={() => zoom(1.3)}>
-          <Icon name="plus" size={16} /></button>
-        <button className="button small icon-button" aria-label="Fit graph" title="Fit graph" onClick={() => setCamera(fit)}>
-          <Icon name="fit" size={16} /></button>
         <div className="export-buttons">
           <button className="button small" aria-label={`Download PNG of ${name}`} disabled={saving}
             onClick={() => void save('png')}>PNG</button>
@@ -193,6 +206,14 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
     </div>
     {exportError && <p className="inline-status error-text" role="alert">{exportError}</p>}
     <div ref={frame} className={`graph-frame ${compact ? 'compact' : ''}`}>
+      <div className="canvas-controls">        <button className="button small icon-button" aria-label="Zoom out" title="Zoom out" onClick={() => zoom(1 / 1.3)}>
+          <Icon name="minus" size={16} /></button>
+        <button className="button small icon-button" aria-label="Zoom in" title="Zoom in" onClick={() => zoom(1.3)}>
+          <Icon name="plus" size={16} /></button>
+        <button className="button small icon-button" aria-label="Fit graph" title="Fit graph" onClick={() => setCamera(fit)}>
+          <Icon name="fit" size={16} /></button>
+        <button className="button small icon-button" aria-label="Fullscreen graph" title="Fullscreen graph" onClick={() => fullScreen(frame.current?.parentElement ?? null)}><Icon name="fit" size={16}/></button>
+<button className="button small icon-button" aria-label="Locate selected graph node" title="Locate selected node" onClick={() => {const node=drawing.nodes.find(n=>n.node.id===selected) ?? drawing.nodes[0];if(node)setCamera({...node.point,scale:Math.max(current.scale,.9)});}}><Icon name="layers" size={16}/></button></div>
       <svg ref={canvas} viewBox={`${view.x} ${view.y} ${view.width} ${view.height}`} tabIndex={0}
         role="group" aria-label={`Process graph for ${name}`} aria-describedby={`${prefix}-help`}
         onKeyDown={(event) => {
@@ -221,7 +242,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
         }}
         onLostPointerCapture={() => { drag.current = null; }}>
         <GraphDrawing drawing={drawing} phases={phases} theme={theme} enabled={enabled} selected={selected}
-          signature={signature} membership={membership} positionsInTime={positionsInTime} reached={reached} prefix={prefix}
+          signature={signature} membership={membership} positionsInTime={positionsInTime} reached={reached} divergence={divergence} prefix={prefix}
           clip={drawing.nodes.length > 200 ? view : undefined} labels={current.scale >= .28}
           onNode={onNode} onFocusNode={focusNode} onTip={setTip} />
       </svg>
@@ -236,22 +257,28 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
 }
 
 export function GraphView({ graph, phases, theme, enabled, name, selected, signature, membership, onNode,
-  positionsInTime, reached, compact, controls, legend = true }: {
+  positionsInTime, reached, divergence, compact, controls, toolbar, legend = true }: {
   graph: Graph; phases: Phase[]; theme: Theme; enabled: ReadonlySet<EdgeType>; name: string;
   selected?: string | null; signature?: string | null; membership?: ReadonlyMap<string, number>;
-  onNode: (node: GraphNode) => void; positionsInTime?: ReadonlyMap<string, number>; reached?: number;
-  compact?: boolean; controls?: ReactNode; legend?: boolean;
+  onNode: (node: GraphNode) => void; positionsInTime?: ReadonlyMap<string, number>; reached?: number; toolbar?: ReactNode;
+  divergence?: ReadonlySet<string>; compact?: boolean; controls?: ReactNode; legend?: boolean;
 }) {
   const layout = useLayout(graph);
   const phaseMap = useMemo(() => new Map(phases.map((phase) => [phase.id, phase])), [phases]);
   const drawing = useMemo(() => layout && makeDrawing(graph, layout.positions), [graph, layout]);
+  const [ready, setReady] = useState<{ drawing: Drawing; layout: NonNullable<typeof layout> }>();
+  useEffect(() => {
+    if (drawing && layout) setReady({ drawing, layout });
+  }, [drawing, layout]);
+  // Keep the camera mounted while a fresh source snapshot is being arranged.
+  const displayed = drawing && layout ? { drawing, layout } : ready;
   return <>
     {controls}
-    {!graph.nodes.length ? <Empty icon="graph" title="No graph steps">This trajectory contains no canonical steps.</Empty>
-      : drawing && layout ? <GraphViewport drawing={drawing} phases={phaseMap} theme={theme} enabled={enabled} name={name}
+    {!graph.nodes.length ? <>{toolbar && <div className="graph-toolbar">{toolbar}</div>}<Empty icon="graph" title="No graph steps">No source steps match the current layers and filters.</Empty></>
+      : displayed ? <GraphViewport drawing={displayed.drawing} phases={phaseMap} theme={theme} enabled={enabled} name={name} toolbar={toolbar}
         onNode={onNode} selected={selected} signature={signature} membership={membership}
-        positionsInTime={positionsInTime} reached={reached} compact={compact}
-        layoutName={layout.name} layoutReason={layout.reason} />
+        positionsInTime={positionsInTime} reached={reached} divergence={divergence} compact={compact}
+        layoutName={displayed.layout.name} layoutReason={displayed.layout.reason} />
       : <Loading>Laying out graph…</Loading>}
     {legend && graph.nodes.length > 0 && <GraphLegend phases={phases} theme={theme} />}
   </>;

@@ -1,0 +1,16 @@
+{
+  "kind": "screenshots and automated results",
+  "source": "Local TrajViz Chrome verification on synthetic fixtures only",
+  "images": {
+    "replay.png": "test-results/dashboard-delivery/dashboard-offline.png",
+    "replay-mobile.png": "test-results/e2e/dashboard-replay-mobile.png",
+    "timeline.png": "test-results/e2e/dashboard-timeline.png",
+    "compare.png": "test-results/e2e/dashboard-compare.png",
+    "graph.png": "test-results/e2e/graph-inspector.png",
+    "hierarchy-mobile.png": "test-results/dashboard-delivery/hierarchy-mobile-corrected.png",
+    "dark.png": "test-results/dashboard-delivery/dashboard-dark.png",
+    "catalog-mobile.png": "test-results/dashboard-delivery/catalog-mobile-targets.png"
+  },
+  "reference_assets_copied": false,
+  "private_logs_included": false
+}

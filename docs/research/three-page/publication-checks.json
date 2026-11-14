@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-14T05:21:16.521388+00:00",
+  "scope": "Candidate project files plus all reachable historical Git blobs before publishing the completed hierarchy revision. Ignores local logs, credentials, venv, dependencies, build and test scratch directories.",
+  "candidateFiles": 446,
+  "candidateMiB": 45.67,
+  "historicalBlobs": 387,
+  "patterns": [
+    "PEM/OpenSSH private key headers",
+    "GitHub tokens",
+    "provider secret keys",
+    "Google API keys",
+    "AWS access keys"
+  ],
+  "candidateFindings": [],
+  "historyFindings": [],
+  "sourceWhitespaceCheck": "Passed staged source diff check; excludes generated metrics.csv, embedded minified report HTML and archived raw workbench/taste-gate.txt output.",
+  "publicEvidence": "Only supplied design references and synthetic fixture screenshots; private NL2Repo raw runs remain ignored."
+}

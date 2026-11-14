@@ -1,0 +1,107 @@
+gate: checking trajviz-report.html (software); this takes a few minutes on a CPU Chrome
+gate: rounds used up; 34 FAIL open
+  FAIL hero-fill        main#main-content > div > div.stats "Runs 14 Trajectories in dataset Tasks 3 "  [1440, 390]
+       the next section shows on the first screen: it starts at 157px on a 900px screen (the hero ends at 130px)
+       fix: let the hero fill the first screen alone (min-height: 100svh, less above it): nothing of the next section on load
+  FAIL flush            div > header.page-heading > div.heading-actions > button.button "Export CSV"  [1440, 390]
+       its button sits 0px above the rule on top of div.stats
+       fix: give the section its padding at the edge where the ground changes (the closing call keeps a clear gap above the footer)
+  FAIL text-only        main#main-content > div > section.panel.run-panel "Run catalog"  [1440, 390]
+       the closing section is only text: no picture, icon, mock or effect in it
+       fix: give the section a visual: a photograph that fits, the real icons, or a UI fragment on a ground
+  FAIL button-styles    (the page)  [1440]
+       3 button styles on the page: soft, fill #1e4480, outline #355e96 x1 ("Runs"); soft, fill #ffffff, outline #c6d1e1 x3 ("Export CSV"); soft, fill #2563eb, outline #2563eb x1 ("Compare runs")
+       fix: one primary and one secondary button: one shape, one height per size, one label size
+  FAIL copy-headline    div > header.page-heading > div:nth-of-type(1) > h1 "Runs"  [1440]
+       "Runs" does not name what is sold (local agent trace analysis, local, agent, trace, from flags)
+       fix: put the category noun in the h1 (and who it is for, or where), in 2 to 8 words
+  FAIL off-grid         div.app-shell > header.app-navigation > button.brand > span.brand-mark  [1440, 390]
+       left edge at 16px, 24px off the page margin at 40px (8 elements, like div.stat-label)
+       fix: move it onto the page margin, or the column edge its section uses
+  FAIL off-grid         div > header.page-heading > div:nth-of-type(1) > h1 "Runs"  [1440]
+       left edge at 22px, 18px off the page margin at 40px (8 elements, like div.stat-label); 1 more in this section off the grid too (p at 22px)
+       fix: move it onto the page margin, or the column edge its section uses
+  FAIL field-label      section.panel.run-panel > div.filters:nth-of-type(2) > label.search-field > input  [1440]
+       a input[type=search] without a label you can see: its <label> is hidden
+       fix: put a <label for> with the field's name above it (references/system.md, Forms); a placeholder is no label
+  FAIL field-label      div.filter-buttons > details.filter:nth-of-type(3) > div.filter-menu > input  [1440]
+       a input[type=search] without a label you can see: only a placeholder ("Find condition…") names it
+       fix: put a <label for> with the field's name above it (references/system.md, Forms); a placeholder is no label
+  FAIL field-label      div.filter-buttons > details.filter:nth-of-type(4) > div.filter-menu > input  [1440]
+       a input[type=search] without a label you can see: only a placeholder ("Find outcome…") names it
+       fix: put a <label for> with the field's name above it (references/system.md, Forms); a placeholder is no label
+  FAIL field-label      tr:nth-of-type(1) > td:nth-of-type(1) > label.run-select-target > input  [1440]
+       a input[type=checkbox] without a label you can see: its <label> is hidden
+       fix: put a <label for> with the field's name above it (references/system.md, Forms); a placeholder is no label
+  FAIL field-label      tr:nth-of-type(2) > td:nth-of-type(1) > label.run-select-target > input  [1440]
+       a input[type=checkbox] without a label you can see: its <label> is hidden
+       fix: put a <label for> with the field's name above it (references/system.md, Forms); a placeholder is no label
+  FAIL field-label      tr:nth-of-type(3) > td:nth-of-type(1) > label.run-select-target > input  [1440]
+       a input[type=checkbox] without a label you can see: its <label> is hidden
+       fix: put a <label for> with the field's name above it (references/system.md, Forms); a placeholder is no label
+  FAIL focus-ring       h1:focus, main:focus  [1440]
+       "h1:focus, main:focus" in the page removes the focus outline and sets nothing in its place
+       fix: keep the kit's :focus-visible ring, or put a change of the same strength (a 2px line in --action) in the rule that removes it
+  FAIL focus-ring       .graph-node:focus  [1440]
+       ".graph-node:focus" in the page removes the focus outline and sets nothing in its place
+       fix: keep the kit's :focus-visible ring, or put a change of the same strength (a 2px line in --action) in the rule that removes it
+  FAIL focus-ring       .sankey-link:hover, .sankey-link:focus-visible  [1440]
+       ".sankey-link:hover, .sankey-link:focus-visible" in the page removes the focus outline and sets nothing in its place
+       fix: keep the kit's :focus-visible ring, or put a change of the same strength (a 2px line in --action) in the rule that removes it
+  FAIL focus-ring       .sankey-node:focus-visible  [1440]
+       ".sankey-node:focus-visible" in the page removes the focus outline and sets nothing in its place
+       fix: keep the kit's :focus-visible ring, or put a change of the same strength (a 2px line in --action) in the rule that removes it
+  FAIL focus-visible    section.panel.run-panel > div.filters:nth-of-type(2) > label.search-field > input "Search   [1440]
+       Tab stop 11, input "Search runs and steps": it shows no change when focused
+       fix: keep the kit's ring (system.css :focus-visible, 2px in --action, there at once); a control that hides itself shows on focus
+  FAIL moment-none      (the page)  [1440]
+       a software page (--type) deals no moment: every kind carries one, two on a long page (moments.md)
+       fix: deal one (moments.mjs pick --page software) and mount it in its own section
+  FAIL hero-screen      main#main-content > div "RunsFind trajectories, inspect individua"  [1440]
+       the hero ends at 1208px on a 900px screen, 308px below the fold: it ends at the fold, 1px either way (SR-1)
+       fix: make the hero exactly one screen (height: 100svh, its content fitted inside), never taller or shorter
+  FAIL section-height   main#main-content > div "RunsFind trajectories, inspect individua"  [1440]
+       the section starts at 72px, 72px below the screen grid (0 x 900px): sections start on whole screens (SR-2)
+       fix: make every section above it exactly one or two screens tall, so this one starts on a whole screen
+  FAIL one-section      main#main-content > div "RunsFind trajectories, inspect individua"  [1440]
+       a <div> sits directly in <main>: every part of <main> is a <section> (SR-4)
+       fix: put every block of <main> in a <section>, and give a band its own section instead of a ground inside one
+  FAIL one-heading      h2#run-catalog-title "Run catalog"  [1440]
+       the hero holds an h2 (1): its heading is the h1, and an h2 opens the next section (SR-5)
+       fix: give each section one h2, first in its .wrap, and the hero only its h1
+  FAIL container-edges  div#root > div.app-shell > header.app-navigation "TrajVizRunsReplayTimelineGraphCompareSan  [1440]
+       the nav's content runs 16px from the left and 16px from the right (read from its outermost blocks: no .wrap): the page's container starts at 22px; the margin is 64-120px at 1440px (one container, equal margins, 2px eithe
+       fix: use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone
+  FAIL container-edges  main#main-content > div "RunsFind trajectories, inspect individua"  [1440]
+       the content of section 1 runs 22px from the left and 22px from the right (read from its outermost blocks: no .wrap): the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)
+       fix: use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone
+  FAIL container-edges  div#root "Skip to workspaceTrajVizRunsReplayTimeli"  [1440]
+       a <div> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (SR-6)
+       fix: build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing
+  FAIL container-edges  div#root > div.app-shell > header.app-navigation > button.brand "TrajViz"  [1440]
+       "TrajViz" runs 16-106px, outside the container lines of the nav at 22-1418px: full width is for background layers and grounds only (SR-6)
+       fix: keep it inside the container lines (.wrap): full width is for background layers and grounds only
+  FAIL container-edges  div.app-shell > header.app-navigation > div.navigation-tools > button.theme-button "Dark t  [1440]
+       "Dark theme" runs 1389-1424px, outside the container lines of the nav at 22-1418px: full width is for background layers and grounds only (and 1 more like it: div.app-shell > header.app-navigation > button.brand > span.br
+       fix: keep it inside the container lines (.wrap): full width is for background layers and grounds only
+  FAIL container-edges  div > section.panel.run-panel > div.filters > label.search-field  [1440]
+       1 text block starts on a left line at x 50, 28px from the container's left: text starts on the container's left, or on one split line (x 614, 732, 850) (SR-6)
+       fix: start the text on the container's left, or on the one split line every split shares
+  FAIL container-edges  div > div.stats > div.stat:nth-of-type(1) > strong "14"  [1440]
+       5 text blocks start on a left line at x 40, 18px from the container's left: text starts on the container's left, or on one split line (x 614, 732, 850) (also "Trajectories in dataset", "Run catalog", "14 of 14 runs") (an
+       fix: start the text on the container's left, or on the one split line every split shares
+  FAIL tap-size         div#root > div.app-shell > header.app-navigation > button.brand "TrajViz"  [390, 320]
+       a 28x28px tap target: 4px from the next one ("Runs"), so a thumb lands on the wrong one
+       fix: make every link and control outside running text 44px tall on a phone: display: inline-flex; align-items: center; min-height: 44px (a footer list then needs no gap), a 44px small button, or a transparent ::before laid pa
+  FAIL off-grid         div.app-shell > header.app-navigation > nav > button.nav-button:nth-of-type(1) "Runs"  [390]
+       left edge at 41px, 19px off the page margin at 22px (4 elements, like h1)
+       fix: move it onto the page margin, or the column edge its section uses
+  FAIL off-grid         div > div.stats > div.stat:nth-of-type(1) > div.stat-label "Runs"  [390]
+       left edge at 32px, 10px off the page margin at 22px (4 elements, like button.button); 4 more in this section off the grid too (strong at 32px, small at 32px, div.stat-label at 33px, strong at 33px)
+       fix: move it onto the page margin, or the column edge its section uses
+  FAIL container        page  [1440, 390]
+       no .wrap
+       fix: put the content in one .wrap
+  18 WARN (not blocking), first: flush div > div.stats > div.stat:nth-of-type(1; flush h2#run-catalog-title "Run catalog"; copy-headline div > header.page-heading > div:nth-of-t; copy-headings h2#run-catalog-title "Run catalog"; copy-buttons div.app-shell > header.app-navigation > 
+Stop fixing: put these open FAILs and the waivers in your report, then finish.
+GATE: OPEN 34 (rounds used up)

@@ -10,14 +10,14 @@ const halfHeight = nodeHeight / 2;
 
 export const palettes = {
   light: {
-    surface: '#f8f7f5', node: '#ffffff', text: '#252337', muted: '#5e5a73',
-    selected: '#5441bd', error: '#b92d48', unique: '#7b42ab',
-    edges: { temporal: '#67617e', dependency: '#206f88', retry: '#a84921', structural: '#7446a8' },
+    surface: '#f4f7fc', node: '#ffffff', text: '#18243a', muted: '#53637b',
+    selected: '#7046d7', error: '#b92d48', unique: '#b35b09',
+    edges: { temporal: '#71809a', dependency: '#206f88', retry: '#a84921', structural: '#3778b5' },
   },
   dark: {
-    surface: '#181724', node: '#242238', text: '#f5f2ff', muted: '#c0b9d4',
-    selected: '#baaaff', error: '#ff7894', unique: '#d9a8ff',
-    edges: { temporal: '#b2aacd', dependency: '#69c8e2', retry: '#efac79', structural: '#cf9af8' },
+    surface: '#0e1425', node: '#1a2238', text: '#f0f1fb', muted: '#bac3dd',
+    selected: '#a38aff', error: '#ff8196', unique: '#f3cf73',
+    edges: { temporal: '#c1caef', dependency: '#73b8ff', retry: '#c298ff', structural: '#ac99f5' },
   },
 };
 export type Theme = keyof typeof palettes;
@@ -139,7 +139,7 @@ export function makeDrawing(graph: Graph, positions: Map<string, Point>): Drawin
   const nodes = graph.nodes.flatMap((node) => {
     const point = positions.get(node.id);
     if (!point) return [];
-    const bounds = { x: point.x - halfWidth - 6, y: point.y - halfHeight - 6, width: nodeWidth + 12, height: nodeHeight + 12 };
+    const bounds = { x: point.x - halfWidth - 6, y: point.y - halfHeight - 30, width: nodeWidth + 12, height: nodeHeight + 36 };
     return [{ node, point, bounds }];
   });
   const first = nodes[0]?.bounds ?? { x: 0, y: 0, width: 1, height: 1 };
@@ -167,16 +167,17 @@ export interface DrawingOptions {
   membership?: ReadonlyMap<string, number>;
   positionsInTime?: ReadonlyMap<string, number>;
   reached?: number;
+  divergence?: ReadonlySet<string>;
 }
 
 export function nodeDescription(node: GraphNode, phases: Map<string, Phase>) {
   return [node.label || node.tool || 'Message', phases.get(node.phase)?.label ?? node.phase, capitalize(node.category),
     `${node.count} ${node.count === 1 ? 'step' : 'steps'}`, `first source step ${sourceIndex(node.first_idx)}`,
-    node.error && 'Contains error'].filter(Boolean).join(' · ');
+    node.view && `${node.view.kind} group · ${node.view.open ? 'expanded' : 'collapsed'} · select to toggle`, node.error && 'Contains error'].filter(Boolean).join(' · ');
 }
 
 export const GraphDrawing = memo(function GraphDrawing({
-  drawing, phases, theme, enabled, selected, signature, membership, positionsInTime, reached, prefix,
+  drawing, phases, theme, enabled, selected, signature, membership, positionsInTime, reached, divergence, prefix,
   clip, labels = true, onNode, onFocusNode, onTip,
 }: DrawingOptions & {
   prefix: string; clip?: Box; labels?: boolean; onNode?: (node: GraphNode) => void;
@@ -190,17 +191,18 @@ export const GraphDrawing = memo(function GraphDrawing({
     if (!inView(bounds)) return null;
     const phase = phases.get(node.phase);
     const phaseLabel = phase?.label ?? node.phase;
-    const color = phaseColor(phase);
+    const color = theme === 'dark' ? node.error ? palette.error : node.view || node.category === 'plan' || node.category === 'message' ? '#bd9bf2' : node.category === 'validate' ? '#6bd899' : '#e9c56a' : phaseColor(phase);
     const active = selected === node.id || (signature != null && signature === node.signature);
     const unique = membership?.get(node.signature) === 1;
     const dimmed = unreached(node.id);
     const description = nodeDescription(node, phases) + (membership ?
       (unique ? ' · Unique to this run' : ` · Shared across ${membership.get(node.signature)} runs`) : '') +
-      (dimmed ? ' · Timeline has not reached this node' : '');
+      (dimmed ? ' · Timeline has not reached this node' : '') +
+      (divergence?.has(node.id) ? ' · First divergence versus baseline' : '');
     const title = shortened(node.label || node.tool || 'Message', node.count > 1 ? 15 : 20);
     const titleWidth = Math.max(0, Math.min(node.count > 1 ? 98 : 126, Array.from(title).length * 6.7));
     return <g key={node.id} transform={`translate(${point.x} ${point.y})`} className={onNode ? 'graph-node' : undefined}
-      data-node={onNode ? '' : undefined} role={onNode ? 'button' : undefined} tabIndex={onNode ? 0 : undefined}
+      data-node={onNode ? '' : undefined} data-node-id={node.id} data-source-index={node.first_idx} data-signature={node.signature} role={onNode ? 'button' : undefined} tabIndex={onNode ? 0 : undefined}
       aria-label={onNode ? description : undefined} aria-pressed={onNode ? active : undefined}
       onClick={onNode ? () => onNode(node) : undefined}
       onKeyDown={onNode ? (event) => {
@@ -208,21 +210,29 @@ export const GraphDrawing = memo(function GraphDrawing({
       } : undefined}
       onPointerEnter={onTip ? () => onTip(description) : undefined}
       onPointerLeave={onTip ? () => onTip('') : undefined}
-      onFocus={onTip ? () => { onFocusNode?.(point); onTip(description); } : undefined}
+      onFocus={onTip ? (event) => {
+        // Pointer focus must not move a node between pointerdown and click.
+        if (event.currentTarget.matches(':focus-visible')) onFocusNode?.(point);
+        onTip(description);
+      } : undefined}
       onBlur={onTip ? () => onTip('') : undefined}>
       <title>{description}</title>
       <rect x={-halfWidth - 4} y={-halfHeight - 4} width={nodeWidth + 8} height={nodeHeight + 8} rx={11}
         fill="none" stroke={palette.selected} strokeWidth={2} opacity={active ? 1 : 0} className="node-focus" />
+      {divergence?.has(node.id) && <g aria-hidden="true">
+        <path d={`M${-halfWidth} ${-halfHeight - 10}H${halfWidth}`} stroke={palette.unique} strokeWidth={3} />
+        <text x={-halfWidth} y={-halfHeight - 16} fill={palette.unique} fontSize={10}>First divergence</text>
+      </g>}
       <g opacity={dimmed ? .22 : undefined}>
         <rect x={-halfWidth} y={-halfHeight} width={nodeWidth} height={nodeHeight} rx={8} fill={palette.node}
           stroke={node.error ? palette.error : color} strokeWidth={node.error ? 3 : 1.5} />
-        <rect x={-halfWidth + 1} y={-halfHeight + 8} width={3.5} height={nodeHeight - 16} rx={1.75} fill={color} />
+        <circle cx={halfWidth - 9} cy={halfHeight - 9} r={3} fill={phaseColor(phase)} />
         <g transform="translate(-64 -5)"><Shape category={node.category} color={color} /></g>
         {unique && <circle cx={halfWidth - 5} cy={-halfHeight + 5} r={4} fill={palette.unique} />}
         {labels && <>
           <text x={-50} y={-1} fill={palette.text} fontWeight={650} fontSize={12}
             textLength={title.length > 12 ? titleWidth : undefined} lengthAdjust="spacingAndGlyphs">{title}</text>
-          <text x={-50} y={15} fill={palette.muted} fontSize={10}>{shortened(phaseLabel, 14)} · {sourceIndex(node.first_idx)}</text>
+          <text x={-50} y={15} fill={palette.muted} fontSize={10}>{shortened(`${phaseLabel} · ${sourceIndex(node.first_idx)}`, 25)}</text>
           {node.count > 1 && <text x={halfWidth - 9} y={-1} textAnchor="end" fill={palette.muted} fontSize={10}>
             ×{node.count}
           </text>}
@@ -237,7 +247,7 @@ export const GraphDrawing = memo(function GraphDrawing({
       <path d="M0 0 8 4 0 8Z" fill={palette.edges[type]} />
     </marker>)}</defs>
     {drawing.edges.map(({ edge, path, bounds, label }) => enabled.has(edge.type) && inView(bounds) &&
-      <g key={edge.id} opacity={unreached(edge.source) || unreached(edge.target) ? 0.16 : 0.82}>
+      <g key={edge.id} data-edge-type={edge.type} data-source={edge.source} data-target={edge.target} opacity={unreached(edge.source) || unreached(edge.target) ? 0.16 : 0.82}>
         <title>{`${capitalize(edge.type)} · ${edge.count}`}</title>
         <path d={path} fill="none" stroke={palette.edges[edge.type]} strokeWidth={edge.type === 'temporal' ? 1.9 : 1.6}
           strokeDasharray={edgeDashes[edge.type]} markerEnd={`url(#${marker(edge.type)})`} />

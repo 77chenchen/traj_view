@@ -1,0 +1,58 @@
+{
+  "replay": {
+    "visibleButtons": 40,
+    "stages": 108,
+    "primary": {
+      "x": 572.625,
+      "y": 335.984375,
+      "width": 644.375,
+      "height": 363.171875,
+      "top": 335.984375,
+      "right": 1217,
+      "bottom": 699.15625,
+      "left": 572.625
+    }
+  },
+  "timeline": {
+    "visibleButtons": 57,
+    "stages": 108,
+    "primary": {
+      "x": 206,
+      "y": 300.984375,
+      "width": 983.734375,
+      "height": 304,
+      "top": 300.984375,
+      "right": 1189.734375,
+      "bottom": 604.984375,
+      "left": 206
+    }
+  },
+  "graph": {
+    "visibleButtons": 52,
+    "stages": 90,
+    "primary": {
+      "x": 214,
+      "y": 478.78125,
+      "width": 981.375,
+      "height": 180,
+      "top": 478.78125,
+      "right": 1195.375,
+      "bottom": 658.78125,
+      "left": 214
+    }
+  },
+  "compare": {
+    "visibleButtons": 51,
+    "stages": 262.84375,
+    "primary": {
+      "x": 206,
+      "y": 296.984375,
+      "width": 1364,
+      "height": 608,
+      "top": 296.984375,
+      "right": 1570,
+      "bottom": 904.984375,
+      "left": 206
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{"type":"run.start","id":"role-boundaries","task_id":"synthetic-role-boundaries","agent":"synthetic","model":"qa-model","condition":"missing-roles"}
+{"type":"step","idx":11,"ts":"2026-01-02T00:00:00+00:00","thought":"Synthetic task: save the supplied note. No planning or reasoning role was recorded."}
+{"type":"step","idx":21,"ts":"2026-01-02T00:00:02+00:00","action":{"tool":"shell","command":"curl https://example.invalid/note"},"observation":{"text":"Synthetic saved failure: curl: (7) Could not connect. This command was not executed by the fixture.","error":true,"exit_code":7}}
+{"type":"step","idx":31,"ts":"2026-01-02T00:00:04+00:00","action":{"tool":"write_file","targets":["notes/example.txt"],"args":{"content":"Synthetic recorded note.\n"}},"observation":{"text":"Synthetic saved write result; no patch was recorded.","exit_code":0}}
+{"type":"step","idx":41,"ts":"2026-01-02T00:00:06+00:00","thought":"Synthetic final message. No validation or passed outcome was recorded.","tags":["final_message"]}
+{"type":"run.end","outcome":{"label":"synthetic unknown"},"final_message":"Synthetic final message. No validation or passed outcome was recorded."}

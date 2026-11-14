@@ -1,0 +1,8 @@
+{
+  "chrome": "157.0.8103.52",
+  "status": "ok",
+  "runs": 11,
+  "externalRequests": 0,
+  "pageErrors": [],
+  "source": "fixtures/input (redacted)"
+}

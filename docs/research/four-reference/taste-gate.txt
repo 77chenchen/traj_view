@@ -1,0 +1,2 @@
+gate: no build is active in /Users/wangqichen/Documents/ChatGPT/traj (no .taste-skill/build.json); begin one with: node "/Users/wangqichen/.codex/skills/taste-skill/scripts/gate.mjs" --start index.html
+GATE: OFF (no build active)

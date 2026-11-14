@@ -4,6 +4,9 @@ import { join } from 'node:path';
 
 const fixtureRuns = [
   'slug-baseline-timeout', 'slug-codex-pass', 'slug-codex-rollout', 'slug-codex-verifier',
+  'dag-baseline', 'dag-variant', 'dag-short',
+  'dashboard-baseline', 'dashboard-variant', 'dashboard-short',
+  'role-boundaries',
   'slug-empty', 'slug-messages-pass', 'slug-messages-provider', 'slug-skill-pass',
 ];
 export const renderSizes = [500, 2000];
@@ -69,7 +72,7 @@ export async function checkRunList(page, url, index, artifacts, requests) {
   await page.goto(url);
   await visible(role(page, 'heading', /^Runs$/i));
   const ids = index.runs.map((run) => run.id);
-  await checkRows(page, ids, [...fixtureRuns, ...renderSizes.map((size) => `qa-render-${size}`), foldedRun, 'qa-exact-indices']);
+  await checkRows(page, ids, [...fixtureRuns, ...renderSizes.map((size) => `qa-render-${size}`), foldedRun, 'qa-exact-indices', 'qa-zero-steps']);
   assert.ok(!requests.some((path) => /\/(runs|steps)\/|\/search\.json$/.test(path)),
     'Opening the catalog fetched graph, step, or search data before it was needed');
   await page.screenshot({ path: join(artifacts, 'runs.png'), fullPage: true });
@@ -106,8 +109,12 @@ async function inspectFirstNode(page, graph, steps) {
   await graphNode(page, node.first_idx).click();
   const inspector = role(page, 'complementary', /^Step inspector$/i);
   await visible(inspector.getByText(step.thought, { exact: true }));
+  await button(inspector, /^Error Output$/).click();
   await visible(inspector.getByText(step.observation.text, { exact: true }));
+  await button(inspector, /^Details$/).click();
+  await inspector.locator('.step-content > details > summary').filter({hasText:/^Action$/}).click();
   await visible(inspector.getByText(JSON.stringify(step.action, null, 2), { exact: true }));
+  await inspector.locator('.source-ref > summary').click();
   await visible(inspector.getByText(`${step.raw_ref.file}:${step.raw_ref.line}`, { exact: true }));
 }
 
@@ -115,14 +122,20 @@ export async function checkGraph(page, url, graph, steps, artifacts, requests) {
   await page.goto(url);
   await runButton(page, timeoutRun).click();
   await visible(page.locator(graphNodes));
-  assert.ok(!requests.some((path) => path.includes('/steps/')), 'Steps were fetched before inspection');
+  assert.ok(requests.filter(path => path.includes('/steps/')).length <= 1, 'Stage previews load only the active run step payload');
   await inspectFirstNode(page, graph, steps);
+  const canvas = role(page, 'group', `Process graph for ${timeoutRun}-expanded`);
+  const camera = await canvas.getAttribute('viewBox');
+  await canvas.focus();
+  await page.keyboard.press('ArrowRight');
+  assert.notEqual(await canvas.getAttribute('viewBox'), camera, 'Keyboard pans the DAG');
   await page.screenshot({ path: join(artifacts, 'graph-inspector.png') });
   const png = await downloadFile(page, /^Download PNG of/i);
   assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
   const svg = (await downloadFile(page, /^Download SVG of/i)).toString('utf8');
   assert.match(svg, /^<svg\b/);
   assert.match(svg, /<path\b/);
+  await page.getByLabel('Run actions', {exact:true}).click();
   const csv = (await downloadFile(page, /^Export CSV$/i)).toString('utf8');
   assert.match(csv, /slug-baseline-timeout/);
 
@@ -131,19 +144,24 @@ export async function checkGraph(page, url, graph, steps, artifacts, requests) {
   assert.ok(repeated, 'Fixture should have a repeated action');
   const [, repeatedIndex] = repeated.step_indices;
   await visible(graphNode(page, repeatedIndex));
-  await button(page, /^Aggregated$/i).click();
+  if(await page.locator('.graph-options').getAttribute('open')===null)await page.locator('.graph-options > summary').click();
+  await button(page, /^Fold repeats$/i).click();
   await graphNode(page, repeatedIndex).waitFor({ state: 'hidden' });
-  assert.match(await graphNode(page, repeated.first_idx).getAttribute('aria-label'),
-    new RegExp(`\\b${repeated.count} steps\\b`));
-  await button(page, /^Expanded$/i).click();
+  assert.match(await graphNode(page, repeated.first_idx).getAttribute('aria-label'), /2 steps/);
+  if(await page.locator('.graph-options').getAttribute('open')===null)await page.locator('.graph-options > summary').click();
+  await button(page, /^Expand all steps$/i).click();
   await visible(graphNode(page, repeatedIndex));
 
   const position = role(page, 'slider', /timeline position/i);
+  await page.locator('.graph-activity-disclosure > summary').click();
   await visible(position);
   await position.press('Home');
   assert.equal(await position.inputValue(), '0');
   await button(page, /^Play$/i).click();
-  await position.and(page.locator('[aria-valuetext^="Step "]')).waitFor({ timeout: 7000 });
+  await page.waitForFunction(() => {
+    const slider = document.querySelector('input[aria-label="Timeline position"]');
+    return slider && Number(slider.value) > 0;
+  }, null, { timeout: 12000 });
   const pause = button(page, /^Pause$/i);
   if (await pause.isVisible()) await pause.click();
   const current = await position.evaluate((slider) => ({
@@ -163,25 +181,33 @@ async function downloadFile(page, name) {
 export async function checkFolded(page, url, artifacts) {
   await page.goto(url);
   await runButton(page, foldedRun).click();
-  await visible(page.getByText(/1,960 consecutive repeat steps folded/));
+  if(await page.locator('.graph-options').getAttribute('open')===null)await page.locator('.graph-options > summary').click();
+  await visible(button(page, /^Expand all steps$/));
+  await visible(page.getByText(/^40 nodes ·/));
   await graphNode(page, 1).click();
   const inspector = role(page, 'complementary', /step inspector/i);
+  await button(inspector, /^Error Output$/).click();
   await visible(button(inspector, /show all.*characters/i));
   assert.equal(await inspector.getByText(/qa-end-of-observation/).count(), 0);
   await button(inspector, /show all.*characters/i).click();
   await visible(inspector.getByText(/qa-end-of-observation/));
   await role(inspector, 'combobox', /member step/i).selectOption('3');
   await visible(inspector.getByText('Check synthetic module 1.', { exact: true }));
+  if(await page.locator('.graph-options').getAttribute('open')===null)await page.locator('.graph-options > summary').click();
   await button(page, /^Expand all steps$/i).click();
-  await visible(page.getByText('All source steps are shown.', { exact: true }));
+  await visible(button(page, /^Fold repeats$/));
+  await visible(page.getByText(/^2,000 nodes ·/));
+  if(await page.locator('.graph-options').getAttribute('open')===null)await page.locator('.graph-options > summary').click();
   await button(page, /^Fold repeats$/i).click();
-  await visible(page.getByText(/1,960 consecutive repeat steps folded/));
+  await visible(button(page, /^Expand all steps$/));
+  await visible(page.getByText(/^40 nodes ·/));
   await page.screenshot({ path: join(artifacts, 'folded.png') });
   await page.goto(url);
   await runButton(page, 'qa-exact-indices').click();
   await graphNode(page, '9007199254740993').click();
   await visible(inspector.getByText('Check synthetic module 1.', { exact: true }));
-  await button(page, /^Aggregated$/i).click();
+  if(await page.locator('.graph-options').getAttribute('open')===null)await page.locator('.graph-options > summary').click();
+  await button(page, /^Fold repeats$/i).click();
   await role(inspector, 'combobox', /member step/i).selectOption('9007199254740992');
   await visible(inspector.getByText('Check synthetic module 0.', { exact: true }));
 
@@ -214,6 +240,7 @@ export async function checkCompare(page, url, artifacts) {
   await selection(page, 'slug-codex-pass').check();
   await button(page, /^Compare runs$/i).click();
   await visible(role(page, 'heading', /compar/i));
+  await button(page, /^Run DAGs$/).click();
   await visible(page.getByText('swe-slug-019 · 3 selected runs', { exact: true }));
   const pairs = page.getByRole('table').filter({ hasText: /Jaccard|divergence/i }).first();
   await visible(pairs);
@@ -271,21 +298,20 @@ export async function checkSankey(page, url, index, artifacts) {
 
 export async function checkTheme(page, url, artifacts) {
   await page.goto(url);
-  const toggle = button(page, /theme|light mode|dark mode|switch to (light|dark)/i).first();
-  await visible(toggle);
-  const theme = () => {
-    const html = document.documentElement;
-    return [document.querySelector('[data-theme]')?.getAttribute('data-theme'),
-      getComputedStyle(html).colorScheme, getComputedStyle(document.body).backgroundColor]
-      .join('|');
-  };
-  const original = await page.evaluate(theme);
-  await toggle.click();
-  const changed = await page.evaluate(theme);
-  assert.notEqual(changed, original);
+  await page.getByLabel('Local preferences',{exact:true}).click();
+  await page.getByRole('button',{name:'Dark theme',exact:true}).click();
+  assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
   await page.screenshot({ path: join(artifacts, 'theme-toggled.png') });
-  await toggle.click();
-  assert.equal(await page.evaluate(theme), original);
+  await page.getByRole('button',{name:'Light theme',exact:true}).click();
+  assert.equal(await page.locator('html').getAttribute('data-theme'),'light');
+  await page.keyboard.press('Escape');
+  await runButton(page, timeoutRun).click();
+  await visible(page.locator(graphNodes));
+  await page.getByLabel('Local preferences',{exact:true}).click();
+  await page.getByRole('button',{name:'Dark theme',exact:true}).click();
+  await page.screenshot({ path: join(artifacts, 'dag-dark.png') });
+  await page.getByRole('button',{name:'Light theme',exact:true}).click();
+  await page.keyboard.press('Escape');
 }
 
 export async function checkOffline(page, fileUrl, index, graph, steps, artifacts) {
@@ -308,6 +334,11 @@ export async function checkOffline(page, fileUrl, index, graph, steps, artifacts
   await inspectFirstNode(page, graph, steps);
   assert.deepEqual(external, [], 'Portable report requested resources outside its HTML file');
   await page.screenshot({ path: join(artifacts, 'offline.png') });
+  await checkDag(page, fileUrl, artifacts);
+  await page.screenshot({ path: join(artifacts, 'offline-dag.png') });
+  await checkDagCompare(page, fileUrl, artifacts);
+  await page.screenshot({ path: join(artifacts, 'offline-compare.png'), fullPage: true });
+  assert.deepEqual(external, [], 'Offline DAG, files, comparison and Inspector made zero external requests');
 }
 
 export async function timeFirstGraph(page, url, size, artifacts, timeout) {
@@ -343,5 +374,123 @@ export async function timeFirstGraph(page, url, size, artifacts, timeout) {
   if (size === 500) assert.ok(ms < 3000, '500-node first graph paint exceeded 3 s');
   await visible(page.getByText(new RegExp(`^${size.toLocaleString('en-US')} nodes ·`)));
   await page.screenshot({ path: join(artifacts, `first-render-${size}.png`) });
+  if (size === 2000) {
+    await button(page, /^Zoom in$/).click();
+    await button(page, /^Zoom out$/).click();
+    await page.locator('.graph-options > summary').click();
+    await role(page, 'combobox', 'Filter DAG tool category').selectOption('edit');
+    await visible(role(page, 'heading', 'No graph steps'));
+    if(await page.locator('.graph-options').getAttribute('open') === null) await page.locator('.graph-options > summary').click();
+  await role(page, 'combobox', 'Filter DAG tool category').selectOption('read');
+    const find = role(page, 'searchbox', `Find a node in qa-render-${size}-expanded`);
+    await find.fill('src/module-1999.py');
+    await find.press('Enter');
+    const inspector = role(page, 'complementary', /step inspector/i);
+    await visible(inspector.getByText('Check synthetic module 1999.', { exact: true }));
+    await page.locator('.graph-activity-disclosure > summary').click();
+    assert.equal(await role(page, 'slider', /timeline position/i).inputValue(), '2000');
+    await page.screenshot({ path: join(artifacts, 'dag-2000-detail.png') });
+  }
   return ms;
+}
+
+async function findSource(page, name, idx) {
+  const find = role(page, 'searchbox', `Find a node in ${name}`);
+  await find.fill(`#${idx}`);
+  await find.press('Enter');
+}
+
+async function assertSourceOrder(page, group) {
+  const points = await group.locator('[data-node]').evaluateAll((nodes) => nodes.map((node) => ({
+    idx: node.getAttribute('data-source-index'),
+    x: node.transform.baseVal.consolidate().matrix.e,
+  })));
+  for (let i = 1; i < points.length; i++) {
+    assert.ok(BigInt(points[i - 1].idx) < BigInt(points[i].idx));
+    assert.ok(points[i - 1].x < points[i].x, 'All DAG nodes move left to right');
+  }
+}
+
+export async function checkDag(page, url, artifacts) {
+  await page.goto(url);
+  await runButton(page, 'dag-baseline').click();
+  const group = role(page, 'group', 'Process graph for dag-baseline-expanded');
+  await visible(group.locator('[data-node]'));
+  await assertSourceOrder(page, group);
+  await page.locator('.graph-activity-disclosure > summary').click();
+  await page.getByRole('group',{name:'Graph side panel'}).getByRole('button',{name:'Files & activity',exact:true}).click();
+  await button(page, 'Load recorded activity').click();
+  const pathSearch = role(page, 'searchbox', 'Find recorded file path');
+  await pathSearch.fill('alpha.py');
+  const file = page.locator('.file-results details').filter({ hasText: 'src/alpha.py' });
+  await file.locator('summary').click();
+  await button(file, 'Locate src/alpha.py at source step 9007199254741007').click();
+  const inspector = role(page, 'complementary', 'Step inspector');
+  await visible(inspector.getByText('Synthetic baseline step 3.', { exact: true }));
+  assert.equal(await role(page, 'slider', 'Timeline position').inputValue(), '4');
+  await visible(inspector.locator('.step-meta > div').filter({hasText:/^Time/}).getByText('Unrecorded', {exact:true}));
+  await page.screenshot({ path: join(artifacts, 'dag-file-inspector.png'), fullPage: true });
+  if(await page.locator('.graph-options').getAttribute('open')===null)await page.locator('.graph-options > summary').click();
+  await button(page, 'Fold repeats').click();
+  await findSource(page, 'dag-baseline-expanded', 7);
+  await visible(inspector.getByText(/Continuous source interval #7 → #19/));
+  await role(inspector, 'combobox', /Member step/).selectOption('19');
+  assert.equal(await role(page, 'slider', 'Timeline position').inputValue(), '2');
+  await visible(inspector.getByText('None recorded', { exact: true }).first());
+  await button(inspector, 'Expand this block').click();
+  await visible(graphNode(group, 19));
+  if(await page.locator('.graph-options').getAttribute('open')===null)await page.locator('.graph-options > summary').click();
+  await button(page, 'Expand all steps').click();
+  if(await page.locator('.graph-options').getAttribute('open')===null)await page.locator('.graph-options > summary').click();
+  await button(page, 'Fold repeats').click();
+  await findSource(page, 'dag-baseline-expanded', '9007199254741021');
+  await inspector.locator('summary').filter({ hasText: 'Block internal edges' }).click();
+  await visible(inspector.getByText(/#9007199254741021 → #9007199254741033 · retry/));
+  if(await page.locator('.graph-options').getAttribute('open') === null) await page.locator('.graph-options > summary').click();
+  await role(page, 'combobox', 'Filter DAG tool category').selectOption('read');
+  await page.waitForFunction(() => document.querySelectorAll('[aria-label="Process graph for dag-baseline-expanded"] [data-node]').length === 2);
+  assert.equal(await group.locator('[data-node]').count(), 2, 'Nonconsecutive repeated reads stay at separate positions');
+  await assertSourceOrder(page, group);
+  await page.getByLabel('Temporal', { exact: true }).uncheck();
+  const svg = (await downloadFile(page, /^Download SVG of/i)).toString('utf8');
+  assert.equal((svg.match(/data-node-id=/g) ?? []).length, 2, 'SVG follows folded/filtered state');
+  assert.ok(!svg.includes('data-edge-type="temporal"'), 'SVG follows edge toggles');
+  const png = await downloadFile(page, /^Download PNG of/i);
+  assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
+  await page.screenshot({ path: join(artifacts, 'dag-filtered.png') });
+  await button(page, 'Reset step filters').click();
+  await page.getByLabel('Temporal', { exact: true }).check();
+  if(await page.locator('.graph-activity-disclosure').getAttribute('open')===null)await page.locator('.graph-activity-disclosure > summary').click();
+  await role(page, 'slider', 'Timeline position').press('Home');
+  await button(page, /^Play$/).click();
+  await page.waitForFunction(() => Number(document.querySelector('[aria-label="Timeline position"]').value) >= 3);
+  await button(page, /^Pause$/).click();
+  await visible(inspector.getByText('Synthetic baseline step 2.', { exact: true }));
+  // Reuse the exact source mapping after partial expansion and playback.
+  await assertSourceOrder(page, group);
+}
+
+export async function checkDagCompare(page, url, artifacts) {
+  await page.goto(url);
+  for (const id of ['dag-baseline', 'dag-variant', 'dag-short']) await selection(page, id).check();
+  await button(page, /^Compare runs$/).click();
+  await button(page, /^Run DAGs$/).click();
+  await visible(role(page, 'heading', 'Run DAGs · source order →'));
+  const articles = page.locator('.compare-graph');
+  assert.equal(await articles.count(), 3);
+  const baseline = articles.filter({ hasText: 'dag-baseline' });
+  await visible(baseline.locator('[data-node]'));
+  // Selection order is the baseline order, independent of catalog sorting.
+  await visible(page.getByText(/baseline #9007199254740993 \/ this run #8/));
+  await visible(page.getByText(/baseline #9007199254740993 \/ this run —/));
+  for (const article of await articles.all()) await assertSourceOrder(page, article);
+  await graphNode(baseline, 7).click();
+  for (const article of await articles.all()) {
+    const matching = article.locator('[data-node][aria-pressed="true"]');
+    await visible(matching);
+    assert.ok(await matching.count() >= 2, 'Repeated matching signatures keep independent nodes');
+  }
+  assert.equal(await baseline.locator('[data-node]').count(), 7);
+  assert.ok(await baseline.locator('[data-node][aria-label*="First divergence"]').count() >= 1);
+  await page.screenshot({ path: join(artifacts, 'dag-compare.png'), fullPage: true });
 }

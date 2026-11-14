@@ -1,0 +1,232 @@
+{
+  "chrome": "157.0.8103.52",
+  "local": {
+    "operationChains": [
+      "replay: failure/patch/rerun/pass, seek/speed/play",
+      "graph: layers/zoom/hierarchy/context/activity/fullscreen",
+      "timeline: scales/filters/three-way selection",
+      "compare: run selection/divergence/signature/patch/three DAGs"
+    ],
+    "sourceTruth": {
+      "completionIsNeutral": true,
+      "recordedValidationIsSuccessful": true,
+      "genericRolesQualified": true,
+      "noPatchEditQualified": true
+    },
+    "geometries": [
+      {
+        "view": "compare",
+        "w": 1586,
+        "h": 912,
+        "overflow": false
+      },
+      {
+        "view": "graph",
+        "w": 1586,
+        "h": 912,
+        "overflow": false
+      },
+      {
+        "view": "timeline",
+        "w": 1586,
+        "h": 912,
+        "overflow": false
+      },
+      {
+        "view": "replay",
+        "w": 1586,
+        "h": 912,
+        "overflow": false
+      },
+      {
+        "view": "compare",
+        "w": 1586,
+        "h": 992,
+        "overflow": false
+      },
+      {
+        "view": "graph",
+        "w": 1586,
+        "h": 992,
+        "overflow": false
+      },
+      {
+        "view": "timeline",
+        "w": 1586,
+        "h": 992,
+        "overflow": false
+      },
+      {
+        "view": "replay",
+        "w": 1586,
+        "h": 992,
+        "overflow": false
+      },
+      {
+        "view": "compare",
+        "w": 1280,
+        "h": 800,
+        "overflow": false
+      },
+      {
+        "view": "graph",
+        "w": 1280,
+        "h": 800,
+        "overflow": false
+      },
+      {
+        "view": "timeline",
+        "w": 1280,
+        "h": 800,
+        "overflow": false
+      },
+      {
+        "view": "replay",
+        "w": 1280,
+        "h": 800,
+        "overflow": false
+      },
+      {
+        "view": "compare",
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      {
+        "view": "graph",
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      {
+        "view": "timeline",
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      {
+        "view": "replay",
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      }
+    ],
+    "sourceIndex": "9007199254740993",
+    "pageErrors": []
+  },
+  "offline": {
+    "operationChains": [
+      "replay: failure/patch/rerun/pass, seek/speed/play",
+      "graph: layers/zoom/hierarchy/context/activity/fullscreen",
+      "timeline: scales/filters/three-way selection",
+      "compare: run selection/divergence/signature/patch/three DAGs"
+    ],
+    "sourceTruth": {
+      "completionIsNeutral": true,
+      "recordedValidationIsSuccessful": true,
+      "genericRolesQualified": true,
+      "noPatchEditQualified": true
+    },
+    "geometries": [
+      {
+        "view": "compare",
+        "w": 1586,
+        "h": 912,
+        "overflow": false
+      },
+      {
+        "view": "graph",
+        "w": 1586,
+        "h": 912,
+        "overflow": false
+      },
+      {
+        "view": "timeline",
+        "w": 1586,
+        "h": 912,
+        "overflow": false
+      },
+      {
+        "view": "replay",
+        "w": 1586,
+        "h": 912,
+        "overflow": false
+      },
+      {
+        "view": "compare",
+        "w": 1586,
+        "h": 992,
+        "overflow": false
+      },
+      {
+        "view": "graph",
+        "w": 1586,
+        "h": 992,
+        "overflow": false
+      },
+      {
+        "view": "timeline",
+        "w": 1586,
+        "h": 992,
+        "overflow": false
+      },
+      {
+        "view": "replay",
+        "w": 1586,
+        "h": 992,
+        "overflow": false
+      },
+      {
+        "view": "compare",
+        "w": 1280,
+        "h": 800,
+        "overflow": false
+      },
+      {
+        "view": "graph",
+        "w": 1280,
+        "h": 800,
+        "overflow": false
+      },
+      {
+        "view": "timeline",
+        "w": 1280,
+        "h": 800,
+        "overflow": false
+      },
+      {
+        "view": "replay",
+        "w": 1280,
+        "h": 800,
+        "overflow": false
+      },
+      {
+        "view": "compare",
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      {
+        "view": "graph",
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      {
+        "view": "timeline",
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      {
+        "view": "replay",
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      }
+    ],
+    "sourceIndex": "9007199254740993",
+    "httpRequests": 0,
+    "pageErrors": []
+  }
+}

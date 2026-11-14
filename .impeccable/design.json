@@ -1,0 +1,646 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-14T05:15:23.830819Z",
+  "title": "Design System: TrajViz",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Selection Purple",
+        "tonalRamp": [
+          "oklch(15.0% 0.0785 290.7)",
+          "oklch(25.0% 0.1308 290.7)",
+          "oklch(35.0% 0.1832 290.7)",
+          "oklch(45.0% 0.2093 290.7)",
+          "oklch(55.0% 0.2093 290.7)",
+          "oklch(65.0% 0.2093 290.7)",
+          "oklch(80.0% 0.1675 290.7)",
+          "oklch(95.0% 0.0419 290.7)"
+        ]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Deep Selection Purple",
+        "tonalRamp": [
+          "oklch(15.0% 0.0784 289.1)",
+          "oklch(25.0% 0.1307 289.1)",
+          "oklch(35.0% 0.1830 289.1)",
+          "oklch(45.0% 0.2092 289.1)",
+          "oklch(55.0% 0.2092 289.1)",
+          "oklch(65.0% 0.2092 289.1)",
+          "oklch(80.0% 0.1674 289.1)",
+          "oklch(95.0% 0.0418 289.1)"
+        ]
+      },
+      "on-accent": {
+        "role": "primary",
+        "displayName": "On-accent White",
+        "tonalRamp": [
+          "oklch(15.0% 0.0000 0.0)",
+          "oklch(25.0% 0.0000 0.0)",
+          "oklch(35.0% 0.0000 0.0)",
+          "oklch(45.0% 0.0000 0.0)",
+          "oklch(55.0% 0.0000 0.0)",
+          "oklch(65.0% 0.0000 0.0)",
+          "oklch(80.0% 0.0000 0.0)",
+          "oklch(95.0% 0.0000 0.0)"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "Pale Purple Wash",
+        "tonalRamp": [
+          "oklch(15.0% 0.0108 298.9)",
+          "oklch(25.0% 0.0179 298.9)",
+          "oklch(35.0% 0.0251 298.9)",
+          "oklch(45.0% 0.0287 298.9)",
+          "oklch(55.0% 0.0287 298.9)",
+          "oklch(65.0% 0.0287 298.9)",
+          "oklch(80.0% 0.0230 298.9)",
+          "oklch(95.0% 0.0057 298.9)"
+        ]
+      },
+      "accent-line": {
+        "role": "primary",
+        "displayName": "Purple Boundary",
+        "tonalRamp": [
+          "oklch(15.0% 0.0514 297.5)",
+          "oklch(25.0% 0.0856 297.5)",
+          "oklch(35.0% 0.1199 297.5)",
+          "oklch(45.0% 0.1370 297.5)",
+          "oklch(55.0% 0.1370 297.5)",
+          "oklch(65.0% 0.1370 297.5)",
+          "oklch(80.0% 0.1096 297.5)",
+          "oklch(95.0% 0.0274 297.5)"
+        ]
+      },
+      "bg": {
+        "role": "neutral",
+        "displayName": "Pale Workspace",
+        "tonalRamp": [
+          "oklch(15.0% 0.0020 275.0)",
+          "oklch(25.0% 0.0034 275.0)",
+          "oklch(35.0% 0.0047 275.0)",
+          "oklch(45.0% 0.0054 275.0)",
+          "oklch(55.0% 0.0054 275.0)",
+          "oklch(65.0% 0.0054 275.0)",
+          "oklch(80.0% 0.0043 275.0)",
+          "oklch(95.0% 0.0011 275.0)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Near-white Panel",
+        "tonalRamp": [
+          "oklch(15.0% 0.0000 0.0)",
+          "oklch(25.0% 0.0000 0.0)",
+          "oklch(35.0% 0.0000 0.0)",
+          "oklch(45.0% 0.0000 0.0)",
+          "oklch(55.0% 0.0000 0.0)",
+          "oklch(65.0% 0.0000 0.0)",
+          "oklch(80.0% 0.0000 0.0)",
+          "oklch(95.0% 0.0000 0.0)"
+        ]
+      },
+      "surface-2": {
+        "role": "neutral",
+        "displayName": "Quiet Inset",
+        "tonalRamp": [
+          "oklch(15.0% 0.0020 275.0)",
+          "oklch(25.0% 0.0034 275.0)",
+          "oklch(35.0% 0.0047 275.0)",
+          "oklch(45.0% 0.0054 275.0)",
+          "oklch(55.0% 0.0054 275.0)",
+          "oklch(65.0% 0.0054 275.0)",
+          "oklch(80.0% 0.0043 275.0)",
+          "oklch(95.0% 0.0011 275.0)"
+        ]
+      },
+      "surface-hover": {
+        "role": "neutral",
+        "displayName": "Quiet Hover",
+        "tonalRamp": [
+          "oklch(15.0% 0.0065 293.1)",
+          "oklch(25.0% 0.0109 293.1)",
+          "oklch(35.0% 0.0153 293.1)",
+          "oklch(45.0% 0.0174 293.1)",
+          "oklch(55.0% 0.0174 293.1)",
+          "oklch(65.0% 0.0174 293.1)",
+          "oklch(80.0% 0.0140 293.1)",
+          "oklch(95.0% 0.0035 293.1)"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Canvas White",
+        "tonalRamp": [
+          "oklch(15.0% 0.0010 286.4)",
+          "oklch(25.0% 0.0016 286.4)",
+          "oklch(35.0% 0.0023 286.4)",
+          "oklch(45.0% 0.0026 286.4)",
+          "oklch(55.0% 0.0026 286.4)",
+          "oklch(65.0% 0.0026 286.4)",
+          "oklch(80.0% 0.0021 286.4)",
+          "oklch(95.0% 0.0005 286.4)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Blue-gray Boundary",
+        "tonalRamp": [
+          "oklch(15.0% 0.0053 268.5)",
+          "oklch(25.0% 0.0089 268.5)",
+          "oklch(35.0% 0.0124 268.5)",
+          "oklch(45.0% 0.0142 268.5)",
+          "oklch(55.0% 0.0142 268.5)",
+          "oklch(65.0% 0.0142 268.5)",
+          "oklch(80.0% 0.0114 268.5)",
+          "oklch(95.0% 0.0028 268.5)"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Strong Blue-gray Boundary",
+        "tonalRamp": [
+          "oklch(15.0% 0.0083 265.7)",
+          "oklch(25.0% 0.0138 265.7)",
+          "oklch(35.0% 0.0193 265.7)",
+          "oklch(45.0% 0.0221 265.7)",
+          "oklch(55.0% 0.0221 265.7)",
+          "oklch(65.0% 0.0221 265.7)",
+          "oklch(80.0% 0.0177 265.7)",
+          "oklch(95.0% 0.0044 265.7)"
+        ]
+      },
+      "dot": {
+        "role": "neutral",
+        "displayName": "Canvas Dots",
+        "tonalRamp": [
+          "oklch(15.0% 0.0068 272.3)",
+          "oklch(25.0% 0.0114 272.3)",
+          "oklch(35.0% 0.0160 272.3)",
+          "oklch(45.0% 0.0183 272.3)",
+          "oklch(55.0% 0.0183 272.3)",
+          "oklch(65.0% 0.0183 272.3)",
+          "oklch(80.0% 0.0146 272.3)",
+          "oklch(95.0% 0.0037 272.3)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Dark Ink",
+        "tonalRamp": [
+          "oklch(15.0% 0.0139 266.5)",
+          "oklch(25.0% 0.0232 266.5)",
+          "oklch(35.0% 0.0325 266.5)",
+          "oklch(45.0% 0.0371 266.5)",
+          "oklch(55.0% 0.0371 266.5)",
+          "oklch(65.0% 0.0371 266.5)",
+          "oklch(80.0% 0.0297 266.5)",
+          "oklch(95.0% 0.0074 266.5)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Secondary Ink",
+        "tonalRamp": [
+          "oklch(15.0% 0.0140 265.9)",
+          "oklch(25.0% 0.0233 265.9)",
+          "oklch(35.0% 0.0326 265.9)",
+          "oklch(45.0% 0.0372 265.9)",
+          "oklch(55.0% 0.0372 265.9)",
+          "oklch(65.0% 0.0372 265.9)",
+          "oklch(80.0% 0.0298 265.9)",
+          "oklch(95.0% 0.0074 265.9)"
+        ]
+      },
+      "subtle": {
+        "role": "neutral",
+        "displayName": "Quiet Ink",
+        "tonalRamp": [
+          "oklch(15.0% 0.0131 265.1)",
+          "oklch(25.0% 0.0218 265.1)",
+          "oklch(35.0% 0.0306 265.1)",
+          "oklch(45.0% 0.0349 265.1)",
+          "oklch(55.0% 0.0349 265.1)",
+          "oklch(65.0% 0.0349 265.1)",
+          "oklch(80.0% 0.0279 265.1)",
+          "oklch(95.0% 0.0070 265.1)"
+        ]
+      },
+      "good": {
+        "role": "secondary",
+        "displayName": "Recorded Green",
+        "tonalRamp": [
+          "oklch(15.0% 0.0394 153.4)",
+          "oklch(25.0% 0.0657 153.4)",
+          "oklch(35.0% 0.0919 153.4)",
+          "oklch(45.0% 0.1051 153.4)",
+          "oklch(55.0% 0.1051 153.4)",
+          "oklch(65.0% 0.1051 153.4)",
+          "oklch(80.0% 0.0841 153.4)",
+          "oklch(95.0% 0.0210 153.4)"
+        ]
+      },
+      "good-bg": {
+        "role": "secondary",
+        "displayName": "Pale Success",
+        "tonalRamp": [
+          "oklch(15.0% 0.0074 154.9)",
+          "oklch(25.0% 0.0124 154.9)",
+          "oklch(35.0% 0.0174 154.9)",
+          "oklch(45.0% 0.0198 154.9)",
+          "oklch(55.0% 0.0198 154.9)",
+          "oklch(65.0% 0.0198 154.9)",
+          "oklch(80.0% 0.0159 154.9)",
+          "oklch(95.0% 0.0040 154.9)"
+        ]
+      },
+      "bad": {
+        "role": "secondary",
+        "displayName": "Recorded Red",
+        "tonalRamp": [
+          "oklch(15.0% 0.0632 16.2)",
+          "oklch(25.0% 0.1054 16.2)",
+          "oklch(35.0% 0.1475 16.2)",
+          "oklch(45.0% 0.1686 16.2)",
+          "oklch(55.0% 0.1686 16.2)",
+          "oklch(65.0% 0.1686 16.2)",
+          "oklch(80.0% 0.1349 16.2)",
+          "oklch(95.0% 0.0337 16.2)"
+        ]
+      },
+      "bad-bg": {
+        "role": "secondary",
+        "displayName": "Pale Failure",
+        "tonalRamp": [
+          "oklch(15.0% 0.0080 3.1)",
+          "oklch(25.0% 0.0133 3.1)",
+          "oklch(35.0% 0.0186 3.1)",
+          "oklch(45.0% 0.0213 3.1)",
+          "oklch(55.0% 0.0213 3.1)",
+          "oklch(65.0% 0.0213 3.1)",
+          "oklch(80.0% 0.0170 3.1)",
+          "oklch(95.0% 0.0043 3.1)"
+        ]
+      },
+      "agent-a": {
+        "role": "secondary",
+        "displayName": "Agent A Green",
+        "tonalRamp": [
+          "oklch(15.0% 0.0457 153.4)",
+          "oklch(25.0% 0.0762 153.4)",
+          "oklch(35.0% 0.1066 153.4)",
+          "oklch(45.0% 0.1219 153.4)",
+          "oklch(55.0% 0.1219 153.4)",
+          "oklch(65.0% 0.1219 153.4)",
+          "oklch(80.0% 0.0975 153.4)",
+          "oklch(95.0% 0.0244 153.4)"
+        ]
+      },
+      "agent-b": {
+        "role": "secondary",
+        "displayName": "Agent B Purple",
+        "tonalRamp": [
+          "oklch(15.0% 0.0720 293.4)",
+          "oklch(25.0% 0.1201 293.4)",
+          "oklch(35.0% 0.1681 293.4)",
+          "oklch(45.0% 0.1921 293.4)",
+          "oklch(55.0% 0.1921 293.4)",
+          "oklch(65.0% 0.1921 293.4)",
+          "oklch(80.0% 0.1537 293.4)",
+          "oklch(95.0% 0.0384 293.4)"
+        ]
+      },
+      "rail-active": {
+        "role": "neutral",
+        "displayName": "Selected Navigation Plate",
+        "tonalRamp": [
+          "oklch(15.0% 0.0109 301.0)",
+          "oklch(25.0% 0.0181 301.0)",
+          "oklch(35.0% 0.0254 301.0)",
+          "oklch(45.0% 0.0290 301.0)",
+          "oklch(55.0% 0.0290 301.0)",
+          "oklch(65.0% 0.0290 301.0)",
+          "oklch(80.0% 0.0232 301.0)",
+          "oklch(95.0% 0.0058 301.0)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page title."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Current evidence or comparison heading."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default desktop system text."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Base button label."
+      },
+      "navigation": {
+        "displayName": "Navigation",
+        "purpose": "Written sidebar page name."
+      },
+      "support": {
+        "displayName": "Support",
+        "purpose": "Secondary context and compact operating labels."
+      },
+      "badge": {
+        "displayName": "Badge",
+        "purpose": "Written source outcome."
+      },
+      "evidence": {
+        "displayName": "Evidence",
+        "purpose": "Recorded code in the dominant desktop Replay pane."
+      }
+    },
+    "shadows": [
+      {
+        "name": "panel-rest",
+        "value": "none",
+        "purpose": "Ordinary evidence panels and continuous workspaces."
+      },
+      {
+        "name": "popover-light",
+        "value": "0 12px 32px #30233a22, 0 2px 7px #30233a12",
+        "purpose": "Transient menus, metadata, search and help in light appearance."
+      },
+      {
+        "name": "popover-dark",
+        "value": "0 12px 32px #0f0c18a0, 0 2px 7px #100d1850",
+        "purpose": "The same transient surfaces in saved dark appearance."
+      }
+    ],
+    "motion": [
+      {
+        "name": "evidence-selection",
+        "value": "150ms ease-out",
+        "purpose": "Stage border/background and navigation background, only under prefers-reduced-motion:no-preference."
+      },
+      {
+        "name": "loading-spinner",
+        "value": "spin .7s linear infinite",
+        "purpose": "Loading feedback only."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation-duration: .01ms !important; scroll-behavior: auto !important",
+        "purpose": "Applied under prefers-reduced-motion:reduce; the no-preference transition rule does not apply."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop",
+        "value": "1370px",
+        "query": "max-width",
+        "purpose": "168px rail, 300px detail panes and 240px Replay list, within desktop widths above 1100px."
+      },
+      {
+        "name": "icon-rail",
+        "value": "1100px",
+        "query": "max-width",
+        "purpose": "Preserved compact navigation; desktop redesign begins at 1101px."
+      },
+      {
+        "name": "inspection-drawer",
+        "value": "1000px",
+        "query": "max-width",
+        "purpose": "Preserved narrow inspection behavior."
+      },
+      {
+        "name": "compact-controls",
+        "value": "760px",
+        "query": "max-width",
+        "purpose": "Preserved narrow controls."
+      },
+      {
+        "name": "evidence-stack",
+        "value": "520px",
+        "query": "max-width",
+        "purpose": "Preserved stacked evidence and 49px rail."
+      }
+    ],
+    "themes": {
+      "default": "light",
+      "persistenceKey": "trajviz-reference-theme",
+      "choices": [
+        "light",
+        "dark"
+      ],
+      "selector": ":root[data-theme=\"light\"] / :root[data-theme=\"dark\"]",
+      "source": "Default light overrides are in frontend/src/hierarchy.css; the retained dark palette is in frontend/src/workbench.css. Preferences are chosen from the avatar menu and saved in this browser."
+    },
+    "focus": {
+      "default": "2px solid var(--accent); outline-offset:3px",
+      "rail": "2px solid var(--rail-accent); outline-offset:3px",
+      "searchWrapper": "2px solid var(--accent); outline-offset:2px",
+      "graphNode": "Separate selected-color outer ring; stroke-width:3 on keyboard focus.",
+      "close": "Escape and close controls restore focus to the originating control when available."
+    },
+    "graph": {
+      "source": "frontend/src/graphDrawing.tsx",
+      "edgeDashes": {
+        "temporal": null,
+        "dependency": "7 4",
+        "retry": "2 4",
+        "structural": "9 4 2 4"
+      },
+      "edgeWidths": {
+        "temporal": 1.9,
+        "other": 1.6
+      },
+      "phaseColor": "Dataset hex color validated by phaseColor; fallback #77758e. Data encoding rather than a fixed brand scale.",
+      "categoryShapes": {
+        "shell": "rectangle",
+        "read": "circle",
+        "edit": "diamond",
+        "validate": "hexagon",
+        "plan": "triangle",
+        "tool": "rounded rectangle",
+        "message": "speech bubble"
+      },
+      "selection": "Outer ring is independent of the node phase/error stroke. Light uses the selection-purple accent; dark retains its existing renderer palette.",
+      "provenance": "Structural edges mean containment; dependency edges retain the existing file/observation heuristics."
+    },
+    "source": {
+      "code": [
+        "frontend/src/styles.css",
+        "frontend/src/workbench.css",
+        "frontend/src/density.css",
+        "frontend/src/hierarchy.css",
+        "frontend/src/main.tsx",
+        "frontend/src/Evidence.tsx",
+        "frontend/src/Replay.tsx",
+        "frontend/src/RunGraph.tsx",
+        "frontend/src/GraphView.tsx",
+        "frontend/src/Inspector.tsx",
+        "frontend/src/Compare.tsx",
+        "frontend/src/graphDrawing.tsx"
+      ],
+      "cascade": "hierarchy.css is imported last in frontend/src/main.tsx.",
+      "surfaceBrief": "docs/research/three-page-hierarchy.md",
+      "references": [
+        "docs/design-references/three-page-hierarchy/graph.png",
+        "docs/design-references/three-page-hierarchy/compare.png",
+        "docs/design-references/three-page-hierarchy/replay.png"
+      ],
+      "visualEvidence": [
+        "docs/research/three-page/graph-before.png",
+        "docs/research/three-page/graph-before-1280.png",
+        "docs/research/three-page/graph-after.png",
+        "docs/research/three-page/graph-after-1280.png",
+        "docs/research/three-page/compare-before.png",
+        "docs/research/three-page/compare-before-1280.png",
+        "docs/research/three-page/compare-after.png",
+        "docs/research/three-page/compare-after-1280.png",
+        "docs/research/three-page/replay-before.png",
+        "docs/research/three-page/replay-before-1280.png",
+        "docs/research/three-page/replay-after.png",
+        "docs/research/three-page/replay-after-1280.png"
+      ],
+      "history": [
+        "docs/research/density-surface.md",
+        "docs/research/density-verification.md",
+        "docs/research/four-reference-surface.md",
+        "docs/research/four-reference-checklist.md",
+        "docs/research/four-reference-verification.md",
+        "docs/design-references/trajectory-viewer/"
+      ],
+      "scope": "Authorized three-page desktop hierarchy merge. Light is current default; prior dark four-page records remain history. Frozen schema v1 and recorded-evidence boundaries remain binding."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Filled principal action; compact contextual variants are smaller.",
+      "html": "<div class=\"ds-preview\"><button class=\"ds-button ds-primary\">Play replay</button></div>",
+      "css": ".ds-preview{font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;font-size:13px;color:var(--text,#20283b);}.ds-preview :focus-visible{outline:2px solid var(--accent,#7046d7);outline-offset:3px;}.ds-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;min-height:36px;border:1px solid var(--line-strong,#cbd2e1);border-radius:7px;background:var(--surface,#fff);color:var(--text,#20283b);font-family:inherit;font-size:12px;font-weight:610;line-height:1.2;padding:7px 11px;cursor:pointer;}.ds-button:hover:not(:disabled){background:var(--accent-soft,#f0eaff);border-color:var(--accent-line,#a98be9);color:var(--accent,#7046d7);}.ds-button:active:not(:disabled){background:var(--accent-soft,#f0eaff);}.ds-button:disabled{opacity:.5;cursor:default;}.ds-primary{background:var(--accent,#7046d7);color:var(--on-accent,#fff);border-color:var(--accent,#7046d7);}.ds-primary:hover:not(:disabled),.ds-primary:active:not(:disabled){background:var(--accent-hover,#6036c7);border-color:var(--accent-hover,#6036c7);color:var(--on-accent,#fff);}"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Bordered export, fit and adjacent action.",
+      "html": "<div class=\"ds-preview\"><button class=\"ds-button\">Export CSV</button></div>",
+      "css": ".ds-preview{font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;font-size:13px;color:var(--text,#20283b);}.ds-preview :focus-visible{outline:2px solid var(--accent,#7046d7);outline-offset:3px;}.ds-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;min-height:36px;border:1px solid var(--line-strong,#cbd2e1);border-radius:7px;background:var(--surface,#fff);color:var(--text,#20283b);font-family:inherit;font-size:12px;font-weight:610;line-height:1.2;padding:7px 11px;cursor:pointer;}.ds-button:hover:not(:disabled){background:var(--accent-soft,#f0eaff);border-color:var(--accent-line,#a98be9);color:var(--accent,#7046d7);}.ds-button:active:not(:disabled){background:var(--accent-soft,#f0eaff);}.ds-button:disabled{opacity:.5;cursor:default;}"
+    },
+    {
+      "name": "Quiet button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Subordinate action beside source evidence.",
+      "html": "<div class=\"ds-preview\"><button class=\"ds-button ds-quiet\">Copy</button></div>",
+      "css": ".ds-preview{font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;font-size:13px;color:var(--text,#20283b);}.ds-preview :focus-visible{outline:2px solid var(--accent,#7046d7);outline-offset:3px;}.ds-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;min-height:36px;border:1px solid var(--line-strong,#cbd2e1);border-radius:7px;background:var(--surface,#fff);color:var(--text,#20283b);font-family:inherit;font-size:12px;font-weight:610;line-height:1.2;padding:7px 11px;cursor:pointer;}.ds-button:hover:not(:disabled){background:var(--accent-soft,#f0eaff);border-color:var(--accent-line,#a98be9);color:var(--accent,#7046d7);}.ds-button:active:not(:disabled){background:var(--accent-soft,#f0eaff);}.ds-button:disabled{opacity:.5;cursor:default;}.ds-quiet{color:var(--accent,#7046d7);background:transparent;border-color:transparent;}"
+    },
+    {
+      "name": "Search field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "A near-white field with a blue-gray boundary and explicit focus.",
+      "html": "<div class=\"ds-preview\"><input class=\"ds-input\" type=\"search\" aria-label=\"Search trajectory events\" placeholder=\"Search steps…\"></div>",
+      "css": ".ds-preview{font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;font-size:13px;color:var(--text,#20283b);}.ds-preview :focus-visible{outline:2px solid var(--accent,#7046d7);outline-offset:3px;}.ds-input{font:inherit;min-width:0;min-height:35px;border:1px solid var(--line-strong,#cbd2e1);border-radius:7px;background:var(--surface,#fff);color:var(--text,#20283b);padding:8px 10px;caret-color:var(--accent,#7046d7);}.ds-input::placeholder{color:var(--subtle,#687287);}.ds-input:hover{border-color:var(--accent-line,#a98be9);}.ds-input[aria-invalid=\"true\"]{border-color:var(--bad,#b53046);}.ds-input:disabled{opacity:.5;}"
+    },
+    {
+      "name": "Active sidebar navigation",
+      "kind": "nav",
+      "refersTo": "navigation-item-active",
+      "description": "A written page name and line icon on a pale purple active plate.",
+      "html": "<div class=\"ds-preview\"><nav class=\"ds-navigation\" aria-label=\"Workspace\"><button class=\"ds-nav-button\" aria-current=\"page\"><svg width=\"19\" height=\"19\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8 5l12 7-12 7V5z\"/></svg><span>Replay</span></button></nav></div>",
+      "css": ".ds-preview{font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;font-size:13px;color:var(--text,#20283b);}.ds-preview :focus-visible{outline:2px solid var(--accent,#7046d7);outline-offset:3px;}.ds-navigation{width:156px;background:var(--rail,#fff);padding:6px;}.ds-nav-button{display:flex;align-items:center;gap:14px;min-height:40px;width:100%;padding:8px 11px;border:1px solid transparent;border-radius:5px;background:none;color:var(--rail-text,#283044);font:580 13px -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;text-align:left;cursor:pointer;}.ds-nav-button:hover{background:var(--rail-hover,#f3f1fb);}.ds-nav-button[aria-current=\"page\"]{background:var(--rail-active,#eee7fc);}.ds-nav-button[aria-current=\"page\"] svg{color:var(--accent,#7046d7);}.ds-nav-button:active{background:var(--rail-active,#eee7fc);}@media(prefers-reduced-motion:no-preference){.ds-nav-button{transition:background .15s ease-out;}}"
+    },
+    {
+      "name": "Recorded outcome badge",
+      "kind": "chip",
+      "refersTo": "outcome-passed",
+      "description": "Written source outcome with a redundant dot; preview text is synthetic.",
+      "html": "<div class=\"ds-preview\"><span class=\"ds-outcome ds-passed\"><span aria-hidden=\"true\"></span>synthetic pass</span></div>",
+      "css": ".ds-preview{font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;font-size:13px;color:var(--text,#20283b);}.ds-preview :focus-visible{outline:2px solid var(--accent,#7046d7);outline-offset:3px;}.ds-outcome{display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:650;line-height:1.15;overflow-wrap:anywhere;}.ds-outcome>span{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none;}.ds-passed{color:var(--good,#247143);background:var(--good-bg,#e7f5eb);}.ds-failed{color:var(--bad,#b53046);background:var(--bad-bg,#fce9ed);}"
+    },
+    {
+      "name": "Flat evidence panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "A thin boundary and compact heading contain recorded evidence; joined panes replace the outer edge with a divider.",
+      "html": "<div class=\"ds-preview\"><section class=\"ds-panel\"><div class=\"ds-panel-head\"><h2>Node Inspector</h2></div><p class=\"ds-panel-inset\">Select a node to inspect recorded evidence.</p></section></div>",
+      "css": ".ds-preview{font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;font-size:13px;color:var(--text,#20283b);}.ds-preview :focus-visible{outline:2px solid var(--accent,#7046d7);outline-offset:3px;}.ds-panel{min-width:0;border:1px solid var(--line,#e0e4ee);border-radius:8px;background:var(--surface,#fff);box-shadow:none;}.ds-panel-head{display:flex;align-items:center;min-height:43px;padding:8px 12px;border-bottom:1px solid var(--line,#e0e4ee);}.ds-panel-head h2{margin:0;font-size:13px;line-height:1.2;letter-spacing:-.02em;}.ds-panel-inset{margin:0;padding:24px 16px;color:var(--muted,#5b657b);font-size:12px;line-height:1.6;}"
+    },
+    {
+      "name": "Selected trajectory event",
+      "kind": "custom",
+      "refersTo": "event-selected",
+      "description": "A selected source-ordered row separates display ordinal from exact source index.",
+      "html": "<div class=\"ds-preview\"><button class=\"ds-event-row\" aria-pressed=\"true\"><span class=\"ds-event-ordinal\">6</span><span class=\"ds-event-title\">apply_patch</span><span class=\"ds-event-source\">#60</span><span class=\"ds-event-description\">Synthetic recorded file target</span></button></div>",
+      "css": ".ds-preview{font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;font-size:13px;color:var(--text,#20283b);}.ds-preview :focus-visible{outline:2px solid var(--accent,#7046d7);outline-offset:3px;}.ds-event-row{display:grid;width:100%;min-height:58px;grid-template-columns:22px minmax(0,1fr) auto;gap:5px 7px;padding:10px;border:1px solid transparent;border-bottom-color:var(--line,#e0e4ee);border-radius:5px;background:transparent;color:var(--text,#20283b);text-align:left;font-family:inherit;cursor:pointer;}.ds-event-row:hover{background:var(--surface-hover,#f0eefb);}.ds-event-row[aria-pressed=\"true\"]{background:var(--accent-soft,#f0eaff);border-color:var(--accent-line,#a98be9);}.ds-event-row:active{border-color:var(--accent,#7046d7);}.ds-event-ordinal{grid-row:span 2;color:var(--accent,#7046d7);font-size:11px;font-variant-numeric:tabular-nums;}.ds-event-title{font-size:12px;font-weight:550;}.ds-event-source{font:10px ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--muted,#5b657b);}.ds-event-description{grid-column:2/-1;color:var(--muted,#5b657b);font-size:11px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}"
+    },
+    {
+      "name": "Recorded evidence tabs",
+      "kind": "nav",
+      "refersTo": "view-tab-active",
+      "description": "Compact purple selection switches the displayed saved content.",
+      "html": "<div class=\"ds-preview\"><div class=\"ds-tabs\" role=\"group\" aria-label=\"Recorded content view\"><button aria-pressed=\"true\">Diff</button><button aria-pressed=\"false\">Updated File</button><button aria-pressed=\"false\">File Context</button></div></div>",
+      "css": ".ds-preview{font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;font-size:13px;color:var(--text,#20283b);}.ds-preview :focus-visible{outline:2px solid var(--accent,#7046d7);outline-offset:3px;}.ds-tabs{display:flex;gap:6px;align-items:center;min-height:38px;padding:0 8px;border-top:1px solid var(--line,#e0e4ee);background:var(--surface-2,#f6f7fb);overflow:auto;}.ds-tabs button{flex:none;min-height:29px;padding:5px 9px;border:1px solid transparent;border-radius:5px;background:transparent;color:var(--muted,#5b657b);font:650 11px -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;cursor:pointer;}.ds-tabs button:hover{background:var(--surface-hover,#f0eefb);color:var(--accent,#7046d7);}.ds-tabs button[aria-pressed=\"true\"]{border-color:var(--accent-line,#a98be9);background:var(--accent-soft,#f0eaff);color:var(--accent,#7046d7);}.ds-tabs button:active{border-color:var(--accent,#7046d7);}"
+    },
+    {
+      "name": "Selected source DAG node",
+      "kind": "custom",
+      "refersTo": "graph-node",
+      "description": "A compact SVG node preserves category/phase encoding beneath a separate purple selection ring; labels are synthetic.",
+      "html": "<svg class=\"ds-graph\" width=\"210\" height=\"90\" viewBox=\"-105 -45 210 90\"><g class=\"ds-node\" role=\"button\" tabindex=\"0\" aria-pressed=\"true\" aria-label=\"Synthetic read_file, source #20\"><rect class=\"ds-node-focus\" x=\"-86\" y=\"-28\" width=\"172\" height=\"56\" rx=\"11\"/><rect class=\"ds-node-body\" x=\"-82\" y=\"-24\" width=\"164\" height=\"48\" rx=\"8\"/><g transform=\"translate(-64 -5)\"><path d=\"M0-8A8 8 0 1 1 0 8A8 8 0 1 1 0-8Z\" fill=\"#77758e\"/></g><circle cx=\"73\" cy=\"15\" r=\"3\" fill=\"#77758e\"/><text x=\"-50\" y=\"-1\" class=\"ds-node-title\">read_file</text><text x=\"-50\" y=\"15\" class=\"ds-node-detail\">Phase · #20</text></g></svg>",
+      "css": ".ds-graph{font-family:system-ui,sans-serif;}.ds-node{cursor:pointer;}.ds-node:focus{outline:none;}.ds-node-focus{fill:none;stroke:var(--accent,#7046d7);stroke-width:2;opacity:0;}.ds-node[aria-pressed=\"true\"] .ds-node-focus,.ds-node:hover .ds-node-focus{opacity:1;}.ds-node:focus-visible .ds-node-focus{opacity:1;stroke-width:3;}.ds-node:active .ds-node-focus{stroke-width:3;}.ds-node-body{fill:#fff;stroke:#77758e;stroke-width:1.5;}.ds-node-title{fill:#18243a;font-size:12px;font-weight:650;}.ds-node-detail{fill:#53637b;font-size:10px;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The recorded-evidence workspace",
+    "overview": "TrajViz is a desktop Operate interface for reading saved agent traces. Pale continuous workspaces, near-white panels, blue-gray boundaries and dark text keep the recorded evidence easy to scan. Purple coordinates selection and focus; green and red retain outcome and diff meaning.\n\nThe interface gives one working area priority and keeps source context close without exposing every diagnostic at once. Compact navigation, local scrolling and named disclosures support the failure → command/output → recorded patch → later validation workflow. The default appearance is light; a dark appearance remains a saved browser preference.",
+    "keyCharacteristics": [
+      "Continuous work surfaces with thin boundaries and flat depth.",
+      "One dominant workspace with compact stage navigation and on-demand detail.",
+      "Purple source selection; written outcomes with green/red reinforcement.",
+      "Readable recorded code, exact source indices and explicit missing-data states."
+    ],
+    "rules": [
+      {
+        "name": "The Selection and Outcome Rule",
+        "body": "Selection marks the current source; it never replaces the source outcome. Keep failure borders, written status and diff signs visible inside selected content.",
+        "section": "colors"
+      },
+      {
+        "name": "The Evidence Reading Rule",
+        "body": "Reduce repeated metadata and close secondary detail before reducing evidence type. Long code and logs scroll within their own region.",
+        "section": "typography"
+      },
+      {
+        "name": "The Primary Workspace Rule",
+        "body": "Give the active investigation most of the available desktop area. Keep supporting diagnostics behind clearly named controls.",
+        "section": "layout"
+      },
+      {
+        "name": "The Stable Source Rule",
+        "body": "Run ID plus exact source idx identifies the selection across views and shared URLs. Display ordinals are presentation and playback positions.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do use the light palette as the default and preserve the saved dark appearance.",
+      "Do pair semantic color with written status, icons, exit codes or diff signs.",
+      "Do preserve exact source identity, including every occurrence of a repeated signature.",
+      "Do keep missing data visibly distinct from a recorded zero.",
+      "Do keep code and logs locally scrollable and restore focus when closing detail."
+    ],
+    "donts": [
+      "Don't invent agent branches, file versions, durations, cost or test pass rates to fill a reference layout.",
+      "Don't use reference task names, sample metrics or sample code as product evidence.",
+      "Don't conflate a signature match or a rejoined alignment row with semantic equivalence or a successful outcome.",
+      "Don't make the historical dark four-page composition the current default."
+    ]
+  }
+}

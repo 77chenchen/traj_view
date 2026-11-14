@@ -1,0 +1,67 @@
+{
+  "chrome": "157.0.8103.52",
+  "scenarios": [
+    {
+      "name": "run-list",
+      "status": "ok"
+    },
+    {
+      "name": "graph",
+      "status": "ok"
+    },
+    {
+      "name": "compare",
+      "status": "ok"
+    },
+    {
+      "name": "dag",
+      "status": "ok"
+    },
+    {
+      "name": "dag-compare",
+      "status": "ok"
+    },
+    {
+      "name": "hierarchy",
+      "status": "ok"
+    },
+    {
+      "name": "sankey",
+      "status": "ok"
+    },
+    {
+      "name": "theme",
+      "status": "ok"
+    },
+    {
+      "name": "folding",
+      "status": "ok"
+    },
+    {
+      "name": "narrow",
+      "status": "ok"
+    },
+    {
+      "name": "live",
+      "status": "ok"
+    },
+    {
+      "name": "first-render-500",
+      "status": "ok",
+      "value": 97.40000000596046
+    },
+    {
+      "name": "first-render-2000",
+      "status": "ok",
+      "value": 377.19999998807907
+    },
+    {
+      "name": "offline",
+      "status": "ok"
+    },
+    {
+      "name": "delivered-offline",
+      "status": "ok"
+    }
+  ]
+}

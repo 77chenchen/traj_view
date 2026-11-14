@@ -1,0 +1,387 @@
+{
+  "chrome": "157.0.8103.52",
+  "scenarios": [
+    {
+      "name": "run-list",
+      "status": "ok"
+    },
+    {
+      "name": "graph",
+      "status": "ok"
+    },
+    {
+      "name": "compare",
+      "status": "ok"
+    },
+    {
+      "name": "dag",
+      "status": "ok"
+    },
+    {
+      "name": "dag-compare",
+      "status": "ok"
+    },
+    {
+      "name": "hierarchy",
+      "status": "ok"
+    },
+    {
+      "name": "workbench",
+      "status": "ok",
+      "value": {
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 900,
+            "scrollWidth": 1440,
+            "scrollHeight": 900,
+            "panes": [
+              {
+                "x": 0,
+                "y": 140,
+                "width": 320,
+                "height": 688,
+                "top": 140,
+                "right": 320,
+                "bottom": 828,
+                "left": 0
+              },
+              {
+                "x": 320,
+                "y": 140,
+                "width": 770,
+                "height": 385.265625,
+                "top": 140,
+                "right": 1090,
+                "bottom": 525.265625,
+                "left": 320
+              },
+              {
+                "x": 320,
+                "y": 525.265625,
+                "width": 770,
+                "height": 302.734375,
+                "top": 525.265625,
+                "right": 1090,
+                "bottom": 828,
+                "left": 320
+              },
+              {
+                "x": 1090,
+                "y": 140,
+                "width": 350,
+                "height": 688,
+                "top": 140,
+                "right": 1440,
+                "bottom": 828,
+                "left": 1090
+              },
+              {
+                "x": 0,
+                "y": 828,
+                "width": 1440,
+                "height": 72,
+                "top": 828,
+                "right": 1440,
+                "bottom": 900,
+                "left": 0
+              }
+            ]
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "scrollWidth": 1280,
+            "scrollHeight": 800,
+            "panes": [
+              {
+                "x": 0,
+                "y": 140,
+                "width": 294.390625,
+                "height": 588,
+                "top": 140,
+                "right": 294.390625,
+                "bottom": 728,
+                "left": 0
+              },
+              {
+                "x": 294.390625,
+                "y": 140,
+                "width": 665.609375,
+                "height": 329.265625,
+                "top": 140,
+                "right": 960,
+                "bottom": 469.265625,
+                "left": 294.390625
+              },
+              {
+                "x": 294.390625,
+                "y": 469.265625,
+                "width": 665.609375,
+                "height": 258.734375,
+                "top": 469.265625,
+                "right": 960,
+                "bottom": 728,
+                "left": 294.390625
+              },
+              {
+                "x": 960,
+                "y": 140,
+                "width": 320,
+                "height": 588,
+                "top": 140,
+                "right": 1280,
+                "bottom": 728,
+                "left": 960
+              },
+              {
+                "x": 0,
+                "y": 728,
+                "width": 1280,
+                "height": 72,
+                "top": 728,
+                "right": 1280,
+                "bottom": 800,
+                "left": 0
+              }
+            ]
+          }
+        ],
+        "workflow": [
+          "#50 failed",
+          "#60 patch",
+          "#70 failed rerun",
+          "#100 validation passed"
+        ],
+        "synchronization": true,
+        "narrowInspector": "toggle",
+        "longEvidence": true,
+        "empty": true,
+        "offline": false
+      }
+    },
+    {
+      "name": "dashboard",
+      "status": "ok",
+      "value": {
+        "replay": true,
+        "recordedPatch": true,
+        "annotations": true,
+        "playback": true,
+        "timeline": true,
+        "timelineScale": {
+          "sharedAxis": true,
+          "positionAndWidth": [
+            1,
+            2,
+            8
+          ],
+          "integerOrdinals": true
+        },
+        "sourceIndex": "9007199254740993",
+        "offline": false
+      }
+    },
+    {
+      "name": "dashboard-compare",
+      "status": "ok"
+    },
+    {
+      "name": "sankey",
+      "status": "ok"
+    },
+    {
+      "name": "theme",
+      "status": "ok"
+    },
+    {
+      "name": "folding",
+      "status": "ok"
+    },
+    {
+      "name": "narrow",
+      "status": "ok"
+    },
+    {
+      "name": "live",
+      "status": "ok"
+    },
+    {
+      "name": "first-render-500",
+      "status": "ok",
+      "value": 102
+    },
+    {
+      "name": "first-render-2000",
+      "status": "ok",
+      "value": 112.7000000178814
+    },
+    {
+      "name": "workbench-offline",
+      "status": "ok",
+      "value": {
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 900,
+            "scrollWidth": 1440,
+            "scrollHeight": 900,
+            "panes": [
+              {
+                "x": 0,
+                "y": 140,
+                "width": 320,
+                "height": 688,
+                "top": 140,
+                "right": 320,
+                "bottom": 828,
+                "left": 0
+              },
+              {
+                "x": 320,
+                "y": 140,
+                "width": 770,
+                "height": 385.265625,
+                "top": 140,
+                "right": 1090,
+                "bottom": 525.265625,
+                "left": 320
+              },
+              {
+                "x": 320,
+                "y": 525.265625,
+                "width": 770,
+                "height": 302.734375,
+                "top": 525.265625,
+                "right": 1090,
+                "bottom": 828,
+                "left": 320
+              },
+              {
+                "x": 1090,
+                "y": 140,
+                "width": 350,
+                "height": 688,
+                "top": 140,
+                "right": 1440,
+                "bottom": 828,
+                "left": 1090
+              },
+              {
+                "x": 0,
+                "y": 828,
+                "width": 1440,
+                "height": 72,
+                "top": 828,
+                "right": 1440,
+                "bottom": 900,
+                "left": 0
+              }
+            ]
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "scrollWidth": 1280,
+            "scrollHeight": 800,
+            "panes": [
+              {
+                "x": 0,
+                "y": 140,
+                "width": 294.390625,
+                "height": 588,
+                "top": 140,
+                "right": 294.390625,
+                "bottom": 728,
+                "left": 0
+              },
+              {
+                "x": 294.390625,
+                "y": 140,
+                "width": 665.609375,
+                "height": 329.265625,
+                "top": 140,
+                "right": 960,
+                "bottom": 469.265625,
+                "left": 294.390625
+              },
+              {
+                "x": 294.390625,
+                "y": 469.265625,
+                "width": 665.609375,
+                "height": 258.734375,
+                "top": 469.265625,
+                "right": 960,
+                "bottom": 728,
+                "left": 294.390625
+              },
+              {
+                "x": 960,
+                "y": 140,
+                "width": 320,
+                "height": 588,
+                "top": 140,
+                "right": 1280,
+                "bottom": 728,
+                "left": 960
+              },
+              {
+                "x": 0,
+                "y": 728,
+                "width": 1280,
+                "height": 72,
+                "top": 728,
+                "right": 1280,
+                "bottom": 800,
+                "left": 0
+              }
+            ]
+          }
+        ],
+        "workflow": [
+          "#50 failed",
+          "#60 patch",
+          "#70 failed rerun",
+          "#100 validation passed"
+        ],
+        "synchronization": true,
+        "narrowInspector": "toggle",
+        "longEvidence": false,
+        "empty": false,
+        "offline": true,
+        "httpRequests": 0
+      }
+    },
+    {
+      "name": "dashboard-offline",
+      "status": "ok",
+      "value": {
+        "replay": true,
+        "recordedPatch": true,
+        "annotations": true,
+        "playback": true,
+        "timeline": true,
+        "timelineScale": {
+          "sharedAxis": true,
+          "positionAndWidth": [
+            1,
+            2,
+            8
+          ],
+          "integerOrdinals": true
+        },
+        "sourceIndex": "9007199254740993",
+        "offline": true,
+        "httpRequests": 0
+      }
+    },
+    {
+      "name": "offline",
+      "status": "ok"
+    },
+    {
+      "name": "delivered-offline",
+      "status": "ok"
+    }
+  ]
+}

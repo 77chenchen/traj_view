@@ -160,10 +160,10 @@ export function RunList({ dataset, selected, onSelect, openGraph, openCompare }:
                 const unavailable = !checked && (task != null && run.task_id !== task ? 'Compare requires runs of the same task.'
                   : selected.length >= 4 ? 'Up to four runs can be selected.' : '');
                 return <tr key={run.id} className={checked ? 'row-selected' : ''}>
-                  <td><span title={unavailable || undefined}>
+                  <td><label className="run-select-target" title={unavailable || undefined}>
                     <input type="checkbox" aria-label={`Select ${run.id}`} checked={checked}
                       aria-describedby="selection-help" disabled={Boolean(unavailable)} onChange={() => onSelect(run.id)} />
-                  </span></td>
+                  </label></td>
                   <th scope="row">
                     <button className="text-button run-name" title={run.id} onClick={() => openGraph(run.id)}>{run.id}</button>
                     <span className="run-task" title={run.task_id}>{run.task_id}</span>

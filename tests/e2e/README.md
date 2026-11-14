@@ -7,7 +7,7 @@ installed Python and frontend dependencies.
 python -m pytest tests/e2e
 npm --prefix frontend run check
 npm --prefix frontend run build
-node scripts/smoke-e2e.mjs
+PYTHON="$(command -v python)" node scripts/smoke-e2e.mjs
 node scripts/benchmark-layout.mjs
 ```
 
@@ -16,7 +16,19 @@ The browser smoke command builds the public fixtures and synthetic 500- and
 loopback port assigned by the OS and launches system Chrome once. It opens the
 portable export by file URL in a fresh offline context after stopping the
 server. Browser screenshots, failure screenshots, and first-render timings
-go to `test-results/e2e/`. The temporary inputs and build are removed at exit.
+go to `test-results/e2e/`, with per-scenario results in `scenarios.json`. The smoke command first runs `scripts/test-graph-data.mjs` (708 topological sorts on public fixtures and 500/2,000-step synthetic graphs). It also opens the exact delivered `trajviz-report.html` with the matching `out/` dataset in an offline context. The temporary inputs and build are removed at exit.
+
+The current three-page desktop refinement adds `three-page.mjs` online and offline, for **26 scenarios** and **746 graph-transform checks**. It verifies Graph's unselected/selected canvas, compact stages, Layers/Legend/activity, Compare's shared A/B alignment and independent agent/findings/patch/metrics disclosures, Replay's closed/open Step details, exact source identity, focus restoration, playback/speed/seek, missing states and PNG/SVG/CSV exports. The current design capture sizes are **1586×912 and 1280×800**. Existing four-page and narrow-screen regression cases remain; earlier scenario totals below are historical.
+
+With the public fixture server running, `node scripts/verify-three-page.mjs` checks the exact root HTML offline and writes `test-results/three-page/verification.json` plus independent screenshots. PNG dimensions are read from the file header and checked against the capture viewport. The six base pairs use full-page screenshots at scroll 0; the supplementary Run DAGs state uses a viewport screenshot because the grid scrolls within main. See [the functional mapping and report](../../docs/research/three-page-hierarchy.md) for every disclosure and source step. No private captures are used.
+
+To verify the exact root HTML and served public fixtures separately:
+
+```sh
+node scripts/verify-density.mjs
+```
+
+This writes `test-results/density/verification.json` and `density-*.png`, including four default pages at each width and selected failure/edit, metrics and DAG states. The offline context blocks all HTTP and checks uncaught page errors. Published evidence is in `docs/research/density/`.
 
 - Set `PYTHON` to select a Python executable. The default is `python`.
 - Set `PLAYWRIGHT_PATH` to a Playwright package directory, entry file, or
@@ -52,3 +64,27 @@ unknown repeatability. `--stack-size-kb` applies to the sample processes and
 can help diagnose Dagre recursion limits. Benchmark JSON files are written to
 `test-results/`. Set `FRONTEND_NODE_MODULES` to use a different installed
 dependency directory.
+
+DAG browser coverage includes: monotonically increasing x coordinates, exact large source indices, file-path lookup and timeline synchronization, per-block and full expansion, internal retry edges, filtered nonconsecutive repetitions, current-state SVG/PNG, keyboard pan, dark theme, three independent same-task DAGs, baseline divergence (including an ended side) and highlighting repeated signatures. The 2,000-step timing scenario additionally zooms, filters to an empty graph and back, searches the last step and opens its details. Both offline scenarios exercise files, DAG filtering/folding, Inspector and comparison with zero external requests.
+
+To refresh the shipped dataset/report before verifying it:
+
+```sh
+python -m backend.cli build fixtures/input -o out --redact --redact-pattern "$PWD"
+python -m backend.cli export out --html trajviz-report.html --csv metrics.csv
+PYTHON="$(command -v python)" node scripts/smoke-e2e.mjs
+```
+
+Hierarchy/live scenarios additionally cover three levels, mobile keyboard expansion, clearing group inspection, relation navigation through active filters, progress-only SSE events, pause/resume and failed-refresh recovery. All checked-in evidence is synthetic. For private local captures use `node scripts/verify-live-capture.mjs --html .workers/local/nl2repo-50.html`; its output stays under `.workers/local/`.
+
+Dashboard scenarios in `dashboard.mjs` cover event/path search, error filtering, recorded red/green patch, missing file content, personal notes and JSON export, speed-controlled replay, selection handoff to DAG/Timeline, timestamp points/fallback, three-run action alignment and exact indices beyond 2^53. The fixture set now includes three original synthetic session-regression traces; the graph transform matrix runs 708 sorts. The full smoke suite has 18 scenarios.
+
+`node scripts/verify-dashboard.mjs` checks these new views in the exact delivered root HTML with the network disabled and asserts **zero HTTP requests and page errors**. It also captures dark theme and fresh-page 320/768/1024px views (full-page and viewport), plus corrected mobile hierarchy evidence. Outputs are in `test-results/dashboard-delivery/`. Capture at document top after blur and two animation frames; never treat repeated sticky-surface stitching as valid screenshot evidence.
+
+
+The compact debug workbench adds `workbench.mjs`, exercised online and offline. It asserts that list, Diff, Terminal, Inspector and full-width playback share the first viewport at **1440×900** and **1280×800**, then follows failed source #50 → patch #60 → failed validation #70 → successful validation #100. It checks incompatible-filter recovery, actual command/patch/output/slider synchronization, lexical highlighting, empty search, optional 390px inspection, an 800-line synthetic log/file excerpt and a generated zero-step run. All code/log scrolling is local to its evidence pane. The complete smoke suite now has **20 scenarios**, with **19 temporary synthetic runs** (14 public + 5 generated); the delivered root dataset remains 14 public runs. Screenshots use `workbench-*.png`; exact standalone captures use `workbench-offline-*.png` in `test-results/dashboard-delivery/`.
+
+Timeline regression checks assert actual browser geometry at 1×, 2× and 8×: marker centers match axis values, widths scale with zoom, every gridline matches its tick, Fit restores width, and mobile scrolling stays inside the view. The fallback integer ordinal tick test uses source index `9007199254740993`. Before treating a capture as final, rebuild and regenerate root HTML so its JavaScript includes the same source revision as the browser assertions.
+
+
+The current four-reference revision adds `four-reference.mjs` online and offline, bringing the smoke suite to **22 scenarios**, with **20 temporary synthetic runs** (15 public + 5 generated). It covers Replay failure→patch→failed rerun→pass, timeline tick/point width scaling and three-way selection, graph layers/camera/context/hierarchy/activity/fullscreen, Compare run changes/divergence/signature links/patch tabs/three independent DAGs, local search/help/share/report download, all four pages at 1586×912, 1586×992, 1280×800 and 390×844, and exact missing-time indices. The public `role-boundaries` fixture verifies generic text, a non-test tool failure, an edit without a patch, and completion without a passed outcome. Real validation success remains green; final-message completion remains neutral. `scripts/verify-four-reference.mjs` repeats those chains against the served public dataset and exact delivered root HTML. Offline contexts assert zero HTTP requests and uncaught page errors. Existing workbench tests retain long-evidence and zero-step coverage.

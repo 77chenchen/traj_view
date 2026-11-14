@@ -6,8 +6,15 @@ import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 import {
-  checkCompare, checkFolded, checkGraph, checkNarrow, checkOffline, checkRunList, checkSankey, checkTheme, renderSizes, timeFirstGraph,
+  checkCompare, checkDag, checkDagCompare, checkFolded, checkGraph, checkNarrow, checkOffline, checkRunList, checkSankey, checkTheme, renderSizes, timeFirstGraph,
 } from '../tests/e2e/browser.mjs';
+import { checkLive } from '../tests/e2e/live.mjs';
+import { checkHierarchy } from '../tests/e2e/hierarchy.mjs';
+import { checkWorkbench } from '../tests/e2e/workbench.mjs';
+import { checkDashboard, checkDashboardCompare } from '../tests/e2e/dashboard.mjs';
+import { checkFourReference } from '../tests/e2e/four-reference.mjs';
+import { checkDensity } from '../tests/e2e/density.mjs';
+import { checkThreePage } from '../tests/e2e/three-page.mjs';
 import { frontendRequire, results, root } from './frontend-dependencies.mjs';
 
 const python = process.env.PYTHON || 'python';
@@ -15,6 +22,13 @@ const chrome = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Conte
 const renderTimeout = Number(process.env.RENDER_TIMEOUT_MS ?? 30000);
 const artifacts = join(results, 'e2e');
 const cli = ['-m', 'backend.cli'];
+const scenarios = [];
+let chromeVersion;
+function record(name, result) {
+  scenarios.push({ name, ...result });
+  writeFileSync(join(artifacts, 'scenarios.json'), JSON.stringify({ chrome: chromeVersion, scenarios }, null, 2) + '\n');
+  return result;
+}
 
 function execute(args) {
   return execFileSync(python, args, { cwd: root, stdio: 'inherit', timeout: 120000 });
@@ -24,8 +38,9 @@ function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
 }
 
-function startServer(dataset) {
-  const child = spawn(python, [...cli, 'serve', dataset, '--port', '0'], {
+function startServer(dataset, liveSource, liveMetadata) {
+  const command = liveSource ? [...cli, 'live', liveSource, '-o', dataset, '--port', '0', ...(liveMetadata ? ['--metadata', liveMetadata] : [])] : [...cli, 'serve', dataset, '--port', '0'];
+  const child = spawn(python, command, {
     cwd: root, stdio: ['ignore', 'pipe', 'pipe'],
   });
   let output = '';
@@ -90,11 +105,11 @@ async function scenario(browser, name, action, offline = false) {
     const value = await action(page, requests);
     assert.deepEqual(pageErrors, [], 'Uncaught browser errors');
     console.log(`PASS ${name}`);
-    return { status: 'ok', value };
+    return record(name, { status: 'ok', value });
   } catch (error) {
     failed(name, error);
     await page.screenshot({ path: join(artifacts, `failure-${name}.png`), timeout: 3000 }).catch(() => {});
-    return { status: error.name === 'TimeoutError' ? 'timeout' : 'error', error: error.message };
+    return record(name, { status: error.name === 'TimeoutError' ? 'timeout' : 'error', error: error.message });
   } finally {
     await context.close();
   }
@@ -107,6 +122,7 @@ async function main() {
   assert.ok(existsSync(chrome), 'System Chrome is missing. Set CHROME_PATH to its executable.');
   const { chromium } = frontendRequire('playwright', process.env.PLAYWRIGHT_PATH);
   mkdirSync(artifacts, { recursive: true });
+  execFileSync(process.execPath, [join(root, 'scripts/test-graph-data.mjs')], { cwd: root, env: { ...process.env, PYTHON: python }, stdio: 'inherit' });
   const scratch = mkdtempSync(join(tmpdir(), 'trajviz-e2e-'));
   let browser;
   let server;
@@ -139,6 +155,7 @@ async function main() {
 
     // Launch once. Surface sandbox or Chrome launch errors without retrying.
     browser = await chromium.launch({ executablePath: resolve(chrome), headless: true, timeout: 15000 });
+    chromeVersion = browser.version();
     server = startServer(dataset);
     let url;
     try {
@@ -150,10 +167,35 @@ async function main() {
       await scenario(browser, 'run-list', (page, requests) => checkRunList(page, url, index, artifacts, requests));
       await scenario(browser, 'graph', (page, requests) => checkGraph(page, url, graph, steps, artifacts, requests));
       await scenario(browser, 'compare', (page) => checkCompare(page, url, artifacts));
+      await scenario(browser, 'dag', (page) => checkDag(page, url, artifacts));
+      await scenario(browser, 'dag-compare', (page) => checkDagCompare(page, url, artifacts));
+      await scenario(browser, 'hierarchy', (page) => checkHierarchy(page, url, artifacts));
+      await scenario(browser, 'workbench', (page) => checkWorkbench(page, url, artifacts));
+      await scenario(browser, 'dashboard', (page) => checkDashboard(page, url, artifacts));
+      await scenario(browser, 'dashboard-compare', (page) => checkDashboardCompare(page, url, artifacts));
+      await scenario(browser, 'four-reference', (page) => checkFourReference(page, url, artifacts));
+      await scenario(browser, 'density', (page) => checkDensity(page, url, artifacts));
+      await scenario(browser, 'three-page-desktop', (page) => checkThreePage(page, url, artifacts));
       await scenario(browser, 'sankey', (page) => checkSankey(page, url, index, artifacts));
       await scenario(browser, 'theme', (page) => checkTheme(page, url, artifacts));
       await scenario(browser, 'folding', (page) => checkFolded(page, url, artifacts));
       await scenario(browser, 'narrow', (page) => checkNarrow(page, url, artifacts));
+      const liveSource = join(scratch, 'live-input');
+      mkdirSync(liveSource);
+      const liveFile = join(liveSource, 'qa-live.codex.jsonl');
+      const events = [{ type: 'thread.started', thread_id: 'qa-live' }];
+      const append = (position) => {
+        events.push({ type: 'item.completed', item: { id: `tool-${position}`, type: 'command_execution', command: 'cat src/live.py', aggregated_output: `live result ${position}`, exit_code: 0 } });
+        writeFileSync(liveFile, events.map((event) => JSON.stringify(event)).join('\n') + '\n');
+      };
+      append(1);
+      const liveMetadata = join(scratch, 'live-labels.json');
+      writeFileSync(liveMetadata, '{}');
+      const progress = () => writeFileSync(join(scratch, 'status.json'), JSON.stringify({one:{status:'completed'}}));
+      const liveServer = startServer(join(scratch, 'live-out'), liveSource, liveMetadata);
+      const awaitLiveUrl = await liveServer.url;
+      try { await scenario(browser, 'live', (page) => checkLive(page, awaitLiveUrl, artifacts, append, progress)); }
+      finally { await stopServer(liveServer); }
       const report = { chrome: browser.version(), timeoutMs: renderTimeout, runs: [] };
       for (const size of renderSizes) {
         const sample = await scenario(browser, `first-render-${size}`,
@@ -165,8 +207,20 @@ async function main() {
     }
     await stopServer(server);
     if (exported) {
+      await scenario(browser, 'workbench-offline', (page) => checkWorkbench(page, pathToFileURL(reportFile).href, artifacts, true), true);
+      await scenario(browser, 'dashboard-offline', (page) => checkDashboard(page, pathToFileURL(reportFile).href, artifacts, true), true);
+      await scenario(browser, 'four-reference-offline', (page) => checkFourReference(page, pathToFileURL(reportFile).href, artifacts, true), true);
+      await scenario(browser, 'density-offline', (page) => checkDensity(page, pathToFileURL(reportFile).href, artifacts, true), true);
+      await scenario(browser, 'three-page-desktop-offline', (page) => checkThreePage(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'offline', (page) =>
         checkOffline(page, pathToFileURL(reportFile).href, index, graph, steps, artifacts), true);
+    }
+    const delivered = join(root, 'trajviz-report.html');
+    if (existsSync(delivered)) {
+      const shipped = readJson(join(root, 'out/index.json'));
+      const baseline = shipped.runs.find((run) => run.id === 'slug-baseline-timeout');
+      await scenario(browser, 'delivered-offline', (page) => checkOffline(page, pathToFileURL(delivered).href,
+        shipped, readJson(join(root, 'out', baseline.file)), readJson(join(root, 'out', baseline.steps_file)), artifacts), true);
     }
   } finally {
     await stopServer(server);

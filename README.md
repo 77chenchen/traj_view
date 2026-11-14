@@ -23,7 +23,42 @@ Open [the local viewer](http://127.0.0.1:8765). Choose a run for graph inspectio
 trajviz export out --html trajviz-report.html --csv metrics.csv
 ```
 
-The viewer exports PNG and SVG from the current graph. The standalone report works offline and contains the trace details. Build with redaction before sharing a report that contains sensitive logs.
+Single-run and comparison views use left-to-right step DAGs. Phase, tool category and error filters keep source order; edge checkboxes distinguish temporal, dependency and retry links. Node selection seeks playback and opens the lazy Inspector. Use **Load recorded activity** for text/tool lanes and explicit file targets; expand a path and choose a source step to locate it.
+
+Consecutive equal signatures can be folded into continuous blocks (automatic at 2,000 steps). Inspect any member, expand one block or expand all. Internal block edges remain in the Inspector. Nonconsecutive repeats keep separate positions. Signature frequencies and cyclic aggregate groups appear in the summary rather than the main graph. In a 2–4 run comparison, the first selected run is the baseline; markers show first action divergence and selecting a signature highlights every matching occurrence across runs.
+
+The viewer exports PNG and SVG from the current DAG, including folding, step/edge filters and selection. The standalone report works offline and contains the trace details. Build with redaction before sharing a report that contains sensitive logs.
+
+## Debugging workspace
+
+The default light workspace uses a product topbar and left navigation for **Replay**, **Timeline**, **Graph**, **Compare**, Analytics and Datasets. Appearance preferences under the avatar retain dark mode. The same exact source selection survives view changes and hash deep links. Try [the recorded patch](http://127.0.0.1:8765/#view=replay&run=dashboard-baseline&step=60) or [the failed test](http://127.0.0.1:8765/#view=timeline&run=dashboard-baseline&step=50). The public `dashboard-baseline`, `dashboard-variant` and `dashboard-short` traces are explicitly synthetic.
+
+Replay prioritizes recorded patch/file/text evidence, with source steps at left, optional **Step details** at right and a persistent full-width playback dock. Step details starts closed. Stages are compact navigation; **Previews** opens the recorded snippets. Parameters, text, observations and raw references open on demand. Terminal/Tests is expandable and avoids duplicating command output by default. **Next failure**, **Next edit** and **Next validation** locate real records and clear incompatible filters. Notes are browser-local and export as JSON. File Context can jump to an earlier recorded read; Updated File is unrecorded unless content was saved.
+
+Timeline has compact stages, six evidence lanes and a collapsible searchable/filterable Event Log synchronized with Event Inspector. Fit, 1m/2m/5m and zoom change ruler ticks, gridlines, event centers and marker widths together. Incomplete timestamps use integer source ordinals. Points never imply duration. Graph gives its canvas most of the workspace: **Layers**, **Legend** and **Agent activity** open when needed. Its side panel separates Details, Files & activity and Signatures. Forward step DAGs, hierarchy, folding, camera controls and PNG/SVG remain available in one toolbar and the canvas controls.
+
+Snapshot names follow saved evidence: generic text is Recorded Text, a non-test failure is Tool Failure, and an edit without a patch is File Edit. The Reasoning lane is qualified as recorded text. A final message creates a neutral Completion band; successful styling requires a saved zero-exit validation without an error.
+
+Compare defaults to one shared A/B action **Alignment**, with first divergence above it and three flat metrics: Duration, Tool Calls and Retries. Switch to **Patch comparison**, **All metrics** or **Run DAGs** for focused analysis. **Agent A/B details**, **Key Findings** and selection-driven **Step comparison** reveal complete trajectories, snapshots, findings and source evidence. Six charts and original action-offset lists remain accessible through disclosures. Independent 2–4-run DAGs, phase bands, Jaccard and detailed metrics are retained. Signature LCS alignment is bounded at 250,000 cells and uses an explicitly stated ordinal fallback above that limit. First divergence keeps its original action-offset meaning. Missing cost, test pass rate and complete file versions remain unrecorded.
+
+The latest [three-page hierarchy report](docs/research/three-page-hierarchy.md) contains 77 functional mappings, before/after screenshots, disclosure captures, data limits and reproduction commands. This revision was designed and captured at desktop 1586×912 and 1280×800. Existing narrow-screen behavior remains: inspection is optional below 1000px and plots/tables/code scroll internally. The [density](docs/research/density-verification.md), [four-reference](docs/research/four-reference-verification.md), [workbench](docs/research/workbench-verification.md) and [dashboard](docs/research/dashboard-verification.md) reports are historical. No upstream UI code was copied.
+
+## Hierarchy and live capture
+
+Switch **Steps → Hierarchy** to inspect contiguous phase groups and adjacent repeated tool sequences. A loop expands into iterations, then original calls. Source order runs left to right; dashed structural links descend through containment. Temporal, dependency and retry links still come from the source graph. Related steps in Inspector locate their exact source indices and clear step filters.
+
+To follow local Codex execution with the existing soclaas credentials:
+
+```sh
+source .venv/bin/activate
+python -m backend.cli live .workers/local/nl2repo-50/runs \
+  --metadata .workers/local/nl2repo-50/labels.json \
+  -o .workers/local/nl2repo-50-out --port 8766
+```
+
+Open http://127.0.0.1:8766. Updates use a loopback-only SSE stream. Pause/resume keeps inspection usable; a failed refresh retains the previous graph. The backend reads JSONL written by Codex; the key stays in the local process environment and is never supplied to the browser. Offline exports make no live requests.
+
+The [NL2Repo capture report](docs/research/nl2repo-capture.md) records the fixed 50-task sample, model-alias evidence, actual execution counts and limitations. The two requested design skills were installed and applied to this existing analysis interface; see [hierarchy and live verification](docs/research/hierarchy-live.md).
 
 ## Build from your own traces
 
@@ -58,4 +93,6 @@ npm --prefix frontend run check
 npm --prefix frontend run build
 ```
 
-Browser and benchmark commands are listed in [verification](docs/VERIFICATION.md).
+Browser and benchmark commands are listed in [verification](docs/VERIFICATION.md). See the [DAG implementation and evidence](docs/research/dag-verification.md) for source-order semantics, schema limitations and reproducible screenshots.
+
+The analysis organization takes inspiration from [PAIR-code/agent-trace-vis, Agentic Traces](https://github.com/PAIR-code/agent-trace-vis#agentic-traces). This implementation reuses TrajViz's rendering and layout code; no upstream code or assets were copied.

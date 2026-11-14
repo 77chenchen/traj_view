@@ -1,6 +1,6 @@
-import { type Graph, type GraphEdge, type GraphNode } from './model';
+import { type Graph, type GraphEdge, type GraphNode, type Step, type StepIndex } from './model';
 
-export function foldGraph(graph: Graph): Graph {
+export function foldGraph(graph: Graph, expanded: ReadonlySet<string> = new Set()): Graph {
   if (!graph.nodes.some((node, index) => node.signature === graph.nodes[index - 1]?.signature)) return graph;
 
   const nodes: GraphNode[] = [];
@@ -8,7 +8,7 @@ export function foldGraph(graph: Graph): Graph {
 
   for (const node of graph.nodes) {
     const previous = nodes.at(-1);
-    if (previous && previous.signature === node.signature) {
+    if (previous && previous.signature === node.signature && !expanded.has(previous.id) && !expanded.has(node.id)) {
       foldedIds.set(node.id, previous.id);
       previous.count += node.count;
       for (const index of node.step_indices) previous.step_indices.push(index);
@@ -26,13 +26,54 @@ export function foldGraph(graph: Graph): Graph {
   for (const edge of graph.edges) {
     const source = foldedIds.get(edge.source);
     const target = foldedIds.get(edge.target);
-    if (source == null || target == null) continue;
+    // Internal edges remain in the original graph for the member inspector.
+    // Contracting a continuous interval must never introduce a self-loop.
+    if (source == null || target == null || source === target) continue;
     const key = JSON.stringify([source, target, edge.type]);
     const previous = edges.get(key);
     if (previous) previous.count += edge.count;
     else edges.set(key, { ...edge, source, target });
   }
   return { nodes, edges: [...edges.values()] };
+}
+
+// Filter only AFTER interval contraction: filtering first could accidentally
+// join equal signatures separated by a hidden action in the source trace.
+export function filterGraph(graph: Graph, keep: (node: GraphNode) => boolean): Graph {
+  const nodes = graph.nodes.filter(keep);
+  const ids = new Set(nodes.map((node) => node.id));
+  return { nodes, edges: graph.edges.filter((edge) => ids.has(edge.source) && ids.has(edge.target)) };
+}
+
+export function normalizeRecordedPath(value: string) {
+  const path = value.trim().replace(/\\/g, '/');
+  const parts: string[] = [];
+  for (const part of path.split('/')) {
+    if (!part || part === '.') continue;
+    if (part === '..' && parts.length && parts.at(-1) !== '..') parts.pop();
+    else if (part !== '..' || !path.startsWith('/')) parts.push(part);
+  }
+  return (path.startsWith('/') ? '/' : '') + parts.join('/');
+}
+
+export function recordedFiles(steps: Step[]) {
+  const files = new Map<string, StepIndex[]>();
+  for (const step of steps) {
+    const action = step.action;
+    if (!action) continue;
+    const paths = [...action.targets];
+    for (const key of ['target', 'targets', 'path', 'paths', 'file', 'files', 'file_path', 'filename']) {
+      const value = action.args[key];
+      if (typeof value === 'string') paths.push(value);
+      else if (Array.isArray(value)) paths.push(...value.filter((item): item is string => typeof item === 'string'));
+    }
+    for (const path of new Set(paths.map(normalizeRecordedPath).filter(Boolean))) {
+      const members = files.get(path) ?? [];
+      members.push(step.idx);
+      files.set(path, members);
+    }
+  }
+  return files;
 }
 
 export function signatureTarget(signature: string) {

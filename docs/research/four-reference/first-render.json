@@ -1,0 +1,16 @@
+{
+  "chrome": "157.0.8103.52",
+  "timeoutMs": 30000,
+  "runs": [
+    {
+      "nodes": 500,
+      "status": "ok",
+      "ms": 81
+    },
+    {
+      "nodes": 2000,
+      "status": "ok",
+      "ms": 101
+    }
+  ]
+}

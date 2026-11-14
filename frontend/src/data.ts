@@ -5,6 +5,11 @@ export const isOffline = Boolean(embedded);
 let offlineFiles: Record<string, string> | undefined;
 const cache = new Map<string, Promise<unknown>>();
 
+export function invalidateData() {
+  cache.clear();
+  window.dispatchEvent(new Event('trajviz-data-updated'));
+}
+
 function parsePayload(raw: string) {
   // Keep exact integer tokens when they cannot fit in a JavaScript number.
   if (/\d{16}/.test(raw)) {
@@ -48,12 +53,17 @@ export function readData<T>(relativePath: string): Promise<T> {
 
 type State<T> =
   | { status: 'idle' | 'loading' }
-  | { status: 'ready'; data: T }
+  | { status: 'ready'; data: T; warning?: string }
   | { status: 'error'; message: string };
 
 export function useResource<T>(paths: readonly string[], single = false) {
   const key = JSON.stringify(paths);
   const [attempt, setAttempt] = useState(0);
+  useEffect(() => {
+    const update = () => setAttempt((value) => value + 1);
+    window.addEventListener('trajviz-data-updated', update);
+    return () => window.removeEventListener('trajviz-data-updated', update);
+  }, []);
   const [result, setResult] = useState<{ key: string; attempt: number; state: State<T> }>();
 
   useEffect(() => {
@@ -64,16 +74,17 @@ export function useResource<T>(paths: readonly string[], single = false) {
     request.then(
       (data) => { if (active) setResult({ key, attempt, state: { status: 'ready', data } }); },
       (error: unknown) => {
-        if (active) setResult({ key, attempt, state: {
-          status: 'error', message: error instanceof Error ? error.message : String(error),
-        } });
+        const message = error instanceof Error ? error.message : String(error);
+        if (active) setResult((previous) => previous?.key === key && previous.state.status === 'ready'
+          ? { key, attempt, state: { ...previous.state, warning: message } }
+          : { key, attempt, state: { status: 'error', message } });
       },
     );
     return () => { active = false; };
   }, [key, attempt, single]);
 
   const state: State<T> = !paths.length ? { status: 'idle' }
-    : result?.key === key && result.attempt === attempt ? result.state : { status: 'loading' };
+    : result?.key === key && (result.attempt === attempt || result.state.status === 'ready') ? result.state : { status: 'loading' };
   return { state, retry: () => setAttempt((value) => value + 1) };
 }
 

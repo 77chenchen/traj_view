@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-14",
+  "python": {
+    "command": ".venv/bin/python -m pytest",
+    "passed": 80,
+    "seconds": 4.3
+  },
+  "typescript": {
+    "command": "npm --prefix frontend run check",
+    "status": "passed"
+  },
+  "build": {
+    "command": "npm --prefix frontend run build",
+    "status": "passed",
+    "warning": "Existing large bundle warning"
+  },
+  "sourceWhitespace": {
+    "command": "git diff --check -- frontend/src README.md docs/VERIFICATION.md tests/e2e scripts/smoke-e2e.mjs",
+    "status": "passed"
+  },
+  "browser": {
+    "command": "PYTHON=.venv/bin/python node scripts/smoke-e2e.mjs",
+    "passed": 24
+  },
+  "exactOffline": {
+    "command": "node scripts/verify-density.mjs",
+    "httpRequests": 0,
+    "pageErrors": 0,
+    "identicalPngPairs": 16
+  }
+}

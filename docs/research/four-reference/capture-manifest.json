@@ -1,0 +1,234 @@
+{
+  "created_at_utc": "2026-11-13T14:34:24.504386+00:00",
+  "reference_dimensions": [
+    1586,
+    992
+  ],
+  "product_capture": [
+    1586,
+    912
+  ],
+  "viewports": [
+    [
+      1586,
+      912
+    ],
+    [
+      1586,
+      992
+    ],
+    [
+      1280,
+      800
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "bundle": [
+    {
+      "path": "frontend/dist/assets/index-Dpk5qjgV.js",
+      "bytes": 2401195,
+      "sha256": "644025c94fe400cb38e434bbb693d93729359fb87418ebf14d5e687f5e618d28"
+    },
+    {
+      "path": "frontend/dist/assets/style-Duvs4Ksx.css",
+      "bytes": 93361,
+      "sha256": "c07b1fb4ab0b24d447f85140967f43691343a2ca11006cfd2f6cfb7c33b54c23"
+    }
+  ],
+  "offline_report": {
+    "path": "trajviz-report.html",
+    "bytes": 2728385,
+    "sha256": "f9b28e72482146e51381f3de10af9a56e36d12a59c8e785c19181708204991a2"
+  },
+  "screenshots": [
+    {
+      "path": "docs/research/four-reference/compare-1280x800.png",
+      "bytes": 210833,
+      "sha256": "6e2bb022d46d72f350175f317cecbe397cf847cd7d49b0d49992218f5583259c"
+    },
+    {
+      "path": "docs/research/four-reference/compare-1586x912.png",
+      "bytes": 255310,
+      "sha256": "3fb146ded7caced01c1478d2925aefc8efa2dcecc739d5e15334c76af3c664a8"
+    },
+    {
+      "path": "docs/research/four-reference/compare-1586x992.png",
+      "bytes": 259667,
+      "sha256": "c05c9fc8a5e8aac2886a991000a0a5e18e401e79dac95314f815dbaf4212cc14"
+    },
+    {
+      "path": "docs/research/four-reference/compare-390x844.png",
+      "bytes": 60509,
+      "sha256": "6a01291f303af20e98f179e158974c3ed449142d5f8df5da8499fa8c3aa2fbaa"
+    },
+    {
+      "path": "docs/research/four-reference/compare-mobile-alignment.png",
+      "bytes": 69542,
+      "sha256": "6bcb2ff12c7bfae36110fa3354026608d56ea6d9fa8c0cd40ebff2a3a36f6ce3"
+    },
+    {
+      "path": "docs/research/four-reference/compare-mobile-charts.png",
+      "bytes": 50047,
+      "sha256": "8890ebd34e62ec731f7e9facd7bac4a7be157a6b1b9a7e82eed86a21b629e887"
+    },
+    {
+      "path": "docs/research/four-reference/compare-mobile-trajectory.png",
+      "bytes": 73578,
+      "sha256": "3975f1225013ff53508cdc0a1873a1c4964464bd59118e5858e00b891b15e22f"
+    },
+    {
+      "path": "docs/research/four-reference/first-render-2000.png",
+      "bytes": 162253,
+      "sha256": "71d2f7776b7eda0d8a333ac9a22208cdc70de7b7c4bacec3f6272e2508dddf99"
+    },
+    {
+      "path": "docs/research/four-reference/first-render-500.png",
+      "bytes": 162042,
+      "sha256": "d1fc8ce07c97ea5151244ed3d9910c30ead6222a80b97d6b30f1a112bef7d9d8"
+    },
+    {
+      "path": "docs/research/four-reference/graph-1280x800.png",
+      "bytes": 171553,
+      "sha256": "09922f5916a30846d09a6ad3d379ed9d8e26795d04db9b369734ba7fb1466a0a"
+    },
+    {
+      "path": "docs/research/four-reference/graph-1586x912.png",
+      "bytes": 209054,
+      "sha256": "b6f565b83129e49869258868a63e5cd7cec318e0aa797870397ec032d21727de"
+    },
+    {
+      "path": "docs/research/four-reference/graph-1586x992.png",
+      "bytes": 218050,
+      "sha256": "f7e10a522f35612bfae432642e0bb1592b01a9be892159639517b47d2b1294b8"
+    },
+    {
+      "path": "docs/research/four-reference/graph-390x844.png",
+      "bytes": 57088,
+      "sha256": "cb3a40453683f4fa67c78a796f0c2bcd80a5d711a7d8e22bfd3013c568d1ec37"
+    },
+    {
+      "path": "docs/research/four-reference/graph-mobile-inspection.png",
+      "bytes": 47857,
+      "sha256": "2f123a32a451774e4a0ee0c8455e72c58199bf700ce4e603b1b0825e980cfce1"
+    },
+    {
+      "path": "docs/research/four-reference/hierarchy-mobile.png",
+      "bytes": 48249,
+      "sha256": "6b3204baeabfee741c328e8a46b9bc1ff41c98e19105cd68812c80d11c533c7d"
+    },
+    {
+      "path": "docs/research/four-reference/missing-data.png",
+      "bytes": 160811,
+      "sha256": "acabd207c06c17a79001d6e1cde7ba69768b1afef54b7ffe86ed30d08309c676"
+    },
+    {
+      "path": "docs/research/four-reference/offline-compare-1586x912.png",
+      "bytes": 255310,
+      "sha256": "3fb146ded7caced01c1478d2925aefc8efa2dcecc739d5e15334c76af3c664a8"
+    },
+    {
+      "path": "docs/research/four-reference/offline-graph-1586x912.png",
+      "bytes": 209054,
+      "sha256": "b6f565b83129e49869258868a63e5cd7cec318e0aa797870397ec032d21727de"
+    },
+    {
+      "path": "docs/research/four-reference/offline-replay-1586x912.png",
+      "bytes": 210580,
+      "sha256": "1a7c0f1ae9ce4b9254b5a20dadac8f486737f2d7801a5ab055ce43a65e1ab559"
+    },
+    {
+      "path": "docs/research/four-reference/offline-role-boundaries-replay.png",
+      "bytes": 151623,
+      "sha256": "f7f09c8f4a03d895c2add4e2a6a0241bbcb10aa837646f53305769d260554ca0"
+    },
+    {
+      "path": "docs/research/four-reference/offline-role-boundaries-timeline.png",
+      "bytes": 171546,
+      "sha256": "a9304d352dda0c4f2ef79247f3972c8622a68ee5a3384c6664cef3ed61e7a49d"
+    },
+    {
+      "path": "docs/research/four-reference/offline-timeline-1586x912.png",
+      "bytes": 206905,
+      "sha256": "3ba9a651614e5a84d28c4ccf43f2a123e6b05a8b40a95e237f918b4e894480fa"
+    },
+    {
+      "path": "docs/research/four-reference/replay-1280x800.png",
+      "bytes": 179139,
+      "sha256": "988340d3b67664e3b0cd4235d00f32ecd846fcfe44c6f09a76cb64672df21fd4"
+    },
+    {
+      "path": "docs/research/four-reference/replay-1586x912.png",
+      "bytes": 210580,
+      "sha256": "1a7c0f1ae9ce4b9254b5a20dadac8f486737f2d7801a5ab055ce43a65e1ab559"
+    },
+    {
+      "path": "docs/research/four-reference/replay-1586x992.png",
+      "bytes": 219833,
+      "sha256": "d29c39f060893909ebc3fdc7f4bddd339b8b4ff5ec2a508272f16839c20ec0c4"
+    },
+    {
+      "path": "docs/research/four-reference/replay-390x844.png",
+      "bytes": 64231,
+      "sha256": "ede8e49fc55815d9260a3be85a2e4135aa04dc2999eec7bcd80eeba77bf420c4"
+    },
+    {
+      "path": "docs/research/four-reference/replay-failure.png",
+      "bytes": 198174,
+      "sha256": "878e3cf34bed3142fc0042db636579fac5d0a0d763b04894de72e4eefd7397e2"
+    },
+    {
+      "path": "docs/research/four-reference/replay-mobile-inspection.png",
+      "bytes": 57834,
+      "sha256": "2e093cae4291cbd7497bb00c322a448511db9173101d8da07220533da4a600bc"
+    },
+    {
+      "path": "docs/research/four-reference/role-boundaries-replay.png",
+      "bytes": 151623,
+      "sha256": "f7f09c8f4a03d895c2add4e2a6a0241bbcb10aa837646f53305769d260554ca0"
+    },
+    {
+      "path": "docs/research/four-reference/role-boundaries-timeline.png",
+      "bytes": 171546,
+      "sha256": "a9304d352dda0c4f2ef79247f3972c8622a68ee5a3384c6664cef3ed61e7a49d"
+    },
+    {
+      "path": "docs/research/four-reference/timeline-1280x800.png",
+      "bytes": 175230,
+      "sha256": "8bde664ff3cea4c0c514656a39b62a1ac0834307d75c330e331aa84e6eb93b90"
+    },
+    {
+      "path": "docs/research/four-reference/timeline-1586x912.png",
+      "bytes": 206905,
+      "sha256": "3ba9a651614e5a84d28c4ccf43f2a123e6b05a8b40a95e237f918b4e894480fa"
+    },
+    {
+      "path": "docs/research/four-reference/timeline-1586x992.png",
+      "bytes": 225578,
+      "sha256": "d0eaa2c7ec56cf3a6d75984f613f6e1470aa3698d62aa82018bcb64f661d3108"
+    },
+    {
+      "path": "docs/research/four-reference/timeline-390x844.png",
+      "bytes": 64896,
+      "sha256": "5d3919c1e18959980107164f7347f239f1e739f77958ed2824670d94035920e0"
+    },
+    {
+      "path": "docs/research/four-reference/timeline-mobile-inspection.png",
+      "bytes": 63531,
+      "sha256": "82991df2019d2804594da03390fc41cef1ce625c4eca8ee9be06b1d4bcd5b21d"
+    },
+    {
+      "path": "docs/research/four-reference/workbench-empty.png",
+      "bytes": 63405,
+      "sha256": "0a00dd0f76fe4f538363a6abed344c3b65f23fa23067647072ab586d4568b64a"
+    },
+    {
+      "path": "docs/research/four-reference/workbench-long-evidence.png",
+      "bytes": 171718,
+      "sha256": "41f51df59061cebb82447344e2088236632041e9ffbd1238bc39bc16efc69c5c"
+    }
+  ],
+  "dataset_run_count": 15
+}

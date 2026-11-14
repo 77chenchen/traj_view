@@ -28,6 +28,21 @@ const paths = {
   minus: 'M5 12h14',
   fit: 'M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5',
   copy: 'M8 8h12v12H8zM16 4H4v12',
+  events: 'M4 5h16M4 12h16M4 19h16M7 3v4m8 3v4m-4 3v4',
+  file: 'M5 3h9l5 5v13H5zM14 3v6h5M9 13h6m-6 4h6',
+  terminal: 'M3 5h18v14H3zM7 9l3 3-3 3m6 0h4',
+  first: 'M6 5v14M18 5l-9 7 9 7V5z',
+  clock: 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
+  calendar: 'M5 5h14v15H5zM8 3v4m8-4v4M5 10h14',
+  share: 'M8 11l8-5M8 13l8 5M8 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 19a3 3 0 1 1-6 0 3 3 0 0 1 6 0z',
+  more: 'M5 12h.01M12 12h.01M19 12h.01',
+  bell: 'M5 16h14l-2-3V9a5 5 0 0 0-10 0v4l-2 3zM10 20h4',
+  help: 'M9 8a3 3 0 0 1 6 0c0 2-3 2-3 4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
+  user: 'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM4 21v-2a8 8 0 0 1 16 0v2',
+  spark: 'M12 3l3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6z',
+  chart: 'M4 20V12m6 8V5m6 15v-9m5 9H2',
+  retry: 'M20 8V3l-4 4a8 8 0 1 0 3 9M20 8h-5',
+  panel: 'M3 5h18v14H3zM15 5v14M6 15h5',
 } as const;
 
 export type IconName = keyof typeof paths;

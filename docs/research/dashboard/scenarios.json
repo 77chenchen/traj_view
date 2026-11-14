@@ -1,0 +1,98 @@
+{
+  "chrome": "157.0.8103.52",
+  "scenarios": [
+    {
+      "name": "run-list",
+      "status": "ok"
+    },
+    {
+      "name": "graph",
+      "status": "ok"
+    },
+    {
+      "name": "compare",
+      "status": "ok"
+    },
+    {
+      "name": "dag",
+      "status": "ok"
+    },
+    {
+      "name": "dag-compare",
+      "status": "ok"
+    },
+    {
+      "name": "hierarchy",
+      "status": "ok"
+    },
+    {
+      "name": "dashboard",
+      "status": "ok",
+      "value": {
+        "replay": true,
+        "recordedPatch": true,
+        "annotations": true,
+        "playback": true,
+        "timeline": true,
+        "sourceIndex": "9007199254740993",
+        "offline": false
+      }
+    },
+    {
+      "name": "dashboard-compare",
+      "status": "ok"
+    },
+    {
+      "name": "sankey",
+      "status": "ok"
+    },
+    {
+      "name": "theme",
+      "status": "ok"
+    },
+    {
+      "name": "folding",
+      "status": "ok"
+    },
+    {
+      "name": "narrow",
+      "status": "ok"
+    },
+    {
+      "name": "live",
+      "status": "ok"
+    },
+    {
+      "name": "first-render-500",
+      "status": "ok",
+      "value": 97
+    },
+    {
+      "name": "first-render-2000",
+      "status": "ok",
+      "value": 112.40000000596046
+    },
+    {
+      "name": "dashboard-offline",
+      "status": "ok",
+      "value": {
+        "replay": true,
+        "recordedPatch": true,
+        "annotations": true,
+        "playback": true,
+        "timeline": true,
+        "sourceIndex": "9007199254740993",
+        "offline": true,
+        "httpRequests": 0
+      }
+    },
+    {
+      "name": "offline",
+      "status": "ok"
+    },
+    {
+      "name": "delivered-offline",
+      "status": "ok"
+    }
+  ]
+}

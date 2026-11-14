@@ -41,7 +41,51 @@ FIXTURE_CASES = {
 
 
 def test_fixture_coverage():
-    assert set(FIXTURE_CASES) == {path.name for path in FIXTURES.iterdir() if path.is_file()}
+    dag_cases = {f"dag-{name}.events.jsonl" for name in ("baseline", "variant", "short")}
+    dashboard_cases = {f"dashboard-{name}.events.jsonl" for name in ("baseline", "variant", "short")}
+    assert set(FIXTURE_CASES) | dag_cases | dashboard_cases | {"role-boundaries.events.jsonl"} == {path.name for path in FIXTURES.iterdir() if path.is_file()}
+
+
+def test_role_boundary_fixture_preserves_missing_evidence():
+    run, = load(FIXTURES / "role-boundaries.events.jsonl")
+    assert run.task_id == "synthetic-role-boundaries"
+    assert [step.idx for step in run.steps] == [11, 21, 31, 41]
+    assert run.steps[0].action is None
+    assert run.steps[1].observation.exit_code == 7
+    assert run.steps[2].action.tool == "write_file"
+    assert "patch" not in run.steps[2].action.args
+    assert run.steps[-1].tags == ["final_message"]
+    assert run.outcome.passed is None
+    assert Trajectory.model_validate_json(run.model_dump_json(by_alias=True)) == run
+
+
+@pytest.mark.parametrize("name,count", [("baseline", 12), ("variant", 12), ("short", 9)])
+def test_dashboard_fixture(name, count):
+    path = FIXTURES / f"dashboard-{name}.events.jsonl"
+    run, = load(path)
+    assert run.task_id == "synthetic-session-regression"
+    assert len(run.steps) == count
+    assert all(step.ts for step in run.steps)
+    assert run.steps[5].action.args["patch"].startswith("*** Begin Patch")
+    assert run.steps[4].observation.exit_code == 1
+    assert run.usage.wall_s == (count - 1) * 7
+    assert run.meta["raw_text"].encode("utf-8") == path.read_bytes()
+    assert Trajectory.model_validate_json(run.model_dump_json(by_alias=True)) == run
+
+
+@pytest.mark.parametrize("name,count", [("baseline", 7), ("variant", 7), ("short", 2)])
+def test_dag_fixture(name, count):
+    path = FIXTURES / f"dag-{name}.events.jsonl"
+    run, = load(path)
+    assert run.task_id == "dag-analysis"
+    assert len(run.steps) == count
+    assert all(step.ts is None for step in run.steps)
+    assert [step.idx for step in run.steps] == sorted({step.idx for step in run.steps})
+    if name == "baseline":
+        assert run.steps[2].idx == 9007199254740993
+    assert run.meta["raw_text"].encode("utf-8") == path.read_bytes()
+    assert Trajectory.model_validate_json(run.model_dump_json(by_alias=True)) == run
+    assert load(path, source_format="events_jsonl") == [run]
 
 
 @pytest.mark.parametrize("name", FIXTURE_CASES)

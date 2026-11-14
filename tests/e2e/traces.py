@@ -47,7 +47,8 @@ if __name__ == "__main__":
         write_events(args.directory, f"qa-render-{size}", size)
     write_events(
         args.directory, "qa-folded-2000", 2000,
-        long_text="Long synthetic observation. " * 80 + "qa-end-of-observation",
+        long_text="\n".join(f"Long synthetic observation {line}: " + "recorded " * 25 for line in range(800)) + "\nqa-end-of-observation",
         repeat_every=50,
     )
     write_events(args.directory, "qa-exact-indices", 2, repeat_every=2, first_index=9007199254740992, stride=1)
+    write_events(args.directory, "qa-zero-steps", 0)

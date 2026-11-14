@@ -7,21 +7,16 @@ export interface Point { x: number; y: number }
 export interface Box extends Point { width: number; height: number }
 export interface Layout {
   positions: Map<string, Point>;
-  name: 'ELK' | 'Dagre' | 'Preset';
+  name: 'ELK' | 'Dagre' | 'Preset' | 'Hierarchy';
   reason?: string;
 }
 
 const cache = new WeakMap<Graph, Promise<Layout>>();
 
 function preset(graph: Graph, reason?: string): Layout {
-  const columns = graph.nodes.length < 8 ? Math.max(1, graph.nodes.length)
-    : Math.max(4, Math.min(64, Math.ceil(Math.sqrt(graph.nodes.length * 1.5))));
-  const positions = new Map(graph.nodes.map((node, index) => {
-    const row = Math.floor(index / columns);
-    const offset = index % columns;
-    const col = row % 2 ? columns - 1 - offset : offset;
-    return [node.id, { x: col * 226, y: row * 148 }];
-  }));
+  // A single monotonic time axis also handles disconnected filtered subgraphs.
+  // Never wrap a long trace into rows: that reverses arrows on alternate rows.
+  const positions = new Map(graph.nodes.map((node, index) => [node.id, { x: index * 240, y: 0 }]));
   return { positions, name: 'Preset', reason };
 }
 
@@ -67,7 +62,11 @@ async function cytoscapeLayout(graph: Graph, engine: 'elk' | 'dagre'): Promise<L
   }
 }
 
-async function arrange(graph: Graph) {
+async function arrange(graph: Graph): Promise<Layout> {
+  if (graph.nodes.some((node) => node.view)) return {
+    positions: new Map(graph.nodes.map((node, index) => [node.id, { x: index * 240, y: (node.view?.depth ?? node.depth ?? 0) * 125 }])),
+    name: 'Hierarchy', reason: 'Source order → · containment ↓',
+  };
   if (graph.nodes.length <= 1) return preset(graph);
   if (graph.nodes.length > 180 || graph.edges.length > 700) {
     return preset(graph, 'Large graph · time-order layout');
@@ -76,7 +75,9 @@ async function arrange(graph: Graph) {
     const engine = graph.nodes.length <= 36 && graph.edges.length <= 160 ? 'elk' : 'dagre';
     const layout = await cytoscapeLayout(graph, engine);
     if (layout.positions.size !== graph.nodes.length ||
-      [...layout.positions.values()].some(({ x, y }) => !Number.isFinite(x) || !Number.isFinite(y))) {
+      [...layout.positions.values()].some(({ x, y }) => !Number.isFinite(x) || !Number.isFinite(y)) ||
+      graph.nodes.some((node, index) => index > 0 &&
+        layout.positions.get(node.id)!.x <= layout.positions.get(graph.nodes[index - 1].id)!.x)) {
       throw new Error('Invalid layout positions');
     }
     return layout;

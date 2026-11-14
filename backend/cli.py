@@ -213,6 +213,40 @@ def serve(
 
 
 @app.command()
+def live(
+    source: Annotated[Path, typer.Argument(help="Local directory of actively written *.codex.jsonl")],
+    output: Annotated[Path, typer.Option("-o", "--output")] = Path(".workers/local/live-out"),
+    metadata: Annotated[Optional[Path], typer.Option("--metadata")] = None,
+    port: Annotated[int, typer.Option(min=0, max=65535)] = 8766,
+    frontend: Annotated[Path, typer.Option()] = DEFAULT_FRONTEND,
+    phase_config: Annotated[Path, typer.Option("--phases")] = DEFAULT_PHASES,
+) -> None:
+    """Watch local Codex traces and stream DAG updates to the viewer."""
+    from .live import LiveDataset
+    if not source.is_dir():
+        fail("source must be a local directory of Codex JSONL traces")
+    if not (frontend / 'index.html').is_file():
+        fail("build the frontend before starting live mode")
+    if source.resolve().is_relative_to(output.resolve()) or output.resolve().is_relative_to(source.resolve()):
+        fail("live source and output must not overlap")
+    watcher = LiveDataset(source, output, phase_config, metadata)
+    try:
+        watcher.start()
+        if not (output / 'index.json').exists():
+            fail("no readable runs yet; start a Codex capture first")
+        with make_server('127.0.0.1', port, frontend.resolve(), output.resolve(), live=watcher) as server:
+            print(f"TrajViz live at http://127.0.0.1:{server.server_port}", flush=True)
+            try:
+                server.serve_forever()
+            except KeyboardInterrupt:
+                pass
+    except (OSError, ValueError) as error:
+        fail(str(error))
+    finally:
+        watcher.close()
+
+
+@app.command()
 def export(
     output: Annotated[Path, typer.Argument(help="Dataset from trajviz build")] = Path("out"),
     html: Annotated[Optional[Path], typer.Option("--html", help="Write a standalone HTML report")] = None,

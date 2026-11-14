@@ -1,0 +1,40 @@
+{
+  "repository": "multimodal-art-projection/NL2RepoBench",
+  "revision": "781a1da1ee41fb8edb0bed22f586d69111610edf",
+  "seed": 20261112,
+  "model_alias": "x-test-1",
+  "model_identity": "GLM-5.3",
+  "identity_evidence": "User confirmed x-test-1 maps to GLM-5.3; gateway exposes the alias only.",
+  "requested_tasks": 50,
+  "attempted": 50,
+  "with_tool_events": 27,
+  "tool_events": 1061,
+  "total_attempts": 63,
+  "tasks_with_tool_evidence": 30,
+  "all_tool_events": 1242,
+  "tasks_completed_ever": 1,
+  "statuses": {
+    "failed": 49,
+    "completed": 1
+  },
+  "failures": {
+    "timeout": 16,
+    "rate_limit": 33
+  },
+  "checkpoint_utc": "2026-11-12T12:51:11.172283+00:00",
+  "benchmark_grader": "not run",
+  "finalization": {
+    "status": "verified",
+    "tasks_with_tool_evidence": 30,
+    "tasks_completed_ever": 1,
+    "total_attempts": 63,
+    "all_tool_events": 1242,
+    "capture_statuses": {
+      "failed": 49,
+      "completed": 1
+    },
+    "all_50_have_tool_evidence": false,
+    "literal_key_matches": 0,
+    "offline_http_requests": 0
+  }
+}

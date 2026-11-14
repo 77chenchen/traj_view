@@ -75,6 +75,9 @@ export interface GraphNode {
   step_indices: StepIndex[];
   error: boolean;
   phase_counts: Record<string, number>;
+  // Ephemeral display metadata. Never written into the frozen v1 payload.
+  depth?: number;
+  view?: { kind: 'phase' | 'loop' | 'iteration'; depth: number; open: boolean; repetitions?: number; period?: number };
 }
 
 export interface GraphEdge {

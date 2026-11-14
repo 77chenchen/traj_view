@@ -1,0 +1,217 @@
+{
+  "date": "2026-11-14",
+  "chrome": "157.0.8103.52",
+  "captureSource": "scripts/verify-density.mjs; public out dataset; Playwright system Chrome",
+  "captures": [
+    {
+      "file": "density-compare-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "e84788d111729c27df5b98442cdcacdbd97a61469c29d39f6dc6208253d48b62"
+    },
+    {
+      "file": "density-compare-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "83265fe34d9de4fa4301364980d060115df833c24a2777abb169094c995de80f"
+    },
+    {
+      "file": "density-compare-390.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "f13551686c293b4b754aee0da5b03c9f3a21de624699aef579a8d9e77937ac2e"
+    },
+    {
+      "file": "density-compare-dags.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "3783f1f583818646d90b7457a9302c2191675d3d1ee6afb6c897f9fae764fd4c"
+    },
+    {
+      "file": "density-compare-metrics.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "4dead8d031b610b421c8832e5f8d99153ff3f0728d031e73934646dbb2f43f9a"
+    },
+    {
+      "file": "density-graph-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "8768160d94a9bacf4e77a1feebaab63c41ae39b7b90df7e21f8d22530d511917"
+    },
+    {
+      "file": "density-graph-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "f377dbdf85c120121a39d55ea5e82c04546e636dbfdcfc3839ccd60d951ded0b"
+    },
+    {
+      "file": "density-graph-390.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "3d72d9b174469e09bceba4a8ecf02ec80cdb58715620de97c5e72c7b6c9b3485"
+    },
+    {
+      "file": "density-replay-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "47e405e0ac3dd10395480398e85b18b0f79b6e42e4bd99d3606c182eb31d523f"
+    },
+    {
+      "file": "density-replay-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "823d961d896886a4fa6481cfac9ae2ed53bc2a998788df056c4f07af71cc4322"
+    },
+    {
+      "file": "density-replay-390.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "a5b230148ad5e505c88bef67313cad0be010f6c48b4037cbfa4d551eea1bd8de"
+    },
+    {
+      "file": "density-replay-edit.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "823d961d896886a4fa6481cfac9ae2ed53bc2a998788df056c4f07af71cc4322"
+    },
+    {
+      "file": "density-replay-failure.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "3de9031e815b2eb20ce30aa631b6d662e162f98e699370dc4628809b86628f18"
+    },
+    {
+      "file": "density-timeline-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "ca620e235e4b9a521e90d319ea1286f981f44451d73f76d147d85a70958641f1"
+    },
+    {
+      "file": "density-timeline-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "11122769848c643e0281c0a63d22bb30e7e34c1dac68c45720fb7753afe8dd81"
+    },
+    {
+      "file": "density-timeline-390.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "a82a516d3f45e02060aa10f5d007e1b2f3ee80d45c2679ea0f15bf095232bfc4"
+    }
+  ],
+  "offlinePairs": [
+    {
+      "local": "density-compare-1280.png",
+      "offline": "density-offline-compare-1280.png",
+      "identical": true,
+      "sha256": "e84788d111729c27df5b98442cdcacdbd97a61469c29d39f6dc6208253d48b62"
+    },
+    {
+      "local": "density-compare-1586.png",
+      "offline": "density-offline-compare-1586.png",
+      "identical": true,
+      "sha256": "83265fe34d9de4fa4301364980d060115df833c24a2777abb169094c995de80f"
+    },
+    {
+      "local": "density-compare-390.png",
+      "offline": "density-offline-compare-390.png",
+      "identical": true,
+      "sha256": "f13551686c293b4b754aee0da5b03c9f3a21de624699aef579a8d9e77937ac2e"
+    },
+    {
+      "local": "density-compare-dags.png",
+      "offline": "density-offline-compare-dags.png",
+      "identical": true,
+      "sha256": "3783f1f583818646d90b7457a9302c2191675d3d1ee6afb6c897f9fae764fd4c"
+    },
+    {
+      "local": "density-compare-metrics.png",
+      "offline": "density-offline-compare-metrics.png",
+      "identical": true,
+      "sha256": "4dead8d031b610b421c8832e5f8d99153ff3f0728d031e73934646dbb2f43f9a"
+    },
+    {
+      "local": "density-graph-1280.png",
+      "offline": "density-offline-graph-1280.png",
+      "identical": true,
+      "sha256": "8768160d94a9bacf4e77a1feebaab63c41ae39b7b90df7e21f8d22530d511917"
+    },
+    {
+      "local": "density-graph-1586.png",
+      "offline": "density-offline-graph-1586.png",
+      "identical": true,
+      "sha256": "f377dbdf85c120121a39d55ea5e82c04546e636dbfdcfc3839ccd60d951ded0b"
+    },
+    {
+      "local": "density-graph-390.png",
+      "offline": "density-offline-graph-390.png",
+      "identical": true,
+      "sha256": "3d72d9b174469e09bceba4a8ecf02ec80cdb58715620de97c5e72c7b6c9b3485"
+    },
+    {
+      "local": "density-replay-1280.png",
+      "offline": "density-offline-replay-1280.png",
+      "identical": true,
+      "sha256": "47e405e0ac3dd10395480398e85b18b0f79b6e42e4bd99d3606c182eb31d523f"
+    },
+    {
+      "local": "density-replay-1586.png",
+      "offline": "density-offline-replay-1586.png",
+      "identical": true,
+      "sha256": "823d961d896886a4fa6481cfac9ae2ed53bc2a998788df056c4f07af71cc4322"
+    },
+    {
+      "local": "density-replay-390.png",
+      "offline": "density-offline-replay-390.png",
+      "identical": true,
+      "sha256": "a5b230148ad5e505c88bef67313cad0be010f6c48b4037cbfa4d551eea1bd8de"
+    },
+    {
+      "local": "density-replay-edit.png",
+      "offline": "density-offline-replay-edit.png",
+      "identical": true,
+      "sha256": "823d961d896886a4fa6481cfac9ae2ed53bc2a998788df056c4f07af71cc4322"
+    },
+    {
+      "local": "density-replay-failure.png",
+      "offline": "density-offline-replay-failure.png",
+      "identical": true,
+      "sha256": "3de9031e815b2eb20ce30aa631b6d662e162f98e699370dc4628809b86628f18"
+    },
+    {
+      "local": "density-timeline-1280.png",
+      "offline": "density-offline-timeline-1280.png",
+      "identical": true,
+      "sha256": "ca620e235e4b9a521e90d319ea1286f981f44451d73f76d147d85a70958641f1"
+    },
+    {
+      "local": "density-timeline-1586.png",
+      "offline": "density-offline-timeline-1586.png",
+      "identical": true,
+      "sha256": "11122769848c643e0281c0a63d22bb30e7e34c1dac68c45720fb7753afe8dd81"
+    },
+    {
+      "local": "density-timeline-390.png",
+      "offline": "density-offline-timeline-390.png",
+      "identical": true,
+      "sha256": "a82a516d3f45e02060aa10f5d007e1b2f3ee80d45c2679ea0f15bf095232bfc4"
+    }
+  ],
+  "sourceSha256": {
+    "frontend/src/main.tsx": "652aba6aa2b344f0c8f477f066625e2e3f1d57ff6c2da2f0e6c8a7eea834050e",
+    "frontend/src/Evidence.tsx": "9dd2ac4ffbee4695f28af99901bfbee7fedabd004cf01cd135a10040828b9a7f",
+    "frontend/src/Replay.tsx": "ecfc1084fec1f99955d9e6856e99b23b9cd0f4cd9c0bb9173ccd33eda61f9e3b",
+    "frontend/src/Timeline.tsx": "9f86d9625273a32f35efba7b1ecf77be53aa1575dda50ce9e4d56dc051066310",
+    "frontend/src/RunGraph.tsx": "8b5c6d9c6383665c3e8ffdd98b654e8a6d744f069e6b1ae3a80fba25123041f9",
+    "frontend/src/Compare.tsx": "0bcdf0b6ea1954fd5d775599d318ff21ac5d9ec4b272c6212993f1257ac283e1",
+    "frontend/src/Inspector.tsx": "f05e3531114d7c942f5e17b4b15002e8bdcb8bee39d312269ef2356822854e64",
+    "frontend/src/density.css": "e13ab0e8f4c74d414b46ca920bbc4045bd0e82fe065756982ee61e3e4c0e51ea",
+    "tests/e2e/density.mjs": "ca457e8a8e20c00c072280077253e30776e447ba8ce84324a7119c4faf892ee1"
+  },
+  "offlineReportSha256": "735e11e4215844d8b2ccf754ce07735178d58a851f2d08b162a2482b34f419a8",
+  "productionAssets": [
+    "index-Dt7rVERK.js",
+    "style-DzQpKc-m.css"
+  ]
+}

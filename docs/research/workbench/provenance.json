@@ -1,0 +1,25 @@
+{
+  "kind": "actual Chrome screenshots and browser results",
+  "source": "Local synthetic fixtures and temporary generated QA traces only",
+  "primary_reference": "AI Coding Agent Trajectory Replay Dashboard.png (user supplied; no assets or example data imported)",
+  "images": {
+    "replay-1440.png": "test-results/e2e/workbench-replay-1440.png",
+    "replay-1280.png": "test-results/e2e/workbench-replay-1280.png",
+    "failure-1440.png": "test-results/e2e/workbench-failure-1440.png",
+    "failure-1280.png": "test-results/e2e/workbench-failure-1280.png",
+    "validation-1280.png": "test-results/e2e/workbench-verified-1280.png",
+    "narrow.png": "test-results/e2e/workbench-narrow.png",
+    "long-evidence.png": "test-results/e2e/workbench-long-evidence.png",
+    "empty.png": "test-results/e2e/workbench-empty.png",
+    "graph.png": "test-results/e2e/graph-inspector.png",
+    "compare.png": "test-results/e2e/dashboard-compare.png",
+    "timeline.png": "test-results/e2e/dashboard-timeline.png",
+    "timeline-1x.png": "test-results/dashboard-delivery/timeline-scale-offline-1x.png",
+    "timeline-2x.png": "test-results/dashboard-delivery/timeline-scale-offline-2x.png",
+    "offline-replay-1280.png": "test-results/dashboard-delivery/workbench-offline-replay-1280.png"
+  },
+  "reference_assets_copied": false,
+  "private_logs_included": false,
+  "public_report_runs": 14,
+  "smoke_runs": 19
+}

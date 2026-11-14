@@ -1,0 +1,624 @@
+{
+  "chrome": "157.0.8103.52",
+  "scenarios": [
+    {
+      "name": "run-list",
+      "status": "ok"
+    },
+    {
+      "name": "graph",
+      "status": "ok"
+    },
+    {
+      "name": "compare",
+      "status": "ok"
+    },
+    {
+      "name": "dag",
+      "status": "ok"
+    },
+    {
+      "name": "dag-compare",
+      "status": "ok"
+    },
+    {
+      "name": "hierarchy",
+      "status": "ok"
+    },
+    {
+      "name": "workbench",
+      "status": "ok",
+      "value": {
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 900,
+            "scrollWidth": 1440,
+            "scrollHeight": 900,
+            "panes": [
+              {
+                "x": 206,
+                "y": 335.984375,
+                "width": 316.671875,
+                "height": 479.015625,
+                "top": 335.984375,
+                "right": 522.671875,
+                "bottom": 815,
+                "left": 206
+              },
+              {
+                "x": 534.671875,
+                "y": 335.984375,
+                "width": 572.828125,
+                "height": 354.0625,
+                "top": 335.984375,
+                "right": 1107.5,
+                "bottom": 690.046875,
+                "left": 534.671875
+              },
+              {
+                "x": 534.671875,
+                "y": 700.046875,
+                "width": 572.828125,
+                "height": 114.953125,
+                "top": 700.046875,
+                "right": 1107.5,
+                "bottom": 815,
+                "left": 534.671875
+              },
+              {
+                "x": 1119.5,
+                "y": 335.984375,
+                "width": 304.5,
+                "height": 479.015625,
+                "top": 335.984375,
+                "right": 1424,
+                "bottom": 815,
+                "left": 1119.5
+              },
+              {
+                "x": 206,
+                "y": 825,
+                "width": 1218,
+                "height": 61,
+                "top": 825,
+                "right": 1424,
+                "bottom": 886,
+                "left": 206
+              }
+            ]
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "scrollWidth": 1280,
+            "scrollHeight": 800,
+            "panes": [
+              {
+                "x": 186,
+                "y": 335.984375,
+                "width": 269.5,
+                "height": 379.015625,
+                "top": 335.984375,
+                "right": 455.5,
+                "bottom": 715,
+                "left": 186
+              },
+              {
+                "x": 465.5,
+                "y": 335.984375,
+                "width": 508.234375,
+                "height": 278.0625,
+                "top": 335.984375,
+                "right": 973.734375,
+                "bottom": 614.046875,
+                "left": 465.5
+              },
+              {
+                "x": 465.5,
+                "y": 624.046875,
+                "width": 508.234375,
+                "height": 90.953125,
+                "top": 624.046875,
+                "right": 973.734375,
+                "bottom": 715,
+                "left": 465.5
+              },
+              {
+                "x": 983.734375,
+                "y": 335.984375,
+                "width": 280.265625,
+                "height": 379.015625,
+                "top": 335.984375,
+                "right": 1264,
+                "bottom": 715,
+                "left": 983.734375
+              },
+              {
+                "x": 186,
+                "y": 725,
+                "width": 1078,
+                "height": 61,
+                "top": 725,
+                "right": 1264,
+                "bottom": 786,
+                "left": 186
+              }
+            ]
+          }
+        ],
+        "workflow": [
+          "#50 failed",
+          "#60 patch",
+          "#70 failed rerun",
+          "#100 validation passed"
+        ],
+        "synchronization": true,
+        "narrowInspector": "toggle",
+        "longEvidence": true,
+        "empty": true,
+        "offline": false
+      }
+    },
+    {
+      "name": "dashboard",
+      "status": "ok",
+      "value": {
+        "replay": true,
+        "recordedPatch": true,
+        "annotations": true,
+        "playback": true,
+        "timeline": true,
+        "timelineScale": {
+          "sharedAxis": true,
+          "positionAndWidth": [
+            1,
+            2,
+            8
+          ],
+          "integerOrdinals": true
+        },
+        "sourceIndex": "9007199254740993",
+        "offline": false
+      }
+    },
+    {
+      "name": "dashboard-compare",
+      "status": "ok"
+    },
+    {
+      "name": "four-reference",
+      "status": "ok",
+      "value": {
+        "operationChains": [
+          "replay: failure/patch/rerun/pass, seek/speed/play",
+          "graph: layers/zoom/hierarchy/context/activity/fullscreen",
+          "timeline: scales/filters/three-way selection",
+          "compare: run selection/divergence/signature/patch/three DAGs"
+        ],
+        "sourceTruth": {
+          "completionIsNeutral": true,
+          "recordedValidationIsSuccessful": true,
+          "genericRolesQualified": true,
+          "noPatchEditQualified": true
+        },
+        "geometries": [
+          {
+            "view": "compare",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          }
+        ],
+        "sourceIndex": "9007199254740993",
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "sankey",
+      "status": "ok"
+    },
+    {
+      "name": "theme",
+      "status": "ok"
+    },
+    {
+      "name": "folding",
+      "status": "ok"
+    },
+    {
+      "name": "narrow",
+      "status": "ok"
+    },
+    {
+      "name": "live",
+      "status": "ok"
+    },
+    {
+      "name": "first-render-500",
+      "status": "ok",
+      "value": 81
+    },
+    {
+      "name": "first-render-2000",
+      "status": "ok",
+      "value": 101
+    },
+    {
+      "name": "workbench-offline",
+      "status": "ok",
+      "value": {
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 900,
+            "scrollWidth": 1440,
+            "scrollHeight": 900,
+            "panes": [
+              {
+                "x": 206,
+                "y": 335.984375,
+                "width": 316.671875,
+                "height": 479.015625,
+                "top": 335.984375,
+                "right": 522.671875,
+                "bottom": 815,
+                "left": 206
+              },
+              {
+                "x": 534.671875,
+                "y": 335.984375,
+                "width": 572.828125,
+                "height": 354.0625,
+                "top": 335.984375,
+                "right": 1107.5,
+                "bottom": 690.046875,
+                "left": 534.671875
+              },
+              {
+                "x": 534.671875,
+                "y": 700.046875,
+                "width": 572.828125,
+                "height": 114.953125,
+                "top": 700.046875,
+                "right": 1107.5,
+                "bottom": 815,
+                "left": 534.671875
+              },
+              {
+                "x": 1119.5,
+                "y": 335.984375,
+                "width": 304.5,
+                "height": 479.015625,
+                "top": 335.984375,
+                "right": 1424,
+                "bottom": 815,
+                "left": 1119.5
+              },
+              {
+                "x": 206,
+                "y": 825,
+                "width": 1218,
+                "height": 61,
+                "top": 825,
+                "right": 1424,
+                "bottom": 886,
+                "left": 206
+              }
+            ]
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "scrollWidth": 1280,
+            "scrollHeight": 800,
+            "panes": [
+              {
+                "x": 186,
+                "y": 335.984375,
+                "width": 269.5,
+                "height": 379.015625,
+                "top": 335.984375,
+                "right": 455.5,
+                "bottom": 715,
+                "left": 186
+              },
+              {
+                "x": 465.5,
+                "y": 335.984375,
+                "width": 508.234375,
+                "height": 278.0625,
+                "top": 335.984375,
+                "right": 973.734375,
+                "bottom": 614.046875,
+                "left": 465.5
+              },
+              {
+                "x": 465.5,
+                "y": 624.046875,
+                "width": 508.234375,
+                "height": 90.953125,
+                "top": 624.046875,
+                "right": 973.734375,
+                "bottom": 715,
+                "left": 465.5
+              },
+              {
+                "x": 983.734375,
+                "y": 335.984375,
+                "width": 280.265625,
+                "height": 379.015625,
+                "top": 335.984375,
+                "right": 1264,
+                "bottom": 715,
+                "left": 983.734375
+              },
+              {
+                "x": 186,
+                "y": 725,
+                "width": 1078,
+                "height": 61,
+                "top": 725,
+                "right": 1264,
+                "bottom": 786,
+                "left": 186
+              }
+            ]
+          }
+        ],
+        "workflow": [
+          "#50 failed",
+          "#60 patch",
+          "#70 failed rerun",
+          "#100 validation passed"
+        ],
+        "synchronization": true,
+        "narrowInspector": "toggle",
+        "longEvidence": false,
+        "empty": false,
+        "offline": true,
+        "httpRequests": 0
+      }
+    },
+    {
+      "name": "dashboard-offline",
+      "status": "ok",
+      "value": {
+        "replay": true,
+        "recordedPatch": true,
+        "annotations": true,
+        "playback": true,
+        "timeline": true,
+        "timelineScale": {
+          "sharedAxis": true,
+          "positionAndWidth": [
+            1,
+            2,
+            8
+          ],
+          "integerOrdinals": true
+        },
+        "sourceIndex": "9007199254740993",
+        "offline": true,
+        "httpRequests": 0
+      }
+    },
+    {
+      "name": "four-reference-offline",
+      "status": "ok",
+      "value": {
+        "operationChains": [
+          "replay: failure/patch/rerun/pass, seek/speed/play",
+          "graph: layers/zoom/hierarchy/context/activity/fullscreen",
+          "timeline: scales/filters/three-way selection",
+          "compare: run selection/divergence/signature/patch/three DAGs"
+        ],
+        "sourceTruth": {
+          "completionIsNeutral": true,
+          "recordedValidationIsSuccessful": true,
+          "genericRolesQualified": true,
+          "noPatchEditQualified": true
+        },
+        "geometries": [
+          {
+            "view": "compare",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          }
+        ],
+        "sourceIndex": "9007199254740993",
+        "httpRequests": 0,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "offline",
+      "status": "ok"
+    },
+    {
+      "name": "delivered-offline",
+      "status": "ok"
+    }
+  ]
+}

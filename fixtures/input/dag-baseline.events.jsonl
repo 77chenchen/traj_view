@@ -1,0 +1,9 @@
+{"type": "run.start", "id": "dag-baseline", "task_id": "dag-analysis", "model": "qa-model", "agent": "synthetic", "condition": "baseline"}
+{"type": "step", "idx": 7, "action": {"tool": "read_file", "targets": ["src/alpha.py"]}, "observation": {"text": "synthetic ok", "exit_code": 0}, "thought": "Synthetic baseline step 0."}
+{"type": "step", "idx": 19, "action": {"tool": "read_file", "args": {"path": "./src/alpha.py"}}, "observation": {"text": "synthetic ok", "exit_code": 0}}
+{"type": "step", "idx": 9007199254740993, "action": {"tool": "write_file", "targets": ["src/alpha.py"], "args": {"content": "synthetic = True"}}, "observation": {"text": "synthetic ok", "exit_code": 0}, "thought": "Synthetic baseline step 2."}
+{"type": "step", "idx": 9007199254741007, "action": {"tool": "read_file", "targets": ["src/alpha.py"]}, "observation": {"text": "synthetic ok", "exit_code": 0}, "thought": "Synthetic baseline step 3."}
+{"type": "step", "idx": 9007199254741021, "action": {"tool": "shell", "command": "pytest tests/test_alpha.py", "targets": ["tests/test_alpha.py"]}, "observation": {"text": "synthetic test failed", "exit_code": 1}, "thought": "Synthetic baseline step 4."}
+{"type": "step", "idx": 9007199254741033, "action": {"tool": "shell", "command": "pytest tests/test_alpha.py", "targets": ["tests/test_alpha.py"]}, "observation": {"text": "synthetic ok", "exit_code": 0}, "thought": "Synthetic baseline step 5."}
+{"type": "step", "idx": 9007199254741049, "thought": "Synthetic final message.", "tags": ["final_message"]}
+{"type": "run.end", "outcome": {"label": "synthetic"}, "final_message": "Synthetic final message."}

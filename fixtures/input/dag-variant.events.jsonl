@@ -1,0 +1,9 @@
+{"type": "run.start", "id": "dag-variant", "task_id": "dag-analysis", "model": "qa-model", "agent": "synthetic", "condition": "variant"}
+{"type": "step", "idx": 2, "action": {"tool": "read_file", "targets": ["src/alpha.py"]}, "observation": {"text": "synthetic ok", "exit_code": 0}, "thought": "Synthetic variant step 0."}
+{"type": "step", "idx": 4, "action": {"tool": "read_file", "args": {"path": "./src/alpha.py"}}, "observation": {"text": "synthetic ok", "exit_code": 0}}
+{"type": "step", "idx": 8, "action": {"tool": "write_file", "targets": ["src/beta.py"], "args": {"content": "synthetic = True"}}, "observation": {"text": "synthetic ok", "exit_code": 0}, "thought": "Synthetic variant step 2."}
+{"type": "step", "idx": 16, "action": {"tool": "read_file", "targets": ["src/alpha.py"]}, "observation": {"text": "synthetic ok", "exit_code": 0}, "thought": "Synthetic variant step 3."}
+{"type": "step", "idx": 32, "action": {"tool": "shell", "command": "pytest tests/test_alpha.py", "targets": ["tests/test_alpha.py"]}, "observation": {"text": "synthetic test failed", "exit_code": 1}, "thought": "Synthetic variant step 4."}
+{"type": "step", "idx": 64, "action": {"tool": "shell", "command": "pytest tests/test_alpha.py", "targets": ["tests/test_alpha.py"]}, "observation": {"text": "synthetic ok", "exit_code": 0}, "thought": "Synthetic variant step 5."}
+{"type": "step", "idx": 128, "thought": "Synthetic final message.", "tags": ["final_message"]}
+{"type": "run.end", "outcome": {"label": "synthetic"}, "final_message": "Synthetic final message."}
