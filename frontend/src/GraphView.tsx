@@ -46,11 +46,12 @@ function contains(box: Box, point: Point) {
 }
 
 function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, signature, membership, positionsInTime,
-  reached, divergence, compact, name, layoutName, layoutReason, toolbar }: {
+  reached, divergence, compact, name, layoutName, layoutReason, toolbar, searchGraph, onLocate, framingKey, locateRequest = 0 }: {
   drawing: Drawing; phases: Map<string, Phase>; theme: Theme; enabled: ReadonlySet<EdgeType>;
   onNode: (node: GraphNode) => void; selected?: string | null; signature?: string | null;
   membership?: ReadonlyMap<string, number>; positionsInTime?: ReadonlyMap<string, number>; reached?: number;
   divergence?: ReadonlySet<string>; compact?: boolean; name: string; layoutName: string; layoutReason?: string; toolbar?: ReactNode;
+  searchGraph?: Graph; onLocate?: (node: GraphNode) => void; framingKey?: string; locateRequest?: number;
 }) {
   const frame = useRef<HTMLDivElement>(null);
   const canvas = useRef<SVGSVGElement>(null);
@@ -64,11 +65,12 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   const [exportError, setExportError] = useState('');
   const previousSignature = useRef<string | null | undefined>(null);
   const previousSelection = useRef<string | null | undefined>(null);
+  const previousLocateRequest = useRef(-1);
   const prefix = 'graph-' + useId().replace(/[^a-z0-9_-]/gi, '');
   const { bounds } = drawing;
   const fitScale = Math.min(size.width / bounds.width, size.height / bounds.height, 1.4);
   const fit = { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2, scale: fitScale };
-  const initialScale = Math.max(fitScale, compact ? 0.53 : 0.76);
+  const initialScale = layoutName === 'Execution' ? fitScale : Math.max(fitScale, compact ? 0.53 : 0.76);
   const first = drawing.nodes[0]?.point ?? fit;
   const initial = {
     x: size.width / initialScale >= bounds.width ? fit.x :
@@ -84,8 +86,13 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
     width: size.width / current.scale, height: size.height / current.scale,
   }), [current.x, current.y, current.scale, size]);
   const focusNode = useCallback((point: Point) => {
-    if (!contains(view, point)) setCamera({ ...point, scale: Math.max(current.scale, .76) });
-  }, [current.scale, view]);
+    const box = drawing.nodes.find(item => item.point.x === point.x && item.point.y === point.y)?.bounds;
+    const visible = box ? contains(view, box) && contains(view, {x:box.x+box.width,y:box.y+box.height}) : contains(view,point);
+    if (!visible) setCamera({ ...point, scale: Math.min(Math.max(current.scale,.9),
+      box ? size.width/(box.width+32) : 2.8, box ? size.height/(box.height+32) : 2.8) });
+  }, [current.scale, view, drawing, size.width, size.height]);
+
+  useEffect(() => { setCamera(null); previousSelection.current = undefined; }, [framingKey]);
 
   useEffect(() => {
     if (signature === previousSignature.current) return;
@@ -96,11 +103,15 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   }, [drawing, focusNode, signature, view]);
 
   useEffect(() => {
-    if (selected === previousSelection.current) return;
-    previousSelection.current = selected;
+    if (selected === previousSelection.current && locateRequest === previousLocateRequest.current) return;
     const item = drawing.nodes.find(({ node }) => node.id === selected);
-    if (item) focusNode(item.point);
-  }, [drawing, focusNode, selected]);
+    // A retained drawing may not contain the requested source yet. Consume the
+    // request only after the replacement drawing can frame the complete node.
+    if (!item) return;
+    previousSelection.current = selected;
+    previousLocateRequest.current = locateRequest;
+    focusNode(item.point);
+  }, [drawing, focusNode, selected, locateRequest]);
 
   useEffect(() => {
     if (!frame.current) return;
@@ -115,7 +126,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   useEffect(() => {
     // Expanded hierarchy levels must be visible after a group changes.
     // Source-step/live graphs retain their camera across data refreshes.
-    if (drawing.nodes.some(item => item.node.view || item.node.depth != null)) {
+    if (drawing.nodes.some(item => (item.node.view && item.node.view.kind !== 'section') || item.node.depth != null)) {
       setCamera({ x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2,
         scale: Math.min(size.width / bounds.width, size.height / bounds.height, 1.4) });
     }
@@ -141,10 +152,10 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
     return () => target.removeEventListener('wheel', wheel);
   }, [initial.x, initial.y, initial.scale, minZoom, size]);
 
-  const searchIndex = useMemo(() => drawing.nodes.map((item) => ({
+  const searchIndex = useMemo(() => (searchGraph ? searchGraph.nodes.map(node => ({node,point:drawing.nodes.find(item=>item.node.id===node.id)?.point ?? {x:0,y:0},bounds:{x:0,y:0,width:0,height:0}})) : drawing.nodes).map((item) => ({
     item,
     haystack: `${item.node.label} ${item.node.tool ?? ''} ${signatureTarget(item.node.signature)} ${item.node.signature} ${item.node.phase} #${item.node.step_indices.join(' #')}`.toLowerCase(),
-  })), [drawing]);
+  })), [drawing,searchGraph]);
   const query = search.trim().toLowerCase();
   const found = query ? searchIndex.filter(({ haystack }) => haystack.includes(query)) : [];
 
@@ -153,6 +164,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   }
 
   function pick(item: Drawing['nodes'][number]) {
+    if (onLocate) { onLocate(item.node); setSearchOpen(false); return; }
     setCamera({ ...item.point, scale: Math.max(current.scale, .9) });
     onNode(item.node);
     setSearchOpen(false);
@@ -257,15 +269,16 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
 }
 
 export function GraphView({ graph, phases, theme, enabled, name, selected, signature, membership, onNode,
-  positionsInTime, reached, divergence, compact, controls, toolbar, legend = true }: {
+  positionsInTime, reached, divergence, compact, controls, toolbar, legend = true, execution = false, searchGraph, onLocate, framingKey, locateRequest }: {
   graph: Graph; phases: Phase[]; theme: Theme; enabled: ReadonlySet<EdgeType>; name: string;
   selected?: string | null; signature?: string | null; membership?: ReadonlyMap<string, number>;
   onNode: (node: GraphNode) => void; positionsInTime?: ReadonlyMap<string, number>; reached?: number; toolbar?: ReactNode;
   divergence?: ReadonlySet<string>; compact?: boolean; controls?: ReactNode; legend?: boolean;
+  execution?: boolean; searchGraph?: Graph; onLocate?: (node: GraphNode) => void; framingKey?: string; locateRequest?: number;
 }) {
-  const layout = useLayout(graph);
+  const layout = useLayout(graph,execution);
   const phaseMap = useMemo(() => new Map(phases.map((phase) => [phase.id, phase])), [phases]);
-  const drawing = useMemo(() => layout && makeDrawing(graph, layout.positions), [graph, layout]);
+  const drawing = useMemo(() => layout && makeDrawing(graph, layout.positions,layout.name==='Execution'), [graph, layout]);
   const [ready, setReady] = useState<{ drawing: Drawing; layout: NonNullable<typeof layout> }>();
   useEffect(() => {
     if (drawing && layout) setReady({ drawing, layout });
@@ -278,6 +291,7 @@ export function GraphView({ graph, phases, theme, enabled, name, selected, signa
       : displayed ? <GraphViewport drawing={displayed.drawing} phases={phaseMap} theme={theme} enabled={enabled} name={name} toolbar={toolbar}
         onNode={onNode} selected={selected} signature={signature} membership={membership}
         positionsInTime={positionsInTime} reached={reached} divergence={divergence} compact={compact}
+        searchGraph={searchGraph} onLocate={onLocate} framingKey={framingKey} locateRequest={locateRequest}
         layoutName={displayed.layout.name} layoutReason={displayed.layout.reason} />
       : <Loading>Laying out graph…</Loading>}
     {legend && graph.nodes.length > 0 && <GraphLegend phases={phases} theme={theme} />}

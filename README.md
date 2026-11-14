@@ -25,7 +25,9 @@ trajviz export out --html trajviz-report.html --csv metrics.csv
 
 Single-run and comparison views use left-to-right step DAGs. Phase, tool category and error filters keep source order; edge checkboxes distinguish temporal, dependency and retry links. Node selection seeks playback and opens the lazy Inspector. Use **Load recorded activity** for text/tool lanes and explicit file targets; expand a path and choose a source step to locate it.
 
-Consecutive equal signatures can be folded into continuous blocks (automatic at 2,000 steps). Inspect any member, expand one block or expand all. Internal block edges remain in the Inspector. Nonconsecutive repeats keep separate positions. Signature frequencies and cyclic aggregate groups appear in the summary rather than the main graph. In a 2–4 run comparison, the first selected run is the baseline; markers show first action divergence and selecting a signature highlights every matching occurrence across runs.
+Long single runs (60+ source steps) start in **Overview**: four continuous source ranges, then up to four nodes per drill-down level. Click a range to replace it with smaller ranges or original calls. The breadcrumb, source strip, **Next failure** and global node search locate exact recorded steps. Dependency links focus on the selected node; **Layers → All dependency connections** reveals all links in the current range. Orthogonal edges stay outside node interiors. **Layers → Steps / Hierarchy** retains the complete step DAG and loop view. See [long-graph research and real-data verification](docs/research/long-graph.md), or try the explicitly [synthetic long trace](http://127.0.0.1:8765/#view=graph&run=execution-long-synthetic).
+
+In Steps mode, consecutive equal signatures can be folded into continuous blocks (automatic at 2,000 steps). Inspect any member, expand one block or expand all. Internal block edges remain in the Inspector. Nonconsecutive repeats keep separate positions. Signature frequencies and cyclic aggregate groups appear in the summary rather than the main graph. In a 2–4 run comparison, the first selected run is the baseline; markers show first action divergence and selecting a signature highlights every matching occurrence across runs.
 
 The viewer exports PNG and SVG from the current DAG, including folding, step/edge filters and selection. The standalone report works offline and contains the trace details. Build with redaction before sharing a report that contains sensitive logs.
 
@@ -45,7 +47,7 @@ The latest [three-page hierarchy report](docs/research/three-page-hierarchy.md) 
 
 ## Hierarchy and live capture
 
-Switch **Steps → Hierarchy** to inspect contiguous phase groups and adjacent repeated tool sequences. A loop expands into iterations, then original calls. Source order runs left to right; dashed structural links descend through containment. Temporal, dependency and retry links still come from the source graph. Related steps in Inspector locate their exact source indices and clear step filters.
+Switch **Layers → Hierarchy** to inspect contiguous phase groups and adjacent repeated tool sequences. A loop expands into iterations, then original calls. Source order runs left to right; dashed structural links descend through containment. Temporal, dependency and retry links still come from the source graph. Related steps in Inspector locate their exact source indices and clear step filters.
 
 To follow local Codex execution with the existing soclaas credentials:
 

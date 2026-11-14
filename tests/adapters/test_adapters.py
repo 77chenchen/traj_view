@@ -43,7 +43,17 @@ FIXTURE_CASES = {
 def test_fixture_coverage():
     dag_cases = {f"dag-{name}.events.jsonl" for name in ("baseline", "variant", "short")}
     dashboard_cases = {f"dashboard-{name}.events.jsonl" for name in ("baseline", "variant", "short")}
-    assert set(FIXTURE_CASES) | dag_cases | dashboard_cases | {"role-boundaries.events.jsonl"} == {path.name for path in FIXTURES.iterdir() if path.is_file()}
+    assert set(FIXTURE_CASES) | dag_cases | dashboard_cases | {"role-boundaries.events.jsonl", "execution-long.events.jsonl"} == {path.name for path in FIXTURES.iterdir() if path.is_file()}
+
+
+def test_long_execution_fixture_has_lossless_sources_and_saved_failures():
+    run, = load(FIXTURES / "execution-long.events.jsonl")
+    assert len(run.steps) == 96
+    assert run.steps[0].idx == 10000000000000001
+    assert run.steps[-1].idx == 10000000000001236
+    assert all(step.ts is None for step in run.steps)
+    assert sum(step.observation is not None and step.observation.exit_code == 1 for step in run.steps) == 12
+    assert Trajectory.model_validate_json(run.model_dump_json(by_alias=True)) == run
 
 
 def test_role_boundary_fixture_preserves_missing_evidence():

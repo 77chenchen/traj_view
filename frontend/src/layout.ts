@@ -7,11 +7,12 @@ export interface Point { x: number; y: number }
 export interface Box extends Point { width: number; height: number }
 export interface Layout {
   positions: Map<string, Point>;
-  name: 'ELK' | 'Dagre' | 'Preset' | 'Hierarchy';
+  name: 'ELK' | 'Dagre' | 'Preset' | 'Hierarchy' | 'Execution';
   reason?: string;
 }
 
 const cache = new WeakMap<Graph, Promise<Layout>>();
+const executionCache = new WeakMap<Graph, Promise<Layout>>();
 
 function preset(graph: Graph, reason?: string): Layout {
   // A single monotonic time axis also handles disconnected filtered subgraphs.
@@ -62,7 +63,12 @@ async function cytoscapeLayout(graph: Graph, engine: 'elk' | 'dagre'): Promise<L
   }
 }
 
-async function arrange(graph: Graph): Promise<Layout> {
+async function arrange(graph: Graph, execution = false): Promise<Layout> {
+  if (execution) {
+    const lane = { plan:0, message:0, read:1, shell:1, tool:1, edit:2, validate:3 };
+    return { positions:new Map(graph.nodes.map((node,i)=>[node.id,{x:i*200,y:node.view?.kind==='section'?0:lane[node.category]*56}])),
+      name:'Execution', reason:'Source order → · category spacing, not concurrency' };
+  }
   if (graph.nodes.some((node) => node.view)) return {
     positions: new Map(graph.nodes.map((node, index) => [node.id, { x: index * 240, y: (node.view?.depth ?? node.depth ?? 0) * 125 }])),
     name: 'Hierarchy', reason: 'Source order → · containment ↓',
@@ -86,17 +92,18 @@ async function arrange(graph: Graph): Promise<Layout> {
   }
 }
 
-export function useLayout(graph: Graph): Layout | null {
+export function useLayout(graph: Graph, execution = false): Layout | null {
   const [result, setResult] = useState<{ graph: Graph; layout: Layout }>();
   useEffect(() => {
     let active = true;
-    let promise = cache.get(graph);
+    const layouts = execution ? executionCache : cache;
+    let promise = layouts.get(graph);
     if (!promise) {
-      promise = arrange(graph);
-      cache.set(graph, promise);
+      promise = arrange(graph, execution);
+      layouts.set(graph, promise);
     }
     promise.then((layout) => { if (active) setResult({ graph, layout }); });
     return () => { active = false; };
-  }, [graph]);
+  }, [graph, execution]);
   return result?.graph === graph ? result.layout : null;
 }

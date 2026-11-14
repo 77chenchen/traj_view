@@ -1,5 +1,6 @@
 import { memo, type ReactNode } from 'react';
 import { nodeHeight, nodeWidth, type Box, type Point } from './layout';
+import { executionRoutes } from './edgeRouting';
 import {
   categories, edgeTypes, capitalize, phaseColor, sourceIndex,
   type Category, type EdgeType, type Graph, type GraphEdge, type GraphNode, type Phase,
@@ -119,7 +120,7 @@ function edgeCurve(edge: GraphEdge, from: Point, to: Point, parallel: number, to
     label, bounds: boxAround([a, middle, b], 12) };
 }
 
-export function makeDrawing(graph: Graph, positions: Map<string, Point>): Drawing {
+export function makeDrawing(graph: Graph, positions: Map<string, Point>, execution = false): Drawing {
   const groups = new Map<string, GraphEdge[]>();
   for (const edge of graph.edges) {
     const key = JSON.stringify([edge.source, edge.target]);
@@ -127,8 +128,8 @@ export function makeDrawing(graph: Graph, positions: Map<string, Point>): Drawin
     if (group) group.push(edge);
     else groups.set(key, [edge]);
   }
-  const edges: DrawnEdge[] = [];
-  for (const group of groups.values()) {
+  const edges: DrawnEdge[] = execution ? executionRoutes(graph,positions,nodeWidth,nodeHeight) : [];
+  for (const group of execution ? [] : groups.values()) {
     const { source, target } = group[0];
     const from = positions.get(source);
     const to = positions.get(target);
@@ -173,7 +174,7 @@ export interface DrawingOptions {
 export function nodeDescription(node: GraphNode, phases: Map<string, Phase>) {
   return [node.label || node.tool || 'Message', phases.get(node.phase)?.label ?? node.phase, capitalize(node.category),
     `${node.count} ${node.count === 1 ? 'step' : 'steps'}`, `first source step ${sourceIndex(node.first_idx)}`,
-    node.view && `${node.view.kind} group · ${node.view.open ? 'expanded' : 'collapsed'} · select to toggle`, node.error && 'Contains error'].filter(Boolean).join(' · ');
+    node.view && (node.view.kind === 'section' ? `source section · ${node.view.errors} errors · select to drill down` : `${node.view.kind} group · ${node.view.open ? 'expanded' : 'collapsed'} · select to toggle`), node.error && 'Contains error'].filter(Boolean).join(' · ');
 }
 
 export const GraphDrawing = memo(function GraphDrawing({
@@ -232,7 +233,7 @@ export const GraphDrawing = memo(function GraphDrawing({
         {labels && <>
           <text x={-50} y={-1} fill={palette.text} fontWeight={650} fontSize={12}
             textLength={title.length > 12 ? titleWidth : undefined} lengthAdjust="spacingAndGlyphs">{title}</text>
-          <text x={-50} y={15} fill={palette.muted} fontSize={10}>{shortened(`${phaseLabel} · ${sourceIndex(node.first_idx)}`, 25)}</text>
+          <text x={-50} y={15} fill={palette.muted} fontSize={10}>{shortened(node.view?.kind === 'section' ? `${node.view.errors} ${node.view.errors===1?'error':'errors'} · ${phaseLabel}` : `${phaseLabel} · ${sourceIndex(node.first_idx)}`, 25)}</text>
           {node.count > 1 && <text x={halfWidth - 9} y={-1} textAnchor="end" fill={palette.muted} fontSize={10}>
             ×{node.count}
           </text>}

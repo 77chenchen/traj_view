@@ -1,0 +1,20 @@
+{
+  "chrome": "157.0.8103.52",
+  "timeoutMs": 30000,
+  "mode": "overview",
+  "excludesInitialBundleLoad": true,
+  "runs": [
+    {
+      "sourceSteps": 500,
+      "displayedNodes": 4,
+      "status": "ok",
+      "ms": 95.89999997615814
+    },
+    {
+      "sourceSteps": 2000,
+      "displayedNodes": 4,
+      "status": "ok",
+      "ms": 113.5
+    }
+  ]
+}

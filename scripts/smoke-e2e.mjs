@@ -15,6 +15,7 @@ import { checkDashboard, checkDashboardCompare } from '../tests/e2e/dashboard.mj
 import { checkFourReference } from '../tests/e2e/four-reference.mjs';
 import { checkDensity } from '../tests/e2e/density.mjs';
 import { checkThreePage } from '../tests/e2e/three-page.mjs';
+import { checkExecutionMap } from '../tests/e2e/execution-map.mjs';
 import { frontendRequire, results, root } from './frontend-dependencies.mjs';
 
 const python = process.env.PYTHON || 'python';
@@ -123,6 +124,7 @@ async function main() {
   const { chromium } = frontendRequire('playwright', process.env.PLAYWRIGHT_PATH);
   mkdirSync(artifacts, { recursive: true });
   execFileSync(process.execPath, [join(root, 'scripts/test-graph-data.mjs')], { cwd: root, env: { ...process.env, PYTHON: python }, stdio: 'inherit' });
+  execFileSync(process.execPath, [join(root, 'scripts/test-execution-map.mjs')], { cwd: root, stdio: 'inherit' });
   const scratch = mkdtempSync(join(tmpdir(), 'trajviz-e2e-'));
   let browser;
   let server;
@@ -176,6 +178,7 @@ async function main() {
       await scenario(browser, 'four-reference', (page) => checkFourReference(page, url, artifacts));
       await scenario(browser, 'density', (page) => checkDensity(page, url, artifacts));
       await scenario(browser, 'three-page-desktop', (page) => checkThreePage(page, url, artifacts));
+      await scenario(browser, 'execution-map', (page) => checkExecutionMap(page, url, artifacts));
       await scenario(browser, 'sankey', (page) => checkSankey(page, url, index, artifacts));
       await scenario(browser, 'theme', (page) => checkTheme(page, url, artifacts));
       await scenario(browser, 'folding', (page) => checkFolded(page, url, artifacts));
@@ -196,12 +199,12 @@ async function main() {
       const awaitLiveUrl = await liveServer.url;
       try { await scenario(browser, 'live', (page) => checkLive(page, awaitLiveUrl, artifacts, append, progress)); }
       finally { await stopServer(liveServer); }
-      const report = { chrome: browser.version(), timeoutMs: renderTimeout, runs: [] };
+      const report = { chrome: browser.version(), timeoutMs: renderTimeout, mode:'overview', excludesInitialBundleLoad:true, runs: [] };
       for (const size of renderSizes) {
         const sample = await scenario(browser, `first-render-${size}`,
           (page) => timeFirstGraph(page, url, size, artifacts, renderTimeout));
-        report.runs.push({ nodes: size, status: sample.status, ms: sample.value ?? null, error: sample.error });
-        if (sample.value !== undefined) console.log(`${size} nodes: ${sample.value.toFixed(1)} ms to first graph paint`);
+        report.runs.push({ sourceSteps: size, displayedNodes:4, status: sample.status, ms: sample.value ?? null, error: sample.error });
+        if (sample.value !== undefined) console.log(`${size} source steps / Overview: ${sample.value.toFixed(1)} ms to first graph paint`);
         writeFileSync(join(artifacts, 'first-render.json'), JSON.stringify(report, null, 2) + '\n');
       }
     }
@@ -212,6 +215,7 @@ async function main() {
       await scenario(browser, 'four-reference-offline', (page) => checkFourReference(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'density-offline', (page) => checkDensity(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'three-page-desktop-offline', (page) => checkThreePage(page, pathToFileURL(reportFile).href, artifacts, true), true);
+      await scenario(browser, 'execution-map-offline', (page) => checkExecutionMap(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'offline', (page) =>
         checkOffline(page, pathToFileURL(reportFile).href, index, graph, steps, artifacts), true);
     }

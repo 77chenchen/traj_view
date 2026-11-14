@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-14",
+  "chrome": "157.0.8103.52",
+  "evidencePolicy": "Private source text, run IDs, exact source IDs, screenshots and standalone HTML remain in ignored local storage. Only aggregate assertions are published.",
+  "datasetRecords": 50,
+  "canonicalSteps": 1071,
+  "realRuns": [
+    {
+      "sizeRank": 1,
+      "sourceSteps": 324,
+      "sourceEdges": 379,
+      "rootNodes": 4,
+      "maximumLevelNodes": 4,
+      "globalSearch": true,
+      "context": true,
+      "crossRangeDependencyJump": true,
+      "visibleDependencyLinks": 1,
+      "visibleRetryLinks": 0,
+      "exportSvg": true,
+      "fullLeafAndRepeatedSearch": true,
+      "rovingKeyboard": true,
+      "pageErrors": 0
+    },
+    {
+      "sizeRank": 2,
+      "sourceSteps": 172,
+      "sourceEdges": 193,
+      "rootNodes": 4,
+      "maximumLevelNodes": 4,
+      "globalSearch": true,
+      "context": true,
+      "crossRangeDependencyJump": true,
+      "visibleDependencyLinks": 4,
+      "visibleRetryLinks": 1,
+      "exportSvg": true,
+      "pageErrors": 0
+    },
+    {
+      "sizeRank": 3,
+      "sourceSteps": 87,
+      "sourceEdges": 188,
+      "rootNodes": 4,
+      "maximumLevelNodes": 4,
+      "globalSearch": true,
+      "context": true,
+      "crossRangeDependencyJump": true,
+      "visibleDependencyLinks": 5,
+      "visibleRetryLinks": 1,
+      "exportSvg": true,
+      "pageErrors": 0
+    }
+  ],
+  "privateFinalCaptures": 32,
+  "captureDimensions": [
+    "1280x800",
+    "1586x912"
+  ],
+  "offline": {
+    "httpRequests": 0,
+    "pageErrors": 0
+  },
+  "checks": {
+    "pythonPassed": 81,
+    "pythonSeconds": 4.73,
+    "typescript": "passed",
+    "productionBuild": "passed",
+    "dagChecks": 855,
+    "executionScopes": 2089,
+    "exactSourcePaths": 3161,
+    "routedEdges": 4529,
+    "chromeScenarios": 28
+  },
+  "review": {
+    "disposition": "ship",
+    "scope": "verdict pass over three listed fixes",
+    "resolvedFixes": 3,
+    "wholeSurfaceAudit": false
+  }
+}

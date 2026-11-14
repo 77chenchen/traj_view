@@ -7,6 +7,7 @@ const fixtureRuns = [
   'dag-baseline', 'dag-variant', 'dag-short',
   'dashboard-baseline', 'dashboard-variant', 'dashboard-short',
   'role-boundaries',
+  'execution-long-synthetic',
   'slug-empty', 'slug-messages-pass', 'slug-messages-provider', 'slug-skill-pass',
 ];
 export const renderSizes = [500, 2000];
@@ -182,6 +183,7 @@ export async function checkFolded(page, url, artifacts) {
   await page.goto(url);
   await runButton(page, foldedRun).click();
   if(await page.locator('.graph-options').getAttribute('open')===null)await page.locator('.graph-options > summary').click();
+  await button(page, /^Steps$/).click();
   await visible(button(page, /^Expand all steps$/));
   await visible(page.getByText(/^40 nodes ·/));
   await graphNode(page, 1).click();
@@ -372,7 +374,7 @@ export async function timeFirstGraph(page, url, size, artifacts, timeout) {
   await visible(graph);
   await page.mouse.move(1, 1);
   if (size === 500) assert.ok(ms < 3000, '500-node first graph paint exceeded 3 s');
-  await visible(page.getByText(new RegExp(`^${size.toLocaleString('en-US')} nodes ·`)));
+  await visible(page.getByText(`${size} / ${size} source steps`,{exact:true}));
   await page.screenshot({ path: join(artifacts, `first-render-${size}.png`) });
   if (size === 2000) {
     await button(page, /^Zoom in$/).click();

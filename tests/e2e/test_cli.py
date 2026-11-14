@@ -50,7 +50,7 @@ def test_build_and_export_fixtures(tmp_path: Path) -> None:
         "slug-codex-verifier", "slug-empty", "slug-messages-pass",
         "slug-messages-provider", "slug-skill-pass",
         "dag-baseline", "dag-variant", "dag-short",
-        "dashboard-baseline", "dashboard-variant", "dashboard-short",
+        "dashboard-baseline", "dashboard-variant", "dashboard-short", "execution-long-synthetic",
         "role-boundaries",
     }
     assert sorted(run["id"] for run in index["runs"]) == sorted(expected_ids)

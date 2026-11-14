@@ -12,6 +12,14 @@ PYTHON="$(command -v python)" node scripts/smoke-e2e.mjs
 
 Set `CHROME_PATH` if Chrome is installed elsewhere. The smoke command runs pure graph-transform checks, builds the public fixtures plus generated performance traces, launches system Chrome, stops the server, then opens both a fresh single-file export and the delivered report in offline browser contexts. Screenshots, `scenarios.json` and `first-render.json` go to `test-results/e2e/`. See [browser QA](../tests/e2e/README.md) for details and report regeneration commands.
 
+## Long execution Graph · 2026-11-14
+
+The current Graph adds a bounded source-range overview for runs with at least 60 steps. Each level shows at most four sections or original calls; source-order DAG links are rolled up by type, with orthogonal outer routing and selection-focused dependency disclosure. The existing Steps and Hierarchy views remain available. See [research, exact semantics, screenshot map and limitations](research/long-graph.md).
+
+Final checks: **81 Python tests**, TypeScript/build, **855 existing DAG checks**, **2,089 execution scopes / 3,161 exact source paths / 4,529 routes**, and **28 Chrome scenarios** passed. Real local NL2Repo verification uses the three longest records (**324 / 172 / 87 source steps**) from the existing 50-record dataset. It produced **32 private screenshots**, exercised exact cross-range dependencies and Inspector jumps, repeated search after panning, 1280px complete-node visibility, roving keyboard navigation and SVG export. The exact private standalone report made **zero HTTP requests** and had no page errors. Public screenshots use only the labeled synthetic fixture; all real evidence stays under ignored `.workers/local/long-graph-qa/`.
+
+First graph paint is **95.9ms for 500 source steps / 113.5ms for 2,000 source steps**, measured click → visible SVG → following frame after app load. These samples initially display **four overview nodes**, not all source nodes, and are not equivalent full-graph timings against historical revisions. The 2,000-step chain still verifies zoom, empty-filter recovery, final-source search and Inspector. The production bundle warning remains. The independent verdict pass scored all three listed fixes resolved; its scope and evidence are recorded in [review.md](research/long-graph/review.md).
+
 ## Three-page desktop hierarchy · 2026-11-14
 
 The current revision uses the user's pale Graph, Compare and Replay references. See the [77-item functional mapping, screenshots and reproduction report](research/three-page-hierarchy.md). Default Graph presents its canvas and an empty Inspector, Compare one shared A/B alignment and three flat metrics, and Replay central evidence with Step details closed. Secondary evidence opens through named tabs and disclosures.

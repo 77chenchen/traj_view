@@ -77,7 +77,7 @@ export interface GraphNode {
   phase_counts: Record<string, number>;
   // Ephemeral display metadata. Never written into the frozen v1 payload.
   depth?: number;
-  view?: { kind: 'phase' | 'loop' | 'iteration'; depth: number; open: boolean; repetitions?: number; period?: number };
+  view?: { kind: 'phase' | 'loop' | 'iteration' | 'section'; depth: number; open: boolean; repetitions?: number; period?: number; start?: number; end?: number; errors?: number };
 }
 
 export interface GraphEdge {

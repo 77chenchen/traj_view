@@ -28,6 +28,20 @@
 .sidebar-context { padding-top:4px; }
 .reference-shell .panel { box-shadow:none; }
 :root:not([data-theme="dark"]) .execution-legend span:first-child { color:var(--accent); }
+.execution-navigation { padding:10px 14px 9px; border-bottom:1px solid var(--line); }
+.execution-path { display:flex; align-items:center; gap:5px; min-height:26px; flex-wrap:wrap; }
+.execution-path .button { font-size:11px; padding:3px 6px; min-height:25px; }
+.execution-path .button[aria-current] { color:var(--text); background:var(--surface-2); }
+.execution-path > span { margin-left:auto; font:11px ui-monospace,monospace; color:var(--muted); }
+.execution-overview-strip { display:flex; height:20px; gap:1px; padding-block:4px; margin-block:5px; }
+.execution-overview-strip > button { flex:1; min-width:0; padding:0; border:0; background:var(--line-strong); border-radius:1px; }
+.execution-overview-strip > button:hover,.execution-overview-strip > button.in-scope { background:var(--accent-line); }
+.execution-overview-strip > button.failed { background:var(--bad); }
+.execution-overview-strip > button.selected { background:var(--accent); outline:2px solid var(--accent); outline-offset:2px; }
+.execution-overview-strip > button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; background:var(--accent); }
+.execution-navigation p { font-size:11px; line-height:1.5; color:var(--muted); margin:0; }
+.connection-detail { display:flex; gap:6px; flex-wrap:wrap; align-items:center; font-size:12px; border-top:1px solid var(--line); padding-top:12px; }
+.connection-detail small { display:block; width:100%; color:var(--muted); font-size:11px; line-height:1.5; }
 .stage-card[data-active-stage="true"] > div { background:var(--accent-soft); }
 .stage-card[data-active-stage="true"] .stage-number { color:var(--accent); }
 .stage-strip { border-bottom:1px solid var(--line); }
