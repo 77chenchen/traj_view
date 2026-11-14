@@ -57,7 +57,8 @@ try {
     await sizePage.close();
   }
   await page.setViewportSize({ width: 1440, height: 950 });
-  await page.getByLabel('Local preferences', {exact:true}).click();
+  await page.getByRole('navigation',{name:'Workspace'}).getByRole('button',{name:'Runs',exact:true}).click();
+  await page.locator('.dataset-utilities > summary').click();
   await page.getByRole('button', { name: 'Dark theme', exact: true }).click();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: join(artifacts, 'dashboard-dark.png'), fullPage: true });

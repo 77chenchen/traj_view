@@ -101,7 +101,13 @@
 .timeline-event-table thead th { position:sticky; top:0; z-index:2; background:var(--surface-2); }
 .table-event-button { font-size:12px; }.timeline-event-table th:nth-child(2) { width:90px; }.timeline-event-table th:last-child { width:95px; }
 .timeline-workspace .event-timeline-inner { min-height:320px; }
-.event-lane > strong,.event-axis > span,.stage-axis > strong { position:sticky; left:0; z-index:2; background:var(--surface); }
+.event-timeline-scroll { isolation:isolate; }
+.event-lane > strong,.event-axis > span,.stage-axis > strong {
+  position:sticky; left:0; z-index:3; align-self:stretch; display:flex; align-items:center;
+  width:144px; padding-right:16px; background:var(--surface); border-right:1px solid var(--line);
+}
+.event-lane > strong::before,.event-axis > span::before,.stage-axis > strong::before { content:""; position:absolute; inset:0 100% 0 -12px; background:var(--surface); }
+.event-lane > strong svg { flex:none; }
 .event-lane,.event-lane > div { height:39px; min-height:39px; }
 .timeline-event { top:9px; }.timeline-event > span { top:19px; font-size:9px; }
 .event-lane-label { font-size:11px; }

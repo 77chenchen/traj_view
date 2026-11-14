@@ -1,0 +1,185 @@
+{
+  "chrome": "157.0.8103.52",
+  "scope": "Desktop 1586\u00d7912 and 1280\u00d7800; category silhouettes, fullscreen evidence, shared theme",
+  "local": {
+    "geometry": [
+      {
+        "width": 1586,
+        "height": 912,
+        "sourceKinds": 7,
+        "distinctSilhouettes": 7,
+        "fullscreenInspector": true,
+        "sourcePreserved": true,
+        "nestedPatchFullscreen": true
+      },
+      {
+        "width": 1280,
+        "height": 800,
+        "sourceKinds": 7,
+        "distinctSilhouettes": 7,
+        "fullscreenInspector": true,
+        "sourcePreserved": true,
+        "nestedPatchFullscreen": true
+      }
+    ],
+    "captures": [
+      {
+        "file": "appearance-types.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "appearance-fullscreen-failure.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "appearance-fullscreen-patch.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "appearance-types-1280.png",
+        "width": 1280,
+        "height": 800
+      },
+      {
+        "file": "appearance-fullscreen-failure-1280.png",
+        "width": 1280,
+        "height": 800
+      },
+      {
+        "file": "appearance-fullscreen-patch-1280.png",
+        "width": 1280,
+        "height": 800
+      },
+      {
+        "file": "appearance-merged-sections.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "appearance-missing-data.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "appearance-replay.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "appearance-compare.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "appearance-compare-fullscreen.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "appearance-dark.png",
+        "width": 1586,
+        "height": 912
+      }
+    ],
+    "sourceSelection": "failure \u2192 recorded patch \u2192 later validation",
+    "sharedTheme": true,
+    "mergedInlineFullscreen": true,
+    "missingData": true,
+    "currentStateSvg": true,
+    "pageErrors": []
+  },
+  "offline": {
+    "geometry": [
+      {
+        "width": 1586,
+        "height": 912,
+        "sourceKinds": 7,
+        "distinctSilhouettes": 7,
+        "fullscreenInspector": true,
+        "sourcePreserved": true,
+        "nestedPatchFullscreen": true
+      },
+      {
+        "width": 1280,
+        "height": 800,
+        "sourceKinds": 7,
+        "distinctSilhouettes": 7,
+        "fullscreenInspector": true,
+        "sourcePreserved": true,
+        "nestedPatchFullscreen": true
+      }
+    ],
+    "captures": [
+      {
+        "file": "offline-appearance-types.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "offline-appearance-fullscreen-failure.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "offline-appearance-fullscreen-patch.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "offline-appearance-types-1280.png",
+        "width": 1280,
+        "height": 800
+      },
+      {
+        "file": "offline-appearance-fullscreen-failure-1280.png",
+        "width": 1280,
+        "height": 800
+      },
+      {
+        "file": "offline-appearance-fullscreen-patch-1280.png",
+        "width": 1280,
+        "height": 800
+      },
+      {
+        "file": "offline-appearance-merged-sections.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "offline-appearance-missing-data.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "offline-appearance-replay.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "offline-appearance-compare.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "offline-appearance-compare-fullscreen.png",
+        "width": 1586,
+        "height": 912
+      },
+      {
+        "file": "offline-appearance-dark.png",
+        "width": 1586,
+        "height": 912
+      }
+    ],
+    "sourceSelection": "failure \u2192 recorded patch \u2192 later validation",
+    "sharedTheme": true,
+    "mergedInlineFullscreen": true,
+    "missingData": true,
+    "currentStateSvg": true,
+    "httpRequests": 0,
+    "pageErrors": []
+  }
+}

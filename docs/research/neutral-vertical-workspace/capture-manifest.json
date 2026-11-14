@@ -1,0 +1,466 @@
+[
+  {
+    "file": "graph-before.png",
+    "source": "test-results/e2e/graph-before.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "87d137ba6406682145cebe0e024394f102cf0815d699dcf945494f87fbdaf940",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "graph-before-1280.png",
+    "source": "test-results/e2e/graph-before-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "1e577e641cf12ca90a8033e657877dd3db2b7e202dcacfc9ee13cb3b20d2af94",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "graph-after.png",
+    "source": "test-results/e2e/graph-after.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "91a0bcc37de175ae2570847649402b79856424979ca5e53d6227f487150b0a74",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "graph-after-1280.png",
+    "source": "test-results/e2e/graph-after-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "384d9b6023a2153fa319174a045939ef49621c0cfafb5937e17611618a834a8c",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-before.png",
+    "source": "test-results/e2e/compare-before.png",
+    "width": 1586,
+    "height": 1428,
+    "sha256": "29eba2cd27ab047b06c3674bf5aff22c6d5103a3b467f611f5dbe7aa9f162645",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-before-1280.png",
+    "source": "test-results/e2e/compare-before-1280.png",
+    "width": 1280,
+    "height": 1428,
+    "sha256": "43a2c7724775b6c9a677d53761cffa613d3427b8c2f2f8055152e466a995826a",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-after.png",
+    "source": "test-results/e2e/compare-after.png",
+    "width": 1586,
+    "height": 1428,
+    "sha256": "b4afa1b13b12d400ff3f69a03baff412f84ef540e28a8a6634f659298f295cf0",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-after-1280.png",
+    "source": "test-results/e2e/compare-after-1280.png",
+    "width": 1280,
+    "height": 1428,
+    "sha256": "dacca64c6a0cd2fe40c7aa336f7f2b5910937751fa0a95c50186d57cc20625a0",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-before.png",
+    "source": "test-results/e2e/replay-before.png",
+    "width": 1586,
+    "height": 1299,
+    "sha256": "d1e8dd8f273367ebd0feeb96a1707c7be339db8d3521f66fb37d279c4a63f24d",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-before-1280.png",
+    "source": "test-results/e2e/replay-before-1280.png",
+    "width": 1280,
+    "height": 1299,
+    "sha256": "11a3a18c62507367a93faeecef39a7d4d1806d0e33e553115a0f7d4c6497b023",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-after.png",
+    "source": "test-results/e2e/replay-after.png",
+    "width": 1586,
+    "height": 1399,
+    "sha256": "56d4252427b606702e682e6e4d5d54a98647fe5007490de627c99057d30744e4",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-after-1280.png",
+    "source": "test-results/e2e/replay-after-1280.png",
+    "width": 1280,
+    "height": 1399,
+    "sha256": "2024f38256003107039abeaec9364d6429b3bfea01031b2b5df3acf1503f4468",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "graph-stages.png",
+    "source": "test-results/e2e/graph-stages.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "f0b4ac4e4889b9c23ef7ac1511961be438059f5fea1804b2f3f8c3b70cf88f96",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "graph-layers.png",
+    "source": "test-results/e2e/graph-layers.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "811abdac11bc6caae13e35f01bd993faa29c6a5a12500db683072d1157c943c5",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "graph-legend.png",
+    "source": "test-results/e2e/graph-legend.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "0c1ddeae8ff8b168c263942cc5cc3015c2fe14b3b6cc9143c976d6706b813c00",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "graph-error.png",
+    "source": "test-results/e2e/graph-error.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "db611f777aa3fb2ba7073390fbbd059a8946c7c9460fef0e377ecaf01133e2af",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "graph-context.png",
+    "source": "test-results/e2e/graph-context.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "815e6d08ece9dcfe0a8bf668f0b582debed5452147b60213f50b0a98ba96b8bc",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "graph-activity.png",
+    "source": "test-results/e2e/graph-activity.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "ea3b2a57385e1d9e5a34d2cc49c622affa08a722f2fed2b4d8363cfce47c18a9",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "graph-files.png",
+    "source": "test-results/e2e/graph-files.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "b22afb080533883c5e0daaefc3f154f0ac25773733d3d9f158cdd23fad299ca9",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "graph-signatures.png",
+    "source": "test-results/e2e/graph-signatures.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "64248dec36ad84c01c6370ed4965a923b547b64888177418e1c6694b3a94c676",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-agent-a.png",
+    "source": "test-results/e2e/compare-agent-a.png",
+    "width": 1586,
+    "height": 2043,
+    "sha256": "9980180159baa0a61a73db1c0a13e4685d68743c1211295a88dcc41116bf25d0",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-snapshots-a.png",
+    "source": "test-results/e2e/compare-snapshots-a.png",
+    "width": 1586,
+    "height": 2676,
+    "sha256": "16035be322161a4230867609890618dc38614095ce78507a74697a75a3411910",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-agent-b.png",
+    "source": "test-results/e2e/compare-agent-b.png",
+    "width": 1586,
+    "height": 2043,
+    "sha256": "2a2243051d12210e9f3ac1393a91c19c7c124df921c993a77c820a34b4a1c4ed",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-snapshots-b.png",
+    "source": "test-results/e2e/compare-snapshots-b.png",
+    "width": 1586,
+    "height": 2800,
+    "sha256": "08d4ef994a0d2ca27d671b4e2d217d7cfbdba22fc9465794fab048af05698c2b",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-patch.png",
+    "source": "test-results/e2e/compare-patch.png",
+    "width": 1586,
+    "height": 1203,
+    "sha256": "6babaa61f145a91387d377a6c71fdc3a2b8c677df11bedd8c5491bd3fc2fcf73",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-metrics.png",
+    "source": "test-results/e2e/compare-metrics.png",
+    "width": 1586,
+    "height": 1224,
+    "sha256": "cc022be74833bc85048d7dab35c692eb56cdf2b6f8d90d6cbcd1bd2325857244",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-charts.png",
+    "source": "test-results/e2e/compare-charts.png",
+    "width": 1586,
+    "height": 1608,
+    "sha256": "21d9ca34a860d321fe6b1fdf701d698be94734a41e44172fd2042a3bb2b507ed",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-findings.png",
+    "source": "test-results/e2e/compare-findings.png",
+    "width": 1586,
+    "height": 1666,
+    "sha256": "985b3bd0f1f1a6a06733647dc5f0622671066739a151a6b1b4c776d8476fdce1",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-stages.png",
+    "source": "test-results/e2e/replay-stages.png",
+    "width": 1586,
+    "height": 1411,
+    "sha256": "ae7c1c7498b27a038c10ea0d2973d419cbd296833673b581366e23fee35a86fe",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-context.png",
+    "source": "test-results/e2e/replay-context.png",
+    "width": 1586,
+    "height": 1399,
+    "sha256": "7c4c5380c8bbc7c3331bd5ea79bc93c52a1e44141b115d482f9fde5d2b623645",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-failure.png",
+    "source": "test-results/e2e/replay-failure.png",
+    "width": 1586,
+    "height": 1299,
+    "sha256": "ce97b88b2db87a4577795778333bbd0cec60ce0675d069da1f67556cecad7a88",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-playback.png",
+    "source": "test-results/e2e/replay-playback.png",
+    "width": 1586,
+    "height": 1399,
+    "sha256": "e0968ccf5d9403e01cc79418d4385601cc803dcaee7051c63080d279ee406f4f",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "missing-patch.png",
+    "source": "test-results/e2e/missing-patch.png",
+    "width": 1586,
+    "height": 1399,
+    "sha256": "ce9175510201342b1b934a43a548000a05e5810676e5ff856baff788522819d5",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "missing-time.png",
+    "source": "test-results/e2e/missing-time.png",
+    "width": 1586,
+    "height": 1399,
+    "sha256": "4583ac878e1eb1ff182564478c4ba63a947f07c12db3dd1aaeb1bccfd6fa7920",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "vertical-before-1586.png",
+    "source": "test-results/e2e/vertical-before-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "230e4639b00626f7dd7b054a31cae2f89dd006dc9d429ff45debfc743c65bbda",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "vertical-expanded-1586.png",
+    "source": "test-results/e2e/vertical-expanded-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "cf0de97e5097db3cfdda3fdcedf960eeedc3d22d804100ebe93d669106e2c839",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "vertical-patch-1586.png",
+    "source": "test-results/e2e/vertical-patch-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "bfe9948c7474ccac1f05ccb5debfcdc1c1de9f53e4247953d32705e6451cb83f",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "vertical-fullscreen-1586.png",
+    "source": "test-results/e2e/vertical-fullscreen-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "574173baeaae10680e79de8a04b54ebb7228b5b5c2927b3c0bb0c3852bcb4e81",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "timeline-1586.png",
+    "source": "test-results/document-workspace/document-timeline-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "cdec6c76d4338f10f1d19b9bc607c908ed7a1c461775e59f8de06a846d234532",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "sankey-1586.png",
+    "source": "test-results/document-workspace/document-sankey-1586.png",
+    "width": 1586,
+    "height": 1175,
+    "sha256": "6adfac01bc1e2b34489f1ebcf2da533587d39bd1d23036b652d9d34ee9f61ed0",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "runs-1586.png",
+    "source": "test-results/document-workspace/document-runs-1586.png",
+    "width": 1586,
+    "height": 1965,
+    "sha256": "89cd8531905a93129f44f0c4d05c197fa6801a5f9792041de4b31d1457c022b4",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "vertical-before-1280.png",
+    "source": "test-results/e2e/vertical-before-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "7458995aa5583552a756b13a0d6dc337b6c5a62e9fe466e64af3f3854998d4e7",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "vertical-expanded-1280.png",
+    "source": "test-results/e2e/vertical-expanded-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "2c1c5a43c3289ad025a1b4821a91b1429df29d04eac12f27f8363e7aff088c81",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "vertical-patch-1280.png",
+    "source": "test-results/e2e/vertical-patch-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "48219aea5d5a8add2c6af3003d756d78f3f5032e5f33602054ea1b3e33f278a3",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "vertical-fullscreen-1280.png",
+    "source": "test-results/e2e/vertical-fullscreen-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "489ef845b40013ae093805989619f2be2f58b2429328c9cfd65c8633a7cd29a4",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "timeline-1280.png",
+    "source": "test-results/document-workspace/document-timeline-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "2de1442a65c8c0f6fbcf14f6acb80765d9b72e67cb35aea6abbdf5eb9187bb5f",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "sankey-1280.png",
+    "source": "test-results/document-workspace/document-sankey-1280.png",
+    "width": 1280,
+    "height": 1175,
+    "sha256": "209e71122d5eaf8fd7174ad9680ce6ac9e4dde102712209d92721e1c9781bf57",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "runs-1280.png",
+    "source": "test-results/document-workspace/document-runs-1280.png",
+    "width": 1280,
+    "height": 1965,
+    "sha256": "3cd44557a2a861e82c7c5e981b1c9eaa058d786256805d2bf07411a71feb670f",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-scrolled.png",
+    "source": "test-results/document-workspace/document-replay-scrolled-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "ef812a51fcefa8c91d45c26226c8603003a23de080d4687c27dbc49bcb4c20c8",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "compare-scrolled.png",
+    "source": "test-results/document-workspace/document-compare-scrolled-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "edccbaafa3da248a0d09931ab8ea436d4cf86dfc1dab2fa9d4745ffd32f48a02",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "timeline-timeline-scrolled.png",
+    "source": "test-results/e2e/timeline-timeline-scrolled.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "7b1928d3d8947e13a12b6c8ed6d8c5506edf972c0607dbecfe62eba751a25878",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "timeline-timeline-fullscreen.png",
+    "source": "test-results/e2e/timeline-timeline-fullscreen.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "ef7ae181afd0fe3d93b0b532a13db32d8157c25929c8d956e092148cb2ab921d",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "timeline-timeline-fullscreen-1280.png",
+    "source": "test-results/e2e/timeline-timeline-fullscreen-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "923d1bf0aaf941890ebdd06c2b33a389f3a2df69bd710c340f9b44d3db01ca21",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "playback-diff-updated.png",
+    "source": "test-results/e2e/playback-diff-updated.png",
+    "width": 1586,
+    "height": 1399,
+    "sha256": "d89c52c66dd9d54ebf6c6809e1d0c636cab3b195f95a6deecc96c71c9111a9eb",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "playback-inspector-diff-updated.png",
+    "source": "test-results/node-appearance/playback-inspector-diff-updated.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "71185b181427dc30e336d9bc8c222794d21894888c77cdac3202ada2c6f5ac5c",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-scrolled-1280.png",
+    "source": "test-results/document-workspace/document-replay-scrolled-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "ef5e2ff77e5eb3de35740f9e69fd3500a62fc8586932afbf6a014221a2302c22",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-terminal-expanded-1586.png",
+    "source": "test-results/document-workspace/document-replay-terminal-expanded-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "76a0c798e10aaf0a02caa033c3d9225539e5cc2f91037154eb458f34b89be5e2",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  },
+  {
+    "file": "replay-terminal-expanded-1280.png",
+    "source": "test-results/document-workspace/document-replay-terminal-expanded-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "da65dd9041938aa994f1135b60410d23fa6315228fb36413b773f9d058fcdd02",
+    "origin": "independent Chrome/Playwright capture; public synthetic fixture"
+  }
+]

@@ -37,19 +37,19 @@ function checkInline(source,expanded,steps){
     const positions=executionPositions(filtered,size),boxes=executionBoxes(filtered,positions,size);
     const rect=n=>{const p=positions.get(n.id),s=size(n);return {x:p.x-s.width/2,y:p.y-s.height/2,...s};};
     const encloses=(a,b)=>a.x<=b.x&&a.y<=b.y&&a.x+a.width>=b.x+b.width&&a.y+a.height>=b.y+b.height;
-    for(let i=1;i<filtered.nodes.length;i++)assert.ok(rect(filtered.nodes[i-1]).x+rect(filtered.nodes[i-1]).width<rect(filtered.nodes[i]).x,'Sibling node rectangles never overlap');
+    for(let i=1;i<filtered.nodes.length;i++)assert.ok(rect(filtered.nodes[i-1]).y+rect(filtered.nodes[i-1]).height<rect(filtered.nodes[i]).y,'Sibling node rectangles never overlap');
     for(const group of filtered.groups??[]){
       const box=boxes.find(b=>b.node.id===group.node.id).bounds;
       for(const id of group.members)assert.ok(encloses(box,rect(filtered.nodes[ids.get(id)])));
       for(const child of boxes.filter(b=>filtered.groups.find(g=>g.node.id===b.node.id)?.parent===group.node.id))assert.ok(encloses(box,child.bounds));
-      for(const n of filtered.nodes.filter(n=>!group.members.includes(n.id))){const r=rect(n);assert.ok(box.x+box.width<r.x||r.x+r.width<box.x,'Enclosure does not cover another branch');}
+      for(const n of filtered.nodes.filter(n=>!group.members.includes(n.id))){const r=rect(n);assert.ok(box.y+box.height<r.y||r.y+r.height<box.y,'Enclosure does not cover another branch');}
     }
     const drawn=executionRoutes(filtered,positions,164,48,new Map(filtered.nodes.map(n=>[n.id,size(n)])),boxes.map(b=>b.bounds));
     assert.equal(drawn.length,filtered.edges.length);
     for(const route of drawn){
       const points=[...route.path.matchAll(/[ML] ([\d.e+-]+) ([\d.e+-]+)/g)].map(m=>({x:+m[1],y:+m[2]}));
       for(let i=1;i<points.length;i++){
-        const a=points[i-1],b=points[i];assert.ok(b.x>=a.x,'Inline arrow segments point forward');
+        const a=points[i-1],b=points[i];assert.ok(b.y>=a.y,'Inline arrow segments point downward');
         for(const n of filtered.nodes.filter(n=>n.id!==route.edge.source&&n.id!==route.edge.target)){
           const r=rect(n);assert.ok(!(a.x===b.x?a.x>r.x&&a.x<r.x+r.width&&Math.max(a.y,b.y)>r.y&&Math.min(a.y,b.y)<r.y+r.height:a.y>r.y&&a.y<r.y+r.height&&Math.max(a.x,b.x)>r.x&&Math.min(a.x,b.x)<r.x+r.width),'Inline route avoids executable node interiors');
         }
@@ -74,14 +74,13 @@ for(const size of [0,1,8,9,60,87,172,324,500,2000]){
       const keep=new Set(filtered.map(n=>n.id));for(const e of g.edges.filter(e=>keep.has(e.source)&&keep.has(e.target)))assert.ok(ids.get(e.source)<ids.get(e.target));
     }
     const sizes=new Map(g.nodes.map(n=>[n.id,n.view?{width:220,height:104}:{width:164,height:48}]));
-    let x=0;
-    const positions=new Map(g.nodes.map((n,i)=>{if(i)x+=(sizes.get(g.nodes[i-1].id).width+sizes.get(n.id).width)/2+48;return [n.id,{x,y:n.view?0:(i%3)*56}];}));
+    const positions=executionPositions(g,n=>sizes.get(n.id));
     const drawn=executionRoutes(g,positions,164,48,sizes);assert.equal(drawn.length,g.edges.length);
     for(const r of drawn){
       const points=[...r.path.matchAll(/[ML] ([\d.e+-]+) ([\d.e+-]+)/g)].map(x=>({x:+x[1],y:+x[2]}));
       assert.ok(points.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)));
       for(let i=1;i<points.length;i++){
-        const a=points[i-1],b=points[i];assert.ok(a.x===b.x||a.y===b.y);assert.ok(b.x>=a.x,'All route segments preserve forward x');
+        const a=points[i-1],b=points[i];assert.ok(a.x===b.x||a.y===b.y);assert.ok(b.y>=a.y,'All route segments preserve downward y');
         for(const n of g.nodes.filter(n=>n.id!==r.edge.source&&n.id!==r.edge.target)){
           const p=positions.get(n.id),size=sizes.get(n.id),left=p.x-size.width/2,right=p.x+size.width/2,top=p.y-size.height/2,bottom=p.y+size.height/2;
           assert.ok(!(a.x===b.x?a.x>left&&a.x<right&&Math.max(a.y,b.y)>top&&Math.min(a.y,b.y)<bottom:a.y>top&&a.y<bottom&&Math.max(a.x,b.x)>left&&Math.min(a.x,b.x)<right),'No edge crosses a node interior');

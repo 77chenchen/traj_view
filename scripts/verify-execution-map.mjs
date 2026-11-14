@@ -6,6 +6,7 @@ import {pathToFileURL} from 'node:url';
 import {frontendRequire,root} from './frontend-dependencies.mjs';
 import {checkExecutionReturn} from '../tests/e2e/execution-map.mjs';
 const args=process.argv.slice(2),option=(key,fallback)=>{const i=args.indexOf(key);return i<0?fallback:args[i+1];};
+const appearanceOnly=args.includes('--appearance-only');
 const url=option('--url','http://127.0.0.1:8766');assert.match(url,/^http:\/\/127\.0\.0\.1:\d+\/?$/);
 const dataset=resolve(option('--dataset','.workers/local/nl2repo-50-out'));
 const output=resolve(option('--output','.workers/local/inline-graph-qa'));
@@ -21,9 +22,10 @@ const browser=await chromium.launch({executablePath:process.env.CHROME_PATH||'/A
 const report={chrome:browser.version(),privateEvidence:true,datasetRuns:index.runs.length,runs:[],captures:[]};
 async function settle(page){await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));}
 async function capture(page,name){
+  if(appearanceOnly&&!name.includes('appearance'))return;
   await page.mouse.move(0,0);await page.evaluate(()=>document.activeElement?.blur());await settle(page);
   const buffer=await page.screenshot({path:join(output,name+'.png'),fullPage:true,animations:'disabled'}),size=page.viewportSize();
-  assert.equal(buffer.readUInt32BE(16),size.width);assert.equal(buffer.readUInt32BE(20),size.height);
+  assert.equal(buffer.readUInt32BE(16),size.width);assert.equal(buffer.readUInt32BE(20),await page.evaluate(()=>Math.max(innerHeight,document.documentElement.scrollHeight)));
   report.captures.push({file:name+'.png',...size});
 }
 try{
@@ -35,16 +37,29 @@ try{
     const graph=page.getByRole('group',{name:`Process graph for ${run.id}-expanded`,exact:true});await graph.locator('[data-node]').first().waitFor();
     const pause=page.getByRole('button',{name:'Pause updates',exact:true});if(await pause.count())await pause.click();
     const projection=executionGraph(source,undefined,steps),rootIds=await graph.locator('[data-node]').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('data-node-id')));
-    assert.deepEqual(rootIds,projection.nodes.map(n=>n.id));await capture(page,`run-${i}-closed`);
+    assert.deepEqual(rootIds,projection.nodes.map(n=>n.id));await capture(page,`run-${i}-${appearanceOnly?'appearance-overview':'closed'}`);
+    if(appearanceOnly){
+      assert.ok(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+1),'Real Graph is a single-screen workspace');
+      const workspace=await page.locator('.graph-workspace').boundingBox();
+      assert.ok(workspace.y+workspace.height<=page.viewportSize().height+1);
+    }
     const largest=[...projection.nodes].filter(n=>n.view).sort((a,b)=>b.count-a.count)[0];assert.ok(largest);
     if(i===0){
-      await graph.focus();for(let j=0;j<5;j++)await page.keyboard.press('ArrowRight');
       await capture(page,'run-0-readable-before');
     }
+    await page.getByRole('button',{name:'Fit graph',exact:true}).click();
     await graph.locator(`[data-node-id="${largest.id}"]`).click();await graph.locator(`[data-section-toggle="${largest.id}"]`).waitFor();
     for(const id of rootIds.filter(id=>id!==largest.id))assert.equal(await graph.locator(`[data-node-id="${id}"]`).count(),1);
+    const sourceY=await graph.locator('[data-node]').evaluateAll(ns=>ns.map(n=>n.transform.baseVal.consolidate().matrix.f));
+    assert.ok(sourceY.every((y,j)=>!j||y>sourceY[j-1]),'Real NL2Repo frontiers preserve downward source order');
+    const frameBox=await page.locator('.graph-frame').boundingBox(),beforeWheel=await graph.getAttribute('viewBox');
+    await page.mouse.move(frameBox.x+frameBox.width*.6,frameBox.y+frameBox.height*.6);await page.mouse.wheel(0,280);await settle(page);
+    const afterWheel=await graph.getAttribute('viewBox');
+    assert.ok(Number(afterWheel.split(' ')[1])>Number(beforeWheel.split(' ')[1]),'Ordinary wheel browses the expanded real trajectory');
+    assert.equal(afterWheel.split(' ')[2],beforeWheel.split(' ')[2],'Real trace wheel preserves readable scale');
+    await capture(page,`run-${i}-appearance-wheel`);
     if(i===0)await capture(page,'run-0-readable-after');
-    await page.getByRole('button',{name:'Fit graph',exact:true}).click();await capture(page,`run-${i}-largest-open`);
+    await page.getByRole('button',{name:'Fit graph',exact:true}).click();await capture(page,`run-${i}-${appearanceOnly?'appearance-inline':'largest-open'}`);
     const child=executionGraph(source,{start:largest.view.start,end:largest.view.end},steps).nodes.filter(n=>n.view).sort((a,b)=>b.count-a.count)[0];
     if(child){await graph.locator(`[data-node-id="${child.id}"]`).click();await graph.locator(`[data-section-toggle="${child.id}"]`).waitFor();await page.getByRole('button',{name:'Fit graph',exact:true}).click();await capture(page,`run-${i}-largest-nested`);}
     const inspector=page.getByRole('complementary',{name:'Step inspector',exact:true}),search=page.getByRole('searchbox',{name:`Find a node in ${run.id}-expanded`,exact:true});
@@ -52,6 +67,36 @@ try{
     await page.getByRole('button',{name:'Next failure',exact:true}).click();await inspector.locator('.step-meta').getByText('#'+failure.first_idx,{exact:true}).waitFor();
     await inspector.getByRole('button',{name:'Error Output',exact:true}).click();await capture(page,`run-${i}-failure`);
     await inspector.getByRole('button',{name:'Context',exact:true}).click();await capture(page,`run-${i}-context`);
+    await page.getByRole('button',{name:'Fullscreen graph',exact:true}).click();
+    await page.waitForFunction(()=>document.fullscreenElement?.classList.contains('graph-workspace'));
+    assert.ok(await inspector.evaluate(el=>document.fullscreenElement.contains(el)));
+    await inspector.getByRole('button',{name:'Error Output',exact:true}).click();
+    const recordedError=steps.find(s=>String(s.idx)===String(failure.first_idx))?.observation?.text;
+    if(recordedError)assert.ok((await inspector.innerText()).includes(recordedError.slice(0,60)));
+    await capture(page,`run-${i}-appearance-fullscreen-failure`);
+    const patchStep=steps.find(s=>{
+      const a=s.action;if(!a)return false;
+      return [a.args?.patch,a.args?.input,a.args?.diff,a.command].some(value=>typeof value==='string'&&(/(?:^|\n)(?:@@|\*\*\* (?:Begin Patch|Update File)|--- )/m).test(value));
+    });
+    if(patchStep){
+      await search.fill('#'+patchStep.idx);await search.press('Enter');await inspector.locator('.step-meta').getByText('#'+patchStep.idx,{exact:true}).waitFor();
+      await inspector.getByRole('button',{name:'Code Diff',exact:true}).click();await inspector.getByLabel('Recorded patch',{exact:true}).waitFor();
+      await capture(page,`run-${i}-appearance-fullscreen-patch`);
+    }else{
+      const edit=source.nodes.find(n=>n.category==='edit')??failure;
+      await search.fill('#'+edit.first_idx);await search.press('Enter');await inspector.locator('.step-meta').getByText('#'+edit.first_idx,{exact:true}).waitFor();
+      await inspector.getByRole('button',{name:'Code Diff',exact:true}).click();assert.match(await inspector.innerText(),/No patch recorded/);
+      assert.ok(await inspector.getByRole('button',{name:'View Full Diff',exact:true}).isDisabled());
+      await capture(page,`run-${i}-appearance-fullscreen-patch-unrecorded`);
+    }
+    if(i===0){
+      await page.setViewportSize({width:1280,height:800});await settle(page);
+      const box=await inspector.boundingBox();assert.ok(box.x>=0&&box.y>=0&&box.x+box.width<=1281&&box.y+box.height<=801);
+      await capture(page,'run-0-appearance-fullscreen-1280');await page.setViewportSize({width:1586,height:912});
+    }
+    const selectedSource=new URLSearchParams(new URL(page.url()).hash.slice(1)).get('step');
+    await page.getByRole('button',{name:'Exit fullscreen graph',exact:true}).click();await page.waitForFunction(()=>!document.fullscreenElement);
+    await inspector.locator('.step-meta').getByText('#'+selectedSource,{exact:true}).waitFor();
     const last=source.nodes.at(-1);await search.fill('#'+last.first_idx);await search.press('Enter');await inspector.locator('.step-meta').getByText('#'+last.first_idx,{exact:true}).waitFor();await settle(page);
     const fullyVisible=async()=>{
       const box=await graph.locator(`[data-node-id="${last.id}"]`).boundingBox(),canvas=await page.locator('.graph-frame').boundingBox();
@@ -68,7 +113,7 @@ try{
     let smaller;
     if(i===0){await page.setViewportSize({width:1280,height:800});smaller=await checkExecutionReturn(page,graph,async state=>{if(['inline-open','inline-multiple'].includes(state))await capture(page,`run-${i}-${state}-1280`);});await page.setViewportSize({width:1586,height:912});}
     assert.deepEqual(errors,[]);page.off('pageerror',onError);
-    report.runs.push({run:run.id,sourceSteps:source.nodes.length,sourceEdges:source.edges.length,rootNodes:projection.nodes.length,largestSectionSteps:largest.count,inline,smaller,exactFailureAndLastSource:true,repeatedSearch:true,currentStateSvg:true,pageErrors:errors.length});
+    report.runs.push({run:run.id,sourceSteps:source.nodes.length,sourceEdges:source.edges.length,rootNodes:projection.nodes.length,largestSectionSteps:largest.count,inline,smaller,verticalSourceOrder:true,ordinaryWheel:true,fullscreenInspector:true,recordedFullscreenPatch:!!patchStep,exactFailureAndLastSource:true,repeatedSearch:true,currentStateSvg:true,pageErrors:errors.length});
   }
   await context.close();
   const offline=await browser.newContext({viewport:{width:1586,height:912},offline:true,serviceWorkers:'block'});await offline.route(/^https?:\/\//,route=>route.abort());
@@ -76,7 +121,14 @@ try{
   await offlinePage.goto(pathToFileURL(html).href+'#view=graph&run='+encodeURIComponent(runs[0].id));
   const graph=offlinePage.getByRole('group',{name:`Process graph for ${runs[0].id}-expanded`,exact:true});await graph.locator('[data-node]').first().waitFor();
   const inline=await checkExecutionReturn(offlinePage,graph,async state=>{if(['inline-open','inline-multiple'].includes(state))await capture(offlinePage,`offline-${state}`);});
-  assert.equal(requests,0);assert.deepEqual(errors,[]);report.offline={httpRequests:requests,pageErrors:errors.length,inline};await offline.close();
+  await offlinePage.getByRole('button',{name:'Next failure',exact:true}).click();
+  await offlinePage.getByRole('button',{name:'Fullscreen graph',exact:true}).click();
+  await offlinePage.waitForFunction(()=>document.fullscreenElement?.classList.contains('graph-workspace'));
+  const inspector=offlinePage.getByRole('complementary',{name:'Step inspector',exact:true});
+  assert.ok(await inspector.evaluate(el=>document.fullscreenElement.contains(el)));
+  await inspector.getByRole('button',{name:'Error Output',exact:true}).click();await capture(offlinePage,'offline-appearance-fullscreen-failure');
+  await offlinePage.getByRole('button',{name:'Exit fullscreen',exact:true}).click();await offlinePage.waitForFunction(()=>!document.fullscreenElement);
+  assert.equal(requests,0);assert.deepEqual(errors,[]);report.offline={httpRequests:requests,pageErrors:errors.length,inline,fullscreenInspector:true};await offline.close();
   writeFileSync(join(output,'verification.json'),JSON.stringify(report,null,2)+'\n');
   console.log(`PASS real NL2Repo: ${runs.map(run=>run.metrics.steps).join('/')} steps; ${report.captures.length} private full-page captures; inline siblings/nesting/collapse/camera/source/SVG; offline HTTP ${requests}`);
 }finally{await browser.close();}

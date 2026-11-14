@@ -3,7 +3,6 @@ import { join } from 'node:path';
 
 export async function checkLive(page, url, artifacts, append, progress) {
   await page.goto(url);
-  await page.getByLabel('Notifications', {exact:true}).click();
   await page.getByText(/Live capture · 1 runs/).waitFor();
   await page.getByRole('button',{name:'qa-live',exact:true}).click();
   await page.getByText('1 nodes · 0 visible edges',{exact:true}).waitFor();

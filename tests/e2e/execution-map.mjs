@@ -9,13 +9,20 @@ const node=(graph,id)=>graph.locator(`[data-node-id="${id}"]`);
 const header=(graph,id)=>graph.locator(`[data-section-toggle="${id}"]`);
 async function anchor(locator,expanded=false){
   return locator.evaluate((element,open)=>{
-    const rect=element.querySelector(open?':scope > rect':':scope > g > rect');
-    const point=new DOMPoint(rect.x.baseVal.value,rect.y.baseVal.value).matrixTransform(element.getScreenCTM());
+    const body=element.querySelector(open?':scope > rect':'[data-node-body]');
+    const box=body.getBBox();
+    const point=new DOMPoint(box.x,box.y).matrixTransform(element.getScreenCTM());
     const svg=element.ownerSVGElement;
     return {x:point.x,y:point.y,scale:svg.clientWidth/svg.viewBox.baseVal.width};
   },expanded);
 }
 async function expand(page,graph,id){
+  // Complete the previous clear/collapse focus restoration before moving focus.
+  await settle(page);
+  // Keyboard focus frames an offscreen SVG node before the pointer action.
+  // A vertical frontier may extend below the canvas after a manual zoom.
+  await graph.focus();await page.keyboard.press('Tab');await node(graph,id).focus();await settle(page);
+  await node(graph,id).scrollIntoViewIfNeeded();await settle(page);
   const before=await anchor(node(graph,id));
   await node(graph,id).click();
   await header(graph,id).waitFor();await node(graph,id).waitFor({state:'detached'});await settle(page);
@@ -116,8 +123,8 @@ export async function checkExecutionMap(page,url,artifacts,offline=false){
   const inspector=page.getByRole('complementary',{name:'Step inspector',exact:true});
   await inspector.getByText('Check synthetic module 499.',{exact:true}).waitFor();
   await graph.locator('[data-source-index="999"][aria-pressed="true"]').waitFor();
-  const positions=await graph.locator('[data-node]').evaluateAll(ns=>ns.map(n=>n.transform.baseVal.consolidate().matrix.e));
-  assert.ok(positions.every((x,i)=>!i||x>positions[i-1]));
+  const positions=await graph.locator('[data-node]').evaluateAll(ns=>ns.map(n=>n.transform.baseVal.consolidate().matrix.f));
+  assert.ok(positions.every((y,i)=>!i||y>positions[i-1]));
   const [download]=await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'Download SVG of qa-render-500-expanded',exact:true}).click()]);
   const svg=readFileSync(await download.path(),'utf8');
   for(const id of await ids(graph))assert.ok(svg.includes(`data-node-id="${id}"`),'SVG contains every current frontier node');

@@ -1,0 +1,2497 @@
+{
+  "date": "2026-11-14",
+  "chrome": "157.0.8103.52",
+  "scope": "Desktop 1586x912 and 1280x800; synthetic public inputs; exact standalone report",
+  "checks": {
+    "python": {
+      "passed": 81,
+      "seconds": 4.82
+    },
+    "typescript": "passed",
+    "viteBuild": "passed",
+    "browserScenarios": 38,
+    "browserPassed": 38,
+    "dagSorts": 909,
+    "executionScopes": 1908,
+    "exactSourcePaths": 3161,
+    "forwardRoutes": 5189,
+    "inlineStates": 61,
+    "inlineRoutes": 1735,
+    "timelineLayouts": 126
+  },
+  "scenarios": [
+    {
+      "name": "run-list",
+      "status": "ok"
+    },
+    {
+      "name": "graph",
+      "status": "ok"
+    },
+    {
+      "name": "compare",
+      "status": "ok"
+    },
+    {
+      "name": "dag",
+      "status": "ok"
+    },
+    {
+      "name": "dag-compare",
+      "status": "ok"
+    },
+    {
+      "name": "hierarchy",
+      "status": "ok"
+    },
+    {
+      "name": "workbench",
+      "status": "ok"
+    },
+    {
+      "name": "dashboard",
+      "status": "ok"
+    },
+    {
+      "name": "dashboard-compare",
+      "status": "ok"
+    },
+    {
+      "name": "four-reference",
+      "status": "ok"
+    },
+    {
+      "name": "density",
+      "status": "ok"
+    },
+    {
+      "name": "three-page-desktop",
+      "status": "ok"
+    },
+    {
+      "name": "execution-map",
+      "status": "ok"
+    },
+    {
+      "name": "node-appearance",
+      "status": "ok"
+    },
+    {
+      "name": "playback-preferences",
+      "status": "ok"
+    },
+    {
+      "name": "document-workspace",
+      "status": "ok"
+    },
+    {
+      "name": "neutral-vertical",
+      "status": "ok"
+    },
+    {
+      "name": "timeline-workspace",
+      "status": "ok"
+    },
+    {
+      "name": "sankey",
+      "status": "ok"
+    },
+    {
+      "name": "theme",
+      "status": "ok"
+    },
+    {
+      "name": "folding",
+      "status": "ok"
+    },
+    {
+      "name": "narrow",
+      "status": "ok"
+    },
+    {
+      "name": "live",
+      "status": "ok"
+    },
+    {
+      "name": "first-render-500",
+      "status": "ok"
+    },
+    {
+      "name": "first-render-2000",
+      "status": "ok"
+    },
+    {
+      "name": "workbench-offline",
+      "status": "ok"
+    },
+    {
+      "name": "dashboard-offline",
+      "status": "ok"
+    },
+    {
+      "name": "four-reference-offline",
+      "status": "ok"
+    },
+    {
+      "name": "density-offline",
+      "status": "ok"
+    },
+    {
+      "name": "three-page-desktop-offline",
+      "status": "ok"
+    },
+    {
+      "name": "execution-map-offline",
+      "status": "ok"
+    },
+    {
+      "name": "node-appearance-offline",
+      "status": "ok"
+    },
+    {
+      "name": "playback-preferences-offline",
+      "status": "ok"
+    },
+    {
+      "name": "document-workspace-offline",
+      "status": "ok"
+    },
+    {
+      "name": "neutral-vertical-offline",
+      "status": "ok"
+    },
+    {
+      "name": "timeline-workspace-offline",
+      "status": "ok"
+    },
+    {
+      "name": "offline",
+      "status": "ok"
+    },
+    {
+      "name": "delivered-offline",
+      "status": "ok"
+    }
+  ],
+  "currentScenarioEvidence": {
+    "three-page-desktop": {
+      "captures": [
+        {
+          "name": "graph-before.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": null,
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "graph-after.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "compare-before.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": null,
+          "imageWidth": 1586,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "compare-after.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": "30",
+          "imageWidth": 1586,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "replay-before.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1299,
+          "scroll": 0,
+          "theme": "light",
+          "step": "10",
+          "imageWidth": 1586,
+          "imageHeight": 1299,
+          "fullPage": true
+        },
+        {
+          "name": "replay-after.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "graph-before-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 800,
+          "scroll": 0,
+          "theme": "light",
+          "step": null,
+          "imageWidth": 1280,
+          "imageHeight": 800,
+          "fullPage": true
+        },
+        {
+          "name": "graph-after-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 800,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1280,
+          "imageHeight": 800,
+          "fullPage": true
+        },
+        {
+          "name": "compare-before-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": null,
+          "imageWidth": 1280,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "compare-after-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": "30",
+          "imageWidth": 1280,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "replay-before-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1299,
+          "scroll": 0,
+          "theme": "light",
+          "step": "10",
+          "imageWidth": 1280,
+          "imageHeight": 1299,
+          "fullPage": true
+        },
+        {
+          "name": "replay-after-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1280,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "graph-stages.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": null,
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "graph-layers.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "graph-legend.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "graph-error.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "graph-context.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "graph-activity.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "graph-signatures.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "graph-files.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "graph-timeline.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "compare-matches.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "compare-selected-patch.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "compare-agent-a.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2043,
+          "scroll": 979,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 2043,
+          "fullPage": true
+        },
+        {
+          "name": "compare-snapshots-a.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2676,
+          "scroll": 1612,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 2676,
+          "fullPage": true
+        },
+        {
+          "name": "compare-agent-b.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2043,
+          "scroll": 979,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 2043,
+          "fullPage": true
+        },
+        {
+          "name": "compare-snapshots-b.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2800,
+          "scroll": 1736,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 2800,
+          "fullPage": true
+        },
+        {
+          "name": "compare-findings.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1666,
+          "scroll": 706,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1666,
+          "fullPage": true
+        },
+        {
+          "name": "compare-patch.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1203,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1203,
+          "fullPage": true
+        },
+        {
+          "name": "compare-final-a.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1203,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1203,
+          "fullPage": true
+        },
+        {
+          "name": "compare-final-b.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1203,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1203,
+          "fullPage": true
+        },
+        {
+          "name": "compare-metrics.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1224,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1224,
+          "fullPage": true
+        },
+        {
+          "name": "compare-charts.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1608,
+          "scroll": 444,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1608,
+          "fullPage": true
+        },
+        {
+          "name": "compare-dags.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2196,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": false
+        },
+        {
+          "name": "replay-failure.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1299,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1299,
+          "fullPage": true
+        },
+        {
+          "name": "replay-stages.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1411,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1411,
+          "fullPage": true
+        },
+        {
+          "name": "replay-file.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "replay-details.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "replay-context.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "replay-validation.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1409,
+          "scroll": 0,
+          "theme": "light",
+          "step": "100",
+          "imageWidth": 1586,
+          "imageHeight": 1409,
+          "fullPage": true
+        },
+        {
+          "name": "replay-playback.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "20",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "shared-search.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "120",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "shared-status.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "120",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "shared-dark.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "dark",
+          "step": "120",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "shared-run-details.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1299,
+          "scroll": 0,
+          "theme": "light",
+          "step": "120",
+          "imageWidth": 1586,
+          "imageHeight": 1299,
+          "fullPage": true
+        },
+        {
+          "name": "shared-actions.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1299,
+          "scroll": 0,
+          "theme": "light",
+          "step": "120",
+          "imageWidth": 1586,
+          "imageHeight": 1299,
+          "fullPage": true
+        },
+        {
+          "name": "missing-patch.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "31",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "missing-time.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "9007199254740993",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        }
+      ],
+      "geometry": [
+        {
+          "view": "graph",
+          "width": 1586,
+          "canvas": {
+            "x": 33,
+            "y": 295,
+            "width": 1180,
+            "height": 524
+          }
+        },
+        {
+          "view": "replay",
+          "width": 1586,
+          "code": {
+            "x": 313,
+            "y": 342,
+            "width": 900,
+            "height": 758
+          },
+          "list": {
+            "x": 33,
+            "y": 342,
+            "width": 280,
+            "height": 758
+          }
+        },
+        {
+          "view": "graph",
+          "width": 1280,
+          "canvas": {
+            "x": 25,
+            "y": 295,
+            "width": 910,
+            "height": 412
+          }
+        },
+        {
+          "view": "replay",
+          "width": 1280,
+          "code": {
+            "x": 285,
+            "y": 342,
+            "width": 650,
+            "height": 758
+          },
+          "list": {
+            "x": 25,
+            "y": 342,
+            "width": 260,
+            "height": 758
+          }
+        }
+      ],
+      "sourceIdentity": true,
+      "threeOperationChains": true,
+      "exportFormats": [
+        "PNG",
+        "SVG",
+        "CSV"
+      ],
+      "errors": [],
+      "offline": false
+    },
+    "execution-map": {
+      "sourceSteps": 500,
+      "rootNodes": 3,
+      "contentSummaries": true,
+      "recordedExampleJump": true,
+      "globalSearch": true,
+      "exactSource": true,
+      "keyboardNavigator": true,
+      "inline": {
+        "sameCanvas": true,
+        "siblingsPreserved": true,
+        "nested": true,
+        "multipleBranches": true,
+        "headerCollapse": true,
+        "zoomAndAnchorPreserved": true,
+        "exactSourcePreserved": true,
+        "searchPreservesBranches": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "collapseAll": true,
+        "collapses": 3
+      },
+      "smaller": {
+        "sameCanvas": true,
+        "siblingsPreserved": true,
+        "nested": true,
+        "multipleBranches": true,
+        "headerCollapse": true,
+        "zoomAndAnchorPreserved": true,
+        "exactSourcePreserved": true,
+        "searchPreservesBranches": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "collapseAll": true,
+        "collapses": 3
+      },
+      "legacySteps": true,
+      "currentStateSvg": true,
+      "currentStatePng": true,
+      "offline": false
+    },
+    "node-appearance": {
+      "geometry": [
+        {
+          "width": 1586,
+          "height": 912,
+          "sourceKinds": 7,
+          "distinctSilhouettes": 7,
+          "fullscreenInspector": true,
+          "sourcePreserved": true,
+          "nestedPatchFullscreen": true
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "sourceKinds": 7,
+          "distinctSilhouettes": 7,
+          "fullscreenInspector": true,
+          "sourcePreserved": true,
+          "nestedPatchFullscreen": true
+        }
+      ],
+      "captures": [
+        {
+          "file": "appearance-types.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "appearance-fullscreen-failure.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "appearance-fullscreen-patch.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "appearance-types-1280.png",
+          "width": 1280,
+          "height": 800
+        },
+        {
+          "file": "appearance-fullscreen-failure-1280.png",
+          "width": 1280,
+          "height": 800
+        },
+        {
+          "file": "appearance-fullscreen-patch-1280.png",
+          "width": 1280,
+          "height": 800
+        },
+        {
+          "file": "appearance-merged-sections.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "appearance-missing-data.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "appearance-replay.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "appearance-compare.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "appearance-compare-fullscreen.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "appearance-dark.png",
+          "width": 1586,
+          "height": 912
+        }
+      ],
+      "sourceSelection": "failure \u2192 recorded patch \u2192 later validation",
+      "sharedTheme": true,
+      "mergedInlineFullscreen": true,
+      "missingData": true,
+      "currentStateSvg": true,
+      "pageErrors": []
+    },
+    "playback-preferences": {
+      "automaticAndPinnedEvidence": true,
+      "playbackSources": [
+        60,
+        70,
+        80,
+        90
+      ],
+      "stepAndSeek": true,
+      "terminalTestsAndCollapsedState": true,
+      "rawDisclosurePreserved": true,
+      "sameMountedWorkspace": true,
+      "noReloadOrRefetch": true,
+      "inspectorTabsPreserved": true,
+      "graphAutoplayKeepsDiff": true,
+      "graphAutoplaySources": [
+        60,
+        70,
+        80,
+        90
+      ],
+      "pageErrors": []
+    },
+    "document-workspace": {
+      "geometry": [
+        {
+          "view": "graph",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "mainOverflow": "hidden",
+          "barPosition": "static",
+          "singleScreen": true,
+          "pageWheel": false,
+          "barScrollsAway": false,
+          "selectionPreserved": true
+        },
+        {
+          "view": "replay",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1299,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "timeline",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "mainOverflow": "hidden",
+          "barPosition": "static",
+          "singleScreen": true,
+          "pageWheel": false,
+          "barScrollsAway": false,
+          "selectionPreserved": true
+        },
+        {
+          "view": "compare",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1428,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "sankey",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1175,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "runs",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2330,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "graph",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 800,
+          "mainOverflow": "hidden",
+          "barPosition": "static",
+          "singleScreen": true,
+          "pageWheel": false,
+          "barScrollsAway": false,
+          "selectionPreserved": true
+        },
+        {
+          "view": "replay",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1299,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "timeline",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 800,
+          "mainOverflow": "hidden",
+          "barPosition": "static",
+          "singleScreen": true,
+          "pageWheel": false,
+          "barScrollsAway": false,
+          "selectionPreserved": true
+        },
+        {
+          "view": "compare",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1428,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "sankey",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1175,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "runs",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 2330,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        }
+      ],
+      "captures": [
+        "document-graph-1586.png",
+        "document-graph-top-1586.png",
+        "document-graph-scrolled-1586.png",
+        "document-replay-1586.png",
+        "document-replay-top-1586.png",
+        "document-replay-scrolled-1586.png",
+        "document-timeline-1586.png",
+        "document-timeline-top-1586.png",
+        "document-timeline-scrolled-1586.png",
+        "document-compare-1586.png",
+        "document-compare-top-1586.png",
+        "document-compare-scrolled-1586.png",
+        "document-sankey-1586.png",
+        "document-sankey-top-1586.png",
+        "document-sankey-scrolled-1586.png",
+        "document-runs-1586.png",
+        "document-runs-top-1586.png",
+        "document-runs-scrolled-1586.png",
+        "document-graph-1280.png",
+        "document-graph-top-1280.png",
+        "document-graph-scrolled-1280.png",
+        "document-replay-1280.png",
+        "document-replay-top-1280.png",
+        "document-replay-scrolled-1280.png",
+        "document-timeline-1280.png",
+        "document-timeline-top-1280.png",
+        "document-timeline-scrolled-1280.png",
+        "document-compare-1280.png",
+        "document-compare-top-1280.png",
+        "document-compare-scrolled-1280.png",
+        "document-sankey-1280.png",
+        "document-sankey-top-1280.png",
+        "document-sankey-scrolled-1280.png",
+        "document-runs-1280.png",
+        "document-runs-top-1280.png",
+        "document-runs-scrolled-1280.png"
+      ],
+      "graphAndTimelineSingleScreen": true,
+      "graphWheelStaysLocal": true,
+      "replayDockClearance": true,
+      "pageErrors": []
+    },
+    "neutral-vertical": {
+      "geometry": [
+        {
+          "width": 1586,
+          "height": 912,
+          "canvas": {
+            "x": 33,
+            "y": 379.59375,
+            "width": 1180,
+            "height": 439.40625
+          },
+          "sourceOrder": "top-to-bottom",
+          "ordinaryWheel": true,
+          "modifierWheelZoom": true,
+          "inlineExpansion": true,
+          "fullscreenDetails": true,
+          "exactSource": true,
+          "whiteSvg": true
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "canvas": {
+            "x": 25,
+            "y": 379.59375,
+            "width": 910,
+            "height": 327.40625
+          },
+          "sourceOrder": "top-to-bottom",
+          "ordinaryWheel": true,
+          "modifierWheelZoom": true,
+          "inlineExpansion": true,
+          "fullscreenDetails": true,
+          "exactSource": true,
+          "whiteSvg": true
+        }
+      ],
+      "captures": [
+        "vertical-before-1586.png",
+        "vertical-expanded-1586.png",
+        "vertical-failure-1586.png",
+        "vertical-patch-1586.png",
+        "vertical-fullscreen-1586.png",
+        "vertical-before-1280.png",
+        "vertical-expanded-1280.png",
+        "vertical-failure-1280.png",
+        "vertical-patch-1280.png",
+        "vertical-fullscreen-1280.png"
+      ],
+      "pageErrors": []
+    },
+    "timeline-workspace": {
+      "viewports": [
+        1586,
+        1280
+      ],
+      "surfaces": [
+        "Graph Timeline",
+        "Execution Timeline"
+      ],
+      "labelsOpaqueAndFixed": true,
+      "noTokenOverlap": true,
+      "semanticZoom": true,
+      "exactGroupMemberSelection": true,
+      "fullscreenInspector": true,
+      "sourcePreserved": true,
+      "captures": [
+        "timeline-graph-compact.png",
+        "timeline-graph-scrolled.png",
+        "timeline-graph-fullscreen.png",
+        "timeline-graph-scrolled-1280.png",
+        "timeline-graph-fullscreen-1280.png",
+        "timeline-timeline-compact.png",
+        "timeline-timeline-scrolled.png",
+        "timeline-timeline-fullscreen.png",
+        "timeline-timeline-scrolled-1280.png",
+        "timeline-timeline-fullscreen-1280.png"
+      ],
+      "pageErrors": []
+    },
+    "live": {},
+    "three-page-desktop-offline": {
+      "captures": [
+        {
+          "name": "offline-graph-before.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": null,
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-after.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-before.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": null,
+          "imageWidth": 1586,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-after.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": "30",
+          "imageWidth": 1586,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "offline-replay-before.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1299,
+          "scroll": 0,
+          "theme": "light",
+          "step": "10",
+          "imageWidth": 1586,
+          "imageHeight": 1299,
+          "fullPage": true
+        },
+        {
+          "name": "offline-replay-after.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-before-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 800,
+          "scroll": 0,
+          "theme": "light",
+          "step": null,
+          "imageWidth": 1280,
+          "imageHeight": 800,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-after-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 800,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1280,
+          "imageHeight": 800,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-before-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": null,
+          "imageWidth": 1280,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-after-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": "30",
+          "imageWidth": 1280,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "offline-replay-before-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1299,
+          "scroll": 0,
+          "theme": "light",
+          "step": "10",
+          "imageWidth": 1280,
+          "imageHeight": 1299,
+          "fullPage": true
+        },
+        {
+          "name": "offline-replay-after-1280.png",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1280,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-stages.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": null,
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-layers.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-legend.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-error.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-context.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-activity.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-signatures.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-files.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-graph-timeline.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-matches.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-selected-patch.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1428,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1428,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-agent-a.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2043,
+          "scroll": 979,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 2043,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-snapshots-a.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2676,
+          "scroll": 1612,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 2676,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-agent-b.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2043,
+          "scroll": 979,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 2043,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-snapshots-b.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2800,
+          "scroll": 1736,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 2800,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-findings.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1666,
+          "scroll": 706,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1666,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-patch.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1203,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1203,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-final-a.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1203,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1203,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-final-b.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1203,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1203,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-metrics.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1224,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1224,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-charts.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1608,
+          "scroll": 444,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1608,
+          "fullPage": true
+        },
+        {
+          "name": "offline-compare-dags.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2196,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": false
+        },
+        {
+          "name": "offline-replay-failure.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1299,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1299,
+          "fullPage": true
+        },
+        {
+          "name": "offline-replay-stages.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1411,
+          "scroll": 0,
+          "theme": "light",
+          "step": "50",
+          "imageWidth": 1586,
+          "imageHeight": 1411,
+          "fullPage": true
+        },
+        {
+          "name": "offline-replay-file.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "offline-replay-details.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "offline-replay-context.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "60",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "offline-replay-validation.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1409,
+          "scroll": 0,
+          "theme": "light",
+          "step": "100",
+          "imageWidth": 1586,
+          "imageHeight": 1409,
+          "fullPage": true
+        },
+        {
+          "name": "offline-replay-playback.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "20",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "offline-shared-search.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "120",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-shared-status.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "light",
+          "step": "120",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-shared-dark.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "scroll": 0,
+          "theme": "dark",
+          "step": "120",
+          "imageWidth": 1586,
+          "imageHeight": 912,
+          "fullPage": true
+        },
+        {
+          "name": "offline-shared-run-details.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1299,
+          "scroll": 0,
+          "theme": "light",
+          "step": "120",
+          "imageWidth": 1586,
+          "imageHeight": 1299,
+          "fullPage": true
+        },
+        {
+          "name": "offline-shared-actions.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1299,
+          "scroll": 0,
+          "theme": "light",
+          "step": "120",
+          "imageWidth": 1586,
+          "imageHeight": 1299,
+          "fullPage": true
+        },
+        {
+          "name": "offline-missing-patch.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "31",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        },
+        {
+          "name": "offline-missing-time.png",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1399,
+          "scroll": 0,
+          "theme": "light",
+          "step": "9007199254740993",
+          "imageWidth": 1586,
+          "imageHeight": 1399,
+          "fullPage": true
+        }
+      ],
+      "geometry": [
+        {
+          "view": "graph",
+          "width": 1586,
+          "canvas": {
+            "x": 33,
+            "y": 295,
+            "width": 1180,
+            "height": 524
+          }
+        },
+        {
+          "view": "replay",
+          "width": 1586,
+          "code": {
+            "x": 313,
+            "y": 342,
+            "width": 900,
+            "height": 758
+          },
+          "list": {
+            "x": 33,
+            "y": 342,
+            "width": 280,
+            "height": 758
+          }
+        },
+        {
+          "view": "graph",
+          "width": 1280,
+          "canvas": {
+            "x": 25,
+            "y": 295,
+            "width": 910,
+            "height": 412
+          }
+        },
+        {
+          "view": "replay",
+          "width": 1280,
+          "code": {
+            "x": 285,
+            "y": 342,
+            "width": 650,
+            "height": 758
+          },
+          "list": {
+            "x": 25,
+            "y": 342,
+            "width": 260,
+            "height": 758
+          }
+        }
+      ],
+      "sourceIdentity": true,
+      "threeOperationChains": true,
+      "exportFormats": [
+        "PNG",
+        "SVG",
+        "CSV"
+      ],
+      "errors": [],
+      "httpRequests": 0,
+      "offline": true
+    },
+    "execution-map-offline": {
+      "sourceSteps": 500,
+      "rootNodes": 3,
+      "contentSummaries": true,
+      "recordedExampleJump": true,
+      "globalSearch": true,
+      "exactSource": true,
+      "keyboardNavigator": true,
+      "inline": {
+        "sameCanvas": true,
+        "siblingsPreserved": true,
+        "nested": true,
+        "multipleBranches": true,
+        "headerCollapse": true,
+        "zoomAndAnchorPreserved": true,
+        "exactSourcePreserved": true,
+        "searchPreservesBranches": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "collapseAll": true,
+        "collapses": 3
+      },
+      "smaller": {
+        "sameCanvas": true,
+        "siblingsPreserved": true,
+        "nested": true,
+        "multipleBranches": true,
+        "headerCollapse": true,
+        "zoomAndAnchorPreserved": true,
+        "exactSourcePreserved": true,
+        "searchPreservesBranches": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "collapseAll": true,
+        "collapses": 3
+      },
+      "legacySteps": true,
+      "currentStateSvg": true,
+      "currentStatePng": true,
+      "offline": true,
+      "offlineHttp": 0
+    },
+    "node-appearance-offline": {
+      "geometry": [
+        {
+          "width": 1586,
+          "height": 912,
+          "sourceKinds": 7,
+          "distinctSilhouettes": 7,
+          "fullscreenInspector": true,
+          "sourcePreserved": true,
+          "nestedPatchFullscreen": true
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "sourceKinds": 7,
+          "distinctSilhouettes": 7,
+          "fullscreenInspector": true,
+          "sourcePreserved": true,
+          "nestedPatchFullscreen": true
+        }
+      ],
+      "captures": [
+        {
+          "file": "offline-appearance-types.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "offline-appearance-fullscreen-failure.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "offline-appearance-fullscreen-patch.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "offline-appearance-types-1280.png",
+          "width": 1280,
+          "height": 800
+        },
+        {
+          "file": "offline-appearance-fullscreen-failure-1280.png",
+          "width": 1280,
+          "height": 800
+        },
+        {
+          "file": "offline-appearance-fullscreen-patch-1280.png",
+          "width": 1280,
+          "height": 800
+        },
+        {
+          "file": "offline-appearance-merged-sections.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "offline-appearance-missing-data.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "offline-appearance-replay.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "offline-appearance-compare.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "offline-appearance-compare-fullscreen.png",
+          "width": 1586,
+          "height": 912
+        },
+        {
+          "file": "offline-appearance-dark.png",
+          "width": 1586,
+          "height": 912
+        }
+      ],
+      "sourceSelection": "failure \u2192 recorded patch \u2192 later validation",
+      "sharedTheme": true,
+      "mergedInlineFullscreen": true,
+      "missingData": true,
+      "currentStateSvg": true,
+      "httpRequests": 0,
+      "pageErrors": []
+    },
+    "playback-preferences-offline": {
+      "automaticAndPinnedEvidence": true,
+      "playbackSources": [
+        60,
+        70,
+        80,
+        90
+      ],
+      "stepAndSeek": true,
+      "terminalTestsAndCollapsedState": true,
+      "rawDisclosurePreserved": true,
+      "sameMountedWorkspace": true,
+      "noReloadOrRefetch": true,
+      "inspectorTabsPreserved": true,
+      "graphAutoplayKeepsDiff": true,
+      "graphAutoplaySources": [
+        60,
+        70,
+        80,
+        90
+      ],
+      "offlineHttp": 0,
+      "pageErrors": []
+    },
+    "document-workspace-offline": {
+      "geometry": [
+        {
+          "view": "graph",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "mainOverflow": "hidden",
+          "barPosition": "static",
+          "singleScreen": true,
+          "pageWheel": false,
+          "barScrollsAway": false,
+          "selectionPreserved": true
+        },
+        {
+          "view": "replay",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1299,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "timeline",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 912,
+          "mainOverflow": "hidden",
+          "barPosition": "static",
+          "singleScreen": true,
+          "pageWheel": false,
+          "barScrollsAway": false,
+          "selectionPreserved": true
+        },
+        {
+          "view": "compare",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1428,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "sankey",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 1175,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "runs",
+          "width": 1586,
+          "height": 912,
+          "documentWidth": 1586,
+          "documentHeight": 2330,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "graph",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 800,
+          "mainOverflow": "hidden",
+          "barPosition": "static",
+          "singleScreen": true,
+          "pageWheel": false,
+          "barScrollsAway": false,
+          "selectionPreserved": true
+        },
+        {
+          "view": "replay",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1299,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "timeline",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 800,
+          "mainOverflow": "hidden",
+          "barPosition": "static",
+          "singleScreen": true,
+          "pageWheel": false,
+          "barScrollsAway": false,
+          "selectionPreserved": true
+        },
+        {
+          "view": "compare",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1428,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "sankey",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 1175,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        },
+        {
+          "view": "runs",
+          "width": 1280,
+          "height": 800,
+          "documentWidth": 1280,
+          "documentHeight": 2330,
+          "mainOverflow": "visible",
+          "barPosition": "static",
+          "singleScreen": false,
+          "pageWheel": true,
+          "barScrollsAway": true,
+          "selectionPreserved": true
+        }
+      ],
+      "captures": [
+        "offline-document-graph-1586.png",
+        "offline-document-graph-top-1586.png",
+        "offline-document-graph-scrolled-1586.png",
+        "offline-document-replay-1586.png",
+        "offline-document-replay-top-1586.png",
+        "offline-document-replay-scrolled-1586.png",
+        "offline-document-timeline-1586.png",
+        "offline-document-timeline-top-1586.png",
+        "offline-document-timeline-scrolled-1586.png",
+        "offline-document-compare-1586.png",
+        "offline-document-compare-top-1586.png",
+        "offline-document-compare-scrolled-1586.png",
+        "offline-document-sankey-1586.png",
+        "offline-document-sankey-top-1586.png",
+        "offline-document-sankey-scrolled-1586.png",
+        "offline-document-runs-1586.png",
+        "offline-document-runs-top-1586.png",
+        "offline-document-runs-scrolled-1586.png",
+        "offline-document-graph-1280.png",
+        "offline-document-graph-top-1280.png",
+        "offline-document-graph-scrolled-1280.png",
+        "offline-document-replay-1280.png",
+        "offline-document-replay-top-1280.png",
+        "offline-document-replay-scrolled-1280.png",
+        "offline-document-timeline-1280.png",
+        "offline-document-timeline-top-1280.png",
+        "offline-document-timeline-scrolled-1280.png",
+        "offline-document-compare-1280.png",
+        "offline-document-compare-top-1280.png",
+        "offline-document-compare-scrolled-1280.png",
+        "offline-document-sankey-1280.png",
+        "offline-document-sankey-top-1280.png",
+        "offline-document-sankey-scrolled-1280.png",
+        "offline-document-runs-1280.png",
+        "offline-document-runs-top-1280.png",
+        "offline-document-runs-scrolled-1280.png"
+      ],
+      "graphAndTimelineSingleScreen": true,
+      "graphWheelStaysLocal": true,
+      "replayDockClearance": true,
+      "offlineHttp": 0,
+      "pageErrors": []
+    },
+    "neutral-vertical-offline": {
+      "geometry": [
+        {
+          "width": 1586,
+          "height": 912,
+          "canvas": {
+            "x": 33,
+            "y": 379.59375,
+            "width": 1180,
+            "height": 439.40625
+          },
+          "sourceOrder": "top-to-bottom",
+          "ordinaryWheel": true,
+          "modifierWheelZoom": true,
+          "inlineExpansion": true,
+          "fullscreenDetails": true,
+          "exactSource": true,
+          "whiteSvg": true
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "canvas": {
+            "x": 25,
+            "y": 379.59375,
+            "width": 910,
+            "height": 327.40625
+          },
+          "sourceOrder": "top-to-bottom",
+          "ordinaryWheel": true,
+          "modifierWheelZoom": true,
+          "inlineExpansion": true,
+          "fullscreenDetails": true,
+          "exactSource": true,
+          "whiteSvg": true
+        }
+      ],
+      "captures": [
+        "offline-vertical-before-1586.png",
+        "offline-vertical-expanded-1586.png",
+        "offline-vertical-failure-1586.png",
+        "offline-vertical-patch-1586.png",
+        "offline-vertical-fullscreen-1586.png",
+        "offline-vertical-before-1280.png",
+        "offline-vertical-expanded-1280.png",
+        "offline-vertical-failure-1280.png",
+        "offline-vertical-patch-1280.png",
+        "offline-vertical-fullscreen-1280.png"
+      ],
+      "offlineHttp": 0,
+      "pageErrors": []
+    },
+    "timeline-workspace-offline": {
+      "viewports": [
+        1586,
+        1280
+      ],
+      "surfaces": [
+        "Graph Timeline",
+        "Execution Timeline"
+      ],
+      "labelsOpaqueAndFixed": true,
+      "noTokenOverlap": true,
+      "semanticZoom": true,
+      "exactGroupMemberSelection": true,
+      "fullscreenInspector": true,
+      "sourcePreserved": true,
+      "captures": [
+        "timeline-graph-compact.png",
+        "timeline-graph-scrolled.png",
+        "timeline-graph-fullscreen.png",
+        "timeline-graph-scrolled-1280.png",
+        "timeline-graph-fullscreen-1280.png",
+        "timeline-timeline-compact.png",
+        "timeline-timeline-scrolled.png",
+        "timeline-timeline-fullscreen.png",
+        "timeline-timeline-scrolled-1280.png",
+        "timeline-timeline-fullscreen-1280.png"
+      ],
+      "offlineHttp": 0,
+      "pageErrors": []
+    },
+    "delivered-offline": {}
+  },
+  "firstRender": {
+    "chrome": "157.0.8103.52",
+    "timeoutMs": 30000,
+    "mode": "overview",
+    "excludesInitialBundleLoad": true,
+    "runs": [
+      {
+        "sourceSteps": 500,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 96.80000001192093
+      },
+      {
+        "sourceSteps": 2000,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 147.5999999642372
+      }
+    ]
+  },
+  "limits": [
+    "First paint excludes initial bundle load and initially displays three overview nodes.",
+    "SVG retains vector detail; full-state PNG is bounded to 4096px/12MP.",
+    "Real NL2Repo commands, identifiers and screenshots are private and excluded.",
+    "Generated transparent logo is deferred by the user.",
+    "Large production bundle warning remains."
+  ],
+  "finishCorrection": {
+    "scope": "Replay maximum document scroll",
+    "effectiveBottomPadding": "112px",
+    "collapsedAndExpandedOutputClearDock": true,
+    "desktopSizes": [
+      [
+        1586,
+        912
+      ],
+      [
+        1280,
+        800
+      ]
+    ],
+    "localAndExactOffline": true
+  },
+  "finishReview": {
+    "disposition": "ship",
+    "scope": "Same-reviewer verdict on the sole listed Replay end-clearance correction",
+    "score": "resolved",
+    "review": "review.md",
+    "desktopCaptures": [
+      "replay-scrolled.png",
+      "replay-scrolled-1280.png",
+      "replay-terminal-expanded-1586.png",
+      "replay-terminal-expanded-1280.png"
+    ],
+    "historicalTasteGate": "OPEN; not represented as a pass"
+  }
+}

@@ -21,16 +21,16 @@ export async function checkThreePage(page,url,artifacts,offline=false){
   const onRequest=r=>{if(/^https?:/.test(r.url()))requests.push(r.url());};const onError=e=>errors.push(e.message);
   page.on('request',onRequest);page.on('pageerror',onError);
   const capture=async(name,{top=true,preserveFocus=false}={})=>{
-    if(top)await page.locator('main').evaluate(n=>n.scrollTo({top:0,left:0}));
+    if(top)await page.evaluate(()=>{document.querySelector('main').scrollTo({top:0,left:0});window.scrollTo(0,0);});
     await page.mouse.move(0,0);if(!preserveFocus)await page.evaluate(()=>document.activeElement?.blur());await frame(page);
     const path=join(artifacts,prefix+name+'.png');
     // The supplementary DAG grid scrolls inside main; capture that viewport.
     // All six base before/after pairs remain independent full-page captures.
     const fullPage=name!=='compare-dags';
     const png=await page.screenshot({path,fullPage,animations:'disabled'});
-    const record=await page.evaluate(()=>({width:innerWidth,height:innerHeight,documentWidth:document.documentElement.scrollWidth,scroll:document.querySelector('main').scrollTop,theme:document.documentElement.dataset.theme,step:new URLSearchParams(location.hash.slice(1)).get('step')}));
+    const record=await page.evaluate(()=>({width:innerWidth,height:innerHeight,documentWidth:document.documentElement.scrollWidth,documentHeight:document.documentElement.scrollHeight,scroll:scrollY,theme:document.documentElement.dataset.theme,step:new URLSearchParams(location.hash.slice(1)).get('step')}));
     const imageWidth=png.readUInt32BE(16),imageHeight=png.readUInt32BE(20);
-    assert.equal(record.documentWidth,record.width);assert.equal(imageWidth,record.width);assert.equal(imageHeight,record.height,'No blank screenshot tail');
+    assert.equal(record.documentWidth,record.width);assert.equal(imageWidth,record.width);assert.equal(imageHeight,fullPage?Math.max(record.height,record.documentHeight):record.height,'Capture matches the actual document rather than a one-screen layout');
     captures.push({name:prefix+name+'.png',...record,imageWidth,imageHeight,fullPage});
   };
   for(const [width,height] of [[1586,912],[1280,800]]){
@@ -123,17 +123,25 @@ export async function checkThreePage(page,url,artifacts,offline=false){
   await page.getByRole('button',{name:'Next edit',exact:true}).click();await page.getByRole('button',{name:'Updated File',exact:true}).click();assert.match(await page.locator('.recorded-code').innerText(),/No file content recorded/);await capture('replay-file');
   await page.getByRole('button',{name:'Show inspection',exact:true}).click();await inspector(page).locator('.source-ref > summary').click();await inspector(page).locator('.source-ref').scrollIntoViewIfNeeded();await capture('replay-details');await page.getByRole('button',{name:'Close Step details',exact:true}).click();
   await page.getByRole('button',{name:'File Context',exact:true}).click();assert.match(await page.locator('.recorded-code').innerText(),/def issue_session/);await capture('replay-context');
-  await page.getByRole('button',{name:'Diff',exact:true}).click();await page.getByRole('button',{name:'Next validation',exact:true}).click();assert.match(await page.getByLabel('Selected step evidence',{exact:true}).innerText(),/FAILED test_session_scope/);
+  await page.getByRole('button',{name:'Diff',exact:true}).click();await page.getByRole('button',{name:'Next validation',exact:true}).click();
+  assert.equal(await page.getByRole('button',{name:'Diff',exact:true}).getAttribute('aria-pressed'),'true');assert.match(await page.locator('.recorded-code').innerText(),/No patch recorded/);
+  await page.getByRole('button',{name:'Output',exact:true}).click();assert.match(await page.getByLabel('Selected step evidence',{exact:true}).innerText(),/FAILED test_session_scope/);
   await page.getByRole('button',{name:'Next validation',exact:true}).click();assert.match(await page.getByLabel('Selected step evidence',{exact:true}).innerText(),/2 passed/);await page.getByRole('button',{name:'Tests',exact:true}).click();await capture('replay-validation');
   const seek=page.getByRole('slider',{name:'Replay position',exact:true});await seek.fill('4');assert.match(await page.getByLabel('Selected step evidence',{exact:true}).innerText(),/FAILED/);
   await page.getByLabel('Replay speed',{exact:true}).selectOption('0.5');await seek.fill('0');await page.getByRole('button',{name:'Play replay',exact:true}).click();await page.waitForTimeout(950);assert.equal(await seek.inputValue(),'0');await page.getByRole('button',{name:'Pause replay',exact:true}).click();
   await page.getByLabel('Replay speed',{exact:true}).selectOption('4');await page.getByRole('button',{name:'Play replay',exact:true}).click();await page.waitForFunction(()=>Number(document.querySelector('[aria-label="Replay position"]').value)>0);await page.getByRole('button',{name:'Pause replay',exact:true}).click();await capture('replay-playback');
   await seek.fill('10');await page.getByRole('button',{name:'Play replay',exact:true}).click();await page.getByRole('button',{name:'Play replay',exact:true}).waitFor();assert.equal(await seek.inputValue(),'11','Playback stops at the last source');
-  // Shared actions: focus, local status, preferences, help, exact link and source persistence.
-  await page.keyboard.press('Meta+k');assert.equal(await page.getByRole('searchbox',{name:'Global search',exact:true}).evaluate(n=>document.activeElement===n),true);await page.getByRole('searchbox',{name:'Global search',exact:true}).fill('dashboard-baseline');await page.getByRole('region',{name:'Global search results',exact:true}).waitFor();await capture('shared-search',{preserveFocus:true});await page.keyboard.press('Escape');
-  await page.getByLabel('Notifications',{exact:true}).click();assert.match(await page.locator('.topbar-popover').first().innerText(),/Local dataset status/);await capture('shared-status');await page.keyboard.press('Escape');
-  await page.getByLabel('Local preferences',{exact:true}).click();await page.getByRole('button',{name:'Dark theme',exact:true}).click();assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');await capture('shared-dark');await page.getByRole('button',{name:'Light theme',exact:true}).click();await page.keyboard.press('Escape');
-  await page.getByRole('button',{name:'Help',exact:true}).click();await capture('shared-help');await page.keyboard.press('Escape');assert.equal(await page.getByRole('button',{name:'Help',exact:true}).evaluate(n=>document.activeElement===n),true);
+  // Compact top navigation; search and appearance live in the local catalog.
+  await page.keyboard.press('Meta+k');
+  const catalogSearch=page.getByRole('searchbox',{name:'Search runs and steps',exact:true});
+  assert.equal(await catalogSearch.evaluate(n=>document.activeElement===n),true);
+  await catalogSearch.fill('dashboard-baseline');await capture('shared-search',{preserveFocus:true});
+  await page.locator('.dataset-utilities > summary').click();await capture('shared-status');
+  await page.getByRole('button',{name:'Dark theme',exact:true}).click();assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');await capture('shared-dark');
+  await page.getByRole('button',{name:'Light theme',exact:true}).click();
+  await page.getByRole('navigation',{name:'Workspace'}).getByRole('button',{name:'Trajectory replay',exact:true}).click();
+  assert.equal(await page.locator('.product-topbar').getByRole('button').count(),7);
+  assert.equal(await page.locator('.app-sidebar,.breadcrumbs,.global-search,.avatar').count(),0);
   await page.locator('.run-recording > summary').click();await capture('shared-run-details');await page.keyboard.press('Escape');
   await page.getByRole('button',{name:'Share',exact:true}).click();await page.getByRole('button',{name:'Link copied',exact:true}).waitFor();
   await page.getByLabel('Run actions',{exact:true}).click();await capture('shared-actions');

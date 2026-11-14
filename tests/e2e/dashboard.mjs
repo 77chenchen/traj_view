@@ -86,7 +86,7 @@ export async function checkDashboard(page, url, artifacts, offline = false) {
   await page.locator('.event-axis [data-timeline-tick="10"]').waitFor();
   const zoomedTimeline = await timelineGeometry(page, 'Errors: #50 error', 28, 77);
   assert.ok(Math.abs(zoomedTimeline.distance - 2 * initialTimeline.distance) < .6, 'Zoom scales block positions with the axis');
-  assert.ok(Math.abs(zoomedTimeline.width - 2 * initialTimeline.width) < .6, 'Zoom scales block width with the axis');
+  assert.ok(Math.abs(zoomedTimeline.width - Math.min(96, 2 * initialTimeline.width)) < .6, 'Point tokens scale with available space, capped at readable label width; they never imply call duration');
   await page.screenshot({ path: join(artifacts, offline ? 'timeline-scale-offline-2x.png' : 'timeline-scale-2x.png') });
   for (let i = 2; i < 4; i++) await page.getByRole('button', { name: 'Zoom in timeline', exact: true }).click();
   await timelineGeometry(page, 'Errors: #50 error', 28, 77);
@@ -102,6 +102,8 @@ export async function checkDashboard(page, url, artifacts, offline = false) {
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: 'Trajectory replay', exact: true }).click();
+  assert.equal(await inspector.isVisible(),true,'The requested detail remains open across viewport and view changes');
+  await page.getByRole('button', { name: 'Hide inspection', exact: true }).click();
   await page.getByRole('button', { name: 'Next replay step', exact: true }).click();
   await page.getByRole('button', { name: 'Show inspection', exact: true }).click();
   await inspector.getByText('#60', { exact: true }).waitFor();

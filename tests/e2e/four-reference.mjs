@@ -92,29 +92,42 @@ export async function checkFourReference(page,url,artifacts,offline=false) {
   await page.locator('.graph-activity-disclosure > summary').click();
   await page.getByRole('button',{name:'Activity #60',exact:true}).click();await source(page,60);
   await page.getByRole('button',{name:'Hierarchy',exact:true}).click();
-  const phase=graph.getByRole('button',{name:/phase group/}).first();await phase.waitFor();await phase.click();await frame(page);
+  const phase=graph.getByRole('button',{name:/phase group/}).first();await phase.waitFor();await page.getByRole('button',{name:'Fit graph',exact:true}).click();await page.locator('.graph-options > summary').click();await phase.click();await frame(page);
   assert.ok(await graph.locator('[data-node]').count()>0);
-  await page.getByRole('button',{name:'Steps',exact:true}).click();
+  await page.locator('.graph-options > summary').click();await page.getByRole('button',{name:'Steps',exact:true}).click();await page.locator('.graph-options > summary').click();
   await search.fill('#60');await search.press('Enter');await source(page,60);
   await page.getByRole('button',{name:'Fullscreen graph',exact:true}).click();
   await page.waitForFunction(()=>Boolean(document.fullscreenElement));
-  await page.getByRole('button',{name:'Fullscreen graph',exact:true}).click();
+  assert.ok(await inspector(page).evaluate(el=>document.fullscreenElement.contains(el)),'Fullscreen includes Inspector');
+  await search.fill('#50');await search.press('Enter');await source(page,50);
+  await inspector(page).getByRole('button',{name:'Error Output',exact:true}).click();
+  assert.match(await inspector(page).innerText(),/AssertionError|failed/i);
+  await search.fill('#60');await search.press('Enter');await source(page,60);
+  await inspector(page).getByRole('button',{name:'Code Diff',exact:true}).click();
+  await inspector(page).getByLabel('Recorded patch',{exact:true}).waitFor();
+  await page.getByRole('button',{name:'Exit fullscreen graph',exact:true}).click();
   await page.waitForFunction(()=>!document.fullscreenElement);
+  await source(page,60);
 
   // Timeline: 1m/2m/5m and zoom resize points with the same coordinate system.
   await nav(page,'Execution timeline').click();await source(page,60);
   assert.match(await page.locator('.event-lane > strong').allTextContents().then(labels=>labels.join(' | ')),/Reasoning \(recorded text\)/);
   assert.match(await page.getByRole('button',{name:'Phase Validation Passed source #100',exact:true}).getAttribute('class'),/phase-success/);
   assert.doesNotMatch(await page.getByRole('button',{name:'Phase Completion source #120',exact:true}).getAttribute('class'),/phase-success/);
-  const point=page.getByRole('button',{name:'Errors: #50 error',exact:true});
+  const point=page.locator('.event-lane').nth(2).locator('.timeline-event').and(page.locator('[data-timeline-sources="50"],[data-timeline-sources^="50,"],[data-timeline-sources*=",50,"],[data-timeline-sources$=",50"]'));
   await point.waitFor();
   const width=()=>point.evaluate(n=>n.getBoundingClientRect().width);
   const fitted=await width();
   await page.getByRole('button',{name:'2 minute timeline scale',exact:true}).click();await frame(page);assert.ok(await width()<fitted);
-  await page.getByRole('button',{name:'5 minute timeline scale',exact:true}).click();await frame(page);assert.ok(await width()<fitted/2);
+  await page.getByRole('button',{name:'5 minute timeline scale',exact:true}).click();await frame(page);
+  assert.ok(await width()<=96,'Semantic zoom caps a grouped token; its width is not an individual event duration');
+  assert.ok((await point.getAttribute('data-timeline-sources')).split(',').includes('50'),'Compressed groups retain the exact selected source');
+  const compressed=await page.locator('.event-lane').nth(2).locator('.timeline-event').evaluateAll(nodes=>nodes.map(node=>({sources:node.dataset.timelineSources.split(','),box:node.getBoundingClientRect().toJSON()})));
+  assert.equal(new Set(compressed.flatMap(token=>token.sources)).size,compressed.flatMap(token=>token.sources).length,'Every source occurs in one tool-lane token');
+  assert.ok(compressed.every((token,i)=>!i||token.box.left>=compressed[i-1].box.right-.1),'Compressed tokens do not overlap');
   await page.getByRole('button',{name:'1 minute timeline scale',exact:true}).click();await frame(page);assert.ok(await width()>fitted);
   await page.getByRole('button',{name:'Fit timeline',exact:true}).click();await frame(page);assert.ok(Math.abs(await width()-fitted)<.5);
-  await page.getByRole('button',{name:'Zoom in timeline',exact:true}).click();await frame(page);assert.ok(Math.abs(await width()-2*fitted)<.5);
+  await page.getByRole('button',{name:'Zoom in timeline',exact:true}).click();await frame(page);assert.ok(Math.abs(await width()-Math.min(96,2*fitted))<.5);
   await page.getByRole('button',{name:'Fit timeline',exact:true}).click();
   await page.getByRole('checkbox',{name:'Events',exact:true}).uncheck();assert.equal(await page.locator('.timeline-event').count(),0);
   await page.getByRole('checkbox',{name:'Events',exact:true}).check();
@@ -152,15 +165,16 @@ export async function checkFourReference(page,url,artifacts,offline=false) {
   assert.equal(await page.getByRole('group',{name:/^Process graph for dashboard-/}).count(),3);
   assert.match(await page.locator('.pair-table').innerText(),/Jaccard/);
 
-  // Search/help/share/export, then capture the exact reference product viewport and adaptations.
+  // Search now belongs to Datasets; the product header contains only navigation.
   await page.keyboard.press('Meta+k');
-  await page.getByRole('searchbox',{name:'Global search',exact:true}).fill('dashboard-baseline');
-  await page.getByRole('region',{name:'Global search results'}).getByRole('button').first().click();
+  const catalogSearch=page.getByRole('searchbox',{name:'Search runs and steps',exact:true});
+  await catalogSearch.fill('dashboard-baseline');
+  await page.getByRole('button',{name:'dashboard-baseline',exact:true}).click();
   const showInspection=page.getByRole('button',{name:'Show inspection',exact:true});
   if(await showInspection.isVisible())await showInspection.click();
   await inspector(page).waitFor();
-  await page.getByRole('button',{name:'Help',exact:true}).click();await page.getByRole('complementary',{name:'Workspace help'}).waitFor();
-  await page.getByRole('button',{name:'Close help',exact:true}).click();
+  assert.equal(await page.locator('.product-topbar').getByRole('button').count(),7);
+  assert.equal(await page.locator('.app-sidebar,.breadcrumbs,.global-search,.avatar').count(),0);
   await page.getByRole('button',{name:'Share',exact:true}).click();
   await page.getByRole('button',{name:'Link copied',exact:true}).waitFor();
   if(!offline) {
@@ -177,8 +191,8 @@ export async function checkFourReference(page,url,artifacts,offline=false) {
     if(view==='replay') {
       const dock=await page.getByRole('region',{name:'Replay controls',exact:true}).boundingBox();
       assert.ok(dock.y>=0&&dock.y+dock.height<=h+1,'Playback reachable in the viewport');
-      if(w>=1280)for(const selector of ['.event-list','.recorded-workspace','.terminal-panel','.replay-inspection']) {
-        const box=await page.locator(selector).boundingBox();assert.ok(box.width>100&&box.height>40&&box.y>=0&&box.y+box.height<=h,'Desktop evidence panes all visible');
+      if(w>=1280)for(const selector of ['.event-list','.recorded-workspace','.terminal-panel']) {
+        const box=await page.locator(selector).boundingBox();assert.ok(box.width>100&&box.height>40&&box.x>=0&&box.x+box.width<=w,'Desktop evidence panes remain readable across the scrolling page');
       }
       else {
         await page.getByRole('button',{name:'Show inspection',exact:true}).click();await source(page,60);
@@ -190,12 +204,6 @@ export async function checkFourReference(page,url,artifacts,offline=false) {
       await page.getByRole('button',{name:'Show inspection',exact:true}).click();await source(page,50);
       await capture(page,join(artifacts,prefix+'-timeline-mobile-inspection.png'));
       await page.getByRole('button',{name:'Hide inspection',exact:true}).click();
-    }
-    if(w===390) {
-      await page.getByRole('button',{name:'Open global search',exact:true}).click();
-      await page.getByRole('searchbox',{name:'Global search',exact:true}).fill('dashboard');
-      await page.getByRole('region',{name:'Global search results'}).waitFor();
-      await page.keyboard.press('Escape');
     }
     geometries.push({view,w,h,overflow:false});
     await capture(page,join(artifacts,prefix+'-'+view+'-'+w+'x'+h+'.png'));

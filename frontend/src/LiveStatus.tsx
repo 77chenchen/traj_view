@@ -3,7 +3,7 @@ import { invalidateData, isOffline } from './data';
 
 type LiveState = { enabled: boolean; revision: number; runs: number; error?: string | null; progress?: Record<string, number> };
 
-export function LiveStatus() {
+export function LiveStatus({ liveOnly = false }: { liveOnly?: boolean }) {
   const [status, setStatus] = useState<LiveState | null>(null);
   const [paused, setPaused] = useState(false);
   const [connected, setConnected] = useState(false);
@@ -32,7 +32,7 @@ export function LiveStatus() {
     }).catch(() => { /* Static hosting remains fully usable. */ });
     return () => { active = false; events?.close(); };
   }, [paused]);
-  if (!status?.enabled) return <div className="source-chip"><i />{isOffline ? 'Offline report' : 'Local dataset'}</div>;
+  if (!status?.enabled) return liveOnly ? null : <div className="source-chip"><i />{isOffline ? 'Offline report' : 'Local dataset'}</div>;
   return <div className="live-status" role="status">
     <span className={`source-chip ${connected && !paused ? 'is-live' : ''}`}><i />
       {paused ? 'Updates paused' : connected ? 'Live capture' : 'Reconnecting'} · {status.runs} runs</span>

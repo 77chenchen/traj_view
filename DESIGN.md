@@ -2,41 +2,90 @@
 name: "TrajViz"
 description: "A local workspace for inspecting recorded coding-agent evidence."
 colors:
-  accent: "#7046d7"
-  accent-hover: "#6036c7"
+  accent: "#405a6b"
+  accent-hover: "#2f4757"
   on-accent: "#ffffff"
-  accent-soft: "#f0eaff"
-  accent-line: "#a98be9"
-  bg: "#f7f8fc"
+  accent-soft: "#eaf0f3"
+  accent-line: "#8a9da9"
+  bg: "#ffffff"
   surface: "#ffffff"
-  surface-2: "#f6f7fb"
-  surface-hover: "#f0eefb"
-  canvas: "#fcfcfe"
-  line: "#e0e4ee"
-  line-strong: "#cbd2e1"
-  dot: "#d9ddea"
-  text: "#20283b"
-  muted: "#5b657b"
-  subtle: "#687287"
+  surface-2: "#f6f8fa"
+  surface-hover: "#edf0f2"
+  line: "#e0e4e7"
+  line-strong: "#b6bfc7"
+  text: "#28313a"
+  muted: "#58636e"
+  subtle: "#626c76"
   good: "#247143"
   good-bg: "#e7f5eb"
   bad: "#b53046"
   bad-bg: "#fce9ed"
   agent-a: "#27854e"
-  agent-b: "#7950d3"
-  rail-active: "#eee7fc"
+  agent-b: "#3377ad"
+  graph-ground: "#ffffff"
+  graph-header: "#f3f5f6"
+  graph-text: "#263039"
+  graph-muted: "#59636e"
+  graph-selected: "#3d596b"
+  graph-error: "#b53c46"
+  graph-divergence: "#8b681f"
+  edge-temporal: "#85909a"
+  edge-dependency: "#52778d"
+  edge-retry: "#9a763c"
+  edge-structural: "#638375"
+  shell-fill: "#f5f7f9"
+  shell-stroke: "#627d92"
+  read-fill: "#f3f8f6"
+  read-stroke: "#597b70"
+  edit-fill: "#fbf8f1"
+  edit-stroke: "#947a46"
+  validate-fill: "#f1f8f3"
+  validate-stroke: "#597d63"
+  plan-fill: "#f5f6f9"
+  plan-stroke: "#68778e"
+  message-fill: "#f7f7f8"
+  message-stroke: "#77808c"
+  tool-fill: "#f6f8f7"
+  tool-stroke: "#697e74"
+  group-fill: "#f7f8f9"
+  group-stroke: "#758591"
+  dark-bg: "#101b23"
+  dark-surface: "#192a35"
+  dark-surface-2: "#213540"
+  dark-surface-hover: "#29434e"
+  dark-line: "#354c5a"
+  dark-line-strong: "#536c7a"
+  dark-text: "#eaf1f4"
+  dark-muted: "#b6c7d0"
+  dark-subtle: "#a9bdc8"
+  dark-accent: "#73d1c7"
+  dark-accent-hover: "#9ee1da"
+  dark-on-accent: "#102b30"
+  dark-accent-soft: "#23494c"
+  dark-accent-line: "#61aba8"
+  dark-good: "#8bd5a3"
+  dark-good-bg: "#1f3e32"
+  dark-bad: "#ff9aa3"
+  dark-bad-bg: "#432c36"
+  dark-agent-a: "#39c77a"
+  dark-agent-b: "#70b0de"
 typography:
   headline:
+    fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+    fontSize: "24px"
+    fontWeight: 650
+    lineHeight: 1.2
+    letterSpacing: "-0.02em"
+  workspace-headline:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
     fontSize: "20px"
     fontWeight: 650
     lineHeight: 1.2
-    letterSpacing: "-0.015em"
-  title:
+    letterSpacing: "-0.02em"
+  headline-title:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
     fontSize: "14px"
     fontWeight: 600
-    lineHeight: 1.2
   body:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
     fontSize: "13px"
@@ -48,8 +97,12 @@ typography:
     lineHeight: 1.2
   navigation:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
-    fontSize: "13px"
-    fontWeight: 580
+    fontSize: "14px"
+    fontWeight: 500
+  navigation-active:
+    fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+    fontSize: "14px"
+    fontWeight: 650
   support:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
     fontSize: "11px"
@@ -63,11 +116,19 @@ typography:
     fontFamily: "ui-monospace, SFMono-Regular, Consolas, monospace"
     fontSize: "13px"
     fontWeight: 400
-    lineHeight: 1.8
+    lineHeight: 1.85
+  graph-title:
+    fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+    fontSize: "12px"
+    fontWeight: 650
+  graph-metadata:
+    fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+    fontSize: "10px"
+    fontWeight: 400
 rounded:
   row: "3px"
   control: "4px"
-  navigation: "5px"
+  selection: "5px"
   workspace: "6px"
   field: "7px"
   panel: "8px"
@@ -75,10 +136,13 @@ rounded:
 spacing:
   xs: "6px"
   sm: "8px"
+  control: "10px"
   md: "12px"
   inset: "14px"
   lg: "16px"
   xl: "20px"
+  compact-page: "24px"
+  page: "32px"
 components:
   button-primary:
     backgroundColor: "{colors.accent}"
@@ -86,6 +150,7 @@ components:
     typography: "{typography.label}"
     rounded: "{rounded.field}"
     padding: "7px 11px"
+    height: "36px"
   button-primary-hover:
     backgroundColor: "{colors.accent-hover}"
     textColor: "{colors.on-accent}"
@@ -95,23 +160,26 @@ components:
     typography: "{typography.label}"
     rounded: "{rounded.field}"
     padding: "7px 11px"
+    height: "36px"
   button-quiet:
     backgroundColor: "transparent"
     textColor: "{colors.accent}"
     typography: "{typography.label}"
     rounded: "{rounded.field}"
     padding: "7px 11px"
+    height: "36px"
   input:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.text}"
     rounded: "{rounded.field}"
     padding: "8px 10px"
+    height: "35px"
   navigation-item-active:
-    backgroundColor: "{colors.rail-active}"
+    backgroundColor: "transparent"
     textColor: "{colors.text}"
-    typography: "{typography.navigation}"
-    rounded: "{rounded.navigation}"
-    padding: "8px 11px"
+    typography: "{typography.navigation-active}"
+    rounded: "0px"
+    padding: "0 12px"
   outcome-passed:
     backgroundColor: "{colors.good-bg}"
     textColor: "{colors.good}"
@@ -125,18 +193,22 @@ components:
   event-selected:
     backgroundColor: "{colors.accent-soft}"
     textColor: "{colors.text}"
-    rounded: "{rounded.navigation}"
-    padding: "10px"
+    rounded: "{rounded.selection}"
+    padding: "14px 10px"
+    height: "72px"
   view-tab-active:
     backgroundColor: "{colors.accent-soft}"
     textColor: "{colors.accent}"
-    rounded: "{rounded.navigation}"
-    padding: "5px 9px"
+    rounded: "{rounded.selection}"
+    padding: "6px 10px"
+    height: "32px"
   graph-node:
-    backgroundColor: "{colors.surface}"
-    rounded: "{rounded.panel}"
     width: "164px"
     height: "48px"
+  graph-summary:
+    backgroundColor: "{colors.group-fill}"
+    width: "220px"
+    height: "104px"
 ---
 
 # Design System: TrajViz
@@ -145,126 +217,138 @@ components:
 
 **Creative North Star: "The recorded-evidence workspace"**
 
-TrajViz is a desktop Operate interface for reading saved agent traces. Pale continuous workspaces, near-white panels, blue-gray boundaries and dark text keep the recorded evidence easy to scan. Purple coordinates selection and focus; green and red retain outcome and diff meaning.
+TrajViz is a desktop Operate interface for reading saved agent traces. White workspaces, near-white headers, fine neutral boundaries and dark text keep recorded evidence easy to scan. Blue-gray selection belongs to the default light appearance; green and red retain outcome and diff meaning.
 
-The interface gives one working area priority and keeps source context close without exposing every diagnostic at once. Compact navigation, local scrolling and named disclosures support the failure → command/output → recorded patch → later validation workflow. The default appearance is light; a dark appearance remains a saved browser preference.
+One working area leads each page. Named disclosures keep secondary detail available, and source identity stays close to the evidence. The default appearance is light; the saved dark appearance remains available, with the graph retaining its white ground and category silhouettes.
 
 **Key Characteristics:**
 
-- Continuous work surfaces with thin boundaries and flat depth.
-- One dominant workspace with compact stage navigation and on-demand detail.
-- Purple source selection; written outcomes with green/red reinforcement.
-- Readable recorded code, exact source indices and explicit missing-data states.
+- Continuous work surfaces with single-pixel boundaries and flat depth.
+- One static navigation row with the existing monochrome mark and six icon/text destinations.
+- A vertical source DAG with category silhouettes and in-place content expansion.
+- Readable recorded code, stable exact source identity and explicit missing-evidence states.
 
-The current visual authority is the user's three pale desktop references: [Graph](docs/design-references/three-page-hierarchy/graph.png), [Compare](docs/design-references/three-page-hierarchy/compare.png) and [Replay](docs/design-references/three-page-hierarchy/replay.png). The [direction and verification report](docs/research/three-page-hierarchy.md) records their implemented surfaces and evidence boundaries. Browser window chrome is outside the product.
+The current authority is [PRODUCT.md](PRODUCT.md) and the [neutral vertical workspace direction and quality bar](docs/research/neutral-vertical-workspace.md). There is no approved comp. The [full review and scoped ship verdict](docs/research/neutral-vertical-workspace/review.md) record the desktop finish, including the corrected Replay end clearance. The public [capture index](docs/research/neutral-vertical-workspace/captures.json), [manifest](docs/research/neutral-vertical-workspace/capture-manifest.json) and [appearance/playback supplements](docs/research/graph-appearance/) provide 58 main and 11 supplementary synthetic screenshots. This document merges the current system into the prior specification; it does not reinstate earlier compositions.
 
 ## Colors
 
-The palette is cool and quiet: dark text on pale workspaces, restrained purple selection, and green/red evidence outcomes. Frontmatter values are normative for the default light appearance.
+The default palette uses neutral white surfaces, blue-gray interaction and restrained semantic color. Frontmatter owns all color primitives, including the retained dark overrides and fixed graph/category encodings; prose describes their use.
 
 ### Primary
 
-- **Selection purple** (`accent`, `accent-hover`): primary actions, selected source rows, stage state, focus and the light graph selection ring.
-- **Pale purple wash and boundary** (`accent-soft`, `accent-line`): selected plates and subordinate action states. Keep most of the work surface neutral.
-- **On-accent white** (`on-accent`): text and icons on filled primary actions.
+- **Selection blue-gray** (`accent`, `accent-hover`): principal actions, selected source state and focus in light appearance.
+- **Selection wash and boundary** (`accent-soft`, `accent-line`): selected rows, evidence tabs and subordinate action states.
+- **On-accent white** (`on-accent`): text and icons on filled actions.
 
 ### Secondary
 
-- **Recorded green / recorded red** (`good`, `good-bg`, `bad`, `bad-bg`): written outcomes, errors and recorded diff meaning. These are evidence semantics, not decoration.
-- **Agent A green / Agent B purple** (`agent-a`, `agent-b`): comparison identity, dots and metric bars. Their labels distinguish identity from pass/fail.
+- **Recorded green / recorded red** (`good`, `good-bg`, `bad`, `bad-bg`): written outcomes, errors and recorded diff meaning.
+- **Agent A green / Agent B steel blue** (`agent-a`, `agent-b`): comparison identity, explicitly labeled separately from outcome.
 
 ### Neutral
 
-- **Pale workspace** (`bg`), **near-white panel** (`surface`) and **quiet inset** (`surface-2`): page, evidence panes and subordinate headers.
-- **Canvas white** (`canvas`) and **blue-gray dots** (`dot`): the working graph and source-code background.
-- **Blue-gray boundary** (`line`, `line-strong`): single-pixel dividers and stronger field/control boundaries.
-- **Dark ink / secondary ink / quiet ink** (`text`, `muted`, `subtle`): evidence, operating labels and supporting hints.
-- **Quiet hover** (`surface-hover`) and **selected navigation plate** (`rail-active`): interaction state without large saturated fills.
+- **White workspace / white evidence surface** (`bg`, `surface`) and **near-white header** (`surface-2`): continuous page, evidence and supporting chrome.
+- **Quiet hover** (`surface-hover`), **fine boundary** (`line`) and **field boundary** (`line-strong`): feedback and separation.
+- **Dark ink / secondary ink / support ink** (`text`, `muted`, `subtle`): primary evidence, operating labels and hints.
 
 **The Selection and Outcome Rule.** Selection marks the current source; it never replaces the source outcome. Keep failure borders, written status and diff signs visible inside selected content.
 
-Dataset phase colors and the graph's edge/type palette are evidence encodings, resolved by [graphDrawing.tsx](frontend/src/graphDrawing.tsx), rather than a new brand scale. The dark palette remains defined in [workbench.css](frontend/src/workbench.css); light semantic overrides are in [hierarchy.css](frontend/src/hierarchy.css).
+The dark appearance uses the `dark-*` frontmatter tokens from [workbench.css](frontend/src/workbench.css); its existing teal interaction accent remains. The graph uses the same fixed white palette in both appearances, defined in [graphDrawing.tsx](frontend/src/graphDrawing.tsx). Category fill/stroke pairs come from [nodeAppearance.ts](frontend/src/nodeAppearance.ts). Phase dots retain validated dataset colors; they are data encodings rather than brand colors. Selection, category, phase, error and divergence remain independent meanings.
 
 ## Typography
 
-**Body and control font:** the native system sans stack. **Evidence font:** the system monospace stack. No display face or web font is used.
+**Body and control font:** native system sans. **Evidence font:** system monospace. There is no web font or decorative display face.
 
-**Character:** compact, direct and readable. Weight and spacing establish hierarchy; recorded code stays larger than the surrounding support labels.
+The compact hierarchy uses weight and whitespace instead of oversized type. The frontmatter `headline` applies to document-page view titles; `workspace-headline` applies to desktop Graph and Timeline. The `headline-title` role identifies selected evidence headings. Body text uses `body`; buttons, navigation, outcomes and supporting labels retain their own observed roles. Native navigation uses regular labels and a stronger active label.
 
-- **Headline:** page names, using the `headline` role.
-- **Title:** selected evidence and comparison headings, using the `title` role. Compact pane headings also use 13px.
-- **Body:** the default 13px system text. Inspector and metric content commonly use 12px.
-- **Label / navigation / badge:** separate frontmatter roles preserve the observed control and status weights.
-- **Support:** 11px context and control labels; 10px is reserved for compact timestamps and graph-node detail.
-- **Evidence:** desktop Replay code uses the 13px monospace role with generous line spacing. Inspector code uses 11–12px within its narrower pane; no explanatory prose is hidden in a code font by default.
+Recorded Replay code uses the `evidence` role; Terminal/Tests uses the same size with slightly tighter line spacing. Inspector code uses smaller type within its narrower region. SVG node titles and metadata use their specific frontmatter roles, with complete source identities available in accessible titles and Inspector. Type is not an evidence encoding: visual token widths never imply measured call duration.
 
 **The Evidence Reading Rule.** Reduce repeated metadata and close secondary detail before reducing evidence type. Long code and logs scroll within their own region.
 
 ## Layout
 
-The shared frame uses a fixed left rail and a sticky product bar (56px). The desktop rail is 180px, narrowing to 168px from 1101–1370px. Main content has 20px horizontal insets, narrowing to 16px in that band, with 12px vertical rhythm. Titles, concise source metadata and a compact stagebar lead into the work area. Duration, model, agent, date, source count and dataset belong in Run details rather than a second full metadata row.
+The single topbar is in normal document flow (64px). It contains the existing monochrome layers mark, then Replay, Timeline, Graph, Compare, Analytics and Datasets in that order. Icons and written labels share one row; the active tab has a dark underline (3px). The bar scrolls away on document pages. Page changes return to the document top; ordinary selection, disclosure, evidence-tab and camera changes do not reset document scroll.
 
-Graph and Replay combine adjacent panes into one bordered work surface, using separators between panes. At desktop widths above 1370px Graph's Inspector is 320px; Replay's source list is 270px and its optional detail pane is 320px. In the 1101–1370px band these become 300px, 240px and 300px. The evidence area consumes the remaining width. Compare's optional Step comparison uses the same 320px/300px widths. Compare's paired alignment rows share one relationship column, at 125px or 105px in the compact desktop band.
+The shared document container has a maximum width (1720px), desktop horizontal insets (32px), top/bottom padding (28px / 48px) and default gap (20px). At compact desktop widths (1101–1370px), horizontal insets become (24px). Supporting document sections use the observed larger separation (32px).
 
-**The Primary Workspace Rule.** Give the active investigation most of the available desktop area. Keep supporting diagnostics behind clearly named controls.
+**The Workspace Scroll Rule.** At desktop widths, Graph and Timeline fit the available screen with their inspection and local evidence regions. Replay, Compare, Analytics and Datasets use natural document scrolling.
 
-This revision's design and screenshot scope is desktop (1586×912 and 1280×800). Existing reachable narrow-screen controls are retained: the rail becomes an icon rail at 1100px, inspection can become a drawer at 1000px, and existing compact/stacked layouts continue at 760px and 520px. These are compatibility behavior, not a new mobile design direction.
+At widths of at least 1101px, Graph and Timeline use the screen below the topbar, with main padding (14px top / 16px bottom), gaps (12px), compact metadata and stage navigation. Their Inspector is (340px), or (320px) in the compact desktop band. Graph activity expands inside the work surface with local scrolling. Timeline keeps six lanes, a searchable Event Log and Event Inspector together; its lane/log split and long evidence scroll locally. Fullscreen Graph, Timeline and Compare Run DAGs retain inspection and exit controls.
 
-The CSS cascade is [styles.css](frontend/src/styles.css) → [workbench.css](frontend/src/workbench.css) → [density.css](frontend/src/density.css) → [hierarchy.css](frontend/src/hierarchy.css). New work must respect the last stylesheet's light tokens, desktop dimensions and pane hierarchy.
+Replay has an independent main workspace height (760px), source list (280px, compact desktop 260px), dominant evidence area and optional Step details (340px / 320px). Terminal/Tests is a separate full-width section below it, with bounded log scrolling. The fixed playback dock reserves a minimum height (72px). The effective page bottom padding is (112px), supplied by `.reference-shell main[data-page="replay"]` after the shared page shorthand; preserve this specificity and the tested clearance of at least (16px) above the dock at document end.
+
+Compare leads with one shared A/B alignment and three flat metrics. Rows have a minimum height (76px), with a shared relationship column (140px). Step comparison is optional and does not replace the alignment. Named alternative workspaces and separate supporting disclosures follow the document rhythm. Analytics and Datasets use readable independent sections and natural document scrolling.
+
+The reviewed scope is desktop (1586×912 and 1280×800). Existing narrow-screen access is retained: horizontal top navigation and stacked/drawer evidence behavior continue at the source breakpoints. These compatibility rules do not establish a newly designed or reviewed mobile composition.
+
+The effective stylesheet order in [main.tsx](frontend/src/main.tsx) is [styles.css](frontend/src/styles.css) → [workbench.css](frontend/src/workbench.css) → [density.css](frontend/src/density.css) → [hierarchy.css](frontend/src/hierarchy.css) → [neutral.css](frontend/src/neutral.css). Extract values from the effective selector and media-query cascade, not an earlier declaration alone.
 
 ## Elevation & Depth
 
-Ordinary panels are flat: no resting shadow, gradients or floating-card stacks. Pale tonal changes and single-pixel boundaries provide separation. Graph nodes are crisp SVG objects on a dotted canvas. Only transient menus, search results, metadata and help popovers use the shared ambient popover shadow. The exact light/dark shadow values and focus treatments live in the sidecar because they do not fit the frontmatter component schema.
+Ordinary panels and joined workspaces are flat, with no resting shadow. White/near-white tonal changes and single-pixel boundaries separate regions. The graph has a plain white ground without dots, gradients, glow or decorative imagery. Popovers for layers, metadata and exact Timeline members retain the shared light/dark ambient shadow; the sidecar carries those exact values.
 
-Stage borders/backgrounds and navigation background changes use brief feedback (150ms ease-out) only when reduced motion is not requested. Reduced motion disables that transition rule and suppresses loading animation and smooth scrolling. Camera and playback feedback must keep source evidence available immediately.
+Feedback is brief and functional: stage border/background and navigation background transitions use the existing reduced-motion-aware rule (150ms ease-out). Loading animation is separate. Reduced motion suppresses the no-preference transitions and reduces animation duration and smooth scrolling. Camera and playback must keep recorded evidence immediately available.
 
 ## Shapes
 
-Small corners carry the interface: alignment rows use 3px corners, compact controls 4px, navigation and selected rows 5px, joined workspaces 6px, fields/base buttons 7px and independent panels or graph nodes 8px. Outcome badges use a pill. The circular brand-adjacent view icon, avatar and Replay play control are distinct small landmarks. Internal pane boundaries remain straight; avoid nesting rounded cards where one divider expresses the relationship.
+Small corner steps follow the frontmatter roles: alignment rows, compact controls, selected rows, joined workspaces, fields/base buttons and independent panels. Joined pane boundaries remain straight. Outcome badges use pills; the Replay play control remains circular. Topbar tabs are square-ended with a small rounded underline, without an active background plate.
+
+Whole-node silhouettes identify recorded categories: Terminal is a window; Read file a folded file; Code edit a cut-corner block; Validation a hexagon; Plan a capsule; Recorded text a speech bubble; Other tool a beveled block; merged contiguous steps a folder. The smaller category glyph inside a node is supplementary. Default source-node boxes are (164×48px); summary folders use (220×104px). Shape changes stay inside their layout box and preserve the top/bottom ports, source ordering and routing. Complete source labels remain available when visible metadata is clipped.
 
 ## Components
 
 ### Buttons and fields
 
-Buttons are compact and bordered. Primary actions fill with selection purple; secondary actions use a near-white surface; quiet actions use purple text on a transparent background. Base buttons have a 36px minimum height and 7px corners, with a 30px small variant. Contextual graph controls are 29px tall. Hover uses the purple wash or the primary hover color. Fields use the stronger blue-gray boundary, a near-white fill and the shared focus treatment; an invalid field uses the error boundary. Disabled controls remain labelled and visibly subdued.
+Buttons are compact, bordered and explicit. Base primary, secondary and quiet variants use the frontmatter assignments; the base minimum height is (36px), with a small variant (30px). Contextual Graph controls use their smaller toolbar dimensions. Hover uses the selection wash/boundary or the primary hover color. Keyboard focus is visible (2px outline, 3px offset); disabled controls remain labeled and subdued. Fields use the stronger neutral boundary, white surface, matching corners and visible focus; invalid fields use the error boundary.
 
-### Navigation and shared context
+### Top navigation and local utilities
 
-The white left rail retains Replay, Timeline, Graph, Compare, Analytics and Datasets, with a pale purple active plate, purple line icon and written page name. The topbar keeps the existing product mark/name, breadcrumbs, local search, dataset status, help and local appearance preferences. The dataset picker stays in the rail footer; run/comparison context starts closed. Page explanations and Run details open from labelled disclosures. Share preserves the exact source URL.
+Navigation uses the single static row described in Layout, with line icons (16px), written labels and active underline. The existing mark is an icon, not a generated asset; transparent-logo generation remains deferred. Catalog search remains available with ⌘K/Ctrl+K. Appearance and local dataset information live under Datasets → Local dataset & appearance. Live controls appear in a contextual body row only for a live source.
 
-### Outcomes, selection and evidence panels
+### Outcomes, source rows and evidence panels
 
-Written status is mandatory beside semantic color. A selected event row uses a purple wash/boundary while keeping its source outcome readable. Evidence panes use a compact heading, single-pixel separation and local scrolling. Recorded diffs retain line numbers, context and +/− signs with green/red rows. Code, copy and expand actions always refer to the currently displayed recorded evidence.
+Written status accompanies semantic color. A selected Replay event row uses the selection wash and boundary, preserves outcome cues and has a minimum height (72px). Evidence panes use compact headings and local scrolling. Recorded diffs retain line numbers, context and +/− signs. Copy and expand apply to the evidence currently displayed. Unselected Inspectors begin with an explicit prompt.
 
-**The Stable Source Rule.** Run ID plus exact source idx identifies the selection across views and shared URLs. Display ordinals are presentation and playback positions.
+**The Stable Source Rule.** Run ID plus exact source idx identifies selection across views and shared URLs. Display ordinals and playback positions remain distinct from source identity.
 
-### Graph workspace
+### Graph and Timeline
 
-The execution canvas dominates beneath a compact stagebar and one-line toolbar. Layers, Legend and Agent activity start closed. The right-side Inspector shows an empty prompt until a source node is selected. Details, Files & activity and Signatures stay available; the selected node separates Details, Code Diff, Error Output and Context. Camera/search/export controls remain directly reachable. Node category shapes, phase/error strokes and an independent selection/focus ring carry different meanings. Hierarchy is containment; graph dependencies retain the existing file/observation heuristics.
+The white source DAG reads top to bottom, including source order, fallback, ingress/egress and dependency/retry routes. Ordinary wheel pans vertically; Shift-wheel pans horizontally; Ctrl/⌘-wheel zooms at the pointer. Drag, arrows, Fit, source search and SVG/PNG exports remain reachable. In scrolling document embeddings, the graph can hand wheel movement to the document at its boundary. Fit is an explicit overview action and may reduce label size.
 
-### Compare workspace
+Content summaries expand their actual contiguous source interval in place, preserving anchor and scale. Opaque group headers paint above routes and collapse their group; Collapse last/all remain available. Layers, Legend and Agent activity start closed. Selection keeps its independent outer ring, error stroke and phase dot. Structural links mean containment; dependency links retain declared file/observation heuristics and do not establish agent hierarchy. On-screen, SVG and PNG use the same Drawing; very tall raster exports remain bounded while SVG retains vector detail.
 
-One shared A/B alignment is the default primary trajectory. Three flat metrics (Duration, Tool Calls, Retries) sit above it. Step comparison starts closed unless the route already carries a selected source; selecting a row opens it without replacing the alignment. Named workspaces expose Patch comparison, All metrics and Run DAGs. Agent A details, Agent B details and Key Findings start closed beneath alignment. Paired metrics use a common scale and explicit numbers; missing values have written unavailable states.
+Timeline uses opaque full-height sticky lane labels, compact icons and exact screen-space groups with a member picker. Event centers and phase boundaries share ruler geometry. Missing timestamps use source position, and point width is not duration. Fullscreen includes the linked Event Inspector.
 
-### Replay workspace
+### Compare
 
-A source-ordered list supports the dominant central evidence area. The persistent transport remains in the viewport; Step details starts closed. Stage previews, saved text, arguments, raw references and personal annotations are available on demand. Selection chooses an appropriate recorded patch, saved file/read or command/text view. Terminal/Tests opens when it adds evidence beside file/patch content and can collapse. The transport uses source positions and recorded timestamps; playback speed changes the stepping interval, not the underlying trace.
+The three flat metrics support shared alignment. Step comparison begins closed unless the route supplies a source. Patch comparison, All metrics and Run DAGs remain named alternatives; Agent A details, Agent B details and Key Findings are separate closed disclosures. Two to four same-task runs remain supported. Compare identity is green for A and steel blue for B; labels remain explicit. Missing metrics stay unavailable, and signature alignment never claims semantic equivalence.
+
+### Replay and persistent evidence
+
+Step details begins closed. Auto follows the current action's available evidence; manual Diff, Updated File, File Context or Output pins that view through playback, stepping and seek. Inspector tabs, Terminal/Tests selection, expansion, details and raw references retain state across playback and resize. A missing patch displays its own missing state rather than the preceding source's patch. Terminal/Tests stays in its own section below the main evidence. Playback speed changes stepping interval, not recorded data.
+
+Frozen v1 evidence boundaries remain binding: missing per-call duration, attempts, per-step agents/parents, distinct reasoning roles, patches, file versions, Token/cost and test pass rate remain individually unrecorded. Full file content appears only when explicitly recorded; patch and comparison evidence retain source provenance. Personal annotations stay separate from trace evidence.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- Do use the light palette as the default and preserve the saved dark appearance.
+- Do use the light appearance as the default and preserve the saved dark appearance.
+- Do keep the graph white and read the source DAG from top to bottom in both appearances.
 - Do pair semantic color with written status, icons, exit codes or diff signs.
-- Do preserve exact source identity, including every occurrence of a repeated signature.
-- Do keep missing data visibly distinct from a recorded zero.
-- Do keep code and logs locally scrollable and restore focus when closing detail.
+- Do preserve exact source identity and every occurrence of a repeated normalized signature.
+- Do keep manually chosen evidence views and open panels stable during playback, seek and resize.
+- Do show missing data as Unrecorded / 未记录 or a specific missing-evidence state; a recorded zero stays zero.
+- Do retain reachable local scrolling, keyboard focus and fullscreen inspection.
 
 ### Don't:
 
-- Don't invent agent branches, file versions, durations, cost or test pass rates to fill a reference layout.
-- Don't use reference task names, sample metrics or sample code as product evidence.
-- Don't conflate a signature match or a rejoined alignment row with semantic equivalence or a successful outcome.
-- Don't make the historical dark four-page composition the current default.
+- Don't restore the historical app rail, purple selection, horizontal DAG or two-row navigation.
+- Don't add a product name, breadcrumbs, global search, help, notifications or an avatar to the topbar.
+- Don't represent the existing layers mark as a newly generated logo; generation remains deferred.
+- Don't invent agent hierarchy, call parents, reasoning roles, durations, attempts, file versions, cost or test pass rates to fill a layout.
+- Don't treat file targets as proof of modification, timestamp gaps as durations, or alignment matches and later successful tests as causal proof.
+- Don't use sample metrics, code or reference task names as product evidence, or publish private traces in public assets.
+- Don't claim a new mobile composition or a pass of the historical marketing-page gate from this desktop revision.
 
-Historical material remains available: the [density surface](docs/research/density-surface.md), [density verification](docs/research/density-verification.md), [four-reference checklist](docs/research/four-reference-checklist.md), [four-reference verification](docs/research/four-reference-verification.md), [four-reference surface](docs/research/four-reference-surface.md) and earlier [navy references](docs/design-references/trajectory-viewer/). They document prior composition and are not the current default authority.
+Historical references remain available as records of superseded directions: [three-page hierarchy](docs/research/three-page-hierarchy.md), [three pale references](docs/design-references/three-page-hierarchy/), [density surface](docs/research/density-surface.md), [density verification](docs/research/density-verification.md), [four-reference surface](docs/research/four-reference-surface.md), [four-reference checklist](docs/research/four-reference-checklist.md), [four-reference verification](docs/research/four-reference-verification.md) and [earlier navy references](docs/design-references/trajectory-viewer/). The current review does not rerun or close the historical Taste marketing-page gate. Public evidence uses synthetic fixtures; private traces and captures remain local and ignored.

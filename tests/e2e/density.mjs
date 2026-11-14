@@ -37,7 +37,7 @@ export async function checkDensity(page,url,artifacts,offline=false) {
       },view);
       assert.equal(measured.overflow,false);assert.ok(measured.readingSize>=10);
       if(width>=1280) {
-        if(view!=='compare')assert.ok(measured.stage.height<=44,'Stage navigation leaves room for evidence');
+        if(view!=='compare')assert.ok(measured.stage.height<=56,'Compact stage navigation precedes the independent evidence workspace');
         if(view==='graph')assert.ok(measured.primary.height>=320,'Graph canvas is the main workspace');
         if(view==='replay') {
           const left=await page.locator('.event-list').boundingBox();

@@ -73,7 +73,7 @@ export function Inspector({ run, node, index, select, clear, clearLabel = 'Clear
   locate?: (index: StepIndex) => void;
 }) {
   const [tab,setTab]=useState('Details');
-  useEffect(()=>setTab('Details'),[index]);
+  useEffect(()=>setTab('Details'),[run.id]);
   const resource = useResource<{ steps: Step[] }>(node ? [run.steps_file] : [], true);
   const steps = resource.state.status === 'ready' ? resource.state.data.steps : undefined;
   const members = node?.step_indices ?? [];
@@ -129,7 +129,7 @@ export function Inspector({ run, node, index, select, clear, clearLabel = 'Clear
       {resource.state.status === 'error' && <div className="panel-inset">
         <LoadError message={resource.state.message} retry={resource.retry} />
       </div>}
-      {step && <StepContent key={step.idx} step={step} phases={phases} tabbed={tabbed} variant={variant} tab={tab} setTab={setTab} first={steps?.[0]}
+      {step && <StepContent step={step} phases={phases} tabbed={tabbed} variant={variant} tab={tab} setTab={setTab} first={steps?.[0]}
         priorFailure={steps?.slice(0,steps.indexOf(step)).reverse().find(s=>failed(s) && (relatedGraph ? relatedGraph.nodes.find(n=>String(n.first_idx)===String(s.idx))?.signature===relatedGraph.nodes.find(n=>String(n.first_idx)===String(step!.idx))?.signature : s.action?.tool===step!.action?.tool))}
         earlierFailure={steps?.slice(0,steps.indexOf(step)).reverse().find(failed)} locate={() => (locate ?? select)(step.idx)} />}
       {relatedGraph && (variant!=='node'||tab==='Context') && <details className="node-context" open={variant==='node' ? true : undefined}><summary>Context · Files &amp; relationships</summary><div className="context-counts">

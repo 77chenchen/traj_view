@@ -1,0 +1,234 @@
+[
+  {
+    "file": "graph-before.png",
+    "source": "test-results/e2e/graph-before.png"
+  },
+  {
+    "file": "graph-before-1280.png",
+    "source": "test-results/e2e/graph-before-1280.png"
+  },
+  {
+    "file": "graph-after.png",
+    "source": "test-results/e2e/graph-after.png"
+  },
+  {
+    "file": "graph-after-1280.png",
+    "source": "test-results/e2e/graph-after-1280.png"
+  },
+  {
+    "file": "compare-before.png",
+    "source": "test-results/e2e/compare-before.png"
+  },
+  {
+    "file": "compare-before-1280.png",
+    "source": "test-results/e2e/compare-before-1280.png"
+  },
+  {
+    "file": "compare-after.png",
+    "source": "test-results/e2e/compare-after.png"
+  },
+  {
+    "file": "compare-after-1280.png",
+    "source": "test-results/e2e/compare-after-1280.png"
+  },
+  {
+    "file": "replay-before.png",
+    "source": "test-results/e2e/replay-before.png"
+  },
+  {
+    "file": "replay-before-1280.png",
+    "source": "test-results/e2e/replay-before-1280.png"
+  },
+  {
+    "file": "replay-after.png",
+    "source": "test-results/e2e/replay-after.png"
+  },
+  {
+    "file": "replay-after-1280.png",
+    "source": "test-results/e2e/replay-after-1280.png"
+  },
+  {
+    "file": "graph-stages.png",
+    "source": "test-results/e2e/graph-stages.png"
+  },
+  {
+    "file": "graph-layers.png",
+    "source": "test-results/e2e/graph-layers.png"
+  },
+  {
+    "file": "graph-legend.png",
+    "source": "test-results/e2e/graph-legend.png"
+  },
+  {
+    "file": "graph-error.png",
+    "source": "test-results/e2e/graph-error.png"
+  },
+  {
+    "file": "graph-context.png",
+    "source": "test-results/e2e/graph-context.png"
+  },
+  {
+    "file": "graph-activity.png",
+    "source": "test-results/e2e/graph-activity.png"
+  },
+  {
+    "file": "graph-files.png",
+    "source": "test-results/e2e/graph-files.png"
+  },
+  {
+    "file": "graph-signatures.png",
+    "source": "test-results/e2e/graph-signatures.png"
+  },
+  {
+    "file": "compare-agent-a.png",
+    "source": "test-results/e2e/compare-agent-a.png"
+  },
+  {
+    "file": "compare-snapshots-a.png",
+    "source": "test-results/e2e/compare-snapshots-a.png"
+  },
+  {
+    "file": "compare-agent-b.png",
+    "source": "test-results/e2e/compare-agent-b.png"
+  },
+  {
+    "file": "compare-snapshots-b.png",
+    "source": "test-results/e2e/compare-snapshots-b.png"
+  },
+  {
+    "file": "compare-patch.png",
+    "source": "test-results/e2e/compare-patch.png"
+  },
+  {
+    "file": "compare-metrics.png",
+    "source": "test-results/e2e/compare-metrics.png"
+  },
+  {
+    "file": "compare-charts.png",
+    "source": "test-results/e2e/compare-charts.png"
+  },
+  {
+    "file": "compare-findings.png",
+    "source": "test-results/e2e/compare-findings.png"
+  },
+  {
+    "file": "replay-stages.png",
+    "source": "test-results/e2e/replay-stages.png"
+  },
+  {
+    "file": "replay-context.png",
+    "source": "test-results/e2e/replay-context.png"
+  },
+  {
+    "file": "replay-failure.png",
+    "source": "test-results/e2e/replay-failure.png"
+  },
+  {
+    "file": "replay-playback.png",
+    "source": "test-results/e2e/replay-playback.png"
+  },
+  {
+    "file": "missing-patch.png",
+    "source": "test-results/e2e/missing-patch.png"
+  },
+  {
+    "file": "missing-time.png",
+    "source": "test-results/e2e/missing-time.png"
+  },
+  {
+    "file": "vertical-before-1586.png",
+    "source": "test-results/e2e/vertical-before-1586.png"
+  },
+  {
+    "file": "vertical-expanded-1586.png",
+    "source": "test-results/e2e/vertical-expanded-1586.png"
+  },
+  {
+    "file": "vertical-patch-1586.png",
+    "source": "test-results/e2e/vertical-patch-1586.png"
+  },
+  {
+    "file": "vertical-fullscreen-1586.png",
+    "source": "test-results/e2e/vertical-fullscreen-1586.png"
+  },
+  {
+    "file": "timeline-1586.png",
+    "source": "test-results/document-workspace/document-timeline-1586.png"
+  },
+  {
+    "file": "sankey-1586.png",
+    "source": "test-results/document-workspace/document-sankey-1586.png"
+  },
+  {
+    "file": "runs-1586.png",
+    "source": "test-results/document-workspace/document-runs-1586.png"
+  },
+  {
+    "file": "vertical-before-1280.png",
+    "source": "test-results/e2e/vertical-before-1280.png"
+  },
+  {
+    "file": "vertical-expanded-1280.png",
+    "source": "test-results/e2e/vertical-expanded-1280.png"
+  },
+  {
+    "file": "vertical-patch-1280.png",
+    "source": "test-results/e2e/vertical-patch-1280.png"
+  },
+  {
+    "file": "vertical-fullscreen-1280.png",
+    "source": "test-results/e2e/vertical-fullscreen-1280.png"
+  },
+  {
+    "file": "timeline-1280.png",
+    "source": "test-results/document-workspace/document-timeline-1280.png"
+  },
+  {
+    "file": "sankey-1280.png",
+    "source": "test-results/document-workspace/document-sankey-1280.png"
+  },
+  {
+    "file": "runs-1280.png",
+    "source": "test-results/document-workspace/document-runs-1280.png"
+  },
+  {
+    "file": "replay-scrolled.png",
+    "source": "test-results/document-workspace/document-replay-scrolled-1586.png"
+  },
+  {
+    "file": "compare-scrolled.png",
+    "source": "test-results/document-workspace/document-compare-scrolled-1586.png"
+  },
+  {
+    "file": "timeline-timeline-scrolled.png",
+    "source": "test-results/e2e/timeline-timeline-scrolled.png"
+  },
+  {
+    "file": "timeline-timeline-fullscreen.png",
+    "source": "test-results/e2e/timeline-timeline-fullscreen.png"
+  },
+  {
+    "file": "timeline-timeline-fullscreen-1280.png",
+    "source": "test-results/e2e/timeline-timeline-fullscreen-1280.png"
+  },
+  {
+    "file": "playback-diff-updated.png",
+    "source": "test-results/e2e/playback-diff-updated.png"
+  },
+  {
+    "file": "playback-inspector-diff-updated.png",
+    "source": "test-results/node-appearance/playback-inspector-diff-updated.png"
+  },
+  {
+    "file": "replay-scrolled-1280.png",
+    "source": "test-results/document-workspace/document-replay-scrolled-1280.png"
+  },
+  {
+    "file": "replay-terminal-expanded-1586.png",
+    "source": "test-results/document-workspace/document-replay-terminal-expanded-1586.png"
+  },
+  {
+    "file": "replay-terminal-expanded-1280.png",
+    "source": "test-results/document-workspace/document-replay-terminal-expanded-1280.png"
+  }
+]

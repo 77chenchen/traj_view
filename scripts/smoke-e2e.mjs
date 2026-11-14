@@ -16,6 +16,11 @@ import { checkFourReference } from '../tests/e2e/four-reference.mjs';
 import { checkDensity } from '../tests/e2e/density.mjs';
 import { checkThreePage } from '../tests/e2e/three-page.mjs';
 import { checkExecutionMap } from '../tests/e2e/execution-map.mjs';
+import { checkNodeAppearance } from '../tests/e2e/node-appearance.mjs';
+import { checkPlaybackPreferences } from '../tests/e2e/playback-preferences.mjs';
+import { checkTimelineWorkspace } from '../tests/e2e/timeline-workspace.mjs';
+import { checkNeutralVertical } from '../tests/e2e/neutral-vertical.mjs';
+import { checkDocumentWorkspace } from '../tests/e2e/document-workspace.mjs';
 import { frontendRequire, results, root } from './frontend-dependencies.mjs';
 
 const python = process.env.PYTHON || 'python';
@@ -125,6 +130,7 @@ async function main() {
   mkdirSync(artifacts, { recursive: true });
   execFileSync(process.execPath, [join(root, 'scripts/test-graph-data.mjs')], { cwd: root, env: { ...process.env, PYTHON: python }, stdio: 'inherit' });
   execFileSync(process.execPath, [join(root, 'scripts/test-execution-map.mjs')], { cwd: root, stdio: 'inherit' });
+  execFileSync(process.execPath, [join(root, 'scripts/test-timeline-data.mjs')], { cwd: root, stdio: 'inherit' });
   const scratch = mkdtempSync(join(tmpdir(), 'trajviz-e2e-'));
   let browser;
   let server;
@@ -179,6 +185,11 @@ async function main() {
       await scenario(browser, 'density', (page) => checkDensity(page, url, artifacts));
       await scenario(browser, 'three-page-desktop', (page) => checkThreePage(page, url, artifacts));
       await scenario(browser, 'execution-map', (page) => checkExecutionMap(page, url, artifacts));
+      await scenario(browser, 'node-appearance', (page) => checkNodeAppearance(page, url, artifacts));
+      await scenario(browser, 'playback-preferences', (page) => checkPlaybackPreferences(page, url, artifacts));
+      await scenario(browser, 'document-workspace', (page) => checkDocumentWorkspace(page, url, artifacts));
+      await scenario(browser, 'neutral-vertical', (page) => checkNeutralVertical(page, url, artifacts));
+      await scenario(browser, 'timeline-workspace', (page) => checkTimelineWorkspace(page, url, artifacts));
       await scenario(browser, 'sankey', (page) => checkSankey(page, url, index, artifacts));
       await scenario(browser, 'theme', (page) => checkTheme(page, url, artifacts));
       await scenario(browser, 'folding', (page) => checkFolded(page, url, artifacts));
@@ -216,6 +227,11 @@ async function main() {
       await scenario(browser, 'density-offline', (page) => checkDensity(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'three-page-desktop-offline', (page) => checkThreePage(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'execution-map-offline', (page) => checkExecutionMap(page, pathToFileURL(reportFile).href, artifacts, true), true);
+      await scenario(browser, 'node-appearance-offline', (page) => checkNodeAppearance(page, pathToFileURL(reportFile).href, artifacts, true), true);
+      await scenario(browser, 'playback-preferences-offline', (page) => checkPlaybackPreferences(page, pathToFileURL(reportFile).href, artifacts, true), true);
+      await scenario(browser, 'document-workspace-offline', (page) => checkDocumentWorkspace(page, pathToFileURL(reportFile).href, artifacts, true), true);
+      await scenario(browser, 'neutral-vertical-offline', (page) => checkNeutralVertical(page, pathToFileURL(reportFile).href, artifacts, true), true);
+      await scenario(browser, 'timeline-workspace-offline', (page) => checkTimelineWorkspace(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'offline', (page) =>
         checkOffline(page, pathToFileURL(reportFile).href, index, graph, steps, artifacts), true);
     }

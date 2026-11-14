@@ -8,6 +8,7 @@ const fixtureRuns = [
   'dashboard-baseline', 'dashboard-variant', 'dashboard-short',
   'role-boundaries',
   'execution-long-synthetic',
+  'node-types-synthetic',
   'slug-empty', 'slug-messages-pass', 'slug-messages-provider', 'slug-skill-pass',
 ];
 export const renderSizes = [500, 2000];
@@ -186,6 +187,7 @@ export async function checkFolded(page, url, artifacts) {
   await button(page, /^Steps$/).click();
   await visible(button(page, /^Expand all steps$/));
   await visible(page.getByText(/^40 nodes ·/));
+  await page.locator('.graph-options > summary').click();
   await graphNode(page, 1).click();
   const inspector = role(page, 'complementary', /step inspector/i);
   await button(inspector, /^Error Output$/).click();
@@ -194,6 +196,9 @@ export async function checkFolded(page, url, artifacts) {
   await button(inspector, /show all.*characters/i).click();
   await visible(inspector.getByText(/qa-end-of-observation/));
   await role(inspector, 'combobox', /member step/i).selectOption('3');
+  assert.equal(await button(inspector, /^Error Output$/).getAttribute('aria-pressed'),'true','Changing a folded member keeps the chosen evidence view');
+  await visible(inspector.getByText('#3',{exact:true}));
+  await button(inspector, /^Details$/).click();
   await visible(inspector.getByText('Check synthetic module 1.', { exact: true }));
   if(await page.locator('.graph-options').getAttribute('open')===null)await page.locator('.graph-options > summary').click();
   await button(page, /^Expand all steps$/i).click();
@@ -300,7 +305,7 @@ export async function checkSankey(page, url, index, artifacts) {
 
 export async function checkTheme(page, url, artifacts) {
   await page.goto(url);
-  await page.getByLabel('Local preferences',{exact:true}).click();
+  await page.locator('.dataset-utilities > summary').click();
   await page.getByRole('button',{name:'Dark theme',exact:true}).click();
   assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
   await page.screenshot({ path: join(artifacts, 'theme-toggled.png') });
@@ -309,11 +314,15 @@ export async function checkTheme(page, url, artifacts) {
   await page.keyboard.press('Escape');
   await runButton(page, timeoutRun).click();
   await visible(page.locator(graphNodes));
-  await page.getByLabel('Local preferences',{exact:true}).click();
+  await page.getByRole('navigation',{name:'Workspace'}).getByRole('button',{name:'Runs',exact:true}).click();
+  await page.locator('.dataset-utilities > summary').click();
   await page.getByRole('button',{name:'Dark theme',exact:true}).click();
+  await runButton(page, timeoutRun).click();
+  await visible(page.locator(graphNodes));
   await page.screenshot({ path: join(artifacts, 'dag-dark.png') });
+  await page.getByRole('navigation',{name:'Workspace'}).getByRole('button',{name:'Runs',exact:true}).click();
   await page.getByRole('button',{name:'Light theme',exact:true}).click();
-  await page.keyboard.press('Escape');
+  await runButton(page, timeoutRun).click();
 }
 
 export async function checkOffline(page, fileUrl, index, graph, steps, artifacts) {
@@ -406,11 +415,11 @@ async function findSource(page, name, idx) {
 async function assertSourceOrder(page, group) {
   const points = await group.locator('[data-node]').evaluateAll((nodes) => nodes.map((node) => ({
     idx: node.getAttribute('data-source-index'),
-    x: node.transform.baseVal.consolidate().matrix.e,
+    y: node.transform.baseVal.consolidate().matrix.f,
   })));
   for (let i = 1; i < points.length; i++) {
     assert.ok(BigInt(points[i - 1].idx) < BigInt(points[i].idx));
-    assert.ok(points[i - 1].x < points[i].x, 'All DAG nodes move left to right');
+    assert.ok(points[i - 1].y < points[i].y, 'All DAG nodes move top to bottom');
   }
 }
 
@@ -478,7 +487,7 @@ export async function checkDagCompare(page, url, artifacts) {
   for (const id of ['dag-baseline', 'dag-variant', 'dag-short']) await selection(page, id).check();
   await button(page, /^Compare runs$/).click();
   await button(page, /^Run DAGs$/).click();
-  await visible(role(page, 'heading', 'Run DAGs · source order →'));
+  await visible(role(page, 'heading', 'Run DAGs · source order ↓'));
   const articles = page.locator('.compare-graph');
   assert.equal(await articles.count(), 3);
   const baseline = articles.filter({ hasText: 'dag-baseline' });

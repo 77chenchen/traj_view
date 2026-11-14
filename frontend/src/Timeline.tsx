@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type GraphNode, type Run, type Step, type StepIndex, sourceIndex } from './model';
-import { categoryName, clock, failed, fullScreen, label, patchStats } from './Evidence';
+import { categoryIcon, categoryName, clock, failed, fullScreen, label } from './Evidence';
 import { Icon } from './ui';
+import { timelineTokens } from './timelineData';
 
 export function useTimeAxis(steps: Step[]) {
   return useMemo(() => {
@@ -11,22 +12,27 @@ export function useTimeAxis(steps: Step[]) {
     return {timed, values, span:Math.max(timed ? .001 : 1, values.at(-1) ?? 0)};
   },[steps]);
 }
-export function EventTimeline({ runId, steps, nodes, selected, select }: {
-  runId: string; steps: Step[]; nodes: GraphNode[]; selected: StepIndex; select: (idx: StepIndex) => void;
+export function EventTimeline({ runId, steps, nodes, selected, select, revealDetails }: {
+  runId: string; steps: Step[]; nodes: GraphNode[]; selected: StepIndex; select: (idx: StepIndex) => void; revealDetails?: () => void;
 }) {
   const [zoom,setZoom] = useState(1);
   const [stages,setStages] = useState(true);
   const [events,setEvents] = useState(true);
+  const [openGroup,setOpenGroup] = useState<number[] | null>(null);
+  const [fullscreen,setFullscreen] = useState(false);
   const scroll = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLElement>(null);
+  const fullscreenButton = useRef<HTMLButtonElement>(null);
+  const groupButton = useRef<HTMLButtonElement | null>(null);
   const [viewportWidth,setViewportWidth] = useState(650);
   useEffect(() => {
     const target=scroll.current;if(!target)return;
     const observer=new ResizeObserver(() => setViewportWidth(target.clientWidth));observer.observe(target);return () => observer.disconnect();
   },[]);
   const {timed,values,span}=useTimeAxis(steps);
-  const baseWidth=Math.max(650,viewportWidth-24)-144;
-  const plotWidth=baseWidth*zoom, pointWidth=12*zoom, edgePadding=Math.max(8,pointWidth/2+2);
+  const edgePadding=54;
+  const baseWidth=Math.max(650,viewportWidth-24)-144-2*edgePadding;
+  const plotWidth=baseWidth*zoom;
   const toX=(value:number)=>value/span*plotWidth;
   const displaySpan = Math.max(span, span / zoom);
   const desired=Math.max(timed ? .001 : 1,span/(4*zoom));
@@ -44,7 +50,19 @@ export function EventTimeline({ runId, steps, nodes, selected, select }: {
     const start=b.left+156,end=b.right-20;
     if(a.left<start)viewport.scrollLeft-=start-a.left;
     else if(a.right>end)viewport.scrollLeft+=a.right-end;
-  },[selected,zoom,viewportWidth,events]);
+  },[selected,zoom,viewportWidth,events,fullscreen]);
+  useEffect(() => {
+    const update=()=>setFullscreen(Boolean(document.fullscreenElement?.contains(panel.current)));
+    document.addEventListener('fullscreenchange',update);return()=>document.removeEventListener('fullscreenchange',update);
+  },[]);
+  useEffect(()=>setOpenGroup(null),[zoom,events,runId]);
+  useEffect(()=>{if(openGroup)panel.current?.querySelector<HTMLButtonElement>('.timeline-cluster-popover .node-result')?.focus({preventScroll:true});},[openGroup]);
+  const closeGroup=()=>{setOpenGroup(null);requestAnimationFrame(()=>groupButton.current?.focus({preventScroll:true}));};
+  const toggleFullscreen=()=>{
+    if(fullscreen){fullScreen(null);requestAnimationFrame(()=>fullscreenButton.current?.focus({preventScroll:true}));return;}
+    revealDetails?.();
+    fullScreen(panel.current?.closest<HTMLElement>('.timeline-workspace,.graph-workspace')??panel.current);
+  };
   const lanes=[
     {name:'User Task',icon:'user' as const,accepts:(s:Step,i:number)=>i===0&&!s.action},
     {name:'Reasoning (recorded text)',icon:'spark' as const,accepts:(s:Step)=>Boolean(s.thought)&&!s.tags.includes('final_message')},
@@ -54,6 +72,8 @@ export function EventTimeline({ runId, steps, nodes, selected, select }: {
     {name:'Final Answer',icon:'check' as const,accepts:(s:Step)=>s.tags.includes('final_message')},
   ];
   const segments: {start:number;end:number;step:Step;name:string}[]=[];
+  const laneTokens=lanes.map(lane=>timelineTokens(steps.flatMap((step,position)=>lane.accepts(step,position)?[{position,x:toX(values[position])}]:[])));
+  const grouped=laneTokens.some(tokens=>tokens.some(token=>token.positions.length>1));
   steps.forEach((s,i) => {
     const name=failed(s)?'Error':s.tags.includes('final_message')?'Completion':
       by.get(String(s.idx))?.category==='validate'&&s.observation?.exit_code===0?'Validation Passed':by.get(String(s.idx))?.category ?? 'text';
@@ -66,22 +86,33 @@ export function EventTimeline({ runId, steps, nodes, selected, select }: {
       <button className="button small icon-button" aria-label="Zoom out timeline" disabled={zoom<=.125} onClick={()=>setZoom(Math.max(.125,zoom/2))}><Icon name="minus" size={14}/></button>
       <button className="button small icon-button" aria-label="Zoom in timeline" disabled={zoom>=8} onClick={()=>setZoom(Math.min(8,zoom*2))}><Icon name="plus" size={14}/></button>
       <label><input type="checkbox" checked={stages} onChange={e=>setStages(e.target.checked)}/>Stages</label><label><input type="checkbox" checked={events} onChange={e=>setEvents(e.target.checked)}/>Events</label>
-      <button className="button small icon-button" aria-label="Fullscreen timeline" onClick={()=>fullScreen(panel.current)}><Icon name="fit" size={15}/></button>
+      <button ref={fullscreenButton} className="button small icon-button" aria-label={fullscreen?'Exit fullscreen timeline':'Fullscreen timeline'} title={fullscreen?'Exit fullscreen':'Fullscreen with Inspector'} onClick={toggleFullscreen}><Icon name={fullscreen?'close':'fit'} size={15}/></button>
     </div></div>
     <div className="event-timeline-scroll" ref={scroll}><div className="event-timeline-inner" style={{width:Math.max(baseWidth,plotWidth)+144+2*edgePadding}}>
       <div className="event-axis"><span>{timed?'Elapsed':'Step'}</span><div style={{marginInline:edgePadding}}>{ticks.map(v=><span key={v} data-timeline-tick={v} style={{left:toX(v)}}>{format(v)}</span>)}</div></div>
-      {stages&&<div className="stage-axis"><strong>Stages</strong><div style={{marginInline:edgePadding}}>{segments.map((s,i)=><button key={i} className={'phase-arrow '+(failed(s.step)?'phase-failed':s.name==='Validation Passed'?'phase-success':'')} data-phase-source={String(s.step.idx)} aria-label={'Phase '+s.name+' source '+sourceIndex(s.step.idx)} style={{left:toX(values[s.start]),width:Math.max(3,toX((values[s.end+1]??span)-values[s.start]))}} title={s.name+' · '+sourceIndex(s.step.idx)+' · phase band between recorded events'} onClick={()=>select(s.step.idx)}>{s.name}</button>)}</div></div>}
-      {lanes.map(lane=><div className="event-lane" key={lane.name}><strong><Icon name={lane.icon} size={16}/>{lane.name}</strong><div style={{marginInline:edgePadding}}>
+      {stages&&<div className="stage-axis"><strong>Stages</strong><div style={{marginInline:edgePadding}}>{segments.map((s,i)=>{
+        const width=Math.max(3,toX((values[s.end+1]??span)-values[s.start]));
+        return <button key={i} className={'phase-arrow '+(failed(s.step)?'phase-failed':s.name==='Validation Passed'?'phase-success':'')} data-phase-source={String(s.step.idx)} data-stage-density={width<20?'mark':width<64?'icon':'label'} aria-label={'Phase '+s.name+' source '+sourceIndex(s.step.idx)} style={{left:toX(values[s.start]),width}} title={s.name+' · '+sourceIndex(s.step.idx)+' · phase band between recorded events'} onClick={()=>select(s.step.idx)}>{width>=64?s.name:width>=20?<Icon name={failed(s.step)?'info':categoryIcon(s.step,by.get(String(s.step.idx)))} size={12}/>:null}</button>;
+      })}</div></div>}
+      {lanes.map((lane,laneIndex)=><div className="event-lane" key={lane.name}><strong><Icon name={lane.icon} size={16}/>{lane.name}</strong><div style={{marginInline:edgePadding}}>
         {ticks.map(v=><i key={v} className="timeline-gridline" data-timeline-tick={v} style={{left:toX(v)}} aria-hidden="true"/>)}
-        {events&&steps.map((s,i)=>lane.accepts(s,i)&&<button key={String(s.idx)} className={'timeline-event '+(failed(s)?'failed':by.get(String(s.idx))?.category||'message')}
-          data-timeline-value={values[i]} style={{left:toX(values[i]),width:pointWidth}} aria-pressed={s.idx===selected}
-          aria-label={lane.name==='Tool Calls'?(failed(s)?'Errors: '+sourceIndex(s.idx)+' error':'Tool calls: '+sourceIndex(s.idx)+' '+s.action?.tool):lane.name+': '+sourceIndex(s.idx)}
-          title={sourceIndex(s.idx)+' · '+label(s)+' · '+(timed?'timestamp point, duration unrecorded':'source step position')} onClick={()=>select(s.idx)}>
-          {steps.length<=16&&<span className="timeline-point-label">{lane.name==='File Changes'?s.action?.targets[0]+' +'+(patchStats(s).added??'?')+' −'+(patchStats(s).removed??'?'):s.action?.tool||by.get(String(s.idx))?.category||'text'}</span>}</button>)}
+        {events&&laneTokens[laneIndex].map(token=>{
+          const members=token.positions.map(i=>steps[i]),s=members[0],i=token.positions[0],multiple=members.length>1;
+          const category=by.get(String(s.idx))?.category||'message',mixed=members.some(s=>by.get(String(s.idx))?.category!==category),hasError=members.some(failed);
+          return <button key={members.map(s=>s.idx).join(',')} className={'timeline-event '+(hasError?'failed':category)+(multiple?' event-cluster':'')} data-timeline-sources={members.map(s=>s.idx).join(',')} data-timeline-value={values[i]} data-token-mode={multiple?'group':token.width>=64?'label':'icon'}
+            data-cluster-icon={multiple&&token.width>=40?'visible':'hidden'} style={{left:token.x,width:token.width}} aria-pressed={members.some(s=>String(s.idx)===String(selected))}
+            aria-label={multiple?lane.name+': '+members.length+' recorded events, source '+sourceIndex(s.idx)+' to '+sourceIndex(members.at(-1)!.idx):lane.name==='Tool Calls'?(failed(s)?'Errors: '+sourceIndex(s.idx)+' error':'Tool calls: '+sourceIndex(s.idx)+' '+s.action?.tool):lane.name+': '+sourceIndex(s.idx)}
+            title={multiple?members.length+' recorded events · '+sourceIndex(s.idx)+' → '+sourceIndex(members.at(-1)!.idx)+(hasError?' · contains '+members.filter(failed).length+' failed event(s)':'')+' · click to choose a source':sourceIndex(s.idx)+' · '+label(s)+' · '+(timed?'timestamp point, duration unrecorded':'source step position')}
+            onClick={event=>{if(multiple){groupButton.current=event.currentTarget;setOpenGroup(token.positions);}else select(s.idx);}}>
+            <Icon name={multiple&&mixed?'layers':categoryIcon(s,by.get(String(s.idx)))} size={13}/>
+            {multiple?<span className="timeline-token-count">{members.length}</span>:token.width>=64&&<span className="timeline-token-label">{lane.name==='File Changes'?s.action?.targets[0]?.split('/').at(-1):s.action?.tool||category}</span>}
+          </button>;
+        })}
         {lane.name==='Sub-agents'&&<span className="empty-lane">Per-step agent identity unrecorded</span>}
       </div></div>)}
     </div></div>
-    <p className="timeline-footnote"><span>{timed?'Recorded timestamp points · no call durations recorded':'Source step position · complete monotonic timestamps unavailable'}</span> <span>· Phase bands connect event positions; lanes do not imply parallelism.</span></p>
+    <p className="timeline-footnote"><span>{timed?'Recorded timestamp points · no call durations recorded':'Source step position · complete monotonic timestamps unavailable'}</span> <span>· Phase bands connect event positions; lanes do not imply parallelism.</span>{grouped&&<span> · Numbered groups contain nearby events; zoom in or choose a source.</span>}</p>
+    {openGroup&&<aside className="timeline-cluster-popover" aria-label="Timeline event group" onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();closeGroup();}}}><div className="panel-head"><h3>{openGroup.length} recorded events</h3><button className="button small icon-button" aria-label="Close event group" onClick={closeGroup}><Icon name="close" size={14}/></button></div><div>{openGroup.map(i=><button className="node-result" key={String(steps[i].idx)} onClick={()=>{select(steps[i].idx);closeGroup();}}><Icon name={categoryIcon(steps[i],by.get(String(steps[i].idx)))} size={14}/><strong>{sourceIndex(steps[i].idx)}</strong><span>{steps[i].action?.tool||'Recorded text'}</span>{failed(steps[i])&&<span className="error-text">Failed</span>}</button>)}</div></aside>}
   </section>;
 }
 export function AgentActivity({ run,steps,nodes,select }: {run:Run;steps:Step[];nodes:GraphNode[];select:(idx:StepIndex)=>void}) {

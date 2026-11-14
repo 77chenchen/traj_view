@@ -1,5 +1,20 @@
 # TrajViz end-to-end QA
 
+The current suite has **38 Chrome scenarios**, **909 DAG sorts** and **126 pure Timeline layouts**, plus the execution/inline route matrices. Design scope is desktop **1586×912 and 1280×800**; retained narrow-screen cases are regressions. Graph and Timeline use single-screen workspaces; the other four pages scroll the document and its static 64px single-row navigation away. `document-workspace.mjs` verifies those dimensions, six accessible navigation tabs, visible final Timeline lane/Event Log, local graph-wheel clamping, source preservation and the fixed Replay dock. `neutral-vertical.mjs` checks vertical direction, white SVG, wheel/zoom, inline expansion and fullscreen evidence. `timeline-workspace.mjs` covers opaque sticky labels, non-overlapping semantic tokens, exact group-member selection and fullscreen Inspector. All run online and against a single-file report with networking blocked.
+
+The Graph appearance and stable-playback checks are in `node-appearance.mjs` and `playback-preferences.mjs`, each exercised online and offline. They cover seven distinct whole-node paths plus merged folders, shared theme, 1586×912/1280×800 fullscreen Inspector, node clicks, failure/patch/validation, nested full Diff, selection after exit, SVG shape/color parity and in-place groups. Playback covers two different saved patches, a missing-patch interval, all pinned evidence views, Terminal/Tests, collapsed output, raw-reference disclosure, unchanged mounted panes and no trace refetch. Viewport resizing, including full-page browser capture, preserves requested Inspector visibility. See the [current report](../../docs/research/neutral-vertical-workspace.md) and [supplemental appearance report](../../docs/research/graph-appearance.md).
+
+With the public fixture server running, each current standalone verifier opens both the server and exact delivered root HTML:
+
+```sh
+node scripts/verify-document-workspace.mjs
+node scripts/verify-neutral-vertical.mjs
+node scripts/verify-timeline-workspace.mjs
+node scripts/verify-node-appearance.mjs
+```
+
+Results stay under `test-results/<scenario>/`. The primary public capture inventory contains 55 independent PNGs with dimensions, hashes and provenance; 11 supplemental appearance/playback PNGs are also public. Real NL2Repo verification uses `node scripts/verify-execution-map.mjs --appearance-only --output .workers/local/neutral-vertical-real-qa`; real data and captures remain ignored and local. Subsequent sections document retained historical coverage and scenario totals.
+
 Run from the repository root after the CLI and viewer are integrated. Use the
 installed Python and frontend dependencies.
 
@@ -67,7 +82,7 @@ can help diagnose Dagre recursion limits. Benchmark JSON files are written to
 `test-results/`. Set `FRONTEND_NODE_MODULES` to use a different installed
 dependency directory.
 
-DAG browser coverage includes: monotonically increasing x coordinates, exact large source indices, file-path lookup and timeline synchronization, per-block and full expansion, internal retry edges, filtered nonconsecutive repetitions, current-state SVG/PNG, keyboard pan, dark theme, three independent same-task DAGs, baseline divergence (including an ended side) and highlighting repeated signatures. The 2,000-step timing scenario additionally zooms, filters to an empty graph and back, searches the last step and opens its details. Both offline scenarios exercise files, DAG filtering/folding, Inspector and comparison with zero external requests.
+DAG browser coverage includes: monotonically increasing source-order y coordinates, exact large source indices, file-path lookup and timeline synchronization, per-block and full expansion, internal retry edges, filtered nonconsecutive repetitions, current-state SVG/PNG, keyboard pan, dark theme, three independent same-task DAGs, baseline divergence (including an ended side) and highlighting repeated signatures. The 2,000-step timing scenario additionally zooms, filters to an empty graph and back, searches the last step and opens its details. Both offline scenarios exercise files, DAG filtering/folding, Inspector and comparison with zero external requests.
 
 To refresh the shipped dataset/report before verifying it:
 

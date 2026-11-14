@@ -144,6 +144,6 @@ export function StageSnapshots({ steps, nodes, selected, select, count = 6, head
   </section>;
 }
 export function fullScreen(element: HTMLElement | null) {
-  if (document.fullscreenElement) void document.exitFullscreen();
+  if (document.fullscreenElement && (!element || document.fullscreenElement === element)) void document.exitFullscreen();
   else if (element?.requestFullscreen) void element.requestFullscreen();
 }

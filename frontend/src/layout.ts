@@ -20,7 +20,7 @@ const executionCache = new WeakMap<Graph, Promise<Layout>>();
 function preset(graph: Graph, reason?: string): Layout {
   // A single monotonic time axis also handles disconnected filtered subgraphs.
   // Never wrap a long trace into rows: that reverses arrows on alternate rows.
-  const positions = new Map(graph.nodes.map((node, index) => [node.id, { x: index * 240, y: 0 }]));
+  const positions = new Map(graph.nodes.map((node, index) => [node.id, { x: 0, y: index * 100 }]));
   return { positions, name: 'Preset', reason };
 }
 
@@ -46,14 +46,14 @@ async function cytoscapeLayout(graph: Graph, engine: 'elk' | 'dagre'): Promise<L
       name: 'elk', fit: false,
       elk: {
         algorithm: 'layered',
-        'elk.direction': 'RIGHT',
+        'elk.direction': 'DOWN',
         'elk.spacing.nodeNode': '72',
         'elk.layered.spacing.nodeNodeBetweenLayers': '76',
         'elk.layered.cycleBreaking.strategy': 'GREEDY_MODEL_ORDER',
         'elk.randomSeed': '1',
       },
     } : {
-      name: 'dagre', rankDir: 'LR', nodeSep: 88, rankSep: 76, fit: false, ranker: 'tight-tree',
+      name: 'dagre', rankDir: 'TB', nodeSep: 88, rankSep: 52, fit: false, ranker: 'tight-tree',
     };
     const layout = cy.layout(options);
     const stopped = layout.promiseOn('layoutstop');
@@ -69,11 +69,11 @@ async function cytoscapeLayout(graph: Graph, engine: 'elk' | 'dagre'): Promise<L
 async function arrange(graph: Graph, execution = false): Promise<Layout> {
   if (execution) {
     return { positions:executionPositions(graph,nodeSize),
-      name:'Execution', reason:'Source order → · category spacing, not concurrency' };
+      name:'Execution', reason:'Source order ↓ · side links show dependencies and retries' };
   }
   if (graph.nodes.some((node) => node.view)) return {
-    positions: new Map(graph.nodes.map((node, index) => [node.id, { x: index * 240, y: (node.view?.depth ?? node.depth ?? 0) * 125 }])),
-    name: 'Hierarchy', reason: 'Source order → · containment ↓',
+    positions: new Map(graph.nodes.map((node, index) => [node.id, { x: (node.view?.depth ?? node.depth ?? 0) * 80, y: index * 140 }])),
+    name: 'Hierarchy', reason: 'Source order ↓ · indentation shows containment',
   };
   if (graph.nodes.length <= 1) return preset(graph);
   if (graph.nodes.length > 180 || graph.edges.length > 700) {
@@ -85,7 +85,7 @@ async function arrange(graph: Graph, execution = false): Promise<Layout> {
     if (layout.positions.size !== graph.nodes.length ||
       [...layout.positions.values()].some(({ x, y }) => !Number.isFinite(x) || !Number.isFinite(y)) ||
       graph.nodes.some((node, index) => index > 0 &&
-        layout.positions.get(node.id)!.x <= layout.positions.get(graph.nodes[index - 1].id)!.x)) {
+        layout.positions.get(node.id)!.y <= layout.positions.get(graph.nodes[index - 1].id)!.y)) {
       throw new Error('Invalid layout positions');
     }
     return layout;

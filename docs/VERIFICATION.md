@@ -12,7 +12,19 @@ PYTHON="$(command -v python)" node scripts/smoke-e2e.mjs
 
 Set `CHROME_PATH` if Chrome is installed elsewhere. The smoke command runs pure graph-transform checks, builds the public fixtures plus generated performance traces, launches system Chrome, stops the server, then opens both a fresh single-file export and the delivered report in offline browser contexts. Screenshots, `scenarios.json` and `first-render.json` go to `test-results/e2e/`. See [browser QA](../tests/e2e/README.md) for details and report regeneration commands.
 
-## Inline execution Graph · 2026-11-14
+## Current neutral navigation / single-screen Graph and Timeline · 2026-11-14
+
+The latest user instruction restores Graph and Timeline to one desktop screen while Replay, Compare, Analytics and Datasets retain document scrolling. A 64px single-row icon-and-tabs navigation is in normal flow; it leaves the viewport on document pages when scrolling down. Graph/Timeline keep their canvas, linked Inspector and activity/Event Log within 1586×912 and 1280×800. Long source graphs pan locally; logs and evidence scroll inside their own panes. Fullscreen preserves details; manual Diff/Output/Context choices persist through playback, seek and viewport changes.
+
+Final checks: **81 Python tests (4.82s)**, TypeScript/build and **38 Chrome scenarios passed**. Data checks include **909 DAG sorts**, **1,908 execution scopes / 3,161 exact source paths / 5,189 routes**, **61 inline states / 1,735 routes** and **126 Timeline layouts**. The exact public root HTML and private HTML were opened offline with **0 HTTP requests / 0 page errors**. Node-category silhouettes and the white vertical Drawing are shared by screen/SVG/PNG; CSV, catalog filters and Sankey remain tested.
+
+First graph paint: **500 steps 96.8ms / 2,000 steps 147.6ms**, each initially displaying three overview nodes. This preserves click → visible SVG → next animation frame after app load, excluding initial bundle load; these are individual local samples, not all-node rendering timings. The 2,000-step scenario retains zoom, empty-filter recovery and final-source Inspector. The build retains the existing large-bundle warning (2,439.78kB JS / 756.77kB gzip).
+
+The existing authorized real NL2Repo set was reused, with no new model calls: the longest three traces have **324 / 172 / 87 source steps** and **379 / 193 / 188 edges**. Inline expansion/collapse, zoom/anchor/source/focus, repeated search, wheel, fullscreen details, current SVG, 1280px and offline passed, producing **17 private PNGs** under ignored `.workers/local/neutral-vertical-real-qa/`. None of those three runs records a patch; the missing-patch state is validated. Public fixtures and all 66 published screenshots are synthetic.
+
+See the [current report, commands, screenshot index and limitations](research/neutral-vertical-workspace.md), [77-item functional mapping](research/neutral-vertical-workspace/function-map.md), [55 primary PNGs and hashes](research/neutral-vertical-workspace/capture-manifest.json), [38 scenario results](research/neutral-vertical-workspace/verification.json) and [private aggregate assertions](research/neutral-vertical-workspace/real-verification.json). Eleven supplemental category/theme/fullscreen/playback captures are in [graph-appearance/](research/graph-appearance/). Final independent visual disposition is recorded in the [current review](research/neutral-vertical-workspace/review.md). The historical Taste marketing gate remains OPEN; it is not a current UI pass. The generated logo remains explicitly deferred.
+
+## Historical inline execution Graph · 2026-11-14
 
 Merged sections now expand **inside the same canvas**, retaining siblings and original rolled-up edges. Named containment boundaries support independent/nested expansion, header collapse, Collapse last / Alt+↑ and Collapse all. Toggling preserves zoom and screen position, including when the compact-width hint wraps. Exact source/Inspector/URL survive collapse; search adds only its required path. Enclosures are frontend metadata, not duplicate execution nodes. See [semantics, function mapping, reproduction and screenshots](research/inline-graph.md).
 
@@ -40,7 +52,7 @@ Final checks: **81 Python tests**, TypeScript/build, **855 existing DAG checks**
 
 First graph paint is **95.9ms for 500 source steps / 113.5ms for 2,000 source steps**, measured click → visible SVG → following frame after app load. These samples initially display **four overview nodes**, not all source nodes, and are not equivalent full-graph timings against historical revisions. The 2,000-step chain still verifies zoom, empty-filter recovery, final-source search and Inspector. The production bundle warning remains. The independent verdict pass scored all three listed fixes resolved; its scope and evidence are recorded in [review.md](research/long-graph/review.md).
 
-## Three-page desktop hierarchy · 2026-11-14
+## Historical three-page desktop hierarchy · 2026-11-14
 
 The current revision uses the user's pale Graph, Compare and Replay references. See the [77-item functional mapping, screenshots and reproduction report](research/three-page-hierarchy.md). Default Graph presents its canvas and an empty Inspector, Compare one shared A/B alignment and three flat metrics, and Replay central evidence with Step details closed. Secondary evidence opens through named tabs and disclosures.
 

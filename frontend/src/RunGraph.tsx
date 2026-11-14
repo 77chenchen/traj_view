@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useResource } from './data';
 import { filterGraph, foldGraph } from './graphData';
-import { type Theme } from './graphDrawing';
+import { NodeTypeLegend, type Theme } from './graphDrawing';
 import { EdgeControls, GraphView, useEdgeTypes } from './GraphView';
 import { hierarchyGraph } from './hierarchy';
 import { inlineExecutionGraph, executionPath, executionSection, executionThreshold } from './executionMap';
 import { Inspector } from './Inspector';
 import { TraceOverview } from './TraceOverview';
-import { RunMetadata, StageSnapshots } from './Evidence';
+import { fullScreen, RunMetadata, StageSnapshots } from './Evidence';
 import { AgentActivity, EventTimeline } from './Timeline';
 import { categories, capitalize, number, percent, phaseColor, sourceIndex, type GraphNode, type Phase, type Run, type RunGraphs, type Step, type StepIndex } from './model';
 import { Icon, LoadError, Loading } from './ui';
@@ -98,7 +98,6 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   const [category, setCategory] = useState('');
   const [errors, setErrors] = useState(false);
   const [index, setIndex] = useState<StepIndex | null>(initialIndex);
-  useEffect(() => { document.querySelector('.trace-sidebar')?.scrollTo({top:0}); }, [index]);
   const [position, setPosition] = useState(initialIndex == null ? graphs.expanded.nodes.length : graphs.expanded.nodes.findIndex((node) => node.first_idx === initialIndex) + 1);
   const { enabled, toggle } = useEdgeTypes();
   const allFolded = useMemo(() => foldGraph(graphs.expanded), [graphs]);
@@ -216,7 +215,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
           <label><input type="checkbox" checked={errors} onChange={(event) => setErrors(event.target.checked)} /> Errors only</label>
           <button className="button small quiet" onClick={() => { setPhase(''); setCategory(''); setErrors(false); }}>Reset step filters</button>
         </div>
-        {hierarchy && <div className="hierarchy-guide"><strong>Source order → · containment ↓</strong>
+        {hierarchy && <div className="hierarchy-guide"><strong>Source order ↓ · indentation shows containment</strong>
           <span>Select a phase or loop to expand it, then an iteration to reveal its calls.</span>
           <button className="button small quiet" onClick={() => { setOpenGroups(new Set()); setActiveId(null); }}>Collapse groups</button>
         </div>}
@@ -247,6 +246,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
     <RunMetadata run={run} date={steps.find(s => !!s.ts)?.ts}/>
     <div className="graph-stage-previews"><StageSnapshots steps={steps} nodes={graphs.expanded.nodes} selected={index} select={locate} kind="graph"/></div>
     <div className="graph-workspace">
+      <div className="graph-fullscreen-bar"><Icon name="graph" size={17}/><strong>{run.id}</strong><span>Select a node to inspect its recorded evidence</span><button className="button small" onClick={() => fullScreen(null)}><Icon name="close" size={14}/>Exit fullscreen</button></div>
       <section className="panel graph-panel" aria-label="Run process graph" onKeyDownCapture={event => {
         if (!overview || canvasMode !== 'graph' || !lastExpanded || !event.altKey || event.key !== 'ArrowUp') return;
         if (event.target instanceof Element && event.target.closest('input,textarea,select,[contenteditable="true"]')) return;
@@ -270,11 +270,14 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
           execution={overview} searchGraph={overview?graphs.expanded:undefined} onLocate={overview?node=>locate(node.first_idx):undefined} locateRequest={locateRequest}
           expansionRequest={overview?expansionRequest:undefined} framingKey={`${overview?'overview':hierarchy?'hierarchy':'steps'}-${resetVersion}`}
           positionsInTime={positionsInTime} reached={overview?undefined:position} legend={false} />}
-        {showLegend && <div className="execution-legend" aria-label="Execution graph semantics"><span><Icon name="spark" size={15}/>Reasoning / text</span><span><Icon name="user" size={15}/>Sub-Agent · unrecorded</span><span><Icon name="terminal" size={15}/>Tool Call</span><span className="error-text"><Icon name="info" size={15}/>Failure</span><span><Icon name="retry" size={15}/>Retry · forward dashed edge</span><span><Icon name="graph" size={15}/>Merge · dependency join</span><span className="success-text"><Icon name="check" size={15}/>Completion · final record</span></div>}
-        <details className="graph-activity-disclosure"><summary>Agent activity <span>Playback · {number.format(graphs.expanded.nodes.length)} source steps</span></summary>
-          <Timeline nodes={graphs.expanded.nodes} position={position} change={playback} phases={phases} inspect={locate} />
-          <AgentActivity run={run} steps={steps} nodes={graphs.expanded.nodes} select={locate}/>
-        </details>
+        {showLegend && <div className="execution-legend" aria-label="Execution graph semantics"><NodeTypeLegend/><span><Icon name="spark" size={15}/>Reasoning / text · recorded role unknown</span><span><Icon name="user" size={15}/>Sub-Agent · unrecorded</span><span className="error-text"><Icon name="info" size={15}/>Failure · red outline</span><span><Icon name="retry" size={15}/>Retry · forward dashed edge</span><span><Icon name="graph" size={15}/>Merge · dependency join</span><span className="success-text"><Icon name="check" size={15}/>Completion · final record</span></div>}
+
+        <section className="graph-secondary" aria-label="Execution activity">
+          <details className="graph-activity-disclosure"><summary>Agent activity <span>Playback · {number.format(graphs.expanded.nodes.length)} source steps</span></summary>
+            <Timeline nodes={graphs.expanded.nodes} position={position} change={playback} phases={phases} inspect={locate} />
+            <AgentActivity run={run} steps={steps} nodes={graphs.expanded.nodes} select={locate}/>
+          </details>
+        </section>
       </section>
       <div className="trace-sidebar" onKeyDown={e=>{if(e.key==='Escape'&&index!=null){e.preventDefault();clearSelection();}}}>
         <div className="focus-tabs sidebar-tabs" role="group" aria-label="Graph side panel">{['Details','Files & activity','Signatures'].map(name=><button key={name} aria-pressed={sidebarTab===name} onClick={()=>setSidebarTab(name)}>{name}</button>)}</div>

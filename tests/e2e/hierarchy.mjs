@@ -50,6 +50,8 @@ export async function checkHierarchy(page, url, artifacts) {
   if(await relations.getAttribute('open') === null) await relations.locator('summary').click();
   await inspector.getByRole('button',{name:/From #9007199254741007 · temporal/}).click();
   assert.equal(await page.getByLabel('Errors only',{exact:true}).isChecked(),false);
+  assert.equal(await inspector.getByRole('button',{name:'Context',exact:true}).getAttribute('aria-pressed'),'true','A relationship jump preserves the selected evidence tab');
+  await inspector.getByRole('button',{name:'Details',exact:true}).click();
   await inspector.locator('.step-content').getByText('Synthetic baseline step 3.',{exact:true}).waitFor();
   await page.setViewportSize({width:390,height:844});
   await page.getByRole('button',{name:'Hierarchy',exact:true}).click();

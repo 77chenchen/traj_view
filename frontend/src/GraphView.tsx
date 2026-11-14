@@ -74,6 +74,13 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   const [searchOpen, setSearchOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [exportError, setExportError] = useState('');
+  const [fullscreen, setFullscreen] = useState(false);
+  useEffect(() => {
+    const update = () => setFullscreen(Boolean(document.fullscreenElement?.contains(frame.current)));
+    document.addEventListener('fullscreenchange', update);
+    update();
+    return () => document.removeEventListener('fullscreenchange', update);
+  }, []);
   const previousSignature = useRef<string | null | undefined>(null);
   const previousSelection = useRef<string | null | undefined>(null);
   const previousLocateRequest = useRef(-1);
@@ -85,7 +92,9 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   const { bounds } = drawing;
   const fitScale = Math.min(size.width / bounds.width, size.height / bounds.height, 1.4);
   const fit = { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2, scale: fitScale };
-  const initialScale = layoutName === 'Execution' ? fitScale : Math.max(fitScale, compact ? 0.53 : 0.76);
+  // A tall trace opens at readable size at its beginning, rather than shrinking
+  // the complete source history into one screen. Fit remains an explicit action.
+  const initialScale = Math.min(1.15, Math.max(Math.min(size.width / bounds.width, 1), compact ? .65 : .9));
   const first = drawing.nodes[0]?.point ?? fit;
   const initial = {
     x: size.width / initialScale >= bounds.width ? fit.x :
@@ -110,8 +119,11 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   useEffect(() => { setCamera(null); previousSelection.current = undefined; }, [framingKey]);
 
   useLayoutEffect(() => {
-    const viewport = canvas.current?.getBoundingClientRect();
-    if (!viewport?.width || !viewport.height) return;
+    const rect = canvas.current?.getBoundingClientRect();
+    if (!rect?.width || !rect.height) return;
+    // Store document coordinates: scrolling the page between layouts must not
+    // make an in-place section jump by the document's scroll delta.
+    const viewport: Viewport = {left:rect.left+window.scrollX,top:rect.top+window.scrollY,width:rect.width,height:rect.height};
     if (expansionRequest && expansionRequest.sequence !== expansionSequence.current) {
       expansionSequence.current = expansionRequest.sequence;
       const before = snapshot.current ?? { drawing, camera: current, viewport };
@@ -192,21 +204,31 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    // Expanded hierarchy levels must be visible after a group changes.
-    // Source-step/live graphs retain their camera across data refreshes.
-    if (drawing.nodes.some(item => (item.node.view && item.node.view.kind !== 'section') || item.node.depth != null)) {
-      setCamera({ x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2,
-        scale: Math.min(size.width / bounds.width, size.height / bounds.height, 1.4) });
-    }
-  }, [drawing, bounds.x, bounds.y, bounds.width, bounds.height, size.width, size.height]);
-
+  const wheelCamera = useRef(current);
+  wheelCamera.current = current;
   const minZoom = Math.min(fitScale, .2);
   useEffect(() => {
     const target = canvas.current;
     if (!target) return;
     function wheel(event: WheelEvent) {
-      if (!event.ctrlKey && !event.metaKey) return;
+      if (!event.ctrlKey && !event.metaKey) {
+        const start = wheelCamera.current;
+        const unit = event.deltaMode === 1 ? 18 : event.deltaMode === 2 ? size.height : 1;
+        const horizontal = (event.deltaX + (event.shiftKey ? event.deltaY : 0)) * unit / start.scale;
+        const vertical = (event.shiftKey ? 0 : event.deltaY) * unit / start.scale;
+        const margin = size.height / start.scale * .24;
+        const half = size.height / start.scale / 2;
+        const low = bounds.y + half - margin, high = bounds.y + bounds.height - half + margin;
+        const y = bounds.height * start.scale <= size.height - 32 ? start.y : Math.max(low, Math.min(high, start.y + vertical));
+        // At the beginning/end (or when the whole trace fits), let the same wheel
+        // gesture continue down the document. No invisible canvas scroll trap.
+        if (Math.abs(y-start.y) < .1 && Math.abs(horizontal) < .1) return;
+        event.preventDefault();
+        const next = {...start, x:start.x+horizontal, y};
+        wheelCamera.current = next;
+        setCamera(next);
+        return;
+      }
       event.preventDefault();
       const rect = target!.getBoundingClientRect();
       const px = event.clientX - rect.left - size.width / 2;
@@ -219,7 +241,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
     }
     target.addEventListener('wheel', wheel, { passive: false });
     return () => target.removeEventListener('wheel', wheel);
-  }, [initial.x, initial.y, initial.scale, minZoom, size]);
+  }, [initial.x, initial.y, initial.scale, minZoom, size, bounds.x, bounds.y, bounds.width, bounds.height]);
 
   const searchIndex = useMemo(() => (searchGraph ? searchGraph.nodes.map(node => ({node,point:drawing.nodes.find(item=>item.node.id===node.id)?.point ?? {x:0,y:0},bounds:{x:0,y:0,width:0,height:0}})) : drawing.nodes).map((item) => ({
     item,
@@ -293,7 +315,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
           <Icon name="plus" size={16} /></button>
         <button className="button small icon-button" aria-label="Fit graph" title="Fit graph" onClick={() => setCamera(fit)}>
           <Icon name="fit" size={16} /></button>
-        <button className="button small icon-button" aria-label="Fullscreen graph" title="Fullscreen graph" onClick={() => fullScreen(frame.current?.parentElement ?? null)}><Icon name="fit" size={16}/></button>
+        <button className="button small icon-button" aria-label={fullscreen ? 'Exit fullscreen graph' : 'Fullscreen graph'} title={fullscreen ? 'Exit fullscreen · Esc' : 'Fullscreen graph with details'} onClick={() => fullScreen(frame.current?.closest<HTMLElement>('.graph-workspace,.compare-focus-workspace') ?? frame.current?.parentElement ?? null)}><Icon name={fullscreen ? 'close' : 'fit'} size={16}/></button>
 <button className="button small icon-button" aria-label="Locate selected graph node" title="Locate selected node" onClick={() => {const node=drawing.nodes.find(n=>n.node.id===selected) ?? drawing.nodes[0];if(node)setCamera({...node.point,scale:Math.max(current.scale,.9)});}}><Icon name="layers" size={16}/></button></div>
       <svg ref={canvas} viewBox={`${view.x} ${view.y} ${view.width} ${view.height}`} tabIndex={0}
         role="group" aria-label={`Process graph for ${name}`} aria-describedby={`${prefix}-help`}
@@ -329,7 +351,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
       </svg>
     </div>
     <div className="graph-caption">
-      <span id={`${prefix}-help`} className="sr-only">Drag the background or use arrow keys to pan. Use the zoom buttons to change scale.</span>
+      <span id={`${prefix}-help`} className="sr-only">Scroll to move through the graph from top to bottom; at its ends scrolling continues through the page. Drag the background or use arrow keys to pan. Hold Control or Command while scrolling to zoom.</span>
       <span className="graph-tip" title={tip || undefined}>{tip || `${number.format(drawing.nodes.length)} nodes · ${number.format(
         drawing.edges.filter(({ edge }) => enabled.has(edge.type)).length)} visible edges`}</span>
       <span title={layoutReason}>{layoutReason ?? `${layoutName} layout`}</span>

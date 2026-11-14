@@ -8,13 +8,15 @@ async function panesFit(page) {
       panes: ['.event-list', '.recorded-workspace', '.terminal-panel', '.replay-inspection', '.replay-transport'].map(box) };
   });
   assert.equal(geometry.scrollWidth, geometry.width, 'Document has no horizontal overflow');
-  assert.equal(geometry.scrollHeight, geometry.height, 'Replay fits one viewport');
+  assert.ok(geometry.scrollHeight > geometry.height, 'Replay is a scrollable document');
   for (const box of geometry.panes) {
-    assert.ok(box.width > 100 && box.height >= 38 && box.x >= 0 && box.y >= 52 && box.right <= geometry.width + 1 && box.bottom <= geometry.height + 1, 'Every working pane is visible in the first viewport');
+    assert.ok(box.width > 100 && box.height >= 38 && box.x >= 0 && box.right <= geometry.width + 1, 'Every evidence pane stays readable within the document width');
   }
   const [list, code, terminal, inspection, dock] = geometry.panes;
   assert.ok(code.x-list.right >= 0 && code.x-list.right <= 1 && inspection.x-code.right >= 0 && inspection.x-code.right <= 1, 'Three panes share aligned dividers');
-  assert.ok(terminal.y-code.bottom >= 0 && terminal.y-code.bottom <= 1 && dock.y-list.bottom >= 8 && dock.y-list.bottom <= 13 && Math.abs(terminal.bottom-list.bottom) < 1, 'Evidence split and full-width dock share the reference bottom alignment');
+  assert.ok(code.height>=700 && list.height>=700, 'Main evidence has its own generous reading height');
+  assert.ok(terminal.y-code.bottom >= 24 && terminal.width>code.width && Math.abs(terminal.x-list.x)<=1.1, 'Terminal output is a separate full-width module below the main evidence');
+  assert.ok(dock.y>=0&&dock.bottom<=geometry.height+1, 'The playback dock remains reachable while the document scrolls');
   return geometry;
 }
 
@@ -74,8 +76,10 @@ export async function checkWorkbench(page, url, artifacts, offline = false) {
   await panesFit(page);
   await page.getByRole('searchbox', { name: 'Search trajectory events' }).fill('');
   await page.setViewportSize({ width: 390, height: 844 });
+  assert.equal(await inspector.isVisible(), true, 'Resizing preserves the requested detail panel');
+  await page.getByRole('button', { name: 'Hide inspection', exact: true }).click();
   await page.getByRole('button', { name: 'Show inspection', exact: true }).waitFor();
-  assert.equal(await inspector.isVisible(), false, 'Narrow layout gives evidence priority');
+  assert.equal(await inspector.isVisible(), false, 'The narrow detail drawer can be closed to prioritize evidence');
   await page.getByRole('button', { name: 'Previous replay step', exact: true }).click();
   assert.equal(await slider.inputValue(), '8');
   await page.getByRole('button', { name: 'Show inspection', exact: true }).click();

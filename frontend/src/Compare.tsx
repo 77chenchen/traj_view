@@ -202,7 +202,7 @@ function GraphComparison({ runs, graphs, phases, theme, externalSignature, onSel
         <button className="button small" disabled={start + 30 >= longest} onClick={() => setAlignmentPage(alignmentPage + 1)}>Next actions</button></div>
     </section></details>
     <div className="section-head">
-      <div><h2 id="compared-graphs">Run DAGs · source order →</h2><p>Select a node to highlight its signature across runs.</p></div>
+      <div><h2 id="compared-graphs">Run DAGs · source order ↓</h2><p>Select a node to highlight its signature across runs.</p></div>
       <button className="button small" disabled={signature == null} onClick={() => {setSignature(null);setInspected(null);onClear?.();}}>Clear highlight</button>
     </div>
     <div className="panel comparison-legend">
@@ -323,7 +323,7 @@ function ReferenceComparison({runs,graphs,steps,available,changeRuns,onInspect,p
   },[selection]);
   const snapshot=(idx:StepIndex,i:number)=>{
     const node=graphs[i].expanded.nodes.find(n=>String(n.first_idx)===String(idx));if(!node)return;
-    choose(node,i);setMode('Alignment');document.querySelector('main')?.scrollTo({top:0});
+    choose(node,i);setMode('Alignment');document.querySelector('.compare-focus-workspace')?.scrollIntoView({block:'start'});
     requestAnimationFrame(()=>document.querySelector<HTMLElement>('.alignment-panel .panel-head h2')?.focus({preventScroll:true}));
   };
   const lastEdits=steps.map(list=>list.filter(s=>patchText(s)).at(-1));

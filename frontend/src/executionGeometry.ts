@@ -10,12 +10,12 @@ export function executionPositions(graph:Graph,size:Size){
     const first=group.members[0],last=group.members.at(-1)!;
     starts.set(first,(starts.get(first)??0)+1);ends.set(last,(ends.get(last)??0)+1);
   }
-  const lane={plan:0,message:0,read:1,shell:1,tool:1,edit:2,validate:3};
-  let x=0;
+  const lane={plan:-48,message:-48,read:0,shell:0,tool:0,edit:48,validate:0};
+  let y=0;
   return new Map(graph.nodes.map(node=>{
-    x+=(starts.get(node.id)??0)*padding;
-    const point={x:x+size(node).width/2,y:node.view?.kind==='section'?0:lane[node.category]*56};
-    x+=size(node).width+48+(ends.get(node.id)??0)*padding;
+    y+=(starts.get(node.id)??0)*(header+12);
+    const point={x:node.view?.kind==='section'?0:lane[node.category],y:y+size(node).height/2};
+    y+=size(node).height+52+(ends.get(node.id)??0)*padding;
     return [node.id,point];
   }));
 }
