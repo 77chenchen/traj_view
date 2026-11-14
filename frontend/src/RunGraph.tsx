@@ -4,7 +4,8 @@ import { filterGraph, foldGraph } from './graphData';
 import { type Theme } from './graphDrawing';
 import { EdgeControls, GraphView, useEdgeTypes } from './GraphView';
 import { hierarchyGraph } from './hierarchy';
-import { executionGraph, executionPath, executionThreshold, type ExecutionScope } from './executionMap';
+import { executionGraph, executionPath, executionSection, executionThreshold, type ExecutionScope } from './executionMap';
+import { ExecutionContents } from './ExecutionContents';
 import { Inspector } from './Inspector';
 import { TraceOverview } from './TraceOverview';
 import { RunMetadata, StageSnapshots } from './Evidence';
@@ -105,7 +106,13 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   const savings = graphs.expanded.nodes.length - allFolded.nodes.length;
   const hierarchyView = useMemo(() => hierarchyGraph(graphs.expanded, openGroups), [graphs, openGroups]);
   const scope = scopePath.at(-1);
-  const executionView = useMemo(()=>executionGraph(graphs.expanded,scope),[graphs,scope]);
+  const executionView = useMemo(()=>executionGraph(graphs.expanded,scope,steps),[graphs,scope,steps]);
+  const scopeSection = useMemo(()=>scope?executionSection(graphs.expanded,scope,steps):undefined,[graphs,scope,steps]);
+  const initialEvidence = useRef(false);
+  useEffect(()=>{
+    if(details.state.status!=='ready')return;
+    if(!initialEvidence.current||scope&&!scopeSection){setScopePath(index==null?[]:executionPath(graphs.expanded,index,steps));initialEvidence.current=true;}
+  },[details.state.status,graphs,index,scope,scopeSection,steps]);
   const intervals = overview ? executionView : hierarchy ? hierarchyView : unfolded ? graphs.expanded : folded;
   const matches = useMemo(() => new Set(graphs.expanded.nodes.filter((node) =>
     (!phase || node.phase === phase) && (!category || node.category === category) && (!errors || node.error) && layers.has(finalIndices.has(String(node.first_idx)) ? 'results' : node.category === 'plan' || node.category === 'message' ? 'reasoning' : 'tools'))
@@ -130,10 +137,10 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
     // Selecting a call already visible in this leaf must preserve the path the
     // reader drilled through. Search/context still open other source ranges.
     if (overview && !executionView.nodes.some(node => !node.view && node.first_idx === idx)) {
-      setScopePath(executionPath(graphs.expanded,idx));
+      setScopePath(executionPath(graphs.expanded,idx,steps));
     }
     chooseIndex(idx);
-  }, [overview,graphs,executionView,chooseIndex]);
+  }, [overview,graphs,executionView,chooseIndex,steps]);
   const locate = useCallback((idx: StepIndex) => {
     setPhase(''); setCategory(''); setErrors(false); setLayers(new Set(['reasoning','tools','results']));
     setSidebarTab('Details');
@@ -227,6 +234,8 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
       depth ? '.execution-back' : '.execution-root',
     )?.focus({preventScroll:true}));
   }
+  if(overview&&details.state.status==='loading')return <Loading>Loading execution evidence…</Loading>;
+  if(overview&&details.state.status==='error')return <LoadError message={details.state.message} retry={details.retry}/>;
   return <>
     <RunMetadata run={run} date={steps.find(s => !!s.ts)?.ts}/>
     <div className="graph-stage-previews"><StageSnapshots steps={steps} nodes={graphs.expanded.nodes} selected={index} select={locate} kind="graph"/></div>
@@ -241,7 +250,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
             <button className="button small execution-back" disabled={!scopePath.length} title={scope ? 'Back one level (Alt+↑)' : 'Already at run overview'} aria-keyshortcuts="Alt+ArrowUp" onClick={() => returnToLevel(scopePath.length-1)}><Icon name="left" size={14}/>Back one level</button>
             <nav className="execution-breadcrumbs" aria-label="Execution map path"><ol>
               <li><button className="button small quiet execution-root" aria-current={!scope?'location':undefined} onClick={()=>returnToLevel(0)}>Run overview</button></li>
-              {scopePath.map((range,i)=><li key={`${range.start}-${range.end}`}><Icon name="right" size={12}/><button className="button small quiet" aria-current={i===scopePath.length-1?'location':undefined} onClick={()=>returnToLevel(i+1)}>Steps {range.start+1}–{range.end}</button></li>)}
+              {scopePath.map((range,i)=><li key={`${range.start}-${range.end}`}><Icon name="right" size={12}/><button className="button small quiet" title={`Steps ${range.start+1}–${range.end}`} aria-current={i===scopePath.length-1?'location':undefined} onClick={()=>returnToLevel(i+1)}>{executionSection(graphs.expanded,range,steps)?.label??'Recorded section'}</button></li>)}
             </ol></nav>
             <button className="button small quiet" disabled={!nextFailure} onClick={()=>nextFailure&&locate(nextFailure.first_idx)}>Next failure</button><span>{scope ? scope.end-scope.start : graphs.expanded.nodes.length} / {graphs.expanded.nodes.length} source steps</span>
           </div>
@@ -249,7 +258,8 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
             const next=event.key==='Home'?0:event.key==='End'?navigatorRanges.length-1:event.key==='ArrowRight'?Math.min(i+1,navigatorRanges.length-1):event.key==='ArrowLeft'?Math.max(i-1,0):null;
             if(next==null)return;event.preventDefault();setNavigatorFocus(next);event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('button')[next]?.focus();
           }} onClick={()=>locate((range.failure??range.first).first_idx)} />)}</div>
-          <p>Continuous source ranges · click a section to drill down · search covers all steps.{hiddenConnections>0&&` ${hiddenConnections} dependency ${hiddenConnections===1?'link':'links'} hidden; select a node or enable all in Layers.`}{outsideConnections>0&&` ${outsideConnections} links cross this range; follow them in Inspector → Context.`}</p>
+          <p>Related recorded activity · click a section to open its calls · search covers all steps.{hiddenConnections>0&&` ${hiddenConnections} dependency ${hiddenConnections===1?'link':'links'} hidden; select a node or enable all in Layers.`}{outsideConnections>0&&` ${outsideConnections} links cross this range; follow them in Inspector → Context.`}</p>
+          {scopeSection&&<ExecutionContents key={scopeSection.id} node={scopeSection} locate={locate}/>}
         </div>}
         {canvasMode === 'timeline' ? <><div className="graph-toolbar">{commands}</div><EventTimeline runId={run.id} steps={steps} nodes={graphs.expanded.nodes} selected={index ?? steps[0]?.idx ?? 0} select={locate}/></> : <GraphView toolbar={commands} graph={connectionGraph} phases={phases} theme={theme} enabled={enabled}
           name={`${run.id}-expanded`} onNode={selectNode} selected={selected?.id}

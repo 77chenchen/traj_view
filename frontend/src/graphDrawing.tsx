@@ -1,5 +1,5 @@
 import { memo, type ReactNode } from 'react';
-import { nodeHeight, nodeWidth, type Box, type Point } from './layout';
+import { nodeHeight, nodeWidth, nodeSize, type Box, type Point } from './layout';
 import { executionRoutes } from './edgeRouting';
 import {
   categories, edgeTypes, capitalize, phaseColor, sourceIndex,
@@ -128,7 +128,7 @@ export function makeDrawing(graph: Graph, positions: Map<string, Point>, executi
     if (group) group.push(edge);
     else groups.set(key, [edge]);
   }
-  const edges: DrawnEdge[] = execution ? executionRoutes(graph,positions,nodeWidth,nodeHeight) : [];
+  const edges: DrawnEdge[] = execution ? executionRoutes(graph,positions,nodeWidth,nodeHeight,new Map(graph.nodes.map(node=>[node.id,nodeSize(node)]))) : [];
   for (const group of execution ? [] : groups.values()) {
     const { source, target } = group[0];
     const from = positions.get(source);
@@ -140,7 +140,8 @@ export function makeDrawing(graph: Graph, positions: Map<string, Point>, executi
   const nodes = graph.nodes.flatMap((node) => {
     const point = positions.get(node.id);
     if (!point) return [];
-    const bounds = { x: point.x - halfWidth - 6, y: point.y - halfHeight - 30, width: nodeWidth + 12, height: nodeHeight + 36 };
+    const size=nodeSize(node);
+    const bounds = { x: point.x - size.width/2 - 6, y: point.y - size.height/2 - 30, width: size.width + 12, height: size.height + 36 };
     return [{ node, point, bounds }];
   });
   const first = nodes[0]?.bounds ?? { x: 0, y: 0, width: 1, height: 1 };
@@ -156,6 +157,11 @@ function overlaps(a: Box, b: Box) {
 function shortened(text: string, limit: number) {
   const characters = Array.from(text.replace(/\s+/g, ' ').trim());
   return characters.length > limit ? characters.slice(0, limit - 1).join('') + '…' : characters.join('');
+}
+function sectionTitle(text:string){
+  if(text.length<=24)return [text];
+  const space=text.lastIndexOf(' ',24),split=space>12?space:24;
+  return [text.slice(0,split),shortened(text.slice(split).trim(),25)];
 }
 
 export interface DrawingOptions {
@@ -174,7 +180,7 @@ export interface DrawingOptions {
 export function nodeDescription(node: GraphNode, phases: Map<string, Phase>) {
   return [node.label || node.tool || 'Message', phases.get(node.phase)?.label ?? node.phase, capitalize(node.category),
     `${node.count} ${node.count === 1 ? 'step' : 'steps'}`, `first source step ${sourceIndex(node.first_idx)}`,
-    node.view && (node.view.kind === 'section' ? `source section · ${node.view.errors} errors · select to drill down` : `${node.view.kind} group · ${node.view.open ? 'expanded' : 'collapsed'} · select to toggle`), node.error && 'Contains error'].filter(Boolean).join(' · ');
+    node.view && (node.view.kind === 'section' ? `source section · ${node.view.errors} errors · ${node.view.summary?.description} · ${node.view.summary?.focus} · select to drill down` : `${node.view.kind} group · ${node.view.open ? 'expanded' : 'collapsed'} · select to toggle`), node.error && 'Contains error'].filter(Boolean).join(' · ');
 }
 
 export const GraphDrawing = memo(function GraphDrawing({
@@ -192,6 +198,8 @@ export const GraphDrawing = memo(function GraphDrawing({
     if (!inView(bounds)) return null;
     const phase = phases.get(node.phase);
     const phaseLabel = phase?.label ?? node.phase;
+    const size=nodeSize(node),halfWidth=size.width/2,halfHeight=size.height/2,summary=node.view?.summary;
+    const groupTitle=sectionTitle(node.label);
     const color = theme === 'dark' ? node.error ? palette.error : node.view || node.category === 'plan' || node.category === 'message' ? '#bd9bf2' : node.category === 'validate' ? '#6bd899' : '#e9c56a' : phaseColor(phase);
     const active = selected === node.id || (signature != null && signature === node.signature);
     const unique = membership?.get(node.signature) === 1;
@@ -218,19 +226,24 @@ export const GraphDrawing = memo(function GraphDrawing({
       } : undefined}
       onBlur={onTip ? () => onTip('') : undefined}>
       <title>{description}</title>
-      <rect x={-halfWidth - 4} y={-halfHeight - 4} width={nodeWidth + 8} height={nodeHeight + 8} rx={11}
+      <rect x={-halfWidth - 4} y={-halfHeight - 4} width={size.width + 8} height={size.height + 8} rx={11}
         fill="none" stroke={palette.selected} strokeWidth={2} opacity={active ? 1 : 0} className="node-focus" />
       {divergence?.has(node.id) && <g aria-hidden="true">
         <path d={`M${-halfWidth} ${-halfHeight - 10}H${halfWidth}`} stroke={palette.unique} strokeWidth={3} />
         <text x={-halfWidth} y={-halfHeight - 16} fill={palette.unique} fontSize={10}>First divergence</text>
       </g>}
       <g opacity={dimmed ? .22 : undefined}>
-        <rect x={-halfWidth} y={-halfHeight} width={nodeWidth} height={nodeHeight} rx={8} fill={palette.node}
+        <rect x={-halfWidth} y={-halfHeight} width={size.width} height={size.height} rx={8} fill={palette.node}
           stroke={node.error ? palette.error : color} strokeWidth={node.error ? 3 : 1.5} />
         <circle cx={halfWidth - 9} cy={halfHeight - 9} r={3} fill={phaseColor(phase)} />
-        <g transform="translate(-64 -5)"><Shape category={node.category} color={color} /></g>
+        <g transform={summary?`translate(${-halfWidth+17} -29)`:'translate(-64 -5)'}><Shape category={node.category} color={color} /></g>
         {unique && <circle cx={halfWidth - 5} cy={-halfHeight + 5} r={4} fill={palette.unique} />}
-        {labels && <>
+        {labels && summary ? <g data-section-summary="">
+          {groupTitle.map((line,i)=><text key={i} x={-halfWidth+33} y={-28+i*15} fill={palette.text} fontWeight={650} fontSize={12.5}>{line}</text>)}
+          <text x={-halfWidth+14} y={7} fill={palette.muted} fontSize={11}>{shortened(summary.description,34)}</text>
+          <text x={-halfWidth+14} y={25} fill={palette.muted} fontSize={11}>{shortened(summary.focus,34)}</text>
+          <text x={-halfWidth+14} y={43} fill={summary.failures?palette.error:palette.muted} fontSize={10.5}>{node.count} steps · {summary.failures} errors{summary.retries>0?` · ${summary.retries} retries`:''}</text>
+        </g> : labels && <>
           <text x={-50} y={-1} fill={palette.text} fontWeight={650} fontSize={12}
             textLength={title.length > 12 ? titleWidth : undefined} lengthAdjust="spacingAndGlyphs">{title}</text>
           <text x={-50} y={15} fill={palette.muted} fontSize={10}>{shortened(node.view?.kind === 'section' ? `${node.view.errors} ${node.view.errors===1?'error':'errors'} · ${phaseLabel}` : `${phaseLabel} · ${sourceIndex(node.first_idx)}`, 25)}</text>

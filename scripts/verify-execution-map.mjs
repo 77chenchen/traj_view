@@ -25,7 +25,7 @@ async function capture(page,name,preserveFocus=false){await page.mouse.move(0,0)
 try{
   const context=await browser.newContext({viewport:{width:1586,height:912}});const page=await context.newPage();page.setDefaultTimeout(20000);
   for(let i=0;i<runs.length;i++){
-    const run=runs[i],data=JSON.parse(readFileSync(join(dataset,run.file),'utf8')).expanded;
+    const run=runs[i],data=JSON.parse(readFileSync(join(dataset,run.file),'utf8')).expanded,steps=JSON.parse(readFileSync(join(dataset,run.steps_file),'utf8')).steps;
     const errors=[];page.on('pageerror',e=>errors.push(e.message));
     await page.goto(url+'/#view=graph&run='+encodeURIComponent(run.id));
     const graph=page.getByRole('group',{name:`Process graph for ${run.id}-expanded`,exact:true});
@@ -37,10 +37,20 @@ try{
       if(i===0){await page.setViewportSize({width:1280,height:800});narrow=await checkExecutionReturn(page,graph,state=>capture(page,`run-${i}-${state}-1280`));await page.setViewportSize({width:1586,height:912});}
       assert.deepEqual(errors,[]);report.runs.push({run:run.id,sourceSteps:data.nodes.length,navigation,narrow,pageErrors:errors.length});continue;
     }
-    assert.ok(await graph.locator('[data-node]').count()<=4);await capture(page,`after-${i}-overview`);
+    const projection=executionGraph(data,undefined,steps),rootNodes=await graph.locator('[data-node]').count();
+    assert.equal(rootNodes,projection.nodes.length);assert.ok(rootNodes<=3);
+    assert.equal(await graph.locator('[data-section-summary]').count(),projection.nodes.filter(n=>n.view).length);
+    for(const n of projection.nodes.filter(n=>n.view))assert.ok((await graph.locator(`[data-node-id="${n.id}"]`).textContent()).includes(n.label.slice(0,16)));
+    await capture(page,`after-${i}-overview`);
+    const largest=[...projection.nodes].filter(n=>n.view).sort((a,b)=>b.count-a.count)[0];
+    if(largest){await graph.locator(`[data-node-id="${largest.id}"]`).click();await settle(page);await capture(page,`after-${i}-execution-section`);await page.getByRole('button',{name:'Run overview',exact:true}).click();}
     if(i===0){await page.setViewportSize({width:1280,height:800});await capture(page,'after-0-overview-1280');await page.setViewportSize({width:1586,height:912});}
     await graph.getByRole('button',{name:/source section/}).first().click();await settle(page);await capture(page,`after-${i}-section`);
     if(i===0){await page.setViewportSize({width:1280,height:800});await capture(page,'after-0-section-1280');await page.setViewportSize({width:1586,height:912});}
+    const contents=page.locator('.execution-navigation .execution-contents');await contents.locator('summary').click();await capture(page,`after-${i}-contents`);
+    const example=contents.locator('.node-result').first(),exampleIndex=(await example.locator('b').innerText()).slice(1);await example.click();
+    await page.getByRole('complementary',{name:'Step inspector',exact:true}).locator('.step-meta').getByText('#'+exampleIndex,{exact:true}).waitFor();
+    await page.getByRole('button',{name:'Clear inspected step',exact:true}).click();
     await page.getByRole('button',{name:'Next failure',exact:true}).click();
     const failure=data.nodes.find(n=>n.error);assert.ok(failure);
     const inspector=page.getByRole('complementary',{name:'Step inspector',exact:true});
@@ -70,7 +80,7 @@ try{
     await inspector.locator('.step-meta').getByText('#'+upstream.first_idx,{exact:true}).waitFor();
     await capture(page,`after-${i}-dependency-jump`);
     if(i===0){
-      const lastMember=data.nodes.find((node,j)=>{const range=executionPath(data,node.first_idx).at(-1);return range&&range.end-range.start===4&&range.end-1===j;});assert.ok(lastMember);
+      const lastMember=data.nodes.find((node,j)=>{const range=executionPath(data,node.first_idx,steps).at(-1);return range&&range.end-1===j;});assert.ok(lastMember);
       await page.setViewportSize({width:1280,height:800});await search.fill('#'+lastMember.first_idx);await search.press('Enter');
       await inspector.locator('.step-meta').getByText('#'+lastMember.first_idx,{exact:true}).waitFor();await capture(page,'after-0-last-leaf-member-1280');
       async function fullyVisible(){const box=await graph.locator('[aria-pressed="true"][data-node]').boundingBox(),canvas=await page.locator('.graph-frame').boundingBox();return box.x>=canvas.x&&box.x+box.width<=canvas.x+canvas.width&&box.y>=canvas.y&&box.y+box.height<=canvas.y+canvas.height;}
@@ -87,7 +97,7 @@ try{
     await inspector.getByRole('button',{name:'Clear inspected step',exact:true}).click();
     await page.getByRole('button',{name:'Run overview',exact:true}).click();
     await graph.getByRole('button',{name:/source section/}).first().waitFor();
-    function connectionPath(scope,path=[]){const projected=executionGraph(data,scope);if(projected.edges.some(edge=>edge.type==='dependency'))return path;for(const node of projected.nodes){if(node.view?.kind==='section'){const found=connectionPath({start:node.view.start,end:node.view.end},[...path,node.id]);if(found)return found;}}return null;}
+    function connectionPath(scope,path=[]){const projected=executionGraph(data,scope,steps);if(projected.edges.some(edge=>edge.type==='dependency'))return path;for(const node of projected.nodes){if(node.view?.kind==='section'){const found=connectionPath({start:node.view.start,end:node.view.end},[...path,node.id]);if(found)return found;}}return null;}
     const connectionScope=connectionPath();assert.ok(connectionScope);
     for(const id of connectionScope){const section=graph.locator(`[data-node-id="${id}"]`);await section.click();await section.waitFor({state:'detached'});}
     await page.locator('.graph-options > summary').click();await page.getByLabel('All dependency connections',{exact:false}).check();await page.locator('.graph-options > summary').click();
@@ -95,7 +105,8 @@ try{
     await graph.locator('[data-edge-type="dependency"]').first().waitFor({state:'attached'});assert.ok(await graph.locator('[data-edge-type="dependency"]').count()>0);
     await capture(page,`after-${i}-all-connections`);
     assert.deepEqual(errors,[]);
-    report.runs.push({run:run.id,sourceSteps:data.nodes.length,sourceEdges:data.edges.length,rootNodes:4,maximumLevelNodes:4,firstFailure:failure.first_idx,lastSource:data.nodes.at(-1).first_idx,globalSearch:true,context:true,crossRangeDependencyJump:true,visibleDependencyLinks:await graph.locator('[data-edge-type="dependency"]').count(),visibleRetryLinks:await graph.locator('[data-edge-type="retry"]').count(),exportSvg:true,fullLeafAndRepeatedSearch:i===0?true:undefined,rovingKeyboard:i===0?true:undefined,pageErrors:errors.length});
+    const navigation=await checkExecutionReturn(page,graph);
+    report.runs.push({run:run.id,sourceSteps:data.nodes.length,sourceEdges:data.edges.length,rootNodes,sections:projection.nodes.map(n=>({label:n.label,summary:n.view?.summary,range:n.view?[n.view.start,n.view.end]:null})),maximumLevelNodes:4,navigation,firstFailure:failure.first_idx,lastSource:data.nodes.at(-1).first_idx,globalSearch:true,context:true,crossRangeDependencyJump:true,visibleDependencyLinks:await graph.locator('[data-edge-type="dependency"]').count(),visibleRetryLinks:await graph.locator('[data-edge-type="retry"]').count(),exportSvg:true,fullLeafAndRepeatedSearch:i===0?true:undefined,rovingKeyboard:i===0?true:undefined,pageErrors:errors.length});
   }
   await context.close();
   const offline=await browser.newContext({viewport:{width:1586,height:912},offline:true,serviceWorkers:'block'});await offline.route(/^https?:\/\//,r=>r.abort());const page2=await offline.newPage();let requests=0;const errors=[];page2.on('request',r=>{if(/^https?:/.test(r.url()))requests++;});page2.on('pageerror',e=>errors.push(e.message));

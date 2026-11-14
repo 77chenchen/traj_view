@@ -203,8 +203,8 @@ async function main() {
       for (const size of renderSizes) {
         const sample = await scenario(browser, `first-render-${size}`,
           (page) => timeFirstGraph(page, url, size, artifacts, renderTimeout));
-        report.runs.push({ sourceSteps: size, displayedNodes:4, status: sample.status, ms: sample.value ?? null, error: sample.error });
-        if (sample.value !== undefined) console.log(`${size} source steps / Overview: ${sample.value.toFixed(1)} ms to first graph paint`);
+        report.runs.push({ sourceSteps: size, displayedNodes:sample.value?.displayedNodes, status: sample.status, ms: sample.value?.ms ?? null, error: sample.error });
+        if (sample.value !== undefined) console.log(`${size} source steps / Overview: ${sample.value.ms.toFixed(1)} ms to first graph paint`);
         writeFileSync(join(artifacts, 'first-render.json'), JSON.stringify(report, null, 2) + '\n');
       }
     }

@@ -372,6 +372,7 @@ export async function timeFirstGraph(page, url, size, artifacts, timeout) {
   assert.ok(Number.isFinite(ms) && ms > 0, 'Missing graph paint timestamp');
   const graph = role(page, 'group', exact(`Process graph for qa-render-${size}-expanded`));
   await visible(graph);
+  const displayedNodes=await graph.locator('[data-node]').count();
   await page.mouse.move(1, 1);
   if (size === 500) assert.ok(ms < 3000, '500-node first graph paint exceeded 3 s');
   await visible(page.getByText(`${size} / ${size} source steps`,{exact:true}));
@@ -393,7 +394,7 @@ export async function timeFirstGraph(page, url, size, artifacts, timeout) {
     assert.equal(await role(page, 'slider', /timeline position/i).inputValue(), '2000');
     await page.screenshot({ path: join(artifacts, 'dag-2000-detail.png') });
   }
-  return ms;
+  return {ms,displayedNodes};
 }
 
 async function findSource(page, name, idx) {

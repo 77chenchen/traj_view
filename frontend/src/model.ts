@@ -63,6 +63,17 @@ export type EdgeType = typeof edgeTypes[number];
 export const categories = ['shell', 'read', 'edit', 'validate', 'plan', 'tool', 'message'] as const;
 export type Category = typeof categories[number];
 
+export interface ExecutionSummary {
+  description: string;
+  focus: string;
+  basis: string;
+  repeated: boolean;
+  activities: { label: string; count: number; indices: StepIndex[] }[];
+  examples: { index: StepIndex; label: string }[];
+  failures: number;
+  retries: number;
+}
+
 export interface GraphNode {
   id: string;
   label: string;
@@ -77,7 +88,7 @@ export interface GraphNode {
   phase_counts: Record<string, number>;
   // Ephemeral display metadata. Never written into the frozen v1 payload.
   depth?: number;
-  view?: { kind: 'phase' | 'loop' | 'iteration' | 'section'; depth: number; open: boolean; repetitions?: number; period?: number; start?: number; end?: number; errors?: number };
+  view?: { kind: 'phase' | 'loop' | 'iteration' | 'section'; depth: number; open: boolean; repetitions?: number; period?: number; start?: number; end?: number; errors?: number; summary?: ExecutionSummary };
 }
 
 export interface GraphEdge {

@@ -1,5 +1,7 @@
 # Long execution graphs · 2026-11-14
 
+This report records the earlier numeric-range design and its parent-navigation follow-up. The current content-based grouping, node summaries and fresh verification are documented in [semantic-graph.md](semantic-graph.md). Historical measurements below belong to their original revisions.
+
 The long-run Graph now uses a bounded execution map: **source-range overview → smaller ranges → original calls**. The view preserves the current pale/purple workbench and the frozen v1 dataset. It changes the amount of source evidence drawn at once rather than trying to make hundreds of nodes fit into one readable screen.
 
 ## Direction contract

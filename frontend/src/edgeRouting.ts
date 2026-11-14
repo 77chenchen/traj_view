@@ -5,17 +5,17 @@ export interface RoutedEdge { edge: GraphEdge; path: string; bounds: Box; label:
 
 // Forward ports + interval-colored outer channels keep long relationships out
 // of node interiors. Routes are shared by the browser and image exports.
-export function executionRoutes(graph: Graph, positions: Map<string, Point>, width: number, height: number): RoutedEdge[] {
+export function executionRoutes(graph: Graph, positions: Map<string, Point>, width: number, height: number,
+  sizes?:ReadonlyMap<string,{width:number;height:number}>): RoutedEdge[] {
   const ordinals = new Map(graph.nodes.map((node,i) => [node.id,i]));
-  const ys = [...positions.values()].map(p => p.y);
-  const top = Math.min(0,...ys) - height / 2 - 46;
-  const bottom = Math.max(0,...ys) + height / 2 + 46;
+  const top = Math.min(0,...[...positions].map(([id,p])=>p.y-(sizes?.get(id)?.height??height)/2)) - 46;
+  const bottom = Math.max(0,...[...positions].map(([id,p])=>p.y+(sizes?.get(id)?.height??height)/2)) + 46;
   const tracks: Record<string, number[]> = { upper: [], lower: [] };
   return [...graph.edges].sort((a,b) => (ordinals.get(a.source) ?? 0)-(ordinals.get(b.source) ?? 0) || (ordinals.get(a.target) ?? 0)-(ordinals.get(b.target) ?? 0)).flatMap(edge => {
     const from = positions.get(edge.source), to = positions.get(edge.target);
     if (!from || !to || to.x <= from.x) return [];
-    const a = { x: from.x + width / 2 + 1, y: from.y };
-    const b = { x: to.x - width / 2 - 7, y: to.y };
+    const a = { x: from.x + (sizes?.get(edge.source)?.width??width) / 2 + 1, y: from.y };
+    const b = { x: to.x - (sizes?.get(edge.target)?.width??width) / 2 - 7, y: to.y };
     const start = ordinals.get(edge.source)!, end = ordinals.get(edge.target)!;
     let points: Point[];
     if (edge.type === 'temporal' && end === start + 1) {

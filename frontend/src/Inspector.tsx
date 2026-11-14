@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useResource } from './data';
 import { phaseColor, sourceIndex, type Graph, type GraphEdge, type GraphNode, type Phase, type Run, type Step, type StepIndex } from './model';
 import { CopyButton, Icon, LoadError, Loading } from './ui';
+import { ExecutionContents } from './ExecutionContents';
 import { categoryName, eventStatus, eventTime, failed, label, patchStats, patchText, RecordedCode, fullScreen } from './Evidence';
 
 const previewLength = 1000;
@@ -100,6 +101,7 @@ export function Inspector({ run, node, index, select, clear, clearLabel = 'Clear
     </div>
     {!node ? <div className="inspector-empty"><Icon name="search" size={23} />
       <p>Select a node or inspect the current timeline step.</p></div> : <>
+      {node.view?.summary&&<ExecutionContents node={node} locate={locate??select}/>}
       {members.length > 1 && <div className="member-control">
         <p className="muted">Continuous source interval {sourceIndex(members[0])} → {sourceIndex(members.at(-1))} · {members.length} source steps</p>
         {expand && <button className="button small" onClick={expand}>Expand this block</button>}

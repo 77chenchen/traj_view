@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import type { Graph } from './model';
+import type { Graph, GraphNode } from './model';
 
 export const nodeWidth = 164;
 export const nodeHeight = 48;
+export const nodeSize = (node:GraphNode) => node.view?.kind==='section'
+  ? {width:220,height:104} : {width:nodeWidth,height:nodeHeight};
 export interface Point { x: number; y: number }
 export interface Box extends Point { width: number; height: number }
 export interface Layout {
@@ -66,7 +68,11 @@ async function cytoscapeLayout(graph: Graph, engine: 'elk' | 'dagre'): Promise<L
 async function arrange(graph: Graph, execution = false): Promise<Layout> {
   if (execution) {
     const lane = { plan:0, message:0, read:1, shell:1, tool:1, edit:2, validate:3 };
-    return { positions:new Map(graph.nodes.map((node,i)=>[node.id,{x:i*200,y:node.view?.kind==='section'?0:lane[node.category]*56}])),
+    let x=0;
+    return { positions:new Map(graph.nodes.map((node,i)=>{
+      if(i)x+=(nodeSize(graph.nodes[i-1]).width+nodeSize(node).width)/2+48;
+      return [node.id,{x,y:node.view?.kind==='section'?0:lane[node.category]*56}];
+    })),
       name:'Execution', reason:'Source order → · category spacing, not concurrency' };
   }
   if (graph.nodes.some((node) => node.view)) return {

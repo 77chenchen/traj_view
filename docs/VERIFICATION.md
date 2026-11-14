@@ -12,7 +12,15 @@ PYTHON="$(command -v python)" node scripts/smoke-e2e.mjs
 
 Set `CHROME_PATH` if Chrome is installed elsewhere. The smoke command runs pure graph-transform checks, builds the public fixtures plus generated performance traces, launches system Chrome, stops the server, then opens both a fresh single-file export and the delivered report in offline browser contexts. Screenshots, `scenarios.json` and `first-render.json` go to `test-results/e2e/`. See [browser QA](../tests/e2e/README.md) for details and report regeneration commands.
 
-## Long execution Graph · 2026-11-14
+## Content-based execution Graph · 2026-11-14
+
+Overview now groups contiguous recorded operations using activity, command families, literal script imports and qualified file subjects. It displays up to three content sections per level, with original calls at a maximum of four. Each merged node shows an operation summary, counts, subject and errors. Section contents exposes the basis and exact source examples. No strong content change produces an explicitly qualified continuation batch, rather than an inferred task. Parent return, exact source selection, filtering and old graph modes remain available. See [rules, entry mapping and current screenshots](research/semantic-graph.md).
+
+Final automated checks: **81 Python tests**, TypeScript/build, **855 existing DAG checks**, **1,908 execution scopes / 3,161 exact paths / 5,189 mixed-size forward routes**, content/subject regressions and **28 Chrome scenarios** passed. The real verifier checked **324 / 172 / 87-step** records from the existing local NL2Repo dataset, writing **38 private PNGs** under ignored `.workers/local/semantic-graph-qa/`. It verifies summary/example linkage, actual dependencies, failed/final sources, search/pan recovery, parent navigation and a 1280×800 chain. The exact private HTML made **0 HTTP requests / 0 page errors**. Public captures and sanitized assertions are in [semantic-graph/](research/semantic-graph/).
+
+Current first graph paint is **128.3 / 197.9 ms** for **500 / 2,000 source steps**, respectively. Each initial view draws **three merged nodes**, measured click → visible SVG → next frame after app load. These individual samples exclude bundle loading and are not full-node rendering timings. The 2,000-source-step chain also zooms, filters and opens its last call. Existing large-bundle warning remains. Reproduce using the standard commands above and `node scripts/verify-execution-map.mjs --output .workers/local/semantic-graph-qa` against the authorized local real dataset.
+
+## Historical numeric-range Graph · 2026-11-14
 
 The parent-navigation follow-up adds a persistent **Back one level** button, **Alt+↑**, explicit ancestor breadcrumbs and visited-path preservation when selecting a leaf. The online/offline execution-map scenarios assert exact prior node sets, source/Inspector/URL retention, focus and disabled-root state. `node scripts/verify-execution-map.mjs --navigation-only` verifies the three longest real records plus 1280px and offline chains, producing 15 private captures. All **81 Python tests**, TypeScript/build and **28 Chrome scenarios** pass after this correction. See [navigation evidence and reproduction](research/long-graph.md#parent-navigation-follow-up--2026-11-14).
 

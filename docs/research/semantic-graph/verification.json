@@ -1,0 +1,81 @@
+{
+  "chrome": "157.0.8103.52",
+  "datasetRecords": 50,
+  "privateCaptures": 38,
+  "runs": [
+    {
+      "sourceSteps": 324,
+      "sourceEdges": 379,
+      "rootNodes": 3,
+      "sectionSizes": [
+        35,
+        24,
+        265
+      ],
+      "navigation": {
+        "levels": 3,
+        "leafPathPreserved": true,
+        "exactParentRestored": true,
+        "sourcePreserved": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "ancestorJump": true
+      },
+      "pageErrors": 0,
+      "globalSearch": true,
+      "crossRangeDependencyJump": true,
+      "exportSvg": true
+    },
+    {
+      "sourceSteps": 172,
+      "sourceEdges": 193,
+      "rootNodes": 3,
+      "sectionSizes": [
+        33,
+        3,
+        136
+      ],
+      "navigation": {
+        "levels": 4,
+        "leafPathPreserved": true,
+        "exactParentRestored": true,
+        "sourcePreserved": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "ancestorJump": true
+      },
+      "pageErrors": 0,
+      "globalSearch": true,
+      "crossRangeDependencyJump": true,
+      "exportSvg": true
+    },
+    {
+      "sourceSteps": 87,
+      "sourceEdges": 188,
+      "rootNodes": 3,
+      "sectionSizes": [
+        14,
+        23,
+        50
+      ],
+      "navigation": {
+        "levels": 2,
+        "leafPathPreserved": true,
+        "exactParentRestored": true,
+        "sourcePreserved": true,
+        "keyboard": true,
+        "focusRestored": true,
+        "ancestorJump": true
+      },
+      "pageErrors": 0,
+      "globalSearch": true,
+      "crossRangeDependencyJump": true,
+      "exportSvg": true
+    }
+  ],
+  "offline": {
+    "httpRequests": 0,
+    "pageErrors": 0
+  },
+  "note": "Sanitized assertions only. Private IDs, evidence, source indices, summaries and screenshots are excluded."
+}

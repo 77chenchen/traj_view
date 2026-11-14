@@ -11,7 +11,7 @@ export async function checkExecutionReturn(page,graph,capture=async()=>{}){
   assert.ok(await back.isDisabled());
   const levels=[];
   while(await graph.getByRole('button',{name:/source section/}).count()){
-    assert.ok(levels.length<8,'Drill-down must terminate');
+    assert.ok(levels.length<12,'Drill-down must terminate');
     levels.push({nodes:await graph.locator('[data-node]').evaluateAll(ns=>ns.map(n=>n.getAttribute('data-node-id'))),path:await path.locator('button').allTextContents()});
     const section=graph.getByRole('button',{name:/source section/}).first(),id=await section.getAttribute('data-node-id');
     await section.click();await graph.locator(`[data-node-id="${id}"]`).waitFor({state:'detached'});
@@ -25,7 +25,7 @@ export async function checkExecutionReturn(page,graph,capture=async()=>{}){
   await capture('return-leaf');
   let keyboard=false;
   for(let i=levels.length-1;i>=0;i--){
-    if(i===levels.length-2){await graph.focus();await page.keyboard.press('Alt+ArrowUp');keyboard=true;}
+    if(i===Math.max(0,levels.length-2)){await graph.focus();await page.keyboard.press('Alt+ArrowUp');keyboard=true;}
     else await back.click();
     await page.waitForFunction(expected=>JSON.stringify(Array.from(document.querySelectorAll('.graph-frame [data-node-id]'),n=>n.getAttribute('data-node-id')))===JSON.stringify(expected),levels[i].nodes);
     assert.deepEqual(await path.locator('button').allTextContents(),levels[i].path,'Return restores exactly the previous level');
@@ -37,7 +37,7 @@ export async function checkExecutionReturn(page,graph,capture=async()=>{}){
   assert.ok(await back.isDisabled());
   await capture('return-overview');
   // The named ancestor remains an independent route out of a deep range.
-  for(let i=0;i<2;i++){const section=graph.getByRole('button',{name:/source section/}).first(),id=await section.getAttribute('data-node-id');await section.click();await graph.locator(`[data-node-id="${id}"]`).waitFor({state:'detached'});}
+  for(let i=0;i<2&&await graph.getByRole('button',{name:/source section/}).count();i++){const section=graph.getByRole('button',{name:/source section/}).first(),id=await section.getAttribute('data-node-id');await section.click();await graph.locator(`[data-node-id="${id}"]`).waitFor({state:'detached'});}
   await path.getByRole('button',{name:'Run overview',exact:true}).click();
   await page.waitForFunction(expected=>JSON.stringify(Array.from(document.querySelectorAll('.graph-frame [data-node-id]'),n=>n.getAttribute('data-node-id')))===JSON.stringify(expected),levels[0].nodes);
   assert.ok(await back.isDisabled());
@@ -50,7 +50,9 @@ export async function checkExecutionMap(page,url,artifacts,offline=false){
   await page.goto(url+'#view=graph&run=qa-render-500');
   const graph=page.getByRole('group',{name:'Process graph for qa-render-500-expanded',exact:true});
   await graph.locator('[data-node]').first().waitFor();
-  assert.equal(await graph.locator('[data-node]').count(),4);
+  const rootNodes=await graph.locator('[data-node]').count();assert.ok(rootNodes<=3);
+  assert.equal(await graph.locator('[data-section-summary]').count(),rootNodes);
+  for(const text of await graph.locator('[data-section-summary]').allTextContents())assert.match(text,/inspect|edit|check|execute/i);
   await page.getByText('500 / 500 source steps',{exact:true}).waitFor();
   const strip=page.locator('.execution-overview-strip');
   assert.equal(await strip.locator('button[tabindex="0"]').count(),1);
@@ -63,7 +65,7 @@ export async function checkExecutionMap(page,url,artifacts,offline=false){
   const prefix=offline?'offline-':'';
   await page.screenshot({path:join(artifacts,prefix+'execution-map-overview.png'),fullPage:true});
   await checkExecutionReturn(page,graph);
-  for(let i=0;i<4&&await graph.getByRole('button',{name:/source section/}).count();i++){
+  for(let i=0;i<12&&await graph.getByRole('button',{name:/source section/}).count();i++){
     const before=await page.locator('.execution-breadcrumbs button').count();
     const section=graph.getByRole('button',{name:/source section/}).first(),id=await section.getAttribute('data-node-id');
     await section.click();
@@ -99,9 +101,24 @@ export async function checkExecutionMap(page,url,artifacts,offline=false){
   await page.goto(url+'#view=graph&run=execution-long-synthetic');
   const synthetic=page.getByRole('group',{name:'Process graph for execution-long-synthetic-expanded',exact:true});
   await synthetic.locator('[data-node]').first().waitFor();
-  assert.equal(await synthetic.locator('[data-node]').count(),4);
+  assert.ok(await synthetic.locator('[data-node]').count()<=3);
   await page.mouse.move(0,0);await page.evaluate(()=>document.activeElement?.blur());
   await page.screenshot({path:join(artifacts,prefix+'execution-synthetic-overview.png'),fullPage:true,animations:'disabled'});
+  // Merged nodes describe their actual contents, and their source examples
+  // locate the exact original call in both the online and offline viewer.
+  const semanticSection=synthetic.getByRole('button',{name:/source section/}).first();
+  const semanticId=await semanticSection.getAttribute('data-node-id');
+  await semanticSection.click();await synthetic.locator(`[data-node-id="${semanticId}"]`).waitFor({state:'detached'});
+  const contents=page.locator('.execution-navigation .execution-contents');
+  await contents.locator('summary').click();
+  await contents.getByRole('heading',{name:'Recorded examples',exact:true}).waitFor();
+  await page.screenshot({path:join(artifacts,prefix+'execution-synthetic-contents.png'),fullPage:true,animations:'disabled'});
+  const example=contents.locator('.node-result').first(),exampleIndex=(await example.locator('b').innerText()).slice(1);
+  await example.click();
+  await inspector.locator('.step-meta').getByText('#'+exampleIndex,{exact:true}).waitFor();
+  assert.equal(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('step'),exampleIndex);
+  await page.getByRole('button',{name:'Clear inspected step',exact:true}).click();
+  await page.getByRole('button',{name:'Run overview',exact:true}).click();
   await page.getByRole('button',{name:'Next failure',exact:true}).click();
   await inspector.locator('.step-meta').getByText('#10000000000000040',{exact:true}).waitFor();
   await inspector.getByRole('button',{name:'Error Output',exact:true}).click();
@@ -120,5 +137,5 @@ export async function checkExecutionMap(page,url,artifacts,offline=false){
   });
   if(offline)assert.equal(requests.length,0);
   page.off('request',request);
-  return {sourceSteps:500,rootNodes:4,maximumLevelNodes:4,globalSearch:true,exactSource:true,keyboardNavigator:true,returnNavigation,legacySteps:true,offline,offlineHttp:offline?requests.length:undefined};
+  return {sourceSteps:500,rootNodes,maximumLevelNodes:4,contentSummaries:true,recordedExampleJump:true,globalSearch:true,exactSource:true,keyboardNavigator:true,returnNavigation,legacySteps:true,offline,offlineHttp:offline?requests.length:undefined};
 }
