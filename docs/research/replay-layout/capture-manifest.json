@@ -1,0 +1,72 @@
+[
+  {
+    "file": "after-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "eebc338b5491b17e117891d34b1bc3e9d6f0b645a4d2f28c24d92deef6689733",
+    "origin": "Chrome / Playwright; synthetic fixture; independent full-page PNG"
+  },
+  {
+    "file": "after-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "f4926fbc7522100d358942f36ddad2f4f9c43184194d1a07b7c518c341ea9466",
+    "origin": "Chrome / Playwright; synthetic fixture; independent full-page PNG"
+  },
+  {
+    "file": "before-1280.png",
+    "width": 1280,
+    "height": 1399,
+    "sha256": "8ad1c3ed69c8e0ad3a3593137ceb829d4b0a830cdc0edec1b6954d80e9be5c0f",
+    "origin": "Chrome / Playwright; synthetic fixture; independent full-page PNG"
+  },
+  {
+    "file": "before-1586.png",
+    "width": 1586,
+    "height": 1399,
+    "sha256": "4930fa5fe2bb5acf6c4537089e57303e95c823b9bcb8143774098f7caadad348",
+    "origin": "Chrome / Playwright; synthetic fixture; independent full-page PNG"
+  },
+  {
+    "file": "failure-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "d27049f03948f6e45086f3067ad852768e7fa7c9c8ac435d0412a988fd6b9784",
+    "origin": "Chrome / Playwright; synthetic fixture; independent full-page PNG"
+  },
+  {
+    "file": "failure-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "c0dc267670966b07cea787410abb3f5e81ddf69d0acf57b2d2333f7bbd9e42f4",
+    "origin": "Chrome / Playwright; synthetic fixture; independent full-page PNG"
+  },
+  {
+    "file": "patch-details-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "212eee4e10e0473655bc334f1ff558a7760dd4a4ecc238abb2046684f531966f",
+    "origin": "Chrome / Playwright; synthetic fixture; independent full-page PNG"
+  },
+  {
+    "file": "patch-details-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "3cc2acea411c166e39e53738bd24fc75878fddd4c235eafb417c1847034d0ef7",
+    "origin": "Chrome / Playwright; synthetic fixture; independent full-page PNG"
+  },
+  {
+    "file": "validation-1280.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "8d1ca52891a2bd2d7953039272a55a90705ff310d1a0c2b031e8f7a654cfb3a3",
+    "origin": "Chrome / Playwright; synthetic fixture; independent full-page PNG"
+  },
+  {
+    "file": "validation-1586.png",
+    "width": 1586,
+    "height": 912,
+    "sha256": "054a9f59e1c1c129b6d8d061bcc0738a64b7de722ff848834b6f4a062414500a",
+    "origin": "Chrome / Playwright; synthetic fixture; independent full-page PNG"
+  }
+]

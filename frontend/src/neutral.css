@@ -92,7 +92,7 @@
 .graph-fullscreen-bar > span,.timeline-fullscreen-bar > span { color:var(--muted); }
 .graph-fullscreen-bar > button,.timeline-fullscreen-bar > button { background:var(--surface); color:var(--text); border-color:var(--line); }
 .graph-node:focus-visible .node-focus,.graph-section-toggle:focus-visible > rect { stroke:#405a6b; }
-/* Replay: file/output evidence gets a full-height reading area. */
+/* Replay: source, evidence and output share one investigation surface. */
 .replay-surface { flex:none; height:auto; min-height:0; gap:16px; }
 .trace-tools { min-height:36px; }
 .trace-tools .button { min-height:32px; font-size:12px; padding:6px 10px; }
@@ -101,7 +101,8 @@
   border:1px solid var(--line); border-radius:6px; overflow:hidden;
 }
 .replay-workspace.inspection-collapsed { grid-template-columns:280px minmax(0,1fr); }
-.replay-workspace .replay-center { display:flex; flex-direction:column; gap:0; }
+.replay-workspace .replay-center { display:grid; grid-template-rows:minmax(0,1fr) 40px; gap:0; overflow:hidden; }
+.replay-workspace .replay-center.output-expanded { grid-template-rows:minmax(0,1fr) minmax(112px,26%); }
 .replay-workspace .recorded-workspace { flex:1; min-height:0; }
 .event-row { min-height:72px; padding:14px 10px; }
 .event-description strong { font-size:13px; }
@@ -114,9 +115,10 @@
 .recorded-workspace .code-lines { font-size:13px; line-height:1.85; }
 .workspace-tabs { min-height:48px; padding-inline:12px; }
 .workspace-tabs button { font-size:12px; min-height:32px; padding:6px 10px; }
-.replay-output { margin-top:16px; border:1px solid var(--line); border-radius:6px; min-height:52px; max-height:360px; }
-.replay-output .workspace-tabs { min-height:52px; }
-.replay-output pre { min-height:100px; max-height:290px; overflow:auto; padding:20px; font-size:13px; line-height:1.8; }
+.replay-workspace .evidence-tabs { border-top:0; border-bottom:1px solid var(--line); }
+.replay-workspace .replay-output { margin:0; border:0; border-top:1px solid var(--line)!important; border-radius:0; min-height:0; max-height:none; }
+.replay-output .workspace-tabs { min-height:40px; padding-inline:12px; }
+.replay-output pre { flex:1; min-height:0; max-height:none; overflow:auto; margin:0; padding:12px 16px; font-size:12px; line-height:1.7; }
 .reference-shell main[data-page="replay"] { padding-bottom:112px; }
 main[data-page="replay"] .replay-transport { position:fixed; inset:auto 0 0; min-height:72px; padding:12px var(--page-inset); border:0; border-top:1px solid var(--line); border-radius:0; background:var(--surface-2); z-index:15; }
 main[data-page="replay"]:fullscreen { overflow:auto; height:100dvh; max-width:none; }
@@ -132,21 +134,37 @@ main[data-page="replay"]:fullscreen .replay-workspace { height:calc(100dvh - 260
 .timeline-event-table td { height:43px; }
 .event-timeline .panel-head { min-height:44px; padding:8px 12px; }
 .event-lane > strong { font-size:12px; }
-/* These two investigation tools use the available screen, including all controls. */
+/* Investigation tools use the available screen, including all controls. */
 @media(min-width:1101px) {
-  .reference-shell .workspace:has(> main:is([data-page="graph"],[data-page="timeline"])) {
+  .reference-shell .workspace:has(> main:is([data-page="graph"],[data-page="timeline"],[data-page="replay"])) {
     display:flex; flex-direction:column; height:calc(100dvh - 64px); min-height:0;
   }
   .local-live-controls { flex:none; }
-  .reference-shell main.reference-page:is([data-page="graph"],[data-page="timeline"]) {
+  .reference-shell main.reference-page:is([data-page="graph"],[data-page="timeline"],[data-page="replay"]) {
     flex:1; height:auto; padding:14px var(--page-inset) 16px; gap:12px; overflow:hidden;
   }
-  main:is([data-page="graph"],[data-page="timeline"]) .view-title { flex:none; }
-  main:is([data-page="graph"],[data-page="timeline"]) .view-title h1 { font-size:20px; }
-  main:is([data-page="graph"],[data-page="timeline"]) .run-metadata { min-height:40px; padding:8px 0; }
-  main:is([data-page="graph"],[data-page="timeline"]) .stage-strip { height:44px; }
-  main:is([data-page="graph"],[data-page="timeline"]) .stage-card > div { min-height:32px; padding:6px 10px; }
-  main:is([data-page="graph"],[data-page="timeline"]) .stage-strip.with-previews { height:144px; }
+  main:is([data-page="graph"],[data-page="timeline"],[data-page="replay"]) .view-title { flex:none; }
+  main:is([data-page="graph"],[data-page="timeline"],[data-page="replay"]) .view-title h1 { font-size:20px; }
+  main:is([data-page="graph"],[data-page="timeline"],[data-page="replay"]) .run-metadata { min-height:40px; padding:8px 0; }
+  main:is([data-page="graph"],[data-page="timeline"],[data-page="replay"]) .stage-strip { height:44px; }
+  main:is([data-page="graph"],[data-page="timeline"],[data-page="replay"]) .stage-card > div { min-height:32px; padding:6px 10px; }
+  main:is([data-page="graph"],[data-page="timeline"],[data-page="replay"]) .stage-strip.with-previews { height:144px; }
+  main[data-page="replay"] .replay-surface { flex:1; min-height:0; gap:12px; overflow:hidden; }
+  main[data-page="replay"] .trace-tools { min-height:30px; }
+  main[data-page="replay"] .trace-tools .button { min-height:28px; padding:4px 8px; }
+  main[data-page="replay"] .replay-workspace { flex:1; height:auto; min-height:0; grid-template-columns:264px minmax(0,1fr) 320px; }
+  main[data-page="replay"] .replay-workspace.inspection-collapsed { grid-template-columns:264px minmax(0,1fr); }
+  main[data-page="replay"] .event-row { min-height:58px; padding:10px 8px; }
+  main[data-page="replay"] .event-description small { margin-top:4px; }
+  main[data-page="replay"] .event-ordinal:after { height:24px; top:22px; }
+  main[data-page="replay"] .selected-step-head { min-height:44px; padding:10px 16px; }
+  main[data-page="replay"] .selected-step-description { margin:10px 16px; line-height:1.5; max-height:39px; }
+  main[data-page="replay"] .recorded-path { min-height:34px; padding-inline:16px; }
+  main[data-page="replay"] .recorded-workspace .workspace-tabs { min-height:40px; }
+  main[data-page="replay"] .recorded-workspace .code-lines { line-height:1.7; }
+  .reference-shell main[data-page="replay"] .replay-transport { position:static; inset:auto; min-height:64px; padding:10px 12px; z-index:auto; }
+  .reference-shell main[data-page="replay"]:fullscreen { height:100dvh; overflow:hidden; }
+  .reference-shell main[data-page="replay"]:fullscreen .replay-workspace { height:auto; min-height:0; }
   main[data-page="graph"] .graph-stage-previews:has(.with-previews) { height:144px; }
   main[data-page="graph"] .graph-toolbar { min-height:44px; padding:8px 12px; }
   main[data-page="graph"] .execution-navigation { padding:8px 12px; }
@@ -214,6 +232,8 @@ main[data-page="runs"] .stats .stat { padding:24px; }
   .graph-toolbar { flex-wrap:wrap; }
   .replay-workspace:not(:fullscreen) { grid-template-columns:260px minmax(0,1fr) 320px; }
   .replay-workspace.inspection-collapsed { grid-template-columns:260px minmax(0,1fr); }
+  main[data-page="replay"] .replay-workspace { grid-template-columns:248px minmax(0,1fr) 300px; }
+  main[data-page="replay"] .replay-workspace.inspection-collapsed { grid-template-columns:248px minmax(0,1fr); }
   .compare-focus-workspace.has-inspection { grid-template-columns:minmax(0,1fr) 320px; }
   .run-comparison-picker select { max-width:200px; }
   .comparison-quick-metrics { gap:32px; }

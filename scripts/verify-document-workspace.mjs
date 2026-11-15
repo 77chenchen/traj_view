@@ -15,5 +15,5 @@ try{
     finally{await context.close();}
   }
   writeFileSync(join(artifacts,'verification.json'),JSON.stringify(report,null,2)+'\n');
-  console.log('PASS Graph/Timeline single-screen workspaces, four document-scrolling pages, GitHub-style single-row tabs, disappearing topbar on page scroll and persistent Replay dock; local and offline at both desktop sizes');
+  console.log('PASS Graph/Timeline/Replay single-screen workspaces, three document-scrolling pages, single-row tabs and non-overlapping Replay evidence/output/playback; local and offline at both desktop sizes');
 }finally{await browser.close();}

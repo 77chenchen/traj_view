@@ -1,0 +1,494 @@
+[
+  {
+    "file": "after-1586.png",
+    "url": "http://127.0.0.1:8765/#view=replay&run=dashboard-baseline&step=60",
+    "viewport": {
+      "width": 1586,
+      "height": 912
+    },
+    "geometry": {
+      "document": [
+        1586,
+        912
+      ],
+      "source": {
+        "x": 33,
+        "y": 282,
+        "width": 264,
+        "height": 537,
+        "top": 282,
+        "right": 297,
+        "bottom": 819,
+        "left": 33
+      },
+      "evidence": {
+        "x": 297,
+        "y": 282,
+        "width": 1256,
+        "height": 397.390625,
+        "top": 282,
+        "right": 1553,
+        "bottom": 679.390625,
+        "left": 297
+      },
+      "output": {
+        "x": 297,
+        "y": 679.390625,
+        "width": 1256,
+        "height": 139.609375,
+        "top": 679.390625,
+        "right": 1553,
+        "bottom": 819,
+        "left": 297
+      },
+      "playback": {
+        "x": 32,
+        "y": 832,
+        "width": 1522,
+        "height": 64,
+        "top": 832,
+        "right": 1554,
+        "bottom": 896,
+        "left": 32
+      }
+    }
+  },
+  {
+    "file": "patch-details-1586.png",
+    "url": "http://127.0.0.1:8765/#view=replay&run=dashboard-baseline&step=60",
+    "viewport": {
+      "width": 1586,
+      "height": 912
+    },
+    "geometry": {
+      "document": [
+        1586,
+        912
+      ],
+      "source": {
+        "x": 33,
+        "y": 282,
+        "width": 264,
+        "height": 537,
+        "top": 282,
+        "right": 297,
+        "bottom": 819,
+        "left": 33
+      },
+      "evidence": {
+        "x": 297,
+        "y": 282,
+        "width": 936,
+        "height": 397.390625,
+        "top": 282,
+        "right": 1233,
+        "bottom": 679.390625,
+        "left": 297
+      },
+      "output": {
+        "x": 297,
+        "y": 679.390625,
+        "width": 936,
+        "height": 139.609375,
+        "top": 679.390625,
+        "right": 1233,
+        "bottom": 819,
+        "left": 297
+      },
+      "inspection": {
+        "x": 1233,
+        "y": 282,
+        "width": 320,
+        "height": 537,
+        "top": 282,
+        "right": 1553,
+        "bottom": 819,
+        "left": 1233
+      },
+      "playback": {
+        "x": 32,
+        "y": 832,
+        "width": 1522,
+        "height": 64,
+        "top": 832,
+        "right": 1554,
+        "bottom": 896,
+        "left": 32
+      }
+    }
+  },
+  {
+    "file": "failure-1586.png",
+    "url": "http://127.0.0.1:8765/#view=replay&run=dashboard-baseline&step=70",
+    "viewport": {
+      "width": 1586,
+      "height": 912
+    },
+    "geometry": {
+      "document": [
+        1586,
+        912
+      ],
+      "source": {
+        "x": 33,
+        "y": 282,
+        "width": 264,
+        "height": 537,
+        "top": 282,
+        "right": 297,
+        "bottom": 819,
+        "left": 33
+      },
+      "evidence": {
+        "x": 297,
+        "y": 282,
+        "width": 936,
+        "height": 497,
+        "top": 282,
+        "right": 1233,
+        "bottom": 779,
+        "left": 297
+      },
+      "output": {
+        "x": 297,
+        "y": 779,
+        "width": 936,
+        "height": 40,
+        "top": 779,
+        "right": 1233,
+        "bottom": 819,
+        "left": 297
+      },
+      "inspection": {
+        "x": 1233,
+        "y": 282,
+        "width": 320,
+        "height": 537,
+        "top": 282,
+        "right": 1553,
+        "bottom": 819,
+        "left": 1233
+      },
+      "playback": {
+        "x": 32,
+        "y": 832,
+        "width": 1522,
+        "height": 64,
+        "top": 832,
+        "right": 1554,
+        "bottom": 896,
+        "left": 32
+      }
+    }
+  },
+  {
+    "file": "validation-1586.png",
+    "url": "http://127.0.0.1:8765/#view=replay&run=dashboard-baseline&step=100",
+    "viewport": {
+      "width": 1586,
+      "height": 912
+    },
+    "geometry": {
+      "document": [
+        1586,
+        912
+      ],
+      "source": {
+        "x": 33,
+        "y": 282,
+        "width": 264,
+        "height": 537,
+        "top": 282,
+        "right": 297,
+        "bottom": 819,
+        "left": 33
+      },
+      "evidence": {
+        "x": 297,
+        "y": 282,
+        "width": 936,
+        "height": 497,
+        "top": 282,
+        "right": 1233,
+        "bottom": 779,
+        "left": 297
+      },
+      "output": {
+        "x": 297,
+        "y": 779,
+        "width": 936,
+        "height": 40,
+        "top": 779,
+        "right": 1233,
+        "bottom": 819,
+        "left": 297
+      },
+      "inspection": {
+        "x": 1233,
+        "y": 282,
+        "width": 320,
+        "height": 537,
+        "top": 282,
+        "right": 1553,
+        "bottom": 819,
+        "left": 1233
+      },
+      "playback": {
+        "x": 32,
+        "y": 832,
+        "width": 1522,
+        "height": 64,
+        "top": 832,
+        "right": 1554,
+        "bottom": 896,
+        "left": 32
+      }
+    }
+  },
+  {
+    "file": "after-1280.png",
+    "url": "http://127.0.0.1:8765/#view=replay&run=dashboard-baseline&step=60",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "geometry": {
+      "document": [
+        1280,
+        800
+      ],
+      "source": {
+        "x": 25,
+        "y": 282,
+        "width": 248,
+        "height": 425,
+        "top": 282,
+        "right": 273,
+        "bottom": 707,
+        "left": 25
+      },
+      "evidence": {
+        "x": 273,
+        "y": 282,
+        "width": 982,
+        "height": 313,
+        "top": 282,
+        "right": 1255,
+        "bottom": 595,
+        "left": 273
+      },
+      "output": {
+        "x": 273,
+        "y": 595,
+        "width": 982,
+        "height": 112,
+        "top": 595,
+        "right": 1255,
+        "bottom": 707,
+        "left": 273
+      },
+      "playback": {
+        "x": 24,
+        "y": 720,
+        "width": 1232,
+        "height": 64,
+        "top": 720,
+        "right": 1256,
+        "bottom": 784,
+        "left": 24
+      }
+    }
+  },
+  {
+    "file": "patch-details-1280.png",
+    "url": "http://127.0.0.1:8765/#view=replay&run=dashboard-baseline&step=60",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "geometry": {
+      "document": [
+        1280,
+        800
+      ],
+      "source": {
+        "x": 25,
+        "y": 282,
+        "width": 248,
+        "height": 425,
+        "top": 282,
+        "right": 273,
+        "bottom": 707,
+        "left": 25
+      },
+      "evidence": {
+        "x": 273,
+        "y": 282,
+        "width": 682,
+        "height": 313,
+        "top": 282,
+        "right": 955,
+        "bottom": 595,
+        "left": 273
+      },
+      "output": {
+        "x": 273,
+        "y": 595,
+        "width": 682,
+        "height": 112,
+        "top": 595,
+        "right": 955,
+        "bottom": 707,
+        "left": 273
+      },
+      "inspection": {
+        "x": 955,
+        "y": 282,
+        "width": 300,
+        "height": 425,
+        "top": 282,
+        "right": 1255,
+        "bottom": 707,
+        "left": 955
+      },
+      "playback": {
+        "x": 24,
+        "y": 720,
+        "width": 1232,
+        "height": 64,
+        "top": 720,
+        "right": 1256,
+        "bottom": 784,
+        "left": 24
+      }
+    }
+  },
+  {
+    "file": "failure-1280.png",
+    "url": "http://127.0.0.1:8765/#view=replay&run=dashboard-baseline&step=70",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "geometry": {
+      "document": [
+        1280,
+        800
+      ],
+      "source": {
+        "x": 25,
+        "y": 282,
+        "width": 248,
+        "height": 425,
+        "top": 282,
+        "right": 273,
+        "bottom": 707,
+        "left": 25
+      },
+      "evidence": {
+        "x": 273,
+        "y": 282,
+        "width": 682,
+        "height": 385,
+        "top": 282,
+        "right": 955,
+        "bottom": 667,
+        "left": 273
+      },
+      "output": {
+        "x": 273,
+        "y": 667,
+        "width": 682,
+        "height": 40,
+        "top": 667,
+        "right": 955,
+        "bottom": 707,
+        "left": 273
+      },
+      "inspection": {
+        "x": 955,
+        "y": 282,
+        "width": 300,
+        "height": 425,
+        "top": 282,
+        "right": 1255,
+        "bottom": 707,
+        "left": 955
+      },
+      "playback": {
+        "x": 24,
+        "y": 720,
+        "width": 1232,
+        "height": 64,
+        "top": 720,
+        "right": 1256,
+        "bottom": 784,
+        "left": 24
+      }
+    }
+  },
+  {
+    "file": "validation-1280.png",
+    "url": "http://127.0.0.1:8765/#view=replay&run=dashboard-baseline&step=100",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "geometry": {
+      "document": [
+        1280,
+        800
+      ],
+      "source": {
+        "x": 25,
+        "y": 282,
+        "width": 248,
+        "height": 425,
+        "top": 282,
+        "right": 273,
+        "bottom": 707,
+        "left": 25
+      },
+      "evidence": {
+        "x": 273,
+        "y": 282,
+        "width": 682,
+        "height": 385,
+        "top": 282,
+        "right": 955,
+        "bottom": 667,
+        "left": 273
+      },
+      "output": {
+        "x": 273,
+        "y": 667,
+        "width": 682,
+        "height": 40,
+        "top": 667,
+        "right": 955,
+        "bottom": 707,
+        "left": 273
+      },
+      "inspection": {
+        "x": 955,
+        "y": 282,
+        "width": 300,
+        "height": 425,
+        "top": 282,
+        "right": 1255,
+        "bottom": 707,
+        "left": 955
+      },
+      "playback": {
+        "x": 24,
+        "y": 720,
+        "width": 1232,
+        "height": 64,
+        "top": 720,
+        "right": 1256,
+        "bottom": 784,
+        "left": 24
+      }
+    }
+  }
+]

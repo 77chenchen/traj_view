@@ -12,7 +12,13 @@ PYTHON="$(command -v python)" node scripts/smoke-e2e.mjs
 
 Set `CHROME_PATH` if Chrome is installed elsewhere. The smoke command runs pure graph-transform checks, builds the public fixtures plus generated performance traces, launches system Chrome, stops the server, then opens both a fresh single-file export and the delivered report in offline browser contexts. Screenshots, `scenarios.json` and `first-render.json` go to `test-results/e2e/`. See [browser QA](../tests/e2e/README.md) for details and report regeneration commands.
 
-## Current neutral navigation / single-screen Graph and Timeline · 2026-11-14
+## Replay single-screen refinement · 2026-11-15
+
+Replay now joins Graph and Timeline in fitting the desktop screen. Source steps, center evidence / Terminal and optional Step details scroll locally above a separate playback row. The evidence tabs stay above content and the current row stays visible after resize. See [the layout report, 10 before/after PNGs, exact geometry and reproduction](research/replay-layout.md).
+
+The Replay revision passed **81 Python tests (4.18s)**, TypeScript/build and **38 Chrome scenarios**, including existing failure → patch → later validation, pinned-view playback, long/empty data and network-disabled standalone reports. New assertions check center-column output, top evidence tabs, desktop single-screen boundaries and both output disclosure states without playback overlap. All published captures are synthetic. Results are preserved in [replay-layout/verification.json](research/replay-layout/verification.json).
+
+## Neutral navigation / single-screen Graph and Timeline · 2026-11-14
 
 The latest user instruction restores Graph and Timeline to one desktop screen while Replay, Compare, Analytics and Datasets retain document scrolling. A 64px single-row icon-and-tabs navigation is in normal flow; it leaves the viewport on document pages when scrolling down. Graph/Timeline keep their canvas, linked Inspector and activity/Event Log within 1586×912 and 1280×800. Long source graphs pan locally; logs and evidence scroll inside their own panes. Fullscreen preserves details; manual Diff/Output/Context choices persist through playback, seek and viewport changes.
 

@@ -8,15 +8,21 @@ async function panesFit(page) {
       panes: ['.event-list', '.recorded-workspace', '.terminal-panel', '.replay-inspection', '.replay-transport'].map(box) };
   });
   assert.equal(geometry.scrollWidth, geometry.width, 'Document has no horizontal overflow');
-  assert.ok(geometry.scrollHeight > geometry.height, 'Replay is a scrollable document');
+  assert.ok(geometry.scrollHeight <= geometry.height+1, 'Replay fits the desktop viewport');
   for (const box of geometry.panes) {
     assert.ok(box.width > 100 && box.height >= 38 && box.x >= 0 && box.right <= geometry.width + 1, 'Every evidence pane stays readable within the document width');
   }
   const [list, code, terminal, inspection, dock] = geometry.panes;
   assert.ok(code.x-list.right >= 0 && code.x-list.right <= 1 && inspection.x-code.right >= 0 && inspection.x-code.right <= 1, 'Three panes share aligned dividers');
-  assert.ok(code.height>=700 && list.height>=700, 'Main evidence has its own generous reading height');
-  assert.ok(terminal.y-code.bottom >= 24 && terminal.width>code.width && Math.abs(terminal.x-list.x)<=1.1, 'Terminal output is a separate full-width module below the main evidence');
-  assert.ok(dock.y>=0&&dock.bottom<=geometry.height+1, 'The playback dock remains reachable while the document scrolls');
+  assert.ok(code.height>=280 && list.height>=400, 'Evidence and source list retain readable viewport space');
+  assert.ok(Math.abs(terminal.y-code.bottom)<=1 && Math.abs(terminal.width-code.width)<=1 && Math.abs(terminal.x-code.x)<=1, 'Terminal shares the center column under evidence');
+  assert.ok(dock.y>=list.bottom+10&&dock.bottom<=geometry.height+1, 'Playback occupies a separate reachable row without covering evidence');
+  assert.ok(await page.locator('.evidence-tabs').evaluate(e=>e.getBoundingClientRect().bottom<=document.querySelector('.recorded-code').getBoundingClientRect().top),'Evidence tabs are reachable above content');
+  await page.waitForFunction(()=>{
+    const row=document.querySelector('.event-row[aria-pressed="true"]')?.getBoundingClientRect(),list=document.querySelector('.event-rows')?.getBoundingClientRect();
+    if (!document.querySelector('.event-row')) return true;
+    return row&&list&&row.top>=list.top-1&&row.bottom<=list.bottom+1;
+  });
   return geometry;
 }
 

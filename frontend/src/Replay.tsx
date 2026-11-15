@@ -101,9 +101,15 @@ function LoadedReplay({ run, graphs, steps, phases, timeline, index, onSelect }:
   useEffect(() => {
     const row = selectedRow.current, list = row?.parentElement;
     if (!row || !list) return;
-    const a = row.getBoundingClientRect(), b = list.getBoundingClientRect();
-    if(a.top < b.top) list.scrollTop += a.top-b.top;
-    else if(a.bottom > b.bottom) list.scrollTop += a.bottom-b.bottom;
+    const reveal = () => {
+      const a = row.getBoundingClientRect(), b = list.getBoundingClientRect();
+      if(a.top < b.top) list.scrollTop += a.top-b.top;
+      else if(a.bottom > b.bottom) list.scrollTop += a.bottom-b.bottom;
+    };
+    reveal();
+    const observer = new ResizeObserver(reveal);
+    observer.observe(list);
+    return () => observer.disconnect();
   },[step?.idx,filter,query]);
   useEffect(() => {
     if (!timeline || !showLog) return;
@@ -149,7 +155,7 @@ function LoadedReplay({ run, graphs, steps, phases, timeline, index, onSelect }:
         </button>;})}{!filtered.length && <p className="panel-inset muted">No matching events. Change the search or event filter.</p>}</div>
         <div className="event-list-foot">{number.format(filtered.length)} events · source order</div>
       </section>}
-      <div className={'replay-center' + (timeline && !showLog ? ' log-collapsed' : '')}>
+      <div className={'replay-center' + (timeline ? !showLog ? ' log-collapsed' : '' : showOutput ? ' output-expanded' : '')}>
         {timeline ? <><EventTimeline runId={run.id} steps={steps} nodes={graphs.expanded.nodes} selected={step.idx} select={choose} revealDetails={()=>setInspection(true)} />
           <section className="panel timeline-records" aria-label="Event log"><div className="panel-head"><h2>Event Log <span className="muted">({filtered.length} events)</span></h2>
             {showLog && <div className="log-filters"><input type="search" aria-label="Search timeline events" placeholder="Search events…" value={query} onChange={e => setQuery(e.target.value)} /><select aria-label="Timeline category" value={filter} onChange={e => setFilter(e.target.value)}>{categories}</select><select aria-label="Timeline status" value={status} onChange={e => setStatus(e.target.value)}><option value="all">All Statuses</option><option value="failed">Failed</option><option value="success">Success</option><option value="unrecorded">Unrecorded</option></select></div>}
@@ -159,14 +165,14 @@ function LoadedReplay({ run, graphs, steps, phases, timeline, index, onSelect }:
               <td><button className="table-event-button" title={label(item)} onClick={() => choose(item.idx)}>{label(item)}</button></td><td className={failed(item) ? 'error-text' : item.observation?.exit_code === 0 ? 'success-text' : 'muted'}>{eventStatus(item)}</td></tr>)}</tbody></table>{!filtered.length && <p className="panel-inset muted">No matching events. Change filters to see recorded steps.</p>}</div>}</section></> : <>
           <section className="panel recorded-workspace" aria-label="Recorded workspace">
             <div className="selected-step-head"><Icon name={categoryIcon(step,node)} size={19} /><h2>Step {position+1} · <span>{step.action?.tool || stepTitle(step,node)}</span></h2><span className="type-badge">{node?.category || 'text'}</span><time>t = {eventTime(step,steps[0])}<small title="Gap since the previous recorded timestamp; not call duration">{Number.isFinite(delta) && delta >= 0 ? ' · Δ +' + clock(delta) : ' · Δ unrecorded'}</small></time></div>
-            <p className="selected-step-description">{step.thought || label(step)}</p>
+            <div className="workspace-tabs evidence-tabs" role="group" aria-label="Recorded content view"><button aria-label="Automatic evidence view" aria-pressed={preferredView === 'auto'} title="Automatically follow the recorded evidence. Selecting another view keeps it across steps." onClick={() => setView('auto')}>Auto</button><button aria-pressed={view === 'event'} onClick={() => setView('event')}>Output</button><button aria-label="Diff" aria-pressed={view === 'patch'} onClick={() => setView('patch')}>Diff{patch && <small> ({(stats.added ?? 0)+(stats.removed ?? 0)})</small>}</button><button aria-pressed={view === 'workspace'} onClick={() => setView('workspace')}>Updated File</button><button aria-pressed={view === 'text'} onClick={() => setView('text')}>File Context</button>
+              <CopyButton text={view === 'patch' ? patch || '' : view === 'workspace' ? content || '' : view === 'event' ? step.observation?.text || step.thought || '' : contextContent || step.thought || ''} /><button className="button small icon-button" aria-label="Expand evidence" title="Expand evidence" onClick={e => fullScreen(e.currentTarget.closest('section'))}><Icon name="fit" size={15} /></button></div>
+            <p className="selected-step-description" title={step.thought || label(step)}>{step.thought || label(step)}</p>
             <div className="recorded-path"><Icon name="file" size={15} /><span title={step.action?.targets.join(', ') || ''}>{step.action?.targets.join(', ') || (typeof step.action?.args.path === 'string' ? step.action.args.path : 'No explicit file target')}</span>{patch && <span className="diff-count"><i>−{stats.removed}</i><b>+{stats.added}</b></span>}</div>
             <div className="recorded-code">{view === 'event' ? step.action ? <Output step={step} ariaLabel="Selected step evidence"/> : <div className="recorded-prose"><pre>{step.thought || 'Text unrecorded for this step.'}</pre><p className="muted">Recorded text · message and reasoning roles unavailable</p></div> : view === 'patch' && patch || view === 'workspace' ? <RecordedCode value={view === 'patch' ? patch : content} patch={view === 'patch'} /> :
               view === 'patch' ? <RecordedCode value={null} patch /> : step.action?.targets.length ? <><p className="recorded-caption">{contextStep ? 'Recorded file context · source ' + sourceIndex(contextStep.idx) : 'File context unrecorded'} · excerpt line numbers</p><RecordedCode value={contextContent}/>{contextStep && contextStep.idx !== step.idx && <button className="button small quiet" onClick={() => choose(contextStep.idx)}>Go to file context {sourceIndex(contextStep.idx)}</button>}</> : <div className="recorded-prose"><pre>{step.thought || 'Text unrecorded for this step.'}</pre><p className="muted">Recorded text · message and reasoning roles unavailable</p></div>}</div>
-            <div className="workspace-tabs evidence-tabs" role="group" aria-label="Recorded content view"><button aria-label="Automatic evidence view" aria-pressed={preferredView === 'auto'} title="Automatically follow the recorded evidence. Selecting another view keeps it across steps." onClick={() => setView('auto')}>Auto</button><button aria-pressed={view === 'event'} onClick={() => setView('event')}>Output</button><button aria-label="Diff" aria-pressed={view === 'patch'} onClick={() => setView('patch')}>Diff{patch && <small> ({(stats.added ?? 0)+(stats.removed ?? 0)})</small>}</button><button aria-pressed={view === 'workspace'} onClick={() => setView('workspace')}>Updated File</button><button aria-pressed={view === 'text'} onClick={() => setView('text')}>File Context</button>
-              <CopyButton text={view === 'patch' ? patch || '' : view === 'workspace' ? content || '' : view === 'event' ? step.observation?.text || step.thought || '' : contextContent || step.thought || ''} /><button className="button small icon-button" aria-label="Expand evidence" title="Expand evidence" onClick={e => fullScreen(e.currentTarget.closest('section'))}><Icon name="fit" size={15} /></button></div>
           </section>
-
+          <section className="panel terminal-panel replay-output" aria-label="Recorded terminal output"><div className="workspace-tabs" role="group" aria-label="Output view"><button aria-pressed={output === 'terminal' && showOutput} onClick={() => {setOutput('terminal');setOutputOpen(true);}}><Icon name="terminal" size={14} />Terminal</button><button aria-pressed={output === 'tests' && showOutput} onClick={() => {setOutput('tests');setOutputOpen(true);}}>Tests</button><span className={'output-status ' + (failed(step) ? 'error-text' : '')}>{step.observation?.exit_code != null ? 'Exit ' + step.observation.exit_code : 'Exit unrecorded'}</span><button className="output-disclosure" aria-label={showOutput ? 'Hide terminal output' : 'Show terminal output'} aria-expanded={showOutput} onClick={()=>setOutputOpen(!showOutput)}><Icon name={showOutput ? 'minus' : 'plus'} size={14}/>{showOutput ? 'Collapse' : 'Expand'}</button>{showOutput && <CopyButton text={step.observation?.text || ''} />}</div>{showOutput && (output === 'tests' && node?.category !== 'validate' ? <pre aria-label="Current step output">No test output recorded for this step.</pre> : <Output step={step} />)}</section>
         </>}
       </div>
       <div className="replay-inspection" id="replay-inspection" hidden={!inspection} onKeyDown={e=>{if(e.key==='Escape'){e.preventDefault();closeInspection();}}}>
@@ -174,7 +180,6 @@ function LoadedReplay({ run, graphs, steps, phases, timeline, index, onSelect }:
         <details className="annotation-drawer"><summary>Personal annotation</summary><Annotation key={run.id+':'+step.idx} run={run} step={step} /></details>
       </div>
     </div>
-    {!timeline && <section className="panel terminal-panel replay-output" aria-label="Recorded terminal output"><div className="workspace-tabs" role="group" aria-label="Output view"><button aria-pressed={output === 'terminal' && showOutput} onClick={() => {setOutput('terminal');setOutputOpen(true);}}><Icon name="terminal" size={14} />Terminal</button><button aria-pressed={output === 'tests' && showOutput} onClick={() => {setOutput('tests');setOutputOpen(true);}}>Tests</button><span className={'output-status ' + (failed(step) ? 'error-text' : '')}>{step.observation?.exit_code != null ? 'Exit ' + step.observation.exit_code : 'Exit unrecorded'}</span><button className="output-disclosure" aria-label={showOutput ? 'Hide terminal output' : 'Show terminal output'} aria-expanded={showOutput} onClick={()=>setOutputOpen(!showOutput)}><Icon name={showOutput ? 'minus' : 'plus'} size={14}/>{showOutput ? 'Collapse' : 'Expand'}</button>{showOutput && <CopyButton text={step.observation?.text || ''} />}</div>{showOutput && (output === 'tests' && node?.category !== 'validate' ? <pre aria-label="Current step output">No test output recorded for this step.</pre> : <Output step={step} />)}</section>}
     {!timeline && <Transport steps={steps} position={position} select={next => {if(steps[next]) choose(steps[next].idx);}} inspection={inspection} toggleInspection={toggleInspection} />}
   </>;
 }

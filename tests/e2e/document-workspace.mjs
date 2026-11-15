@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {join} from 'node:path';
 const settle=page=>page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
 
-// Graph and Timeline are single-screen investigation tools. The other pages
+// Graph, Timeline and Replay are single-screen investigation tools. Other pages
 // scroll as documents; their navigation leaves the viewport in normal flow.
 export async function checkDocumentWorkspace(page,url,artifacts,offline=false){
   const errors=[],http=[],captures=[],geometry=[],prefix=offline?'offline-':'';
@@ -27,10 +27,10 @@ export async function checkDocumentWorkspace(page,url,artifacts,offline=false){
     await page.locator(target).first().waitFor();await settle(page);
     const dimensions=await page.evaluate(()=>({width:innerWidth,height:innerHeight,documentWidth:document.documentElement.scrollWidth,documentHeight:document.documentElement.scrollHeight,mainOverflow:getComputedStyle(document.querySelector('main')).overflowY,barPosition:getComputedStyle(document.querySelector('.product-topbar')).position}));
     assert.equal(dimensions.documentWidth,width,'The document has no sideways overflow');
-    const singleScreen=view==='graph'||view==='timeline';
+    const singleScreen=['graph','timeline','replay'].includes(view);
     assert.equal(dimensions.mainOverflow,singleScreen?'hidden':'visible');
     assert.equal(dimensions.barPosition,'static','The navigation scrolls away with the page');
-    if(singleScreen)assert.ok(dimensions.documentHeight<=height+1,'Graph and Timeline keep their complete work area within one screen');
+    if(singleScreen)assert.ok(dimensions.documentHeight<=height+1,'Investigation tools keep their complete work area within one screen');
     else assert.ok(dimensions.documentHeight>height+120,'Supporting modules have space below the first viewport');
     const nav=page.getByRole('navigation',{name:'Workspace',exact:true});
     assert.equal(await nav.getByRole('button').count(),6);
@@ -42,8 +42,10 @@ export async function checkDocumentWorkspace(page,url,artifacts,offline=false){
       assert.ok(frame.height>=260&&work.y+work.height<=height);
       assert.ok(secondary.y>=frame.y+frame.height&&secondary.y+secondary.height<=height,'Activity remains inside the screen, below the graph');
     }else if(view==='replay'){
-      const work=await page.locator('.replay-workspace').boundingBox(),output=await page.locator('.replay-output').boundingBox();
-      assert.ok(work.height>=760&&output.y>=work.y+work.height+24,'Separate main evidence and terminal reading regions');
+      const work=await page.locator('.replay-workspace').boundingBox(),output=await page.locator('.replay-output').boundingBox(),evidence=await page.locator('.recorded-workspace').boundingBox();
+      assert.ok(work.height>=400&&work.y+work.height<=height-70,'The source list, evidence and output fit above playback');
+      assert.ok(Math.abs(output.x-evidence.x)<=1&&Math.abs(output.width-evidence.width)<=1&&Math.abs(output.y-evidence.y-evidence.height)<=1,'Terminal belongs below evidence inside the center column');
+      assert.ok(await page.locator('.evidence-tabs').evaluate(tabs=>tabs.getBoundingClientRect().bottom<=document.querySelector('.recorded-code').getBoundingClientRect().top),'Evidence tabs precede the scrollable content');
     }else if(view==='timeline'){
       const lanes=await page.locator('.event-timeline').boundingBox(),log=await page.locator('.timeline-records').boundingBox();
       assert.ok(lanes.height>=350&&log.height>=120&&log.y>=lanes.y+lanes.height+10&&log.y+log.height<=height,'All lanes, the event log and Inspector are available in one screen');
@@ -64,13 +66,14 @@ export async function checkDocumentWorkspace(page,url,artifacts,offline=false){
     assert.equal(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('step'),selected,'Document scrolling preserves the selected source');
     if(view==='replay'){
       const dock=await page.getByRole('region',{name:'Replay controls',exact:true}).boundingBox();
-      assert.ok(dock.y>=0&&dock.y+dock.height<=height+1,'Playback stays available after the top navigation scrolls away');
-      // At the document end, the fixed dock must not cover the final module's
-      // tabs, disclosure or output. Exercise both actual disclosure states.
+      assert.ok(dock.y>=0&&dock.y+dock.height<=height+1,'Playback stays available inside the single-screen workspace');
+      assert.equal(await page.locator('.replay-transport').evaluate(e=>getComputedStyle(e).position),'static','Playback has its own layout row instead of covering evidence');
+      // Output and playback occupy separate rows in both disclosure states.
       const clearDock=async()=>{
         await page.evaluate(()=>scrollTo(0,document.documentElement.scrollHeight));await settle(page);
         const panel=await page.locator('.replay-output').boundingBox();
-        assert.ok(panel.y+panel.height<=dock.y-16,'The complete final output module clears the fixed playback dock');
+        assert.ok(panel.y+panel.height<=dock.y-10,'The complete output module clears playback');
+        assert.ok(await page.locator('.recorded-code').evaluate(e=>e.getBoundingClientRect().height>=120),'Expanding output retains a readable, locally scrollable evidence area');
         const terminal=page.getByRole('button',{name:'Terminal',exact:true});
         assert.ok(await terminal.evaluate(button=>{
           const b=button.getBoundingClientRect();return button.contains(document.elementFromPoint(b.x+b.width/2,b.y+b.height/2));
@@ -101,5 +104,5 @@ export async function checkDocumentWorkspace(page,url,artifacts,offline=false){
   })),'Opaque section headings paint above connection paths');
   assert.deepEqual(errors,[]);if(offline)assert.equal(http.length,0);
   page.off('pageerror',onError);page.off('request',onRequest);
-  return{geometry,captures,graphAndTimelineSingleScreen:true,graphWheelStaysLocal:true,replayDockClearance:true,offlineHttp:offline?0:undefined,pageErrors:errors};
+  return{geometry,captures,graphAndTimelineSingleScreen:true,replaySingleScreen:true,graphWheelStaysLocal:true,replayDockClearance:true,offlineHttp:offline?0:undefined,pageErrors:errors};
 }

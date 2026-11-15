@@ -1,6 +1,6 @@
 # Neutral navigation and a vertical evidence graph
 
-This is the current visual authority. It supersedes the earlier dark Graph canvas, graphite app rail and horizontal DAG. It follows the user's latest requests: a white graph, subtle gray/white surface separation, a single top navigation and lower-density reading areas. The final follow-up restores **Graph and Timeline to single-screen desktop workspaces**; Replay, Compare, Analytics and Datasets retain document scrolling. The GitHub reference and the user’s explicit single-row choice define the shared navigation. The previously requested synthetic graph, Timeline and playback fixes are retained.
+This records the neutral workspace revision. The subsequent [Replay layout refinement](replay-layout.md) supersedes only its Replay sizing and output/playback placement. It supersedes the earlier dark Graph canvas, graphite app rail and horizontal DAG. It follows the user's requests: a white graph, subtle gray/white surface separation, a single top navigation and lower-density reading areas. This revision restored **Graph and Timeline to single-screen desktop workspaces**; Replay, Compare, Analytics and Datasets then retained document scrolling. The GitHub reference and the user’s explicit single-row choice define the shared navigation. The previously requested synthetic graph, Timeline and playback fixes are retained.
 
 ## Direction contract
 

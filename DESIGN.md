@@ -228,7 +228,7 @@ One working area leads each page. Named disclosures keep secondary detail availa
 - A vertical source DAG with category silhouettes and in-place content expansion.
 - Readable recorded code, stable exact source identity and explicit missing-evidence states.
 
-The current authority is [PRODUCT.md](PRODUCT.md) and the [neutral vertical workspace direction and quality bar](docs/research/neutral-vertical-workspace.md). There is no approved comp. The [full review and scoped ship verdict](docs/research/neutral-vertical-workspace/review.md) record the desktop finish, including the corrected Replay end clearance. The public [capture index](docs/research/neutral-vertical-workspace/captures.json), [manifest](docs/research/neutral-vertical-workspace/capture-manifest.json) and [appearance/playback supplements](docs/research/graph-appearance/) provide 58 main and 11 supplementary synthetic screenshots. This document merges the current system into the prior specification; it does not reinstate earlier compositions.
+The current authority is [PRODUCT.md](PRODUCT.md), the [neutral vertical workspace direction and quality bar](docs/research/neutral-vertical-workspace.md) and the subsequent [Replay layout refinement](docs/research/replay-layout.md). There is no approved comp. The [prior full review and scoped ship verdict](docs/research/neutral-vertical-workspace/review.md) record the preceding desktop finish. The public [capture index](docs/research/neutral-vertical-workspace/captures.json), [manifest](docs/research/neutral-vertical-workspace/capture-manifest.json) and [appearance/playback supplements](docs/research/graph-appearance/) preserve that revision's synthetic evidence. New Replay captures are separate. This document merges the current system into the prior specification; it does not reinstate earlier compositions.
 
 ## Colors
 
@@ -259,9 +259,9 @@ The dark appearance uses the `dark-*` frontmatter tokens from [workbench.css](fr
 
 **Body and control font:** native system sans. **Evidence font:** system monospace. There is no web font or decorative display face.
 
-The compact hierarchy uses weight and whitespace instead of oversized type. The frontmatter `headline` applies to document-page view titles; `workspace-headline` applies to desktop Graph and Timeline. The `headline-title` role identifies selected evidence headings. Body text uses `body`; buttons, navigation, outcomes and supporting labels retain their own observed roles. Native navigation uses regular labels and a stronger active label.
+The compact hierarchy uses weight and whitespace instead of oversized type. The frontmatter `headline` applies to document-page view titles; `workspace-headline` applies to desktop Graph, Timeline and Replay. The `headline-title` role identifies selected evidence headings. Body text uses `body`; buttons, navigation, outcomes and supporting labels retain their own observed roles. Native navigation uses regular labels and a stronger active label.
 
-Recorded Replay code uses the `evidence` role; Terminal/Tests uses the same size with slightly tighter line spacing. Inspector code uses smaller type within its narrower region. SVG node titles and metadata use their specific frontmatter roles, with complete source identities available in accessible titles and Inspector. Type is not an evidence encoding: visual token widths never imply measured call duration.
+Recorded Replay code uses the `evidence` role, with desktop line-height 1.7. Its subordinate Terminal/Tests uses 12px monospace with line-height 1.7. Inspector code uses smaller type within its narrower region. SVG node titles and metadata use their specific frontmatter roles, with complete source identities available in accessible titles and Inspector. Type is not an evidence encoding: visual token widths never imply measured call duration.
 
 **The Evidence Reading Rule.** Reduce repeated metadata and close secondary detail before reducing evidence type. Long code and logs scroll within their own region.
 
@@ -271,11 +271,11 @@ The single topbar is in normal document flow (64px). It contains the existing mo
 
 The shared document container has a maximum width (1720px), desktop horizontal insets (32px), top/bottom padding (28px / 48px) and default gap (20px). At compact desktop widths (1101–1370px), horizontal insets become (24px). Supporting document sections use the observed larger separation (32px).
 
-**The Workspace Scroll Rule.** At desktop widths, Graph and Timeline fit the available screen with their inspection and local evidence regions. Replay, Compare, Analytics and Datasets use natural document scrolling.
+**The Workspace Scroll Rule.** At desktop widths, Graph, Timeline and Replay fit the available screen with their inspection and local evidence regions. Compare, Analytics and Datasets use natural document scrolling.
 
-At widths of at least 1101px, Graph and Timeline use the screen below the topbar, with main padding (14px top / 16px bottom), gaps (12px), compact metadata and stage navigation. Their Inspector is (340px), or (320px) in the compact desktop band. Graph activity expands inside the work surface with local scrolling. Timeline keeps six lanes, a searchable Event Log and Event Inspector together; its lane/log split and long evidence scroll locally. Fullscreen Graph, Timeline and Compare Run DAGs retain inspection and exit controls.
+At widths of at least 1101px, Graph, Timeline and Replay use the screen below the topbar, with main padding (14px top / 16px bottom), gaps (12px), compact metadata and stage navigation. Graph/Timeline Inspector is (340px), or (320px) in the compact desktop band. Graph activity expands inside the work surface with local scrolling. Timeline keeps six lanes, a searchable Event Log and Event Inspector together; its lane/log split and long evidence scroll locally. Fullscreen Graph, Timeline and Compare Run DAGs retain inspection and exit controls.
 
-Replay has an independent main workspace height (760px), source list (280px, compact desktop 260px), dominant evidence area and optional Step details (340px / 320px). Terminal/Tests is a separate full-width section below it, with bounded log scrolling. The fixed playback dock reserves a minimum height (72px). The effective page bottom padding is (112px), supplied by `.reference-shell main[data-page="replay"]` after the shared page shorthand; preserve this specificity and the tested clearance of at least (16px) above the dock at document end.
+Desktop Replay gives the remaining height to a joined workbench: source list (264px, compact desktop 248px), dominant evidence and optional Step details (320px / 300px). Evidence tabs sit below the selected-step heading and above the locally scrollable content. Terminal/Tests occupies the center column's second row: 40px collapsed, or 26% with a 112px minimum expanded. The playback bar occupies its own 64px-minimum row, separated from the workbench by 12px and from the viewport end by 16px; it never overlays code or output. Current source rows remain visible after resize. Below the desktop breakpoint, the retained fallback uses a 760px workbench, document scrolling and fixed 72px playback with 112px page-bottom clearance.
 
 Compare leads with one shared A/B alignment and three flat metrics. Rows have a minimum height (76px), with a shared relationship column (140px). Step comparison is optional and does not replace the alignment. Named alternative workspaces and separate supporting disclosures follow the document rhythm. Analytics and Datasets use readable independent sections and natural document scrolling.
 
@@ -307,7 +307,7 @@ Navigation uses the single static row described in Layout, with line icons (16px
 
 ### Outcomes, source rows and evidence panels
 
-Written status accompanies semantic color. A selected Replay event row uses the selection wash and boundary, preserves outcome cues and has a minimum height (72px). Evidence panes use compact headings and local scrolling. Recorded diffs retain line numbers, context and +/− signs. Copy and expand apply to the evidence currently displayed. Unselected Inspectors begin with an explicit prompt.
+Written status accompanies semantic color. A selected Replay event row uses the selection wash and boundary and preserves outcome cues. Desktop rows use a 58px minimum with 10px / 8px padding; the retained narrow-screen row uses the frontmatter 72px role. Evidence panes use compact headings and local scrolling. Recorded diffs retain line numbers, context and +/− signs. Copy and expand apply to the evidence currently displayed. Unselected Inspectors begin with an explicit prompt.
 
 **The Stable Source Rule.** Run ID plus exact source idx identifies selection across views and shared URLs. Display ordinals and playback positions remain distinct from source identity.
 
@@ -325,7 +325,7 @@ The three flat metrics support shared alignment. Step comparison begins closed u
 
 ### Replay and persistent evidence
 
-Step details begins closed. Auto follows the current action's available evidence; manual Diff, Updated File, File Context or Output pins that view through playback, stepping and seek. Inspector tabs, Terminal/Tests selection, expansion, details and raw references retain state across playback and resize. A missing patch displays its own missing state rather than the preceding source's patch. Terminal/Tests stays in its own section below the main evidence. Playback speed changes stepping interval, not recorded data.
+Step details begins closed. Auto follows the current action's available evidence; manual Diff, Updated File, File Context or Output pins that view through playback, stepping and seek. Inspector tabs, Terminal/Tests selection, expansion, details and raw references retain state across playback and resize. A missing patch displays its own missing state rather than the preceding source's patch. Terminal/Tests stays directly beneath the main evidence within the center column. Playback speed changes stepping interval, not recorded data.
 
 Frozen v1 evidence boundaries remain binding: missing per-call duration, attempts, per-step agents/parents, distinct reasoning roles, patches, file versions, Token/cost and test pass rate remain individually unrecorded. Full file content appears only when explicitly recorded; patch and comparison evidence retain source provenance. Personal annotations stay separate from trace evidence.
 
