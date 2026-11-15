@@ -1,0 +1,113 @@
+{
+  "date": "2026-11-15",
+  "baseline": "d961982315af3ad985becc4b4aba7d9c7a0e46ea",
+  "scope": "Six-route desktop section framing; public synthetic fixtures only",
+  "python": {
+    "command": ".venv/bin/python -m pytest",
+    "status": "passed",
+    "tests": 81,
+    "seconds": 3.93
+  },
+  "typescript": {
+    "command": "npm --prefix frontend run check",
+    "status": "passed"
+  },
+  "build": {
+    "command": "npm --prefix frontend run build",
+    "status": "passed",
+    "seconds": 9.5,
+    "jsKb": 2462.49,
+    "jsGzipKb": 762.88,
+    "cssKb": 326.11,
+    "cssGzipKb": 131.69,
+    "warning": "Existing chunk exceeds500kB"
+  },
+  "smoke": {
+    "command": "PYTHON=\"$PWD/.venv/bin/python\" node scripts/smoke-e2e.mjs",
+    "status": "passed",
+    "scenarios": 46,
+    "chrome": "157.0.8103.52",
+    "details": "scenarios.json"
+  },
+  "dataInvariants": {
+    "dagSorts": 909,
+    "executionScopes": 1908,
+    "exactSourcePaths": 3161,
+    "mixedRoutes": 5189,
+    "inlineStates": 61,
+    "forwardInlineRoutes": 1735,
+    "timelineLayouts": 126
+  },
+  "specialist": {
+    "command": "node scripts/verify-visual-affordances.mjs --output docs/research/quiet-surfaces --baseline d961982",
+    "status": "passed",
+    "details": "verification.json",
+    "desktopViewports": [
+      [
+        1586,
+        912
+      ],
+      [
+        1280,
+        800
+      ]
+    ],
+    "zeroOfflineHttp": true,
+    "zeroPageErrors": true,
+    "minimumSampledContrast": 5.234604451882848,
+    "contrastSamples": 103
+  },
+  "firstRender": {
+    "chrome": "157.0.8103.52",
+    "timeoutMs": 30000,
+    "mode": "overview",
+    "excludesInitialBundleLoad": true,
+    "runs": [
+      {
+        "sourceSteps": 500,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 96.69999998807907
+      },
+      {
+        "sourceSteps": 2000,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 146
+      }
+    ]
+  },
+  "detector": {
+    "runs": 1,
+    "findings": 0,
+    "file": "detector.json"
+  },
+  "sourceDiffCheck": {
+    "status": "passed",
+    "command": "git diff --check",
+    "generatedHtml": "passed; no whitespace exception needed"
+  },
+  "screenshots": {
+    "count": 46,
+    "before": 6,
+    "localAfter": 20,
+    "offlineAfter": 20,
+    "manifest": "capture-manifest.json",
+    "baselineProof": "baseline-provenance.json",
+    "localOfflineComparison": "local-offline-comparison.json"
+  },
+  "limitations": [
+    "Existing large bundle warning",
+    "Overview paint excludes initial bundle loading and draws3 nodes",
+    "Desktop framing scope; inherited narrow compatibility only",
+    "Frozen-v1 missing fields remain unrecorded",
+    "No new model requests, private logs, credentials or generated assets",
+    "Pre-existing Impeccable sidecar drift is not migrated"
+  ],
+  "review": {
+    "file": "finish-review.md",
+    "disposition": "ship",
+    "scope": "Specified six-route desktop before/after, compact, expanded, fullscreen and dark screenshots plus source; no browser execution by reviewer or new mobile certification",
+    "materialFindings": 0
+  }
+}

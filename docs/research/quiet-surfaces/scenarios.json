@@ -1,0 +1,4474 @@
+{
+  "chrome": "157.0.8103.52",
+  "scenarios": [
+    {
+      "name": "run-list",
+      "status": "ok"
+    },
+    {
+      "name": "graph",
+      "status": "ok"
+    },
+    {
+      "name": "compare",
+      "status": "ok"
+    },
+    {
+      "name": "dag",
+      "status": "ok"
+    },
+    {
+      "name": "dag-compare",
+      "status": "ok"
+    },
+    {
+      "name": "hierarchy",
+      "status": "ok"
+    },
+    {
+      "name": "workbench",
+      "status": "ok",
+      "value": {
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 900,
+            "scrollWidth": 1440,
+            "scrollHeight": 900,
+            "panes": [
+              {
+                "x": 33,
+                "y": 282,
+                "width": 264,
+                "height": 525,
+                "top": 282,
+                "right": 297,
+                "bottom": 807,
+                "left": 33
+              },
+              {
+                "x": 297,
+                "y": 282,
+                "width": 790,
+                "height": 388.5,
+                "top": 282,
+                "right": 1087,
+                "bottom": 670.5,
+                "left": 297
+              },
+              {
+                "x": 297,
+                "y": 670.5,
+                "width": 790,
+                "height": 136.5,
+                "top": 670.5,
+                "right": 1087,
+                "bottom": 807,
+                "left": 297
+              },
+              {
+                "x": 1087,
+                "y": 282,
+                "width": 320,
+                "height": 525,
+                "top": 282,
+                "right": 1407,
+                "bottom": 807,
+                "left": 1087
+              },
+              {
+                "x": 32,
+                "y": 820,
+                "width": 1376,
+                "height": 64,
+                "top": 820,
+                "right": 1408,
+                "bottom": 884,
+                "left": 32
+              }
+            ]
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "scrollWidth": 1280,
+            "scrollHeight": 800,
+            "panes": [
+              {
+                "x": 25,
+                "y": 282,
+                "width": 248,
+                "height": 425,
+                "top": 282,
+                "right": 273,
+                "bottom": 707,
+                "left": 25
+              },
+              {
+                "x": 273,
+                "y": 282,
+                "width": 682,
+                "height": 313,
+                "top": 282,
+                "right": 955,
+                "bottom": 595,
+                "left": 273
+              },
+              {
+                "x": 273,
+                "y": 595,
+                "width": 682,
+                "height": 112,
+                "top": 595,
+                "right": 955,
+                "bottom": 707,
+                "left": 273
+              },
+              {
+                "x": 955,
+                "y": 282,
+                "width": 300,
+                "height": 425,
+                "top": 282,
+                "right": 1255,
+                "bottom": 707,
+                "left": 955
+              },
+              {
+                "x": 24,
+                "y": 720,
+                "width": 1232,
+                "height": 64,
+                "top": 720,
+                "right": 1256,
+                "bottom": 784,
+                "left": 24
+              }
+            ]
+          }
+        ],
+        "workflow": [
+          "#50 failed",
+          "#60 patch",
+          "#70 failed rerun",
+          "#100 validation passed"
+        ],
+        "synchronization": true,
+        "narrowInspector": "toggle",
+        "longEvidence": true,
+        "empty": true,
+        "offline": false
+      }
+    },
+    {
+      "name": "dashboard",
+      "status": "ok",
+      "value": {
+        "replay": true,
+        "recordedPatch": true,
+        "annotations": true,
+        "playback": true,
+        "timeline": true,
+        "timelineScale": {
+          "sharedAxis": true,
+          "positionAndWidth": [
+            1,
+            2,
+            8
+          ],
+          "integerOrdinals": true
+        },
+        "sourceIndex": "9007199254740993",
+        "offline": false
+      }
+    },
+    {
+      "name": "dashboard-compare",
+      "status": "ok"
+    },
+    {
+      "name": "four-reference",
+      "status": "ok",
+      "value": {
+        "operationChains": [
+          "replay: failure/patch/rerun/pass, seek/speed/play",
+          "graph: layers/zoom/hierarchy/context/activity/fullscreen",
+          "timeline: scales/filters/three-way selection",
+          "compare: run selection/divergence/signature/patch/three DAGs"
+        ],
+        "sourceTruth": {
+          "completionIsNeutral": true,
+          "recordedValidationIsSuccessful": true,
+          "genericRolesQualified": true,
+          "noPatchEditQualified": true
+        },
+        "geometries": [
+          {
+            "view": "compare",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          }
+        ],
+        "sourceIndex": "9007199254740993",
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "density",
+      "status": "ok",
+      "value": {
+        "geometry": [
+          {
+            "view": "replay",
+            "width": 1586,
+            "height": 912,
+            "overflow": false,
+            "stage": {
+              "x": 32,
+              "y": 183,
+              "width": 1522,
+              "height": 44,
+              "top": 183,
+              "right": 1554,
+              "bottom": 227,
+              "left": 32
+            },
+            "primary": {
+              "x": 297,
+              "y": 282,
+              "width": 1256,
+              "height": 397.390625,
+              "top": 282,
+              "right": 1553,
+              "bottom": 679.390625,
+              "left": 297
+            },
+            "readingSize": 15
+          },
+          {
+            "view": "timeline",
+            "width": 1586,
+            "height": 912,
+            "overflow": false,
+            "stage": {
+              "x": 32,
+              "y": 183,
+              "width": 1522,
+              "height": 44,
+              "top": 183,
+              "right": 1554,
+              "bottom": 227,
+              "left": 32
+            },
+            "primary": {
+              "x": 32,
+              "y": 281,
+              "width": 1522,
+              "height": 387.640625,
+              "top": 281,
+              "right": 1554,
+              "bottom": 668.640625,
+              "left": 32
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "graph",
+            "width": 1586,
+            "height": 912,
+            "overflow": false,
+            "stage": {
+              "x": 32,
+              "y": 183,
+              "width": 1522,
+              "height": 44,
+              "top": 183,
+              "right": 1554,
+              "bottom": 227,
+              "left": 32
+            },
+            "primary": {
+              "x": 33,
+              "y": 296,
+              "width": 1180,
+              "height": 515.5,
+              "top": 296,
+              "right": 1213,
+              "bottom": 811.5,
+              "left": 33
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "compare",
+            "width": 1586,
+            "height": 912,
+            "overflow": false,
+            "stage": null,
+            "primary": {
+              "x": 32,
+              "y": 432,
+              "width": 1158,
+              "height": 787,
+              "top": 432,
+              "right": 1190,
+              "bottom": 1219,
+              "left": 32
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "replay",
+            "width": 1280,
+            "height": 800,
+            "overflow": false,
+            "stage": {
+              "x": 24,
+              "y": 183,
+              "width": 1232,
+              "height": 44,
+              "top": 183,
+              "right": 1256,
+              "bottom": 227,
+              "left": 24
+            },
+            "primary": {
+              "x": 273,
+              "y": 282,
+              "width": 982,
+              "height": 313,
+              "top": 282,
+              "right": 1255,
+              "bottom": 595,
+              "left": 273
+            },
+            "readingSize": 15
+          },
+          {
+            "view": "timeline",
+            "width": 1280,
+            "height": 800,
+            "overflow": false,
+            "stage": {
+              "x": 24,
+              "y": 183,
+              "width": 1232,
+              "height": 44,
+              "top": 183,
+              "right": 1256,
+              "bottom": 227,
+              "left": 24
+            },
+            "primary": {
+              "x": 24,
+              "y": 281,
+              "width": 1232,
+              "height": 360,
+              "top": 281,
+              "right": 1256,
+              "bottom": 641,
+              "left": 24
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "graph",
+            "width": 1280,
+            "height": 800,
+            "overflow": false,
+            "stage": {
+              "x": 24,
+              "y": 183,
+              "width": 1232,
+              "height": 44,
+              "top": 183,
+              "right": 1256,
+              "bottom": 227,
+              "left": 24
+            },
+            "primary": {
+              "x": 25,
+              "y": 296,
+              "width": 910,
+              "height": 403.5,
+              "top": 296,
+              "right": 935,
+              "bottom": 699.5,
+              "left": 25
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "compare",
+            "width": 1280,
+            "height": 800,
+            "overflow": false,
+            "stage": null,
+            "primary": {
+              "x": 24,
+              "y": 432,
+              "width": 888,
+              "height": 787,
+              "top": 432,
+              "right": 912,
+              "bottom": 1219,
+              "left": 24
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "replay",
+            "width": 390,
+            "height": 844,
+            "overflow": false,
+            "stage": {
+              "x": 12,
+              "y": 199,
+              "width": 366,
+              "height": 56,
+              "top": 199,
+              "right": 378,
+              "bottom": 255,
+              "left": 12
+            },
+            "primary": {
+              "x": 13,
+              "y": 524,
+              "width": 364,
+              "height": 442.53125,
+              "top": 524,
+              "right": 377,
+              "bottom": 966.53125,
+              "left": 13
+            },
+            "readingSize": 13
+          },
+          {
+            "view": "timeline",
+            "width": 390,
+            "height": 844,
+            "overflow": false,
+            "stage": {
+              "x": 12,
+              "y": 199,
+              "width": 366,
+              "height": 56,
+              "top": 199,
+              "right": 378,
+              "bottom": 255,
+              "left": 12
+            },
+            "primary": {
+              "x": 12,
+              "y": 323,
+              "width": 366,
+              "height": 520,
+              "top": 323,
+              "right": 378,
+              "bottom": 843,
+              "left": 12
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "graph",
+            "width": 390,
+            "height": 844,
+            "overflow": false,
+            "stage": {
+              "x": 12,
+              "y": 199,
+              "width": 366,
+              "height": 56,
+              "top": 199,
+              "right": 378,
+              "bottom": 255,
+              "left": 12
+            },
+            "primary": {
+              "x": 13,
+              "y": 418,
+              "width": 364,
+              "height": 554.5,
+              "top": 418,
+              "right": 377,
+              "bottom": 972.5,
+              "left": 13
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "compare",
+            "width": 390,
+            "height": 844,
+            "overflow": false,
+            "stage": null,
+            "primary": {
+              "x": 12,
+              "y": 595.640625,
+              "width": 366,
+              "height": 1005,
+              "top": 595.640625,
+              "right": 378,
+              "bottom": 1600.640625,
+              "left": 12
+            },
+            "readingSize": 10
+          }
+        ],
+        "disclosureAndSourceIdentity": true,
+        "workflow": [
+          "failure",
+          "patch",
+          "failed rerun",
+          "passing validation"
+        ],
+        "offline": false
+      }
+    },
+    {
+      "name": "three-page-desktop",
+      "status": "ok",
+      "value": {
+        "captures": [
+          {
+            "name": "graph-before.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": null,
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "graph-after.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "compare-before.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": null,
+            "imageWidth": 1586,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "compare-after.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": "30",
+            "imageWidth": 1586,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "replay-before.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "10",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "replay-after.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "graph-before-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "scroll": 0,
+            "theme": "light",
+            "step": null,
+            "imageWidth": 1280,
+            "imageHeight": 800,
+            "fullPage": true
+          },
+          {
+            "name": "graph-after-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1280,
+            "imageHeight": 800,
+            "fullPage": true
+          },
+          {
+            "name": "compare-before-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": null,
+            "imageWidth": 1280,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "compare-after-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": "30",
+            "imageWidth": 1280,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "replay-before-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "scroll": 0,
+            "theme": "light",
+            "step": "10",
+            "imageWidth": 1280,
+            "imageHeight": 800,
+            "fullPage": true
+          },
+          {
+            "name": "replay-after-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1280,
+            "imageHeight": 800,
+            "fullPage": true
+          },
+          {
+            "name": "graph-stages.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": null,
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "graph-layers.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "graph-legend.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "graph-error.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "graph-context.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "graph-activity.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "graph-signatures.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "graph-files.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "graph-timeline.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "compare-matches.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "compare-selected-patch.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "compare-agent-a.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2107,
+            "scroll": 1043,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 2107,
+            "fullPage": true
+          },
+          {
+            "name": "compare-snapshots-a.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2740,
+            "scroll": 1676,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 2740,
+            "fullPage": true
+          },
+          {
+            "name": "compare-agent-b.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2107,
+            "scroll": 1043,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 2107,
+            "fullPage": true
+          },
+          {
+            "name": "compare-snapshots-b.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2864,
+            "scroll": 1800,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 2864,
+            "fullPage": true
+          },
+          {
+            "name": "compare-findings.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1741,
+            "scroll": 781,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1741,
+            "fullPage": true
+          },
+          {
+            "name": "compare-patch.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1211,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1211,
+            "fullPage": true
+          },
+          {
+            "name": "compare-final-a.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1211,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1211,
+            "fullPage": true
+          },
+          {
+            "name": "compare-final-b.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1211,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1211,
+            "fullPage": true
+          },
+          {
+            "name": "compare-metrics.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1262,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1262,
+            "fullPage": true
+          },
+          {
+            "name": "compare-charts.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1646,
+            "scroll": 476,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1646,
+            "fullPage": true
+          },
+          {
+            "name": "compare-dags.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2263,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": false
+          },
+          {
+            "name": "replay-failure.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "replay-stages.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "replay-file.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "replay-details.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "replay-context.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "replay-validation.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "100",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "replay-playback.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "20",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "shared-search.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "120",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "shared-status.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 949,
+            "scroll": 0,
+            "theme": "light",
+            "step": "120",
+            "imageWidth": 1586,
+            "imageHeight": 949,
+            "fullPage": true
+          },
+          {
+            "name": "shared-dark.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 949,
+            "scroll": 0,
+            "theme": "dark",
+            "step": "120",
+            "imageWidth": 1586,
+            "imageHeight": 949,
+            "fullPage": true
+          },
+          {
+            "name": "shared-run-details.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "120",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "shared-actions.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "120",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "missing-patch.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "31",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "missing-time.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "9007199254740993",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          }
+        ],
+        "geometry": [
+          {
+            "view": "graph",
+            "width": 1586,
+            "canvas": {
+              "x": 33,
+              "y": 296,
+              "width": 1180,
+              "height": 515.5
+            }
+          },
+          {
+            "view": "replay",
+            "width": 1586,
+            "code": {
+              "x": 297,
+              "y": 282,
+              "width": 936,
+              "height": 397.390625
+            },
+            "list": {
+              "x": 33,
+              "y": 282,
+              "width": 264,
+              "height": 537
+            }
+          },
+          {
+            "view": "graph",
+            "width": 1280,
+            "canvas": {
+              "x": 25,
+              "y": 296,
+              "width": 910,
+              "height": 403.5
+            }
+          },
+          {
+            "view": "replay",
+            "width": 1280,
+            "code": {
+              "x": 273,
+              "y": 282,
+              "width": 682,
+              "height": 313
+            },
+            "list": {
+              "x": 25,
+              "y": 282,
+              "width": 248,
+              "height": 425
+            }
+          }
+        ],
+        "sourceIdentity": true,
+        "threeOperationChains": true,
+        "exportFormats": [
+          "PNG",
+          "SVG",
+          "CSV"
+        ],
+        "errors": [],
+        "offline": false
+      }
+    },
+    {
+      "name": "execution-map",
+      "status": "ok",
+      "value": {
+        "sourceSteps": 500,
+        "rootNodes": 3,
+        "contentSummaries": true,
+        "recordedExampleJump": true,
+        "globalSearch": true,
+        "exactSource": true,
+        "keyboardNavigator": true,
+        "inline": {
+          "sameCanvas": true,
+          "siblingsPreserved": true,
+          "nested": true,
+          "multipleBranches": true,
+          "headerCollapse": true,
+          "zoomAndAnchorPreserved": true,
+          "exactSourcePreserved": true,
+          "searchPreservesBranches": true,
+          "keyboard": true,
+          "focusRestored": true,
+          "collapseAll": true,
+          "collapses": 3
+        },
+        "smaller": {
+          "sameCanvas": true,
+          "siblingsPreserved": true,
+          "nested": true,
+          "multipleBranches": true,
+          "headerCollapse": true,
+          "zoomAndAnchorPreserved": true,
+          "exactSourcePreserved": true,
+          "searchPreservesBranches": true,
+          "keyboard": true,
+          "focusRestored": true,
+          "collapseAll": true,
+          "collapses": 3
+        },
+        "legacySteps": true,
+        "currentStateSvg": true,
+        "currentStatePng": true,
+        "offline": false
+      }
+    },
+    {
+      "name": "node-appearance",
+      "status": "ok",
+      "value": {
+        "geometry": [
+          {
+            "width": 1586,
+            "height": 912,
+            "sourceKinds": 7,
+            "distinctSilhouettes": 7,
+            "fullscreenInspector": true,
+            "sourcePreserved": true,
+            "nestedPatchFullscreen": true
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "sourceKinds": 7,
+            "distinctSilhouettes": 7,
+            "fullscreenInspector": true,
+            "sourcePreserved": true,
+            "nestedPatchFullscreen": true
+          }
+        ],
+        "captures": [
+          {
+            "file": "appearance-types.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "appearance-fullscreen-failure.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "appearance-fullscreen-patch.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "appearance-types-1280.png",
+            "width": 1280,
+            "height": 800
+          },
+          {
+            "file": "appearance-fullscreen-failure-1280.png",
+            "width": 1280,
+            "height": 800
+          },
+          {
+            "file": "appearance-fullscreen-patch-1280.png",
+            "width": 1280,
+            "height": 800
+          },
+          {
+            "file": "appearance-merged-sections.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "appearance-missing-data.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "appearance-replay.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "appearance-compare.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "appearance-compare-fullscreen.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "appearance-dark.png",
+            "width": 1586,
+            "height": 912
+          }
+        ],
+        "sourceSelection": "failure → recorded patch → later validation",
+        "sharedTheme": true,
+        "mergedInlineFullscreen": true,
+        "missingData": true,
+        "currentStateSvg": true,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "graph-fullscreen",
+      "status": "ok",
+      "value": {
+        "geometry": [
+          {
+            "width": 1586,
+            "height": 912,
+            "viewport": {
+              "x": 67,
+              "y": 114,
+              "width": 1156,
+              "height": 630.90625,
+              "top": 114,
+              "right": 1223,
+              "bottom": 744.90625,
+              "left": 67
+            },
+            "nodes": [
+              {
+                "source": "7",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 162.96731567382812,
+                  "width": 118.13287353515625,
+                  "height": 38.461883544921875,
+                  "top": 162.96731567382812,
+                  "right": 708.1873779296875,
+                  "bottom": 201.42919921875,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "19",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 248.1328887939453,
+                  "width": 118.13287353515625,
+                  "height": 38.46186828613281,
+                  "top": 248.1328887939453,
+                  "right": 708.1873779296875,
+                  "bottom": 286.5947570800781,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "9007199254740993",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 333.2984619140625,
+                  "width": 118.13287353515625,
+                  "height": 38.46185302734375,
+                  "top": 333.2984619140625,
+                  "right": 708.1873779296875,
+                  "bottom": 371.76031494140625,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "9007199254741007",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 418.4640197753906,
+                  "width": 118.13287353515625,
+                  "height": 38.46185302734375,
+                  "top": 418.4640197753906,
+                  "right": 708.1873779296875,
+                  "bottom": 456.9258728027344,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "9007199254741021",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 503.62957763671875,
+                  "width": 118.13287353515625,
+                  "height": 38.46185302734375,
+                  "top": 503.62957763671875,
+                  "right": 708.1873779296875,
+                  "bottom": 542.0914306640625,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "9007199254741033",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 588.795166015625,
+                  "width": 118.13287353515625,
+                  "height": 38.46185302734375,
+                  "top": 588.795166015625,
+                  "right": 708.1873779296875,
+                  "bottom": 627.2570190429688,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "9007199254741049",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 673.960693359375,
+                  "width": 118.13287353515625,
+                  "height": 38.46185302734375,
+                  "top": 673.960693359375,
+                  "right": 708.1873779296875,
+                  "bottom": 712.4225463867188,
+                  "left": 590.0545043945312
+                }
+              }
+            ],
+            "viewBox": "-753.5607618053743 -63.295799634750836 1683.1215236107487 918.5915992695017",
+            "header": {
+              "x": 0,
+              "y": 0,
+              "width": 1586,
+              "height": 52,
+              "top": 0,
+              "right": 1586,
+              "bottom": 52,
+              "left": 0
+            },
+            "sidebar": {
+              "x": 1236,
+              "y": 52,
+              "width": 350,
+              "height": 860,
+              "top": 52,
+              "right": 1586,
+              "bottom": 912,
+              "left": 1236
+            },
+            "allSevenFit": true,
+            "selectedFinalVisible": true,
+            "missingPatchDisabled": true,
+            "exactSourceAndFocus": true,
+            "activityAndPlayback": true,
+            "popoversInsideFullscreen": true,
+            "exports": true,
+            "typography": {
+              "heading": {
+                "size": 18,
+                "lineHeight": 24.3,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "label": {
+                "size": 13,
+                "lineHeight": 18.2,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "value": {
+                "size": 15,
+                "lineHeight": 22.5,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "evidenceTab": {
+                "size": 14,
+                "lineHeight": 16.8,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "code": {
+                "size": 15,
+                "lineHeight": 24.75,
+                "family": "\"JetBrains Mono\", ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace"
+              },
+              "status": {
+                "size": 13,
+                "lineHeight": 19.5,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              }
+            }
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "viewport": {
+              "x": 67,
+              "y": 114,
+              "width": 870,
+              "height": 518.90625,
+              "top": 114,
+              "right": 937,
+              "bottom": 632.90625,
+              "left": 67
+            },
+            "nodes": [
+              {
+                "source": "7",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 156.80218505859375,
+                  "width": 96.0411376953125,
+                  "height": 31.269195556640625,
+                  "top": 156.80218505859375,
+                  "right": 553.370849609375,
+                  "bottom": 188.07138061523438,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "19",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 226.0411376953125,
+                  "width": 96.0411376953125,
+                  "height": 31.26922607421875,
+                  "top": 226.0411376953125,
+                  "right": 553.370849609375,
+                  "bottom": 257.31036376953125,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "9007199254740993",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 295.28009033203125,
+                  "width": 96.0411376953125,
+                  "height": 31.26922607421875,
+                  "top": 295.28009033203125,
+                  "right": 553.370849609375,
+                  "bottom": 326.54931640625,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "9007199254741007",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 364.51904296875,
+                  "width": 96.0411376953125,
+                  "height": 31.26922607421875,
+                  "top": 364.51904296875,
+                  "right": 553.370849609375,
+                  "bottom": 395.78826904296875,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "9007199254741021",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 433.7580261230469,
+                  "width": 96.0411376953125,
+                  "height": 31.269195556640625,
+                  "top": 433.7580261230469,
+                  "right": 553.370849609375,
+                  "bottom": 465.0272216796875,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "9007199254741033",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 502.9969787597656,
+                  "width": 96.0411376953125,
+                  "height": 31.269256591796875,
+                  "top": 502.9969787597656,
+                  "right": 553.370849609375,
+                  "bottom": 534.2662353515625,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "9007199254741049",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 572.2359619140625,
+                  "width": 96.0411376953125,
+                  "height": 31.2691650390625,
+                  "top": 572.2359619140625,
+                  "right": 553.370849609375,
+                  "bottom": 603.505126953125,
+                  "left": 457.3297119140625
+                }
+              }
+            ],
+            "viewBox": "-691.041139849817 -68.65438675309673 1558.082279699634 929.3087735061935",
+            "header": {
+              "x": 0,
+              "y": 0,
+              "width": 1280,
+              "height": 52,
+              "top": 0,
+              "right": 1280,
+              "bottom": 52,
+              "left": 0
+            },
+            "sidebar": {
+              "x": 950,
+              "y": 52,
+              "width": 330,
+              "height": 748,
+              "top": 52,
+              "right": 1280,
+              "bottom": 800,
+              "left": 950
+            },
+            "allSevenFit": true,
+            "selectedFinalVisible": true,
+            "missingPatchDisabled": true,
+            "exactSourceAndFocus": true,
+            "activityAndPlayback": true,
+            "popoversInsideFullscreen": true,
+            "exports": true,
+            "typography": {
+              "heading": {
+                "size": 18,
+                "lineHeight": 24.3,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "label": {
+                "size": 13,
+                "lineHeight": 18.2,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "value": {
+                "size": 15,
+                "lineHeight": 22.5,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "evidenceTab": {
+                "size": 14,
+                "lineHeight": 16.8,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "code": {
+                "size": 15,
+                "lineHeight": 24.75,
+                "family": "\"JetBrains Mono\", ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace"
+              },
+              "status": {
+                "size": 13,
+                "lineHeight": 19.5,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              }
+            }
+          }
+        ],
+        "captures": [
+          "fullscreen-unselected-1586.png",
+          "fullscreen-final-no-patch-1586.png",
+          "fullscreen-activity-1586.png",
+          "fullscreen-patch-1586.png",
+          "fullscreen-unselected-1280.png",
+          "fullscreen-final-no-patch-1280.png",
+          "fullscreen-activity-1280.png",
+          "fullscreen-patch-1280.png",
+          "fullscreen-long-located.png",
+          "fullscreen-long-located-1280.png"
+        ],
+        "longTraceLocate": true,
+        "resizeAndActivityKeepSelectionVisible": true,
+        "darkSummaryContrast": true,
+        "ordinaryGraphReturn": true,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "playback-preferences",
+      "status": "ok",
+      "value": {
+        "automaticAndPinnedEvidence": true,
+        "playbackSources": [
+          60,
+          70,
+          80,
+          90
+        ],
+        "stepAndSeek": true,
+        "terminalTestsAndCollapsedState": true,
+        "rawDisclosurePreserved": true,
+        "sameMountedWorkspace": true,
+        "noReloadOrRefetch": true,
+        "inspectorTabsPreserved": true,
+        "graphAutoplayKeepsDiff": true,
+        "graphAutoplaySources": [
+          60,
+          70,
+          80,
+          90
+        ],
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "document-workspace",
+      "status": "ok",
+      "value": {
+        "geometry": [
+          {
+            "view": "graph",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "replay",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "timeline",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "compare",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1488,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          },
+          {
+            "view": "sankey",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1925,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          },
+          {
+            "view": "runs",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2548,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          },
+          {
+            "view": "graph",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "replay",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "timeline",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "compare",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 1488,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          },
+          {
+            "view": "sankey",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 1955,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          },
+          {
+            "view": "runs",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 2548,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          }
+        ],
+        "captures": [
+          "document-graph-1586.png",
+          "document-graph-top-1586.png",
+          "document-graph-scrolled-1586.png",
+          "document-replay-1586.png",
+          "document-replay-top-1586.png",
+          "document-replay-terminal-expanded-1586.png",
+          "document-replay-scrolled-1586.png",
+          "document-timeline-1586.png",
+          "document-timeline-top-1586.png",
+          "document-timeline-scrolled-1586.png",
+          "document-compare-1586.png",
+          "document-compare-top-1586.png",
+          "document-compare-scrolled-1586.png",
+          "document-sankey-1586.png",
+          "document-sankey-top-1586.png",
+          "document-sankey-scrolled-1586.png",
+          "document-runs-1586.png",
+          "document-runs-top-1586.png",
+          "document-runs-scrolled-1586.png",
+          "document-graph-1280.png",
+          "document-graph-top-1280.png",
+          "document-graph-scrolled-1280.png",
+          "document-replay-1280.png",
+          "document-replay-top-1280.png",
+          "document-replay-terminal-expanded-1280.png",
+          "document-replay-scrolled-1280.png",
+          "document-timeline-1280.png",
+          "document-timeline-top-1280.png",
+          "document-timeline-scrolled-1280.png",
+          "document-compare-1280.png",
+          "document-compare-top-1280.png",
+          "document-compare-scrolled-1280.png",
+          "document-sankey-1280.png",
+          "document-sankey-top-1280.png",
+          "document-sankey-scrolled-1280.png",
+          "document-runs-1280.png",
+          "document-runs-top-1280.png",
+          "document-runs-scrolled-1280.png"
+        ],
+        "graphAndTimelineSingleScreen": true,
+        "replaySingleScreen": true,
+        "graphWheelStaysLocal": true,
+        "replayDockClearance": true,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "neutral-vertical",
+      "status": "ok",
+      "value": {
+        "geometry": [
+          {
+            "width": 1586,
+            "height": 912,
+            "canvas": {
+              "x": 33,
+              "y": 381,
+              "width": 1180,
+              "height": 430.5
+            },
+            "sourceOrder": "top-to-bottom",
+            "ordinaryWheel": true,
+            "modifierWheelZoom": true,
+            "inlineExpansion": true,
+            "fullscreenDetails": true,
+            "exactSource": true,
+            "whiteSvg": true
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "canvas": {
+              "x": 25,
+              "y": 381,
+              "width": 910,
+              "height": 318.5
+            },
+            "sourceOrder": "top-to-bottom",
+            "ordinaryWheel": true,
+            "modifierWheelZoom": true,
+            "inlineExpansion": true,
+            "fullscreenDetails": true,
+            "exactSource": true,
+            "whiteSvg": true
+          }
+        ],
+        "captures": [
+          "vertical-before-1586.png",
+          "vertical-expanded-1586.png",
+          "vertical-failure-1586.png",
+          "vertical-patch-1586.png",
+          "vertical-fullscreen-1586.png",
+          "vertical-before-1280.png",
+          "vertical-expanded-1280.png",
+          "vertical-failure-1280.png",
+          "vertical-patch-1280.png",
+          "vertical-fullscreen-1280.png"
+        ],
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "timeline-workspace",
+      "status": "ok",
+      "value": {
+        "viewports": [
+          1586,
+          1280
+        ],
+        "surfaces": [
+          "Graph Timeline",
+          "Execution Timeline"
+        ],
+        "labelsOpaqueAndFixed": true,
+        "noTokenOverlap": true,
+        "semanticZoom": true,
+        "exactGroupMemberSelection": true,
+        "fullscreenInspector": true,
+        "sourcePreserved": true,
+        "captures": [
+          "timeline-graph-compact.png",
+          "timeline-graph-scrolled.png",
+          "timeline-graph-fullscreen.png",
+          "timeline-graph-scrolled-1280.png",
+          "timeline-graph-fullscreen-1280.png",
+          "timeline-timeline-compact.png",
+          "timeline-timeline-scrolled.png",
+          "timeline-timeline-fullscreen.png",
+          "timeline-timeline-scrolled-1280.png",
+          "timeline-timeline-fullscreen-1280.png"
+        ],
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "sankey",
+      "status": "ok"
+    },
+    {
+      "name": "analytics",
+      "status": "ok",
+      "value": {
+        "summaryRecomputed": true,
+        "unknownVersusZero": true,
+        "groupingAndPagination": true,
+        "keyboard": true,
+        "scopeCSV": true,
+        "signalDrillIn": true,
+        "runGraph": true,
+        "emptyFilter": true,
+        "zeroStep": true,
+        "desktopSizes": [
+          1586,
+          1280
+        ],
+        "compatibilityWidth": 390,
+        "offline": false,
+        "pageErrors": 0
+      }
+    },
+    {
+      "name": "collapse-all",
+      "status": "ok",
+      "value": {
+        "toolbarAlwaysVisible": true,
+        "ordinaryAndFullscreen": true,
+        "desktopSizes": [
+          1586,
+          1280
+        ],
+        "overviewRestored": true,
+        "stepsAndHierarchy": true,
+        "shortRun": true,
+        "source": "10000000000000053",
+        "exactSourceAndPatchPreserved": true,
+        "sameSVG": true,
+        "offline": false,
+        "pageErrors": 0
+      }
+    },
+    {
+      "name": "visual-affordances",
+      "status": "ok",
+      "value": {
+        "desktopSizes": [
+          [
+            1586,
+            912
+          ],
+          [
+            1280,
+            800
+          ]
+        ],
+        "sixRoutes": true,
+        "keyboardFailureEditValidation": true,
+        "pinnedDiff": true,
+        "fullscreenEvidence": true,
+        "unknownAttemptsDisclosure": true,
+        "readingGuide": true,
+        "recordedTextCategoryAndActivity": true,
+        "comparisonDivergence": true,
+        "sharedMedianScale": true,
+        "semanticContrast": {
+          "minimum": 5.234604451882848,
+          "samples": 103
+        },
+        "captures": [
+          "replay-1586.png",
+          "timeline-1586.png",
+          "graph-1586.png",
+          "compare-1586.png",
+          "analytics-1586.png",
+          "datasets-1586.png",
+          "replay-1280.png",
+          "timeline-1280.png",
+          "graph-1280.png",
+          "compare-1280.png",
+          "analytics-1280.png",
+          "datasets-1280.png"
+        ],
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "theme",
+      "status": "ok"
+    },
+    {
+      "name": "folding",
+      "status": "ok"
+    },
+    {
+      "name": "narrow",
+      "status": "ok"
+    },
+    {
+      "name": "live",
+      "status": "ok"
+    },
+    {
+      "name": "first-render-500",
+      "status": "ok",
+      "value": {
+        "ms": 96.69999998807907,
+        "displayedNodes": 3
+      }
+    },
+    {
+      "name": "first-render-2000",
+      "status": "ok",
+      "value": {
+        "ms": 146,
+        "displayedNodes": 3
+      }
+    },
+    {
+      "name": "workbench-offline",
+      "status": "ok",
+      "value": {
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 900,
+            "scrollWidth": 1440,
+            "scrollHeight": 900,
+            "panes": [
+              {
+                "x": 33,
+                "y": 282,
+                "width": 264,
+                "height": 525,
+                "top": 282,
+                "right": 297,
+                "bottom": 807,
+                "left": 33
+              },
+              {
+                "x": 297,
+                "y": 282,
+                "width": 790,
+                "height": 388.5,
+                "top": 282,
+                "right": 1087,
+                "bottom": 670.5,
+                "left": 297
+              },
+              {
+                "x": 297,
+                "y": 670.5,
+                "width": 790,
+                "height": 136.5,
+                "top": 670.5,
+                "right": 1087,
+                "bottom": 807,
+                "left": 297
+              },
+              {
+                "x": 1087,
+                "y": 282,
+                "width": 320,
+                "height": 525,
+                "top": 282,
+                "right": 1407,
+                "bottom": 807,
+                "left": 1087
+              },
+              {
+                "x": 32,
+                "y": 820,
+                "width": 1376,
+                "height": 64,
+                "top": 820,
+                "right": 1408,
+                "bottom": 884,
+                "left": 32
+              }
+            ]
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "scrollWidth": 1280,
+            "scrollHeight": 800,
+            "panes": [
+              {
+                "x": 25,
+                "y": 282,
+                "width": 248,
+                "height": 425,
+                "top": 282,
+                "right": 273,
+                "bottom": 707,
+                "left": 25
+              },
+              {
+                "x": 273,
+                "y": 282,
+                "width": 682,
+                "height": 313,
+                "top": 282,
+                "right": 955,
+                "bottom": 595,
+                "left": 273
+              },
+              {
+                "x": 273,
+                "y": 595,
+                "width": 682,
+                "height": 112,
+                "top": 595,
+                "right": 955,
+                "bottom": 707,
+                "left": 273
+              },
+              {
+                "x": 955,
+                "y": 282,
+                "width": 300,
+                "height": 425,
+                "top": 282,
+                "right": 1255,
+                "bottom": 707,
+                "left": 955
+              },
+              {
+                "x": 24,
+                "y": 720,
+                "width": 1232,
+                "height": 64,
+                "top": 720,
+                "right": 1256,
+                "bottom": 784,
+                "left": 24
+              }
+            ]
+          }
+        ],
+        "workflow": [
+          "#50 failed",
+          "#60 patch",
+          "#70 failed rerun",
+          "#100 validation passed"
+        ],
+        "synchronization": true,
+        "narrowInspector": "toggle",
+        "longEvidence": false,
+        "empty": false,
+        "offline": true,
+        "httpRequests": 0
+      }
+    },
+    {
+      "name": "dashboard-offline",
+      "status": "ok",
+      "value": {
+        "replay": true,
+        "recordedPatch": true,
+        "annotations": true,
+        "playback": true,
+        "timeline": true,
+        "timelineScale": {
+          "sharedAxis": true,
+          "positionAndWidth": [
+            1,
+            2,
+            8
+          ],
+          "integerOrdinals": true
+        },
+        "sourceIndex": "9007199254740993",
+        "offline": true,
+        "httpRequests": 0
+      }
+    },
+    {
+      "name": "four-reference-offline",
+      "status": "ok",
+      "value": {
+        "operationChains": [
+          "replay: failure/patch/rerun/pass, seek/speed/play",
+          "graph: layers/zoom/hierarchy/context/activity/fullscreen",
+          "timeline: scales/filters/three-way selection",
+          "compare: run selection/divergence/signature/patch/three DAGs"
+        ],
+        "sourceTruth": {
+          "completionIsNeutral": true,
+          "recordedValidationIsSuccessful": true,
+          "genericRolesQualified": true,
+          "noPatchEditQualified": true
+        },
+        "geometries": [
+          {
+            "view": "compare",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1586,
+            "h": 912,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1586,
+            "h": 992,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 1280,
+            "h": 800,
+            "overflow": false
+          },
+          {
+            "view": "compare",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "graph",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "timeline",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          },
+          {
+            "view": "replay",
+            "w": 390,
+            "h": 844,
+            "overflow": false
+          }
+        ],
+        "sourceIndex": "9007199254740993",
+        "httpRequests": 0,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "density-offline",
+      "status": "ok",
+      "value": {
+        "geometry": [
+          {
+            "view": "replay",
+            "width": 1586,
+            "height": 912,
+            "overflow": false,
+            "stage": {
+              "x": 32,
+              "y": 183,
+              "width": 1522,
+              "height": 44,
+              "top": 183,
+              "right": 1554,
+              "bottom": 227,
+              "left": 32
+            },
+            "primary": {
+              "x": 297,
+              "y": 282,
+              "width": 1256,
+              "height": 397.390625,
+              "top": 282,
+              "right": 1553,
+              "bottom": 679.390625,
+              "left": 297
+            },
+            "readingSize": 15
+          },
+          {
+            "view": "timeline",
+            "width": 1586,
+            "height": 912,
+            "overflow": false,
+            "stage": {
+              "x": 32,
+              "y": 183,
+              "width": 1522,
+              "height": 44,
+              "top": 183,
+              "right": 1554,
+              "bottom": 227,
+              "left": 32
+            },
+            "primary": {
+              "x": 32,
+              "y": 281,
+              "width": 1522,
+              "height": 387.640625,
+              "top": 281,
+              "right": 1554,
+              "bottom": 668.640625,
+              "left": 32
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "graph",
+            "width": 1586,
+            "height": 912,
+            "overflow": false,
+            "stage": {
+              "x": 32,
+              "y": 183,
+              "width": 1522,
+              "height": 44,
+              "top": 183,
+              "right": 1554,
+              "bottom": 227,
+              "left": 32
+            },
+            "primary": {
+              "x": 33,
+              "y": 296,
+              "width": 1180,
+              "height": 515.5,
+              "top": 296,
+              "right": 1213,
+              "bottom": 811.5,
+              "left": 33
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "compare",
+            "width": 1586,
+            "height": 912,
+            "overflow": false,
+            "stage": null,
+            "primary": {
+              "x": 32,
+              "y": 432,
+              "width": 1158,
+              "height": 787,
+              "top": 432,
+              "right": 1190,
+              "bottom": 1219,
+              "left": 32
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "replay",
+            "width": 1280,
+            "height": 800,
+            "overflow": false,
+            "stage": {
+              "x": 24,
+              "y": 183,
+              "width": 1232,
+              "height": 44,
+              "top": 183,
+              "right": 1256,
+              "bottom": 227,
+              "left": 24
+            },
+            "primary": {
+              "x": 273,
+              "y": 282,
+              "width": 982,
+              "height": 313,
+              "top": 282,
+              "right": 1255,
+              "bottom": 595,
+              "left": 273
+            },
+            "readingSize": 15
+          },
+          {
+            "view": "timeline",
+            "width": 1280,
+            "height": 800,
+            "overflow": false,
+            "stage": {
+              "x": 24,
+              "y": 183,
+              "width": 1232,
+              "height": 44,
+              "top": 183,
+              "right": 1256,
+              "bottom": 227,
+              "left": 24
+            },
+            "primary": {
+              "x": 24,
+              "y": 281,
+              "width": 1232,
+              "height": 360,
+              "top": 281,
+              "right": 1256,
+              "bottom": 641,
+              "left": 24
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "graph",
+            "width": 1280,
+            "height": 800,
+            "overflow": false,
+            "stage": {
+              "x": 24,
+              "y": 183,
+              "width": 1232,
+              "height": 44,
+              "top": 183,
+              "right": 1256,
+              "bottom": 227,
+              "left": 24
+            },
+            "primary": {
+              "x": 25,
+              "y": 296,
+              "width": 910,
+              "height": 403.5,
+              "top": 296,
+              "right": 935,
+              "bottom": 699.5,
+              "left": 25
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "compare",
+            "width": 1280,
+            "height": 800,
+            "overflow": false,
+            "stage": null,
+            "primary": {
+              "x": 24,
+              "y": 432,
+              "width": 888,
+              "height": 787,
+              "top": 432,
+              "right": 912,
+              "bottom": 1219,
+              "left": 24
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "replay",
+            "width": 390,
+            "height": 844,
+            "overflow": false,
+            "stage": {
+              "x": 12,
+              "y": 199,
+              "width": 366,
+              "height": 56,
+              "top": 199,
+              "right": 378,
+              "bottom": 255,
+              "left": 12
+            },
+            "primary": {
+              "x": 13,
+              "y": 524,
+              "width": 364,
+              "height": 442.53125,
+              "top": 524,
+              "right": 377,
+              "bottom": 966.53125,
+              "left": 13
+            },
+            "readingSize": 13
+          },
+          {
+            "view": "timeline",
+            "width": 390,
+            "height": 844,
+            "overflow": false,
+            "stage": {
+              "x": 12,
+              "y": 199,
+              "width": 366,
+              "height": 56,
+              "top": 199,
+              "right": 378,
+              "bottom": 255,
+              "left": 12
+            },
+            "primary": {
+              "x": 12,
+              "y": 323,
+              "width": 366,
+              "height": 520,
+              "top": 323,
+              "right": 378,
+              "bottom": 843,
+              "left": 12
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "graph",
+            "width": 390,
+            "height": 844,
+            "overflow": false,
+            "stage": {
+              "x": 12,
+              "y": 199,
+              "width": 366,
+              "height": 56,
+              "top": 199,
+              "right": 378,
+              "bottom": 255,
+              "left": 12
+            },
+            "primary": {
+              "x": 13,
+              "y": 418,
+              "width": 364,
+              "height": 554.5,
+              "top": 418,
+              "right": 377,
+              "bottom": 972.5,
+              "left": 13
+            },
+            "readingSize": 12
+          },
+          {
+            "view": "compare",
+            "width": 390,
+            "height": 844,
+            "overflow": false,
+            "stage": null,
+            "primary": {
+              "x": 12,
+              "y": 595.640625,
+              "width": 366,
+              "height": 1005,
+              "top": 595.640625,
+              "right": 378,
+              "bottom": 1600.640625,
+              "left": 12
+            },
+            "readingSize": 10
+          }
+        ],
+        "disclosureAndSourceIdentity": true,
+        "workflow": [
+          "failure",
+          "patch",
+          "failed rerun",
+          "passing validation"
+        ],
+        "offline": true,
+        "httpRequests": 0
+      }
+    },
+    {
+      "name": "three-page-desktop-offline",
+      "status": "ok",
+      "value": {
+        "captures": [
+          {
+            "name": "offline-graph-before.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": null,
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-after.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-before.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": null,
+            "imageWidth": 1586,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-after.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": "30",
+            "imageWidth": 1586,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "offline-replay-before.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "10",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-replay-after.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-before-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "scroll": 0,
+            "theme": "light",
+            "step": null,
+            "imageWidth": 1280,
+            "imageHeight": 800,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-after-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1280,
+            "imageHeight": 800,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-before-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": null,
+            "imageWidth": 1280,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-after-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": "30",
+            "imageWidth": 1280,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "offline-replay-before-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "scroll": 0,
+            "theme": "light",
+            "step": "10",
+            "imageWidth": 1280,
+            "imageHeight": 800,
+            "fullPage": true
+          },
+          {
+            "name": "offline-replay-after-1280.png",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1280,
+            "imageHeight": 800,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-stages.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": null,
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-layers.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-legend.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-error.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-context.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-activity.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-signatures.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-files.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-graph-timeline.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-matches.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-selected-patch.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1488,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 1488,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-agent-a.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2107,
+            "scroll": 1043,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 2107,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-snapshots-a.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2740,
+            "scroll": 1676,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 2740,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-agent-b.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2107,
+            "scroll": 1043,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 2107,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-snapshots-b.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2864,
+            "scroll": 1800,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 2864,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-findings.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1741,
+            "scroll": 781,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1741,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-patch.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1211,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1211,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-final-a.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1211,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1211,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-final-b.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1211,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1211,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-metrics.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1262,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1262,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-charts.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1646,
+            "scroll": 476,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 1646,
+            "fullPage": true
+          },
+          {
+            "name": "offline-compare-dags.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2263,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": false
+          },
+          {
+            "name": "offline-replay-failure.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-replay-stages.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "50",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-replay-file.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-replay-details.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-replay-context.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "60",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-replay-validation.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "100",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-replay-playback.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "20",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-shared-search.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "120",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-shared-status.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 949,
+            "scroll": 0,
+            "theme": "light",
+            "step": "120",
+            "imageWidth": 1586,
+            "imageHeight": 949,
+            "fullPage": true
+          },
+          {
+            "name": "offline-shared-dark.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 949,
+            "scroll": 0,
+            "theme": "dark",
+            "step": "120",
+            "imageWidth": 1586,
+            "imageHeight": 949,
+            "fullPage": true
+          },
+          {
+            "name": "offline-shared-run-details.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "120",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-shared-actions.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "120",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-missing-patch.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "31",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          },
+          {
+            "name": "offline-missing-time.png",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "scroll": 0,
+            "theme": "light",
+            "step": "9007199254740993",
+            "imageWidth": 1586,
+            "imageHeight": 912,
+            "fullPage": true
+          }
+        ],
+        "geometry": [
+          {
+            "view": "graph",
+            "width": 1586,
+            "canvas": {
+              "x": 33,
+              "y": 296,
+              "width": 1180,
+              "height": 515.5
+            }
+          },
+          {
+            "view": "replay",
+            "width": 1586,
+            "code": {
+              "x": 297,
+              "y": 282,
+              "width": 936,
+              "height": 397.390625
+            },
+            "list": {
+              "x": 33,
+              "y": 282,
+              "width": 264,
+              "height": 537
+            }
+          },
+          {
+            "view": "graph",
+            "width": 1280,
+            "canvas": {
+              "x": 25,
+              "y": 296,
+              "width": 910,
+              "height": 403.5
+            }
+          },
+          {
+            "view": "replay",
+            "width": 1280,
+            "code": {
+              "x": 273,
+              "y": 282,
+              "width": 682,
+              "height": 313
+            },
+            "list": {
+              "x": 25,
+              "y": 282,
+              "width": 248,
+              "height": 425
+            }
+          }
+        ],
+        "sourceIdentity": true,
+        "threeOperationChains": true,
+        "exportFormats": [
+          "PNG",
+          "SVG",
+          "CSV"
+        ],
+        "errors": [],
+        "httpRequests": 0,
+        "offline": true
+      }
+    },
+    {
+      "name": "execution-map-offline",
+      "status": "ok",
+      "value": {
+        "sourceSteps": 500,
+        "rootNodes": 3,
+        "contentSummaries": true,
+        "recordedExampleJump": true,
+        "globalSearch": true,
+        "exactSource": true,
+        "keyboardNavigator": true,
+        "inline": {
+          "sameCanvas": true,
+          "siblingsPreserved": true,
+          "nested": true,
+          "multipleBranches": true,
+          "headerCollapse": true,
+          "zoomAndAnchorPreserved": true,
+          "exactSourcePreserved": true,
+          "searchPreservesBranches": true,
+          "keyboard": true,
+          "focusRestored": true,
+          "collapseAll": true,
+          "collapses": 3
+        },
+        "smaller": {
+          "sameCanvas": true,
+          "siblingsPreserved": true,
+          "nested": true,
+          "multipleBranches": true,
+          "headerCollapse": true,
+          "zoomAndAnchorPreserved": true,
+          "exactSourcePreserved": true,
+          "searchPreservesBranches": true,
+          "keyboard": true,
+          "focusRestored": true,
+          "collapseAll": true,
+          "collapses": 3
+        },
+        "legacySteps": true,
+        "currentStateSvg": true,
+        "currentStatePng": true,
+        "offline": true,
+        "offlineHttp": 0
+      }
+    },
+    {
+      "name": "node-appearance-offline",
+      "status": "ok",
+      "value": {
+        "geometry": [
+          {
+            "width": 1586,
+            "height": 912,
+            "sourceKinds": 7,
+            "distinctSilhouettes": 7,
+            "fullscreenInspector": true,
+            "sourcePreserved": true,
+            "nestedPatchFullscreen": true
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "sourceKinds": 7,
+            "distinctSilhouettes": 7,
+            "fullscreenInspector": true,
+            "sourcePreserved": true,
+            "nestedPatchFullscreen": true
+          }
+        ],
+        "captures": [
+          {
+            "file": "offline-appearance-types.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "offline-appearance-fullscreen-failure.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "offline-appearance-fullscreen-patch.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "offline-appearance-types-1280.png",
+            "width": 1280,
+            "height": 800
+          },
+          {
+            "file": "offline-appearance-fullscreen-failure-1280.png",
+            "width": 1280,
+            "height": 800
+          },
+          {
+            "file": "offline-appearance-fullscreen-patch-1280.png",
+            "width": 1280,
+            "height": 800
+          },
+          {
+            "file": "offline-appearance-merged-sections.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "offline-appearance-missing-data.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "offline-appearance-replay.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "offline-appearance-compare.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "offline-appearance-compare-fullscreen.png",
+            "width": 1586,
+            "height": 912
+          },
+          {
+            "file": "offline-appearance-dark.png",
+            "width": 1586,
+            "height": 912
+          }
+        ],
+        "sourceSelection": "failure → recorded patch → later validation",
+        "sharedTheme": true,
+        "mergedInlineFullscreen": true,
+        "missingData": true,
+        "currentStateSvg": true,
+        "httpRequests": 0,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "graph-fullscreen-offline",
+      "status": "ok",
+      "value": {
+        "geometry": [
+          {
+            "width": 1586,
+            "height": 912,
+            "viewport": {
+              "x": 67,
+              "y": 114,
+              "width": 1156,
+              "height": 630.90625,
+              "top": 114,
+              "right": 1223,
+              "bottom": 744.90625,
+              "left": 67
+            },
+            "nodes": [
+              {
+                "source": "7",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 162.96731567382812,
+                  "width": 118.13287353515625,
+                  "height": 38.461883544921875,
+                  "top": 162.96731567382812,
+                  "right": 708.1873779296875,
+                  "bottom": 201.42919921875,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "19",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 248.1328887939453,
+                  "width": 118.13287353515625,
+                  "height": 38.46186828613281,
+                  "top": 248.1328887939453,
+                  "right": 708.1873779296875,
+                  "bottom": 286.5947570800781,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "9007199254740993",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 333.2984619140625,
+                  "width": 118.13287353515625,
+                  "height": 38.46185302734375,
+                  "top": 333.2984619140625,
+                  "right": 708.1873779296875,
+                  "bottom": 371.76031494140625,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "9007199254741007",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 418.4640197753906,
+                  "width": 118.13287353515625,
+                  "height": 38.46185302734375,
+                  "top": 418.4640197753906,
+                  "right": 708.1873779296875,
+                  "bottom": 456.9258728027344,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "9007199254741021",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 503.62957763671875,
+                  "width": 118.13287353515625,
+                  "height": 38.46185302734375,
+                  "top": 503.62957763671875,
+                  "right": 708.1873779296875,
+                  "bottom": 542.0914306640625,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "9007199254741033",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 588.795166015625,
+                  "width": 118.13287353515625,
+                  "height": 38.46185302734375,
+                  "top": 588.795166015625,
+                  "right": 708.1873779296875,
+                  "bottom": 627.2570190429688,
+                  "left": 590.0545043945312
+                }
+              },
+              {
+                "source": "9007199254741049",
+                "box": {
+                  "x": 590.0545043945312,
+                  "y": 673.960693359375,
+                  "width": 118.13287353515625,
+                  "height": 38.46185302734375,
+                  "top": 673.960693359375,
+                  "right": 708.1873779296875,
+                  "bottom": 712.4225463867188,
+                  "left": 590.0545043945312
+                }
+              }
+            ],
+            "viewBox": "-753.5607618053743 -63.295799634750836 1683.1215236107487 918.5915992695017",
+            "header": {
+              "x": 0,
+              "y": 0,
+              "width": 1586,
+              "height": 52,
+              "top": 0,
+              "right": 1586,
+              "bottom": 52,
+              "left": 0
+            },
+            "sidebar": {
+              "x": 1236,
+              "y": 52,
+              "width": 350,
+              "height": 860,
+              "top": 52,
+              "right": 1586,
+              "bottom": 912,
+              "left": 1236
+            },
+            "allSevenFit": true,
+            "selectedFinalVisible": true,
+            "missingPatchDisabled": true,
+            "exactSourceAndFocus": true,
+            "activityAndPlayback": true,
+            "popoversInsideFullscreen": true,
+            "exports": true,
+            "typography": {
+              "heading": {
+                "size": 18,
+                "lineHeight": 24.3,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "label": {
+                "size": 13,
+                "lineHeight": 18.2,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "value": {
+                "size": 15,
+                "lineHeight": 22.5,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "evidenceTab": {
+                "size": 14,
+                "lineHeight": 16.8,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "code": {
+                "size": 15,
+                "lineHeight": 24.75,
+                "family": "\"JetBrains Mono\", ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace"
+              },
+              "status": {
+                "size": 13,
+                "lineHeight": 19.5,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              }
+            }
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "viewport": {
+              "x": 67,
+              "y": 114,
+              "width": 870,
+              "height": 518.90625,
+              "top": 114,
+              "right": 937,
+              "bottom": 632.90625,
+              "left": 67
+            },
+            "nodes": [
+              {
+                "source": "7",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 156.80218505859375,
+                  "width": 96.0411376953125,
+                  "height": 31.269195556640625,
+                  "top": 156.80218505859375,
+                  "right": 553.370849609375,
+                  "bottom": 188.07138061523438,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "19",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 226.0411376953125,
+                  "width": 96.0411376953125,
+                  "height": 31.26922607421875,
+                  "top": 226.0411376953125,
+                  "right": 553.370849609375,
+                  "bottom": 257.31036376953125,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "9007199254740993",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 295.28009033203125,
+                  "width": 96.0411376953125,
+                  "height": 31.26922607421875,
+                  "top": 295.28009033203125,
+                  "right": 553.370849609375,
+                  "bottom": 326.54931640625,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "9007199254741007",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 364.51904296875,
+                  "width": 96.0411376953125,
+                  "height": 31.26922607421875,
+                  "top": 364.51904296875,
+                  "right": 553.370849609375,
+                  "bottom": 395.78826904296875,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "9007199254741021",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 433.7580261230469,
+                  "width": 96.0411376953125,
+                  "height": 31.269195556640625,
+                  "top": 433.7580261230469,
+                  "right": 553.370849609375,
+                  "bottom": 465.0272216796875,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "9007199254741033",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 502.9969787597656,
+                  "width": 96.0411376953125,
+                  "height": 31.269256591796875,
+                  "top": 502.9969787597656,
+                  "right": 553.370849609375,
+                  "bottom": 534.2662353515625,
+                  "left": 457.3297119140625
+                }
+              },
+              {
+                "source": "9007199254741049",
+                "box": {
+                  "x": 457.3297119140625,
+                  "y": 572.2359619140625,
+                  "width": 96.0411376953125,
+                  "height": 31.2691650390625,
+                  "top": 572.2359619140625,
+                  "right": 553.370849609375,
+                  "bottom": 603.505126953125,
+                  "left": 457.3297119140625
+                }
+              }
+            ],
+            "viewBox": "-691.041139849817 -68.65438675309673 1558.082279699634 929.3087735061935",
+            "header": {
+              "x": 0,
+              "y": 0,
+              "width": 1280,
+              "height": 52,
+              "top": 0,
+              "right": 1280,
+              "bottom": 52,
+              "left": 0
+            },
+            "sidebar": {
+              "x": 950,
+              "y": 52,
+              "width": 330,
+              "height": 748,
+              "top": 52,
+              "right": 1280,
+              "bottom": 800,
+              "left": 950
+            },
+            "allSevenFit": true,
+            "selectedFinalVisible": true,
+            "missingPatchDisabled": true,
+            "exactSourceAndFocus": true,
+            "activityAndPlayback": true,
+            "popoversInsideFullscreen": true,
+            "exports": true,
+            "typography": {
+              "heading": {
+                "size": 18,
+                "lineHeight": 24.3,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "label": {
+                "size": 13,
+                "lineHeight": 18.2,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "value": {
+                "size": 15,
+                "lineHeight": 22.5,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "evidenceTab": {
+                "size": 14,
+                "lineHeight": 16.8,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              },
+              "code": {
+                "size": 15,
+                "lineHeight": 24.75,
+                "family": "\"JetBrains Mono\", ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace"
+              },
+              "status": {
+                "size": 13,
+                "lineHeight": 19.5,
+                "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+              }
+            }
+          }
+        ],
+        "captures": [
+          "offline-fullscreen-unselected-1586.png",
+          "offline-fullscreen-final-no-patch-1586.png",
+          "offline-fullscreen-activity-1586.png",
+          "offline-fullscreen-patch-1586.png",
+          "offline-fullscreen-unselected-1280.png",
+          "offline-fullscreen-final-no-patch-1280.png",
+          "offline-fullscreen-activity-1280.png",
+          "offline-fullscreen-patch-1280.png",
+          "offline-fullscreen-long-located.png",
+          "offline-fullscreen-long-located-1280.png"
+        ],
+        "longTraceLocate": true,
+        "resizeAndActivityKeepSelectionVisible": true,
+        "darkSummaryContrast": true,
+        "ordinaryGraphReturn": true,
+        "httpRequests": 0,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "analytics-offline",
+      "status": "ok",
+      "value": {
+        "summaryRecomputed": true,
+        "unknownVersusZero": true,
+        "groupingAndPagination": true,
+        "keyboard": true,
+        "scopeCSV": true,
+        "signalDrillIn": true,
+        "runGraph": true,
+        "emptyFilter": true,
+        "zeroStep": true,
+        "desktopSizes": [
+          1586,
+          1280
+        ],
+        "compatibilityWidth": 390,
+        "offline": true,
+        "httpRequests": 0,
+        "pageErrors": 0
+      }
+    },
+    {
+      "name": "collapse-all-offline",
+      "status": "ok",
+      "value": {
+        "toolbarAlwaysVisible": true,
+        "ordinaryAndFullscreen": true,
+        "desktopSizes": [
+          1586,
+          1280
+        ],
+        "overviewRestored": true,
+        "stepsAndHierarchy": true,
+        "shortRun": true,
+        "source": "10000000000000053",
+        "exactSourceAndPatchPreserved": true,
+        "sameSVG": true,
+        "offline": true,
+        "httpRequests": 0,
+        "pageErrors": 0
+      }
+    },
+    {
+      "name": "visual-affordances-offline",
+      "status": "ok",
+      "value": {
+        "desktopSizes": [
+          [
+            1586,
+            912
+          ],
+          [
+            1280,
+            800
+          ]
+        ],
+        "sixRoutes": true,
+        "keyboardFailureEditValidation": true,
+        "pinnedDiff": true,
+        "fullscreenEvidence": true,
+        "unknownAttemptsDisclosure": true,
+        "readingGuide": true,
+        "recordedTextCategoryAndActivity": true,
+        "comparisonDivergence": true,
+        "sharedMedianScale": true,
+        "semanticContrast": {
+          "minimum": 5.234604451882848,
+          "samples": 103
+        },
+        "captures": [
+          "offline-replay-1586.png",
+          "offline-timeline-1586.png",
+          "offline-graph-1586.png",
+          "offline-compare-1586.png",
+          "offline-analytics-1586.png",
+          "offline-datasets-1586.png",
+          "offline-replay-1280.png",
+          "offline-timeline-1280.png",
+          "offline-graph-1280.png",
+          "offline-compare-1280.png",
+          "offline-analytics-1280.png",
+          "offline-datasets-1280.png"
+        ],
+        "offlineHttp": 0,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "playback-preferences-offline",
+      "status": "ok",
+      "value": {
+        "automaticAndPinnedEvidence": true,
+        "playbackSources": [
+          60,
+          70,
+          80,
+          90
+        ],
+        "stepAndSeek": true,
+        "terminalTestsAndCollapsedState": true,
+        "rawDisclosurePreserved": true,
+        "sameMountedWorkspace": true,
+        "noReloadOrRefetch": true,
+        "inspectorTabsPreserved": true,
+        "graphAutoplayKeepsDiff": true,
+        "graphAutoplaySources": [
+          60,
+          70,
+          80,
+          90
+        ],
+        "offlineHttp": 0,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "document-workspace-offline",
+      "status": "ok",
+      "value": {
+        "geometry": [
+          {
+            "view": "graph",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "replay",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "timeline",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 912,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "compare",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1488,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          },
+          {
+            "view": "sankey",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 1925,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          },
+          {
+            "view": "runs",
+            "width": 1586,
+            "height": 912,
+            "documentWidth": 1586,
+            "documentHeight": 2548,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          },
+          {
+            "view": "graph",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "replay",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "timeline",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 800,
+            "mainOverflow": "hidden",
+            "barPosition": "static",
+            "singleScreen": true,
+            "pageWheel": false,
+            "barScrollsAway": false,
+            "selectionPreserved": true
+          },
+          {
+            "view": "compare",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 1488,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          },
+          {
+            "view": "sankey",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 1955,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          },
+          {
+            "view": "runs",
+            "width": 1280,
+            "height": 800,
+            "documentWidth": 1280,
+            "documentHeight": 2548,
+            "mainOverflow": "visible",
+            "barPosition": "static",
+            "singleScreen": false,
+            "pageWheel": true,
+            "barScrollsAway": true,
+            "selectionPreserved": true
+          }
+        ],
+        "captures": [
+          "offline-document-graph-1586.png",
+          "offline-document-graph-top-1586.png",
+          "offline-document-graph-scrolled-1586.png",
+          "offline-document-replay-1586.png",
+          "offline-document-replay-top-1586.png",
+          "offline-document-replay-terminal-expanded-1586.png",
+          "offline-document-replay-scrolled-1586.png",
+          "offline-document-timeline-1586.png",
+          "offline-document-timeline-top-1586.png",
+          "offline-document-timeline-scrolled-1586.png",
+          "offline-document-compare-1586.png",
+          "offline-document-compare-top-1586.png",
+          "offline-document-compare-scrolled-1586.png",
+          "offline-document-sankey-1586.png",
+          "offline-document-sankey-top-1586.png",
+          "offline-document-sankey-scrolled-1586.png",
+          "offline-document-runs-1586.png",
+          "offline-document-runs-top-1586.png",
+          "offline-document-runs-scrolled-1586.png",
+          "offline-document-graph-1280.png",
+          "offline-document-graph-top-1280.png",
+          "offline-document-graph-scrolled-1280.png",
+          "offline-document-replay-1280.png",
+          "offline-document-replay-top-1280.png",
+          "offline-document-replay-terminal-expanded-1280.png",
+          "offline-document-replay-scrolled-1280.png",
+          "offline-document-timeline-1280.png",
+          "offline-document-timeline-top-1280.png",
+          "offline-document-timeline-scrolled-1280.png",
+          "offline-document-compare-1280.png",
+          "offline-document-compare-top-1280.png",
+          "offline-document-compare-scrolled-1280.png",
+          "offline-document-sankey-1280.png",
+          "offline-document-sankey-top-1280.png",
+          "offline-document-sankey-scrolled-1280.png",
+          "offline-document-runs-1280.png",
+          "offline-document-runs-top-1280.png",
+          "offline-document-runs-scrolled-1280.png"
+        ],
+        "graphAndTimelineSingleScreen": true,
+        "replaySingleScreen": true,
+        "graphWheelStaysLocal": true,
+        "replayDockClearance": true,
+        "offlineHttp": 0,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "neutral-vertical-offline",
+      "status": "ok",
+      "value": {
+        "geometry": [
+          {
+            "width": 1586,
+            "height": 912,
+            "canvas": {
+              "x": 33,
+              "y": 381,
+              "width": 1180,
+              "height": 430.5
+            },
+            "sourceOrder": "top-to-bottom",
+            "ordinaryWheel": true,
+            "modifierWheelZoom": true,
+            "inlineExpansion": true,
+            "fullscreenDetails": true,
+            "exactSource": true,
+            "whiteSvg": true
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "canvas": {
+              "x": 25,
+              "y": 381,
+              "width": 910,
+              "height": 318.5
+            },
+            "sourceOrder": "top-to-bottom",
+            "ordinaryWheel": true,
+            "modifierWheelZoom": true,
+            "inlineExpansion": true,
+            "fullscreenDetails": true,
+            "exactSource": true,
+            "whiteSvg": true
+          }
+        ],
+        "captures": [
+          "offline-vertical-before-1586.png",
+          "offline-vertical-expanded-1586.png",
+          "offline-vertical-failure-1586.png",
+          "offline-vertical-patch-1586.png",
+          "offline-vertical-fullscreen-1586.png",
+          "offline-vertical-before-1280.png",
+          "offline-vertical-expanded-1280.png",
+          "offline-vertical-failure-1280.png",
+          "offline-vertical-patch-1280.png",
+          "offline-vertical-fullscreen-1280.png"
+        ],
+        "offlineHttp": 0,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "timeline-workspace-offline",
+      "status": "ok",
+      "value": {
+        "viewports": [
+          1586,
+          1280
+        ],
+        "surfaces": [
+          "Graph Timeline",
+          "Execution Timeline"
+        ],
+        "labelsOpaqueAndFixed": true,
+        "noTokenOverlap": true,
+        "semanticZoom": true,
+        "exactGroupMemberSelection": true,
+        "fullscreenInspector": true,
+        "sourcePreserved": true,
+        "captures": [
+          "timeline-graph-compact.png",
+          "timeline-graph-scrolled.png",
+          "timeline-graph-fullscreen.png",
+          "timeline-graph-scrolled-1280.png",
+          "timeline-graph-fullscreen-1280.png",
+          "timeline-timeline-compact.png",
+          "timeline-timeline-scrolled.png",
+          "timeline-timeline-fullscreen.png",
+          "timeline-timeline-scrolled-1280.png",
+          "timeline-timeline-fullscreen-1280.png"
+        ],
+        "offlineHttp": 0,
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "offline",
+      "status": "ok"
+    },
+    {
+      "name": "delivered-offline",
+      "status": "ok"
+    }
+  ]
+}

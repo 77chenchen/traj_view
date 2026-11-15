@@ -1,0 +1,32 @@
+[
+  {
+    "view": "replay",
+    "baseline": "d961982:docs/research/visual-affordances/replay-1586.png",
+    "sameBytes": true
+  },
+  {
+    "view": "timeline",
+    "baseline": "d961982:docs/research/visual-affordances/timeline-1586.png",
+    "sameBytes": true
+  },
+  {
+    "view": "graph",
+    "baseline": "d961982:docs/research/visual-affordances/graph-1586.png",
+    "sameBytes": true
+  },
+  {
+    "view": "compare",
+    "baseline": "d961982:docs/research/visual-affordances/compare-1586.png",
+    "sameBytes": true
+  },
+  {
+    "view": "analytics",
+    "baseline": "d961982:docs/research/visual-affordances/analytics-1586.png",
+    "sameBytes": true
+  },
+  {
+    "view": "datasets",
+    "baseline": "d961982:docs/research/visual-affordances/datasets-1586.png",
+    "sameBytes": true
+  }
+]

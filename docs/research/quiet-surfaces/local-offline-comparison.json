@@ -1,0 +1,128 @@
+{
+  "pairs": 20,
+  "sha256Identical": 17,
+  "nonIdenticalPairsVisuallyInspected": true,
+  "note": "The three non-identical pairs were separately opened; no material content or framing difference observed. Hash equality is not claimed for these pairs.",
+  "comparisons": [
+    {
+      "local": "analytics-1280.png",
+      "offline": "offline-analytics-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "analytics-1586.png",
+      "offline": "offline-analytics-1586.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "compare-1280.png",
+      "offline": "offline-compare-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "compare-1586.png",
+      "offline": "offline-compare-1586.png",
+      "sha256Identical": false,
+      "sameDimensions": true
+    },
+    {
+      "local": "compare-divergence-1280.png",
+      "offline": "offline-compare-divergence-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "datasets-1280.png",
+      "offline": "offline-datasets-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "datasets-1586.png",
+      "offline": "offline-datasets-1586.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "graph-1280.png",
+      "offline": "offline-graph-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "graph-1586.png",
+      "offline": "offline-graph-1586.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "graph-activity-recorded-text-1280.png",
+      "offline": "offline-graph-activity-recorded-text-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "graph-dark-1280.png",
+      "offline": "offline-graph-dark-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "graph-fullscreen-1280.png",
+      "offline": "offline-graph-fullscreen-1280.png",
+      "sha256Identical": false,
+      "sameDimensions": true
+    },
+    {
+      "local": "replay-1280.png",
+      "offline": "offline-replay-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "replay-1586.png",
+      "offline": "offline-replay-1586.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "replay-dark-1280.png",
+      "offline": "offline-replay-dark-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "replay-edit-details-1280.png",
+      "offline": "offline-replay-edit-details-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "replay-failure-1280.png",
+      "offline": "offline-replay-failure-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "timeline-1280.png",
+      "offline": "offline-timeline-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    },
+    {
+      "local": "timeline-1586.png",
+      "offline": "offline-timeline-1586.png",
+      "sha256Identical": false,
+      "sameDimensions": true
+    },
+    {
+      "local": "timeline-reading-guide-1280.png",
+      "offline": "offline-timeline-reading-guide-1280.png",
+      "sha256Identical": true,
+      "sameDimensions": true
+    }
+  ]
+}

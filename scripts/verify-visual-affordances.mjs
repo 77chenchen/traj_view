@@ -1,11 +1,13 @@
 import {mkdirSync,readdirSync,readFileSync,writeFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-import {join} from 'node:path';
+import {join,resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
+import {parseArgs} from 'node:util';
 import {frontendRequire,root} from './frontend-dependencies.mjs';
 import {checkVisualAffordances} from '../tests/e2e/visual-affordances.mjs';
 const {chromium}=frontendRequire('playwright');
-const output=join(root,'docs/research/visual-affordances');mkdirSync(output,{recursive:true});
+const {values}=parseArgs({options:{output:{type:'string',default:'docs/research/visual-affordances'},baseline:{type:'string',default:'2d4ab83'}}});
+const output=resolve(root,values.output);mkdirSync(output,{recursive:true});
 const browser=await chromium.launch({executablePath:process.env.CHROME_PATH||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
 const report={chrome:browser.version(),scope:'Six-route semantic colors and direct evidence navigation. Public synthetic fixtures only.'};
 try{
@@ -19,7 +21,7 @@ try{
   }
   writeFileSync(join(output,'verification.json'),JSON.stringify(report,null,2)+'\n');
   const captures=readdirSync(output).filter(name=>name.endsWith('.png')&&!/first-pass|failure\.png/.test(name)).sort().map(name=>{
-    const buffer=readFileSync(join(output,name));return{file:name,width:buffer.readUInt32BE(16),height:buffer.readUInt32BE(20),sha256:createHash('sha256').update(buffer).digest('hex'),origin:'Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing',revision:name.includes('-before')?'2d4ab83':'current working tree',mode:name.startsWith('offline-')?'network-disabled standalone HTML':'local'};
+    const buffer=readFileSync(join(output,name));return{file:name,width:buffer.readUInt32BE(16),height:buffer.readUInt32BE(20),sha256:createHash('sha256').update(buffer).digest('hex'),origin:'Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing',revision:name.includes('-before')?values.baseline:'current working tree',mode:name.startsWith('offline-')?'network-disabled standalone HTML':'local'};
   });
   writeFileSync(join(output,'capture-manifest.json'),JSON.stringify({chrome:browser.version(),captures},null,2)+'\n');
   console.log('PASS six routes, two desktop sizes, semantic contrast, direct failure→edit→validation, pinned Diff, fullscreen evidence and zero-HTTP offline report');

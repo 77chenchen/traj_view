@@ -57,6 +57,8 @@ The current [neutral vertical workspace report](docs/research/neutral-vertical-w
 
 The latest [six-route visual and interaction pass](docs/research/visual-affordances.md) uses consistent action colors and line icons, direct Failure / Edit / Validation jumps, less repeated copy and on-demand reading notes. White DAGs and readable code remain. Compare action labels, Graph Fit/Locate, metric marks and catalog error rates use the same system. Reproduce the local/offline screenshots with `node scripts/verify-visual-affordances.mjs` after building the frontend, exporting the root HTML and starting the fixture server. The Timeline text lane is labeled **Recorded text**; a separately recorded reasoning role is unavailable in v1.
 
+The latest [surface refinement](docs/research/quiet-surfaces.md) removes repeated enclosing frames and header/metadata rules across the six views. Near-white supporting panes and existing spacing establish sections; form controls, selection/focus, source-node outlines and faint table/Timeline guides stay legible. Reproduce its independent local/offline captures with `node scripts/verify-visual-affordances.mjs --output docs/research/quiet-surfaces --baseline d961982`.
+
 ## Hierarchy and live capture
 
 Switch **Layers → Hierarchy** to inspect contiguous phase groups and adjacent repeated tool sequences. A loop expands into iterations, then original calls. Source order runs top to bottom; indentation and structural links represent containment. Temporal, dependency and retry links still come from the source graph. Related steps in Inspector locate their exact source indices and clear step filters.

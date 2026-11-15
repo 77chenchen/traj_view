@@ -20,6 +20,7 @@ import './typography.css';
 import './analytics.css';
 import './graphFullscreen.css';
 import './affordances.css';
+import './surfaces.css';
 
 const pages = [
   { id: 'replay', label: 'Trajectory replay', short: 'Replay', title: 'Trajectory Replay', icon: 'play' },

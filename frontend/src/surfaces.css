@@ -1,0 +1,80 @@
+/* Separate work areas with space and tone; reserve outlines for interaction. */
+:root { --section-rule:#edf1f4; --pane-wash:#f7f9fb; }
+:root[data-theme="dark"] { --section-rule:#2c424f; --pane-wash:#1d303c; }
+
+/* Page framing is open. Selection, form fields and graph geometry keep theirs. */
+.reference-shell :is(.product-topbar,.run-metadata,.stage-strip,
+  .compare-selection-bar,.comparison-quick-metrics,.comparison-modes,
+  .source-trajectories,.comparison-analysis,.dataset-utilities) { border-color:transparent; }
+.reference-shell :is(.run-panel,.alignment-panel,.sankey-panel,
+  .event-timeline,.timeline-records,.inspector,.recorded-workspace,
+  .graph-workspace,.replay-workspace,.trace-sidebar,.compare-inspection) { border-color:transparent; box-shadow:none; }
+.reference-shell :is(.replay-workspace,.timeline-workspace) .panel,
+.reference-shell .replay-workspace .event-list { border-color:transparent!important; }
+.reference-shell .panel > .panel-head { border-color:transparent; }
+
+/* Supporting panes read as a continuous surface, without boxed subsections. */
+.reference-shell :is(.trace-sidebar,.replay-inspection,.compare-inspection),
+.reference-shell :is(.trace-sidebar,.replay-inspection,.compare-inspection) .inspector { background:var(--pane-wash); }
+.reference-shell .inspector :is(.panel-head,.inspector-tabs),
+.reference-shell .trace-sidebar .sidebar-tabs { background:var(--pane-wash); }
+.reference-shell .inspector :is(.panel-head,.inspection-status,.step-meta,
+  .recording-details,.inspector-tabs,.step-content,.source-ref,.internal-edges,
+  .annotation-drawer,.execution-contents),
+.reference-shell :is(.step-comparison-heading,.step-comparison-matches) { border-color:transparent; }
+.reference-shell .inspector :is(.inspection-description,.step-content pre) { border-color:transparent; }
+.reference-shell .inspector .step-content { padding-block:16px; }
+.reference-shell :is(.trace-sidebar,.replay-inspection,.compare-inspection) .focus-tabs { border-color:transparent; }
+
+/* Replay: a quiet source column, white evidence, and a separate transport wash. */
+.reference-shell .replay-workspace .event-list { background:var(--pane-wash); }
+.reference-shell .event-row:not([aria-pressed="true"]) { border-color:transparent; }
+.reference-shell .event-row:not([aria-pressed="true"]):not(.has-error) { background:transparent; }
+.reference-shell .event-row:not([aria-pressed="true"]):hover { background:var(--surface-hover); }
+.reference-shell .event-list :is(.panel-head,.event-search,.event-list-foot),
+.reference-shell .recorded-workspace :is(.selected-step-head,.evidence-tabs,.recorded-path) { border-color:transparent; }
+.reference-shell .replay-workspace .replay-output { border-top-color:transparent!important; }
+.reference-shell .replay-output .workspace-tabs { border-color:transparent; }
+.reference-shell main[data-page="replay"] .replay-transport { border-color:transparent; }
+
+/* The canvas has one faint boundary; its tools and activity do not nest frames. */
+.reference-shell .graph-toolbar { background:var(--surface-2); border-color:transparent; }
+.reference-shell .graph-workspace .trace-sidebar { border-left-color:transparent; }
+.reference-shell .graph-workspace .graph-frame { border-color:var(--section-rule); }
+.reference-shell :is(.graph-caption,.execution-navigation,.execution-legend,
+  .graph-activity-disclosure,.graph-secondary .agent-activity) { border-color:var(--section-rule); }
+.reference-shell .graph-secondary .timeline { border-color:transparent; }
+.reference-shell :is(.graph-fullscreen-bar,.timeline-fullscreen-bar) { border-color:transparent; }
+
+/* Timeline grid lines carry measurement, rather than framing every lane. */
+.reference-shell :is(.event-axis,.stage-axis,.event-lane,.timeline-footnote) { border-color:var(--section-rule); }
+.reference-shell :is(.event-axis,.stage-axis,.event-lane) > strong { border-color:transparent; }
+.reference-shell .timeline-gridline { border-color:var(--section-rule); }
+.reference-shell .timeline-event-table :is(td,th) { border-color:var(--section-rule); }
+
+/* Alignment keeps the shared row and its meaning; ordinary actions lose boxes. */
+.reference-shell .align-pair > button:not([data-selected="true"]):not([data-matched="true"]) {
+  border-color:transparent; background:var(--pane-wash);
+}
+.reference-shell .align-pair > button.has-error:not([data-selected="true"]) { background:var(--bad-bg); }
+.reference-shell .align-pair > button:not([data-selected="true"]):hover { background:var(--surface-hover); }
+.reference-shell .alignment-gap { border-color:transparent; }
+.reference-shell :is(.agent-disclosure,.comparison-analysis) > summary { border-color:transparent; }
+.reference-shell .compare-inspection { border-left-color:transparent; }
+
+/* Tables keep subtle row guides; analysis and catalog sections remain open. */
+.reference-shell :is(.analytics-summary,.analytics-disclosure,.analytics-review,
+  .analytics-transitions,.stats,.stats .stat,.run-panel .filters,
+  .run-panel .selection-bar) { border-color:transparent; }
+.reference-shell .analytics-review { background:var(--pane-wash); border-radius:6px; padding:16px 20px; }
+.reference-shell :is(.analytics-signal,.analytics-group-table td,.analytics-group-table th,
+  .analytics-runs-table td,.analytics-runs-table th,.runs-table td,.runs-table th,
+  .analytics-transition-list > div,.metric-comparison td,.metric-comparison th) { border-color:var(--section-rule); }
+.reference-shell .sankey-caption { border-color:transparent; }
+
+@media(max-width:1100px) {
+  /* A floating inspector still needs an edge against the content underneath. */
+  .reference-shell :is(.replay-workspace,.timeline-workspace) .replay-inspection {
+    border:1px solid var(--line-strong); border-radius:6px;
+  }
+}

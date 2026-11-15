@@ -13,6 +13,8 @@ colors:
   surface-hover: "#edf0f2"
   line: "#e0e4e7"
   line-strong: "#b6bfc7"
+  section-rule: "#edf1f4"
+  pane-wash: "#f7f9fb"
   text: "#273442"
   muted: "#556575"
   subtle: "#5b6b7b"
@@ -66,6 +68,8 @@ colors:
   dark-surface-hover: "#29434e"
   dark-line: "#354c5a"
   dark-line-strong: "#536c7a"
+  dark-section-rule: "#2c424f"
+  dark-pane-wash: "#1d303c"
   dark-text: "#eaf1f4"
   dark-muted: "#b6c7d0"
   dark-subtle: "#a9bdc8"
@@ -228,13 +232,13 @@ components:
 
 **Creative North Star: "The recorded-evidence workspace"**
 
-TrajViz is a desktop Operate interface for reading saved agent traces. White workspaces, near-white headers, fine neutral boundaries and dark text keep recorded evidence easy to scan. Blue selection belongs to the default light appearance; green and red retain outcome and diff meaning. Action colors and line icons provide a shared reading path across the six views.
+TrajViz is a desktop Operate interface for reading saved agent traces. White workspaces, near-white supporting panes, open section edges and dark text keep recorded evidence easy to scan. Blue selection belongs to the default light appearance; green and red retain outcome and diff meaning. Action colors and line icons provide a shared reading path across the six views.
 
 One working area leads each page. Named disclosures keep secondary detail available, and source identity stays close to the evidence. The default appearance is light; the saved dark appearance remains available, with the graph retaining its white ground and category silhouettes.
 
 **Key Characteristics:**
 
-- Continuous work surfaces with single-pixel boundaries and flat depth.
+- Continuous work surfaces grouped by space and subtle tone; thin rules remain only where they aid reading or interaction.
 - One static navigation row with the existing monochrome mark and six icon/text destinations.
 - A vertical source DAG with category silhouettes and in-place content expansion.
 - Readable recorded code, stable exact source identity and explicit missing-evidence states.
@@ -300,11 +304,11 @@ Compare leads with one shared A/B alignment and three flat metrics. Rows have a 
 
 The reviewed scope is desktop (1586×912 and 1280×800). Existing narrow-screen access is retained: horizontal top navigation and stacked/drawer evidence behavior continue at the source breakpoints. These compatibility rules do not establish a newly designed or reviewed mobile composition.
 
-The effective stylesheet order in [main.tsx](frontend/src/main.tsx) is [styles.css](frontend/src/styles.css) → [workbench.css](frontend/src/workbench.css) → [density.css](frontend/src/density.css) → [hierarchy.css](frontend/src/hierarchy.css) → [neutral.css](frontend/src/neutral.css) → [typography.css](frontend/src/typography.css) → [graphFullscreen.css](frontend/src/graphFullscreen.css) → [affordances.css](frontend/src/affordances.css). Typography owns reading roles, graphFullscreen scopes the fullscreen composition, and affordances supplies the final shared semantic colors and labeled controls. The 54px canvas navigation gutter keeps Fit/Locate labels clear of the SVG in ordinary and fullscreen Graph. Extract values from the effective selector and media-query cascade, not an earlier declaration alone.
+The effective stylesheet order in [main.tsx](frontend/src/main.tsx) is [styles.css](frontend/src/styles.css) → [workbench.css](frontend/src/workbench.css) → [density.css](frontend/src/density.css) → [hierarchy.css](frontend/src/hierarchy.css) → [neutral.css](frontend/src/neutral.css) → [typography.css](frontend/src/typography.css) → [analytics.css](frontend/src/analytics.css) → [graphFullscreen.css](frontend/src/graphFullscreen.css) → [affordances.css](frontend/src/affordances.css) → [surfaces.css](frontend/src/surfaces.css). Typography owns reading roles, graphFullscreen scopes fullscreen composition, affordances supplies semantic colors and labeled controls, and surfaces removes repeated structural frames without changing control or state outlines. The 54px canvas navigation gutter keeps Fit/Locate labels clear of the SVG in ordinary and fullscreen Graph. Extract values from the effective selector and media-query cascade, not an earlier declaration alone.
 
 ## Elevation & Depth
 
-Ordinary panels and joined workspaces are flat, with no resting shadow. White/near-white tonal changes and single-pixel boundaries separate regions. The graph has a plain white ground without dots, gradients, glow or decorative imagery. Popovers for layers, metadata and exact Timeline members retain the shared light/dark ambient shadow; the sidecar carries those exact values.
+Ordinary panels and joined workspaces are flat, with no resting shadow or repeated enclosing borders. White/near-white tonal changes, headings and existing spacing separate regions. Supporting lists and Inspectors share `pane-wash`; ordinary section headers and metadata do not draw full-width rules. Tables and Timeline measurement grids retain faint `section-rule` guides, while fields, focus, source selection, graph nodes and errors retain their independent boundaries. Floating narrow-screen inspection keeps an edge against the page underneath. See [the six-route surface refinement](docs/research/quiet-surfaces.md). The graph has a plain white ground without dots, gradients, glow or decorative imagery. Popovers for layers, metadata and exact Timeline members retain the shared light/dark ambient shadow; the sidecar carries those exact values.
 
 Feedback is brief and functional: stage border/background and navigation background transitions use the existing reduced-motion-aware rule (150ms ease-out). Loading animation is separate. Reduced motion suppresses the no-preference transitions and reduces animation duration and smooth scrolling. Camera and playback must keep recorded evidence immediately available.
 
