@@ -126,6 +126,9 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   const ordinals = useMemo(() => new Map(graphs.expanded.nodes.map((node, ordinal) => [node.first_idx, ordinal])), [graphs]);
   const positionsInTime = useMemo(() => new Map(graph.nodes.map((node) => [node.id, ordinals.get(node.first_idx) ?? 0])), [graph, ordinals]);
   const selected = graph.nodes.find((node) => node.id === activeId) ?? graph.groups?.find(group=>group.node.id===activeId)?.node ?? (index == null ? undefined : byIndex.get(index));
+  // A collapsed canvas representative is not the inspected source. Keep the
+  // exact call's evidence in place instead of inserting a group's member list.
+  const inspectedNode = overview && index != null ? graphs.expanded.nodes[ordinals.get(index) ?? -1] ?? selected : selected;
   const chooseIndex = useCallback((idx: StepIndex) => {
     setSidebarTab('Details');
     setActiveId(null);
@@ -176,6 +179,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   const connectionGraph = useMemo(()=>allConnections ? graph : {...graph,edges:graph.edges.filter(edge=>edge.type!=='dependency'||selectedFrontier.has(edge.source)||selectedFrontier.has(edge.target))},[graph,allConnections,selectedFrontier]);
   const hiddenConnections = graph.edges.length-connectionGraph.edges.length;
   const lastExpanded=expandedSections.slice().reverse().flatMap(id=>executionView.groups?.find(group=>group.node.id===id)?.node??[])[0];
+  const canCollapse = !overview || Boolean(executionView.groups?.length);
   const navigatorRanges = useMemo(()=>{
     const nodes=graphs.expanded.nodes, size=Math.max(1,Math.ceil(nodes.length/96));
     return Array.from({length:Math.ceil(nodes.length/size)},(_,i)=>{
@@ -185,10 +189,10 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   },[graphs,index]);
   const nextFailure = graphs.expanded.nodes.find((node,i)=>node.error && i>(index==null?-1:ordinals.get(index)??-1)) ?? graphs.expanded.nodes.find(node=>node.error);
   const internalEdges = useMemo(() => {
-    const indices = new Set(selected?.step_indices);
+    const indices = new Set(inspectedNode?.step_indices);
     const ids = new Set(graphs.expanded.nodes.filter((node) => indices.has(node.first_idx)).map((node) => node.id));
     return graphs.expanded.edges.filter((edge) => ids.has(edge.source) && ids.has(edge.target));
-  }, [selected, graphs]);
+  }, [inspectedNode, graphs]);
   function playback(next: number) {
     setPosition(next);
     const current = graphs.expanded.nodes[next - 1];
@@ -230,6 +234,9 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
           {!overview&&!hierarchy && savings > 0 && <button className="button small" aria-pressed={unfolded} title={unfolded ? `${savings} consecutive repeat steps can be folded` : `${graphs.expanded.nodes.length - intervals.nodes.length} repeat steps are folded`} onClick={() => { setUnfolded(!unfolded); setOpenBlocks(new Set()); }}>{unfolded ? 'Fold repeats' : 'Expand all steps'}</button>}
     </div></details>
     <button className="button small" aria-expanded={showLegend} onClick={() => setShowLegend(!showLegend)}>Legend <Icon name="info" size={13}/></button>
+    <button className="button small graph-collapse-all" disabled={!canCollapse}
+      title={canCollapse ? 'Return to the compact overview. Keep the selected source step and evidence view.' : 'All sections are already collapsed'}
+      onClick={collapseAll}><Icon name="layers" size={15}/>Collapse all</button>
   </>;
   function clearSelection() {
     const selectedIndex=index,selectedId=selected?.id;
@@ -238,7 +245,8 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
       .find(element=>element.getAttribute('data-node-id')===selectedId||element.getAttribute('data-section-toggle')===selectedId||element.getAttribute('data-source-index')===String(selectedIndex))?.focus({preventScroll:true}));
   }
   function collapseAll() {
-    setExpandedSections([]);setActiveId(null);setResetVersion(v=>v+1);
+    setExpandedSections([]);setOpenGroups(new Set());setOpenBlocks(new Set());
+    setOverview(true);setHierarchy(false);setUnfolded(false);setActiveId(null);setResetVersion(v=>v+1);
   }
   if(overview&&details.state.status==='loading')return <Loading>Loading execution evidence…</Loading>;
   if(overview&&details.state.status==='error')return <LoadError message={details.state.message} retry={details.retry}/>;
@@ -260,7 +268,6 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
         {overview && canvasMode==='graph' && <div className="execution-navigation" aria-label="Execution map navigation">
           <div className="execution-path">
             <button className="button small execution-back" disabled={!lastExpanded} title="Collapse the most recently expanded section (Alt+↑)" aria-keyshortcuts="Alt+ArrowUp" onClick={() => lastExpanded&&toggleSection(lastExpanded)}><Icon name="left" size={14}/>Collapse last</button>
-            <button className="button small quiet execution-root" disabled={!executionView.groups?.length} onClick={collapseAll}>Collapse all</button>
             <span className="execution-expanded-count">{executionView.groups?.length??0} sections expanded</span>
             <button className="button small quiet" disabled={!nextFailure} onClick={()=>nextFailure&&locate(nextFailure.first_idx)}>Next failure</button><span>{graphs.expanded.nodes.length} / {graphs.expanded.nodes.length} source steps</span>
           </div>
@@ -286,12 +293,12 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
       </section>
       <div className="trace-sidebar" onKeyDown={e=>{if(e.key==='Escape'&&index!=null){e.preventDefault();clearSelection();}}}>
         <div className="focus-tabs sidebar-tabs" role="group" aria-label="Graph side panel">{['Details','Files & activity','Signatures'].map(name=><button key={name} aria-pressed={sidebarTab===name} onClick={()=>setSidebarTab(name)}>{name}</button>)}</div>
-        <div className="graph-side-content" hidden={sidebarTab!=='Details'}><Inspector graphWorkspace run={run} node={selected} index={index} select={selectIndex} locate={locate}
+        <div className="graph-side-content" hidden={sidebarTab!=='Details'}><Inspector graphWorkspace run={run} node={inspectedNode} index={index} select={selectIndex} locate={locate}
           clear={clearSelection} phases={phases}
-          relatedGraph={graphs.expanded} internalEdges={internalEdges} variant="node" expand={selected && selected.count > 1 ? () => {
-            if (selected.view?.kind === 'section') {toggleSection(selected);return;}
-            if (selected.view) { setOpenGroups((previous) => new Set([...previous, selected.id])); return; }
-            const ids = graphs.expanded.nodes.filter((node) => selected.step_indices.includes(node.first_idx)).map((node) => node.id);
+          relatedGraph={graphs.expanded} internalEdges={internalEdges} variant="node" expand={inspectedNode && inspectedNode.count > 1 ? () => {
+            if (inspectedNode.view?.kind === 'section') {toggleSection(inspectedNode);return;}
+            if (inspectedNode.view) { setOpenGroups((previous) => new Set([...previous, inspectedNode.id])); return; }
+            const ids = graphs.expanded.nodes.filter((node) => inspectedNode.step_indices.includes(node.first_idx)).map((node) => node.id);
             setOpenBlocks((previous) => new Set([...previous, ...ids]));
           } : undefined} /></div>
         <div className="graph-side-content" hidden={sidebarTab!=='Files & activity'}><TraceOverview run={run} locate={locate} /></div>

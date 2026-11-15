@@ -17,6 +17,7 @@ import './density.css';
 import './hierarchy.css';
 import './neutral.css';
 import './typography.css';
+import './analytics.css';
 import './graphFullscreen.css';
 
 const pages = [
@@ -117,7 +118,7 @@ function App() {
         {page === 'graph' && (activeRun ? <RunGraph key={activeRun.id} run={activeRun} phases={dataset.phases} theme={theme} initialIndex={inspected[activeRun.id] ?? null} onInspect={chooseSource} /> : <div className="panel"><Empty icon="graph" title="Choose a run" actions={back}>Open a run from the catalog.</Empty></div>)}
         {(page === 'replay' || page === 'timeline') && (activeRun ? <Replay key={activeRun.id} run={activeRun} phases={dataset.phases} timeline={page === 'timeline'} index={inspected[activeRun.id] ?? null} onSelect={idx => chooseSource(idx)} /> : <div className="panel"><Empty icon="events" title="Choose a run" actions={back}>Open a run from the catalog.</Empty></div>)}
         {page === 'compare' && (selected.length >= 2 ? <Compare runs={selected} available={dataset.runs} changeRuns={setSelectedIds} initialSource={graphId&&inspected[graphId]!=null?{run:graphId,index:inspected[graphId]!}:null} onInspect={(runId,idx) => {setGraphId(runId);setInspected(prev => ({...prev,[runId]:idx}));}} phases={dataset.phases} theme={theme} /> : <div className="panel"><Empty icon="compare" title="Select runs to compare" actions={back}>Choose two to four runs from the same task in the run catalog.</Empty></div>)}
-        {page === 'sankey' && <Sankey runs={dataset.runs} phases={dataset.phases} />}
+        {page === 'sankey' && <Sankey runs={dataset.runs} phases={dataset.phases} openRun={openGraph} />}
       </>}
     </main></div>
   </div>;

@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-15",
+  "python": {
+    "passed": 81,
+    "seconds": 3.98
+  },
+  "typescript": "passed",
+  "build": {
+    "status": "passed",
+    "seconds": 7.97,
+    "existingLargeBundleWarning": true
+  },
+  "browser": {
+    "chrome": "157.0.8103.52",
+    "passed": 44,
+    "failed": 0
+  },
+  "pure": {
+    "dagSorts": 909,
+    "executionScopes": 1908,
+    "exactSourcePaths": 3161,
+    "mixedSizeRoutes": 5189,
+    "inlineStates": 61,
+    "inlineRoutes": 1735,
+    "timelineLayouts": 126
+  },
+  "mechanicalDesignDetector": [],
+  "offline": {
+    "exactDeliveredHtml": true,
+    "httpRequests": 0,
+    "pageErrors": 0
+  },
+  "screenshots": 21,
+  "copyOnlyFinalPass": "Singular count labels corrected after full regression; types/build and exact-root local/offline specialist checks rerun."
+}

@@ -37,6 +37,8 @@ Desktop Graph fullscreen has a 52px header, a wide white canvas and a 350px Insp
 
 The latest [readable typography and palette](docs/research/readable-typography.md) uses 16px prose, 15px locally bundled JetBrains Mono code, 18px selected headings and 14px controls; directory/source metadata stays subordinate at 13px. Graph and Timeline share muted category colors, while failure, selection and diff signs remain distinct. DAG labels keep natural proportions and shorten with ellipsis; **Locate** restores a reading-scale view after Fit. Paired fullscreen captures, all four desktop views and offline font verification are included.
 
+**Analytics** now starts with a group comparison table, recorded-outcome distribution and a small flat summary. Search run metadata, group by model/condition/outcome, and follow error or validation signals into run records and Graph. Phase-flow comparison, exact transition counts, metric definitions and scoped CSV remain available below. **Collapse all** is always visible in Graph's tool band; it returns all detail modes to compact Overview while keeping the inspected source, playback position and pinned evidence. See [screenshots, counting rules and reproduction](docs/research/analytics-workspace.md).
+
 Replay's **Auto** view follows the available recorded evidence. Choosing **Diff**, **Updated File**, **File Context** or **Output** keeps that view as actions play, step or seek; missing evidence shows its empty state. Terminal/Tests, output expansion and Inspector tabs also retain their selection. See [behavior, screenshots and verification](docs/research/graph-appearance.md).
 
 ## Debugging workspace

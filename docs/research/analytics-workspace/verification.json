@@ -1,0 +1,83 @@
+{
+  "chrome": "157.0.8103.52",
+  "scope": "Analytics and visible Graph Collapse all; public synthetic fixtures only",
+  "local": {
+    "analytics": {
+      "summaryRecomputed": true,
+      "unknownVersusZero": true,
+      "groupingAndPagination": true,
+      "keyboard": true,
+      "scopeCSV": true,
+      "signalDrillIn": true,
+      "runGraph": true,
+      "emptyFilter": true,
+      "zeroStep": false,
+      "desktopSizes": [
+        1586,
+        1280
+      ],
+      "compatibilityWidth": 390,
+      "offline": false,
+      "pageErrors": 0
+    },
+    "collapse": {
+      "toolbarAlwaysVisible": true,
+      "ordinaryAndFullscreen": true,
+      "desktopSizes": [
+        1586,
+        1280
+      ],
+      "overviewRestored": true,
+      "stepsAndHierarchy": true,
+      "shortRun": true,
+      "source": "10000000000000053",
+      "exactSourceAndPatchPreserved": true,
+      "sameSVG": true,
+      "offline": false,
+      "pageErrors": 0
+    }
+  },
+  "offline": {
+    "analytics": {
+      "summaryRecomputed": true,
+      "unknownVersusZero": true,
+      "groupingAndPagination": true,
+      "keyboard": true,
+      "scopeCSV": true,
+      "signalDrillIn": true,
+      "runGraph": true,
+      "emptyFilter": true,
+      "zeroStep": false,
+      "desktopSizes": [
+        1586,
+        1280
+      ],
+      "compatibilityWidth": 390,
+      "offline": true,
+      "httpRequests": 0,
+      "pageErrors": 0
+    },
+    "collapse": {
+      "toolbarAlwaysVisible": true,
+      "ordinaryAndFullscreen": true,
+      "desktopSizes": [
+        1586,
+        1280
+      ],
+      "overviewRestored": true,
+      "stepsAndHierarchy": true,
+      "shortRun": true,
+      "source": "10000000000000053",
+      "exactSourceAndPatchPreserved": true,
+      "sameSVG": true,
+      "offline": true,
+      "httpRequests": 0,
+      "pageErrors": 0
+    }
+  },
+  "emptyDataset": {
+    "syntheticResponse": true,
+    "clearEmptyState": true,
+    "exportDisabled": true
+  }
+}

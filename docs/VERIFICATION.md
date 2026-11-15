@@ -12,6 +12,14 @@ PYTHON="$(command -v python)" node scripts/smoke-e2e.mjs
 
 Set `CHROME_PATH` if Chrome is installed elsewhere. The smoke command runs pure graph-transform checks, builds the public fixtures plus generated performance traces, launches system Chrome, stops the server, then opens both a fresh single-file export and the delivered report in offline browser contexts. Screenshots, `scenarios.json` and `first-render.json` go to `test-results/e2e/`. See [browser QA](../tests/e2e/README.md) for details and report regeneration commands.
 
+## Analytics and discoverable Graph collapse · 2026-11-15
+
+Analytics now leads with grouped outcome/step/error data and a flat summary. Named sections preserve two-layer phase flows, shared count scale, transition tables, review-signal run records, metric definitions and scoped CSV. Graph's toolbar keeps Collapse all visible in all detail modes and fullscreen; it returns to root Overview while keeping the original source call and pinned evidence visible in Inspector. See [function mapping, 21 independent full-page PNGs and reproduction](research/analytics-workspace.md).
+
+Final checks: **81 Python tests (3.98s)**, TypeScript, build (**7.97s**) and **44 Chrome scenarios passed**. The new online/offline cases cover recomputed summaries, known zero versus unrecorded outcomes, metadata search, grouping/pagination, keyboard, CSV scope, review→run→Graph, zero-step data, both desktop sizes, exact large source `#10000000000000053`, same-SVG collapse and the selected patch. The exact root HTML also passes with **0 HTTP / 0 page errors**. Supplemental captures include empty data, inherited dark appearance and 390px overflow compatibility. The detector returned `[]`. Existing self/reverse Sankey links, graph exports, Timeline/Replay/Compare and playback-preference regressions remain green.
+
+First graph paint for 500 / 2,000 source steps was **97.6 / 130.5ms**, each initially drawing three Overview nodes after the app loads (click → SVG → next frame, excluding initial bundle/all-node rendering). Existing large-bundle warnings remain. [Structured summary](research/analytics-workspace/test-summary.json), [all scenarios](research/analytics-workspace/scenarios.json), [specialist assertions](research/analytics-workspace/verification.json) and [timings](research/analytics-workspace/first-render.json) are preserved.
+
 ## Readable typography and coordinated palette · 2026-11-15
 
 Desktop evidence now uses 15px locally bundled JetBrains Mono, 16px prose, 18px selected headings, 14px controls and subordinate 13px directory/source metadata. Graph and Timeline share muted category fills; diff, error and selection remain independent. Native interface fonts stay local. The font and OFL license travel inside the standalone HTML. See [the role scale, references, 14 full-page PNGs and reproduction](research/readable-typography.md).
