@@ -1,0 +1,43 @@
+import assert from 'node:assert/strict';
+import {join} from 'node:path';
+
+export async function checkRecordedWrites(page,url,artifacts,offline=false){
+  const prefix=offline?'offline-':'',requests=[];const onRequest=r=>{if(/^https?:/.test(r.url()))requests.push(r.url());};page.on('request',onRequest);
+  await page.setViewportSize({width:1586,height:912});
+  await page.goto(url+'#view=graph&run=shell-writes-synthetic&step=9007199254741049');
+  const inspection=page.getByRole('complementary',{name:'Step inspector',exact:true});
+  await inspection.locator('.step-meta').getByText('#9007199254741049',{exact:true}).waitFor();
+  await inspection.getByRole('button',{name:'Code Diff',exact:true}).click();
+  await inspection.getByText('No patch recorded',{exact:true}).waitFor();
+  assert.ok(await inspection.getByRole('button',{name:'View Full Diff',exact:true}).isDisabled());
+  await inspection.getByText('Submitted file · src/example.py',{exact:true}).click();
+  await inspection.getByLabel('Recorded file excerpt',{exact:true}).waitFor();
+  await inspection.getByRole('button',{name:'Next inspected step',exact:true}).click();
+  await inspection.locator('.step-meta').getByText('#9007199254741057',{exact:true}).waitFor();
+  await inspection.getByLabel('Submitted write comparison',{exact:true}).waitFor();
+  assert.match(await inspection.innerText(),/source #9007199254741049 → #9007199254741057/);
+  await inspection.locator('.line-removed code').filter({hasText:'value = 1'}).waitFor();
+  await inspection.locator('.line-added code').filter({hasText:'value = 2'}).waitFor();
+  assert.ok(await inspection.getByRole('button',{name:'View Full Diff',exact:true}).isEnabled());
+  await inspection.locator('.line-added code').filter({hasText:'value = 2'}).scrollIntoViewIfNeeded();
+  await page.screenshot({path:join(artifacts,prefix+'submitted-write-comparison.png'),fullPage:true});
+  await inspection.getByRole('button',{name:'Next inspected step',exact:true}).click();
+  await inspection.getByText('No patch recorded',{exact:true}).waitFor();
+  await inspection.getByRole('button',{name:'Next inspected step',exact:true}).click();
+  await inspection.getByText('No patch recorded',{exact:true}).waitFor();
+  assert.equal(await inspection.getByRole('button',{name:'Code Diff',exact:true}).getAttribute('aria-pressed'),'true');
+  await page.goto(url+'#view=replay&run=shell-writes-synthetic&step=9007199254741057');
+  await page.getByRole('button',{name:'Diff',exact:true}).click();
+  await page.getByLabel('Submitted write comparison',{exact:true}).waitFor();
+  await page.getByRole('button',{name:'Next replay step',exact:true}).click();
+  await page.locator('.recorded-code').getByText('No patch recorded',{exact:true}).waitFor();
+  assert.equal(await page.getByRole('button',{name:'Diff',exact:true}).getAttribute('aria-pressed'),'true');
+  await page.getByRole('button',{name:'Next replay step',exact:true}).click();
+  await page.locator('.recorded-code').getByText('No patch recorded',{exact:true}).waitFor();
+  await page.getByRole('button',{name:'Updated File',exact:true}).click();
+  assert.match(await page.locator('.recorded-code').innerText(),/value = 3/);
+  assert.match(await page.locator('.recorded-workspace').innerText(),/filesystem version unrecorded/);
+  await page.screenshot({path:join(artifacts,prefix+'submitted-file-content.png'),fullPage:true});
+  if(offline)assert.equal(requests.length,0);page.off('request',onRequest);
+  return{nativePatchNotInvented:true,exactLargeSources:true,derivedProvenance:true,failedAndInterveningVersionsRejected:true,pinnedDiff:true,literalContent:true,offline,httpRequests:offline?requests.length:undefined};
+}

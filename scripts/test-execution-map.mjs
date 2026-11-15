@@ -13,6 +13,20 @@ const {executionPositions,executionBoxes}=await load('executionGeometry.ts');
 const {filterGraph}=await load('graphData.ts');
 let scopes=0,paths=0,routes=0,maxDepth=0;
 let inlineStates=0,inlineRoutes=0;
+let continuations=0;
+function routePoints(route){
+  return [...route.path.matchAll(/([ML]) ([\d.e+-]+) ([\d.e+-]+)/g)].map(m=>({move:m[1]==='M',x:+m[2],y:+m[3]}));
+}
+function checkContinuation(route,positions){
+  if(!route.continuation)return;
+  const points=routePoints(route);
+  assert.equal(points.length,4);assert.ok(points[2].move,'Row return is two independent stubs, never a crossing stroke');
+  assert.ok(points[0].y===points[1].y&&points[2].y===points[3].y);
+  assert.ok(points[1].x-points[0].x<=16&&points[3].x-points[2].x<=16);
+  assert.equal(route.continuation.exit.y,positions.get(route.edge.source).y);
+  assert.equal(route.continuation.entry.y,positions.get(route.edge.target).y);
+  assert.equal(route.edge.type,'temporal');continuations++;
+}
 
 function checkInline(source,expanded,steps){
   const g=inlineExecutionGraph(source,expanded,steps);
@@ -34,27 +48,37 @@ function checkInline(source,expanded,steps){
     assert.equal(visited,filtered.nodes.length,'Filtered inline DAG can be topologically sorted');
     for(const group of filtered.groups??[]){assert.ok(group.members.length);assert.ok(group.members.every(id=>ids.has(id)));}
     const size=n=>n.view?.kind==='section'?{width:220,height:104}:{width:164,height:48};
-    const positions=executionPositions(filtered,size),boxes=executionBoxes(filtered,positions,size);
+    for(const [columns,width]of [[1],[2],[3],[4],[5],[3,656],[3,776],[3,1048],[3,1320]]){
+    const positions=executionPositions(filtered,size,columns,width),boxes=executionBoxes(filtered,positions,size);
     const rect=n=>{const p=positions.get(n.id),s=size(n);return {x:p.x-s.width/2,y:p.y-s.height/2,...s};};
     const encloses=(a,b)=>a.x<=b.x&&a.y<=b.y&&a.x+a.width>=b.x+b.width&&a.y+a.height>=b.y+b.height;
-    for(let i=1;i<filtered.nodes.length;i++)assert.ok(rect(filtered.nodes[i-1]).y+rect(filtered.nodes[i-1]).height<rect(filtered.nodes[i]).y,'Sibling node rectangles never overlap');
+    for(let i=1;i<filtered.nodes.length;i++){
+      const a=positions.get(filtered.nodes[i-1].id),b=positions.get(filtered.nodes[i].id);
+      assert.ok(b.y>a.y||(b.y===a.y&&b.x>a.x),'Reading order is left to right, then down');
+    }
+    for(let i=0;i<filtered.nodes.length;i++)for(let j=i+1;j<filtered.nodes.length;j++){
+      const a=rect(filtered.nodes[i]),b=rect(filtered.nodes[j]);
+      assert.ok(a.x+a.width<b.x||b.x+b.width<a.x||a.y+a.height<b.y||b.y+b.height<a.y,'Node rectangles never overlap');
+    }
     for(const group of filtered.groups??[]){
       const box=boxes.find(b=>b.node.id===group.node.id).bounds;
       for(const id of group.members)assert.ok(encloses(box,rect(filtered.nodes[ids.get(id)])));
       for(const child of boxes.filter(b=>filtered.groups.find(g=>g.node.id===b.node.id)?.parent===group.node.id))assert.ok(encloses(box,child.bounds));
       for(const n of filtered.nodes.filter(n=>!group.members.includes(n.id))){const r=rect(n);assert.ok(box.y+box.height<r.y||r.y+r.height<box.y,'Enclosure does not cover another branch');}
     }
-    const drawn=executionRoutes(filtered,positions,164,48,new Map(filtered.nodes.map(n=>[n.id,size(n)])),boxes.map(b=>b.bounds));
+    const drawn=executionRoutes(filtered,positions,164,48,new Map(filtered.nodes.map(n=>[n.id,size(n)])),boxes.map(b=>b.bounds),true);
     assert.equal(drawn.length,filtered.edges.length);
     for(const route of drawn){
-      const points=[...route.path.matchAll(/[ML] ([\d.e+-]+) ([\d.e+-]+)/g)].map(m=>({x:+m[1],y:+m[2]}));
+      const points=routePoints(route);checkContinuation(route,positions);
       for(let i=1;i<points.length;i++){
-        const a=points[i-1],b=points[i];assert.ok(b.y>=a.y,'Inline arrow segments point downward');
+        if(points[i].move)continue;
+        const a=points[i-1],b=points[i];assert.ok(a.x===b.x||a.y===b.y,'Reading routes are orthogonal');
         for(const n of filtered.nodes.filter(n=>n.id!==route.edge.source&&n.id!==route.edge.target)){
           const r=rect(n);assert.ok(!(a.x===b.x?a.x>r.x&&a.x<r.x+r.width&&Math.max(a.y,b.y)>r.y&&Math.min(a.y,b.y)<r.y+r.height:a.y>r.y&&a.y<r.y+r.height&&Math.max(a.x,b.x)>r.x&&Math.min(a.x,b.x)<r.x+r.width),'Inline route avoids executable node interiors');
         }
       }
       inlineRoutes++;
+    }
     }
   }
   inlineStates++;
@@ -75,12 +99,13 @@ for(const size of [0,1,8,9,60,87,172,324,500,2000]){
     }
     const sizes=new Map(g.nodes.map(n=>[n.id,n.view?{width:220,height:104}:{width:164,height:48}]));
     const positions=executionPositions(g,n=>sizes.get(n.id));
-    const drawn=executionRoutes(g,positions,164,48,sizes);assert.equal(drawn.length,g.edges.length);
+    const drawn=executionRoutes(g,positions,164,48,sizes,[],true);assert.equal(drawn.length,g.edges.length);
     for(const r of drawn){
-      const points=[...r.path.matchAll(/[ML] ([\d.e+-]+) ([\d.e+-]+)/g)].map(x=>({x:+x[1],y:+x[2]}));
+      const points=routePoints(r);checkContinuation(r,positions);
       assert.ok(points.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)));
       for(let i=1;i<points.length;i++){
-        const a=points[i-1],b=points[i];assert.ok(a.x===b.x||a.y===b.y);assert.ok(b.y>=a.y,'All route segments preserve downward y');
+        if(points[i].move)continue;
+        const a=points[i-1],b=points[i];assert.ok(a.x===b.x||a.y===b.y);
         for(const n of g.nodes.filter(n=>n.id!==r.edge.source&&n.id!==r.edge.target)){
           const p=positions.get(n.id),size=sizes.get(n.id),left=p.x-size.width/2,right=p.x+size.width/2,top=p.y-size.height/2,bottom=p.y+size.height/2;
           assert.ok(!(a.x===b.x?a.x>left&&a.x<right&&Math.max(a.y,b.y)>top&&Math.min(a.y,b.y)<bottom:a.y>top&&a.y<bottom&&Math.max(a.x,b.x)>left&&Math.min(a.x,b.x)<right),'No edge crosses a node interior');
@@ -163,4 +188,5 @@ const subjectPaths=[...Array(8).fill('core.py'),...Array(3).fill('main.py'),...A
 const subjectGraph={nodes:subjectPaths.map((_,i)=>({...semanticNodes[0],id:'subject-'+i,first_idx:String(i),step_indices:[String(i)],signature:'read',category:'read'})),edges:[]};
 const subjectSteps=subjectPaths.map((path,i)=>({idx:String(i),tags:[],action:{tool:'shell',command:'cat src/'+path,targets:[]}}));
 assert.deepEqual(executionGraph(subjectGraph,undefined,subjectSteps).nodes.map(n=>[n.view.start,n.view.end]),[[0,8],[8,11],[11,30]],'Read subjects create unequal, source-contiguous content regions');
-console.log(`PASS execution map: ${scopes} scopes, ${paths} exact source paths, ${routes} mixed-size routes, ${sectionCount} evidence summaries; ${inlineStates} inline states / ${inlineRoutes} forward routes with filtering, containment and exact mapping; max depth ${maxDepth}`);
+assert.ok(continuations>0);
+console.log(`PASS execution map: ${scopes} scopes, ${paths} exact source paths, ${routes} mixed-size routes, ${sectionCount} evidence summaries; ${inlineStates} inline states / ${inlineRoutes} forward routes / ${continuations} paired row continuations with filtering, containment and exact mapping; max depth ${maxDepth}`);

@@ -51,7 +51,7 @@ def test_build_and_export_fixtures(tmp_path: Path) -> None:
         "slug-messages-provider", "slug-skill-pass",
         "dag-baseline", "dag-variant", "dag-short",
         "dashboard-baseline", "dashboard-variant", "dashboard-short", "execution-long-synthetic",
-        "role-boundaries", "node-types-synthetic",
+        "role-boundaries", "node-types-synthetic", "shell-writes-synthetic",
     }
     assert sorted(run["id"] for run in index["runs"]) == sorted(expected_ids)
     assert set(read_json(output / index["search_file"])) == expected_ids

@@ -3,7 +3,8 @@ import { useResource } from './data';
 import { phaseColor, sourceIndex, type Graph, type GraphEdge, type GraphNode, type Phase, type Run, type Step, type StepIndex } from './model';
 import { CopyButton, Icon, LoadError, Loading } from './ui';
 import { ExecutionContents } from './ExecutionContents';
-import { categoryIcon, categoryName, evidenceKind, eventStatus, eventTime, failed, label, patchStats, patchText, RecordedCode, fullScreen } from './Evidence';
+import { categoryIcon, categoryName, evidenceKind, eventStatus, eventTime, failed, label, patchStats, patchEvidence, RecordedCode, fullScreen } from './Evidence';
+import { literalFileWrites } from './recordedEdits';
 
 const previewLength = 1000;
 
@@ -24,10 +25,10 @@ function Content({ label, value, note, initialOpen = true }: { label: string; va
   </section>;
 }
 
-function StepContent({ step, node, phases, tabbed = false, variant = 'node', graphWorkspace = false, first, priorFailure, earlierFailure, locate, tab, setTab }: { step: Step; node?: GraphNode; phases: Phase[]; tabbed?: boolean; variant?: 'node' | 'event' | 'replay'; graphWorkspace?: boolean; first?: Step; priorFailure?: Step; earlierFailure?: Step; locate: () => void; tab: string; setTab: (tab: string) => void }) {
+function StepContent({ step, node, phases, tabbed = false, variant = 'node', graphWorkspace = false, first, priorFailure, earlierFailure, locate, tab, setTab,steps }: { step: Step; node?: GraphNode; phases: Phase[]; tabbed?: boolean; variant?: 'node' | 'event' | 'replay'; graphWorkspace?: boolean; first?: Step; priorFailure?: Step; earlierFailure?: Step; locate: () => void; tab: string; setTab: (tab: string) => void;steps:readonly Step[] }) {
   const phase = phases.find(item => item.id === step.phase);
   const action = step.action, observation = step.observation;
-  const patch = patchText(step), stats = patchStats(step);
+  const evidence=patchEvidence(step,steps),patch=evidence?.text??null,stats=patchStats(step,patch),writes=literalFileWrites(step);
   const notes = [observation?.truncated && 'Truncated in the source', observation?.exit_code != null && 'Exit code ' + observation.exit_code, observation?.error && 'Source flagged an error'].filter(Boolean).join(' · ');
   return <>
     <div className={'inspection-status ' + (failed(step) ? 'error-text' : '')}><span className="inspection-status-icon kind-icon" data-kind={evidenceKind(step,node)}><Icon name={categoryIcon(step,node)} size={18}/></span><div><strong>{failed(step) ? 'Tool Call – Failure' : action?.tool || (step.tags.includes('final_message') ? 'Final Answer' : 'Recorded text')}</strong><p>{label(step)}</p></div></div>
@@ -56,7 +57,7 @@ function StepContent({ step, node, phases, tabbed = false, variant = 'node', gra
       {variant === 'node' && <Content label={step.tags.includes('final_message') ? 'Message' : 'Description (recorded text)'} value={step.thought} note="Message and reasoning roles are not recorded separately."/>}
       <Content label={variant === 'event' ? 'Arguments' : tabbed ? 'Tool arguments' : 'Action'} value={action ? JSON.stringify(action, null, 2) : null} initialOpen={false}/>
     </>}
-    {tab === 'Code Diff' && <section className="step-content node-diff"><details open><summary><strong>Related Code Diff</strong></summary><button className="button small quiet" disabled={!patch} title={patch ? "Expand the recorded patch" : "Patch unrecorded"} onClick={e=>fullScreen(e.currentTarget.parentElement)}>View Full Diff</button>{graphWorkspace && !patch ? <p className="node-diff-missing"><Icon name="file" size={16}/><span>No patch recorded</span></p> : <><div className="recorded-path"><Icon name="file" size={14}/><span title={action?.targets.join(', ')}>{action?.targets.join(', ') || 'File unrecorded'}</span>{patch && <CopyButton text={patch}/>}</div><RecordedCode value={patch} patch/></>}</details></section>}
+    {tab === 'Code Diff' && <section className="step-content node-diff"><details open><summary><strong>{evidence?.derived?'Submitted write comparison':'Related Code Diff'}</strong></summary><button className="button small quiet" disabled={!patch} title={patch ? "Expand the code comparison" : "Patch unrecorded"} onClick={e=>fullScreen(e.currentTarget.parentElement)}>View Full Diff</button>{evidence?.note&&<p className="recorded-caption">{evidence.note}</p>}{graphWorkspace && !patch ? <p className="node-diff-missing"><Icon name="file" size={16}/><span>No patch recorded</span></p> : <><div className="recorded-path"><Icon name="file" size={14}/><span title={evidence?.path??action?.targets.join(', ')}>{evidence?.path||action?.targets.join(', ') || 'File unrecorded'}</span>{patch && <CopyButton text={patch}/>}</div><RecordedCode value={patch} patch ariaLabel={evidence?.derived?'Submitted write comparison':undefined}/></>}{!patch&&writes.map(file=><details key={file.path}><summary>Submitted file · {file.path}</summary><p className="recorded-caption">Literal content in the saved command. Previous file version unrecorded.</p><RecordedCode value={file.content}/></details>)}</details></section>}
     {(tab === 'Output' || variant === 'event' || variant === 'replay') && <Content label={variant === 'event' ? 'Output / Stderr' : 'Observation'} value={observation?.text ?? null} note={notes} initialOpen={variant !== 'replay'}/>}
     {tab === 'Output' && <Content label="Error Output (from prior attempt)" value={priorFailure?.observation?.text ?? null} note={priorFailure ? 'Earlier failed action with the same normalized signature · source ' + sourceIndex(priorFailure.idx) : 'No earlier failed action with the same normalized signature recorded.'} initialOpen={true}/>}
     {tab === 'Output' && !priorFailure && earlierFailure && <Content label="Earlier failure evidence" value={earlierFailure.observation?.text ?? null} note={'Earlier source ' + sourceIndex(earlierFailure.idx) + ' · a different action, not a recorded attempt of this call.'} initialOpen={false}/>}
@@ -129,7 +130,7 @@ export function Inspector({ run, node, index, select, clear, clearLabel = 'Clear
       {resource.state.status === 'error' && <div className="panel-inset">
         <LoadError message={resource.state.message} retry={resource.retry} />
       </div>}
-      {step && <StepContent step={step} node={node} phases={phases} tabbed={tabbed} variant={variant} graphWorkspace={graphWorkspace} tab={tab} setTab={setTab} first={steps?.[0]}
+      {step && <StepContent step={step} node={node} phases={phases} tabbed={tabbed} variant={variant} graphWorkspace={graphWorkspace} tab={tab} setTab={setTab} first={steps?.[0]} steps={steps??[]}
         priorFailure={steps?.slice(0,steps.indexOf(step)).reverse().find(s=>failed(s) && (relatedGraph ? relatedGraph.nodes.find(n=>String(n.first_idx)===String(s.idx))?.signature===relatedGraph.nodes.find(n=>String(n.first_idx)===String(step!.idx))?.signature : s.action?.tool===step!.action?.tool))}
         earlierFailure={steps?.slice(0,steps.indexOf(step)).reverse().find(failed)} locate={() => (locate ?? select)(step.idx)} />}
       {relatedGraph && (variant!=='node'||tab==='Context') && <details className="node-context" open={variant==='node' ? true : undefined}><summary>Context · Files &amp; relationships</summary><div className="context-counts">

@@ -7,6 +7,42 @@ const ids=graph=>graph.locator('[data-node]').evaluateAll(nodes=>nodes.map(n=>n.
 const closed=graph=>graph.locator('[data-node][aria-expanded="false"]');
 const node=(graph,id)=>graph.locator(`[data-node-id="${id}"]`);
 const header=(graph,id)=>graph.locator(`[data-section-toggle="${id}"]`);
+export async function checkReadableConnections(page,graph){
+  const selected=await graph.locator('[data-node][aria-pressed="true"]').first().getAttribute('data-node-id');
+  const relationships=await graph.locator('[data-edge-type="dependency"],[data-edge-type="retry"]').evaluateAll(edges=>edges.map(e=>({source:e.dataset.source,target:e.dataset.target})));
+  assert.ok(relationships.every(e=>e.source===selected||e.target===selected),'Only the selected source has visible dependency/retry lines');
+  const links=graph.locator('[data-continuation]');assert.ok(await links.count()>0,'Cross-row sequences use paired endpoints');
+  for(const link of await links.evaluateAll(edges=>edges.map(e=>({number:e.dataset.continuation,points:e.querySelector('path').getAttribute('d'),jumps:e.querySelectorAll('[data-sequence-jump]').length})))){
+    assert.equal(link.jumps,2);assert.equal((link.points.match(/M /g)||[]).length,2,'No long row-return stroke is drawn');
+  }
+  const candidates=await links.evaluateAll(edges=>edges.map(e=>({source:e.dataset.source,target:e.dataset.target})));
+  let pair=candidates[0],multiMember=false;
+  for(const candidate of candidates){
+    const item=node(graph,candidate.source);
+    if(await item.getAttribute('data-source-index')!==await item.getAttribute('data-last-source-index')){pair=candidate;multiMember=true;break;}
+  }
+  const link=graph.locator(`[data-continuation][data-source="${pair.source}"][data-target="${pair.target}"]`);
+  const jump=link.locator('[data-sequence-jump="next"]'),targetSource=await node(graph,pair.target).getAttribute('data-source-index');
+  const boundary=await node(graph,pair.source).getAttribute('data-last-source-index');
+  const controlStyle=await jump.evaluate(e=>({opacity:getComputedStyle(e).opacity,parentOpacity:getComputedStyle(e.parentElement).opacity,color:e.querySelector('text').getAttribute('fill')}));
+  assert.equal(controlStyle.opacity,'1');assert.equal(controlStyle.parentOpacity,'1');assert.equal(controlStyle.color,'#273442','Endpoint labels retain usable contrast');
+  await graph.focus();await page.keyboard.press('Tab');await jump.focus();await settle(page);await jump.press('Enter');
+  const inspector=page.getByRole('complementary',{name:'Step inspector',exact:true});
+  await inspector.locator('.step-meta').getByText('#'+targetSource,{exact:true}).waitFor();
+  assert.equal(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('step'),targetSource,'Continuation jumps preserve exact source identity');
+  const reverse=graph.locator(`[data-continuation][data-source="${pair.source}"] [data-sequence-jump="previous"]`).first();
+  assert.equal(await reverse.getAttribute('data-jump-source'),boundary,'Reverse endpoint names the last source in the summarized interval');
+  assert.match(await reverse.getAttribute('aria-label'),new RegExp('#'+boundary+'$'));
+  await reverse.focus();await settle(page);await reverse.press('Enter');
+  await inspector.locator('.step-meta').getByText('#'+boundary,{exact:true}).waitFor();
+  assert.equal(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('step'),boundary,'Reverse continuation selects its actual temporal boundary');
+  await page.locator('.graph-options > summary').click();
+  const all=page.getByRole('checkbox',{name:/All relationships/});await all.check();await settle(page);
+  const allCount=await graph.locator('[data-edge-type="dependency"],[data-edge-type="retry"]').count();
+  await all.uncheck();await page.locator('.graph-options > summary').click();await settle(page);
+  const relatedCount=await graph.locator('[data-edge-type="dependency"],[data-edge-type="retry"]').count();assert.ok(allCount>=relatedCount);
+  return{pairedRows:true,noRowReturnStroke:true,endpointContrast:true,keyboardContinuation:true,reverseBoundary:true,multiMemberBoundary:multiMember,exactSource:true,selectedRelationships:true,allRelationships:true};
+}
 async function anchor(locator,expanded=false){
   return locator.evaluate((element,open)=>{
     const body=element.querySelector(open?':scope > rect':'[data-node-body]');
@@ -123,17 +159,20 @@ export async function checkExecutionMap(page,url,artifacts,offline=false){
   const inspector=page.getByRole('complementary',{name:'Step inspector',exact:true});
   await inspector.getByText('Check synthetic module 499.',{exact:true}).waitFor();
   await graph.locator('[data-source-index="999"][aria-pressed="true"]').waitFor();
-  const positions=await graph.locator('[data-node]').evaluateAll(ns=>ns.map(n=>n.transform.baseVal.consolidate().matrix.f));
-  assert.ok(positions.every((y,i)=>!i||y>positions[i-1]));
+  const positions=await graph.locator('[data-node]').evaluateAll(ns=>ns.map(n=>{const m=n.transform.baseVal.consolidate().matrix;return{x:m.e,y:m.f};}));
+  assert.ok(positions.every((p,i)=>!i||p.y>positions[i-1].y||(p.y===positions[i-1].y&&p.x>positions[i-1].x)));
   const [download]=await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'Download SVG of qa-render-500-expanded',exact:true}).click()]);
   const svg=readFileSync(await download.path(),'utf8');
   for(const id of await ids(graph))assert.ok(svg.includes(`data-node-id="${id}"`),'SVG contains every current frontier node');
   assert.ok(svg.includes('data-expanded-section='),'SVG includes the opened enclosures');
+  assert.ok(svg.includes('data-continuation='),'SVG retains the same paired sequence endpoints');
   const [pngDownload]=await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'Download PNG of qa-render-500-expanded',exact:true}).click()]);
   const png=readFileSync(await pngDownload.path());assert.equal(png.subarray(1,4).toString(),'PNG');
   assert.ok(png.readUInt32BE(16)>0&&png.readUInt32BE(16)<=4096&&png.readUInt32BE(20)>0&&png.readUInt32BE(20)<=4096);
   await pngDownload.saveAs(join(artifacts,prefix+'execution-inline-export.png'));
   await page.screenshot({path:join(artifacts,prefix+'execution-map-detail.png'),fullPage:true});
+  const connections=await checkReadableConnections(page,graph);
+  assert.ok(connections.multiMemberBoundary,'The regression covers reverse navigation from a multi-member summary');
   await page.locator('.graph-options > summary').click();
   await page.getByRole('combobox',{name:'Filter DAG tool category',exact:true}).selectOption('edit');
   await page.getByRole('heading',{name:'No graph steps',exact:true}).waitFor();
@@ -168,5 +207,5 @@ export async function checkExecutionMap(page,url,artifacts,offline=false){
   await page.setViewportSize({width:1280,height:800});
   const smaller=await checkExecutionReturn(page,synthetic,async state=>{if(state==='inline-open'||state==='inline-multiple')await capture(state+'-1280');});
   if(offline)assert.equal(requests.length,0);page.off('request',request);
-  return {sourceSteps:500,rootNodes,contentSummaries:true,recordedExampleJump:true,globalSearch:true,exactSource:true,keyboardNavigator:true,inline,smaller,legacySteps:true,currentStateSvg:true,currentStatePng:true,offline,offlineHttp:offline?requests.length:undefined};
+  return {sourceSteps:500,rootNodes,contentSummaries:true,recordedExampleJump:true,globalSearch:true,exactSource:true,keyboardNavigator:true,connections,inline,smaller,legacySteps:true,currentStateSvg:true,currentStatePng:true,offline,offlineHttp:offline?requests.length:undefined};
 }

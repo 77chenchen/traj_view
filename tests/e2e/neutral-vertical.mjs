@@ -35,8 +35,8 @@ export async function checkNeutralVertical(page,url,artifacts,offline=false){
     assert.ok(z[1]>a[1]+50,'An ordinary wheel scrolls vertically through the source');assert.equal(z[2],a[2],'Ordinary wheel movement preserves scale');
     await page.keyboard.down('Control');await page.mouse.wheel(0,-60);await page.keyboard.up('Control');await settle(page);
     assert.ok(Number((await graph.getAttribute('viewBox')).split(' ')[2])<z[2],'Control+wheel zooms');
-    const order=await graph.locator('[data-node]').evaluateAll(ns=>ns.map(n=>({id:n.dataset.nodeId,y:n.transform.baseVal.consolidate().matrix.f})));
-    assert.ok(order.every((n,i)=>i===0||n.y>order[i-1].y),'The visible frontier preserves vertical source order');
+    const order=await graph.locator('[data-node]').evaluateAll(ns=>ns.map(n=>({id:n.dataset.nodeId,x:n.transform.baseVal.consolidate().matrix.e,y:n.transform.baseVal.consolidate().matrix.f})));
+    assert.ok(order.every((n,i)=>i===0||n.y>order[i-1].y||(n.y===order[i-1].y&&n.x>order[i-1].x)),'The frontier preserves source reading order: right, then down');
     const search=page.getByRole('searchbox',{name:/Find a node in/});
     await search.fill('#10000000000000040');await search.press('Enter');await inspector.locator('.step-meta').getByText('#10000000000000040',{exact:true}).waitFor();
     await inspector.getByRole('button',{name:'Error Output',exact:true}).click();assert.match(await inspector.innerText(),/FAILED test_synthetic_value/);await capture('failure-'+width);
@@ -54,7 +54,7 @@ export async function checkNeutralVertical(page,url,artifacts,offline=false){
     for(const n of await graph.locator('[data-node]').evaluateAll(ns=>ns.map(n=>n.dataset.nodeId)))assert.ok(text.includes(`data-node-id="${n}"`));
     if(width===1586)await svg.saveAs(join(artifacts,prefix+'vertical-current-state.svg'));
     await page.getByRole('button',{name:'Collapse last',exact:true}).click();await inspector.locator('.step-meta').getByText('#10000000000000053',{exact:true}).waitFor();
-    geometry.push({width,height,canvas:initialBox,sourceOrder:'top-to-bottom',ordinaryWheel:true,modifierWheelZoom:true,inlineExpansion:true,fullscreenDetails:true,exactSource:true,whiteSvg:true});
+    geometry.push({width,height,canvas:initialBox,sourceOrder:'left-to-right-then-down',ordinaryWheel:true,modifierWheelZoom:true,inlineExpansion:true,fullscreenDetails:true,exactSource:true,whiteSvg:true});
   }
   assert.deepEqual(errors,[]);if(offline)assert.equal(requests.length,0);
   page.off('pageerror',onError);page.off('request',onRequest);

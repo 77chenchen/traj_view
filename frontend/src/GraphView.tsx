@@ -5,7 +5,7 @@ import {
 import { exportGraph } from './graphExport';
 import { signatureTarget } from './graphData';
 import { nodeSize, useLayout, type Box, type Point } from './layout';
-import { capitalize, edgeTypes, number, type EdgeType, type Graph, type GraphNode, type Phase } from './model';
+import { capitalize, edgeTypes, number, type EdgeType, type Graph, type GraphNode, type Phase, type StepIndex } from './model';
 import { Empty, Icon, Loading } from './ui';
 import { fullScreen } from './Evidence';
 
@@ -57,12 +57,14 @@ function contains(box: Box, point: Point) {
 }
 
 function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, signature, membership, positionsInTime,
-  reached, divergence, compact, name, layoutName, layoutReason, toolbar, searchGraph, onLocate, framingKey, locateRequest = 0, expansionRequest }: {
+  reached, divergence, compact, name, layoutName, layoutReason, toolbar, searchGraph, onLocate, onSourceJump, framingKey, locateRequest = 0, expansionRequest,onWidth }: {
   drawing: Drawing; phases: Map<string, Phase>; theme: Theme; enabled: ReadonlySet<EdgeType>;
   onNode: (node: GraphNode) => void; selected?: string | null; signature?: string | null;
   membership?: ReadonlyMap<string, number>; positionsInTime?: ReadonlyMap<string, number>; reached?: number;
   divergence?: ReadonlySet<string>; compact?: boolean; name: string; layoutName: string; layoutReason?: string; toolbar?: ReactNode;
   searchGraph?: Graph; onLocate?: (node: GraphNode) => void; framingKey?: string; locateRequest?: number; expansionRequest?: ExpansionRequest;
+  onSourceJump?:(index:StepIndex)=>void;
+  onWidth:(width:number)=>void;
 }) {
   const frame = useRef<HTMLDivElement>(null);
   const canvas = useRef<SVGSVGElement>(null);
@@ -96,6 +98,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
   const previousSelection = useRef<string | null | undefined>(null);
   const previousLocateRequest = useRef(-1);
   const previousViewport = useRef('');
+  const previousSelectionDrawing=useRef<Drawing|undefined>(undefined);
   const fitted = useRef(false);
   const snapshot = useRef<{ drawing: Drawing; camera: Camera; viewport: Viewport } | undefined>(undefined);
   const expansionSequence = useRef(0);
@@ -188,6 +191,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
       previousSelection.current = selected;
       previousLocateRequest.current = locateRequest;
       previousViewport.current = `${viewport.width}:${viewport.height}:${fullscreen}`;
+      previousSelectionDrawing.current=drawing;
       snapshot.current = { drawing, camera: next, viewport };
       const attribute = pending.request.open ? 'data-section-toggle' : 'data-node-id';
       const id = pending.request.id;
@@ -219,7 +223,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
     if (pendingExpansion.current) return;
     const viewportKey = `${size.width}:${size.height}:${fullscreen}`;
     const sameSource = selected === previousSelection.current && locateRequest === previousLocateRequest.current;
-    if (sameSource && viewportKey === previousViewport.current) return;
+    if (sameSource && viewportKey === previousViewport.current&&previousSelectionDrawing.current===drawing) return;
     const item = drawing.nodes.find(({ node }) => node.id === selected);
     // A retained drawing may not contain the requested source yet. Consume the
     // request only after the replacement drawing can frame the complete node.
@@ -227,6 +231,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
     previousSelection.current = selected;
     previousLocateRequest.current = locateRequest;
     previousViewport.current = viewportKey;
+    previousSelectionDrawing.current=drawing;
     if (!fitted.current || !sameSource) focusNode(item.point,!sameSource);
   }, [drawing, focusNode, selected, locateRequest, size.width, size.height, fullscreen]);
 
@@ -234,7 +239,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
     if (!canvas.current) return;
     const observer = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect;
-      if (width > 0 && height > 0) setSize({ width, height });
+      if (width > 0 && height > 0) {setSize({ width, height });onWidth(width);}
     });
     // The frame also contains the navigation gutter. Measure the actual SVG,
     // so viewBox and screen-space framing have exactly the same aspect ratio.
@@ -375,7 +380,7 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
           setCamera({ ...current, x: current.x + direction.x * 70 / current.scale, y: current.y + direction.y * 70 / current.scale });
         }}
         onPointerDown={(event) => {
-          if (event.button !== 0 || (event.target instanceof Element && event.target.closest('[data-node],[data-section-toggle]'))) return;
+          if (event.button !== 0 || (event.target instanceof Element && event.target.closest('[data-node],[data-section-toggle],[data-sequence-jump]'))) return;
           fitted.current = false;
           event.currentTarget.setPointerCapture(event.pointerId);
           drag.current = { pointer: event.pointerId, client: { x: event.clientX, y: event.clientY }, camera: current };
@@ -393,27 +398,30 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
         <GraphDrawing drawing={drawing} phases={phases} theme={theme} enabled={enabled} selected={selected}
           signature={signature} membership={membership} positionsInTime={positionsInTime} reached={reached} divergence={divergence} prefix={prefix}
           clip={drawing.nodes.length > 200 ? view : undefined} labels={current.scale >= .28}
-          onNode={onNode} onFocusNode={focusNode} onTip={setTip} />
+          onNode={onNode} onJump={onSourceJump} onFocusNode={focusNode} onTip={setTip} />
       </svg>
     </div>
     <div className="graph-caption">
       <span id={`${prefix}-help`} className="sr-only">Scroll to move through the graph from top to bottom; at its ends scrolling continues through the page. Drag the background or use arrow keys to pan. Hold Control or Command while scrolling to zoom.</span>
       <span className="graph-tip" title={tip || undefined}>{`${number.format(drawing.nodes.length)} nodes · ${number.format(
         drawing.edges.filter(({ edge }) => enabled.has(edge.type)).length)} visible edges`}</span>
-      <span title={layoutReason}>{layoutName} layout</span>
+      <span title={layoutReason}>{layoutName==='Execution'?'Reading rows · → then ↓':`${layoutName} layout`}</span>
     </div>
   </>;
 }
 
 export function GraphView({ graph, phases, theme, enabled, name, selected, signature, membership, onNode,
-  positionsInTime, reached, divergence, compact, controls, toolbar, legend = true, execution = false, searchGraph, onLocate, framingKey, locateRequest, expansionRequest }: {
+  positionsInTime, reached, divergence, compact, controls, toolbar, legend = true, execution = false, searchGraph, onLocate, onSourceJump, framingKey, locateRequest, expansionRequest }: {
   graph: Graph; phases: Phase[]; theme: Theme; enabled: ReadonlySet<EdgeType>; name: string;
   selected?: string | null; signature?: string | null; membership?: ReadonlyMap<string, number>;
   onNode: (node: GraphNode) => void; positionsInTime?: ReadonlyMap<string, number>; reached?: number; toolbar?: ReactNode;
   divergence?: ReadonlySet<string>; compact?: boolean; controls?: ReactNode; legend?: boolean;
   execution?: boolean; searchGraph?: Graph; onLocate?: (node: GraphNode) => void; framingKey?: string; locateRequest?: number; expansionRequest?: ExpansionRequest;
+  onSourceJump?:(index:StepIndex)=>void;
 }) {
-  const layout = useLayout(graph,execution);
+  const [viewportWidth,setViewportWidth]=useState(900);
+  const rowWidth=Math.max(220,Math.floor((viewportWidth-80)/8)*8);
+  const layout = useLayout(graph,execution,rowWidth);
   const phaseMap = useMemo(() => new Map(phases.map((phase) => [phase.id, phase])), [phases]);
   const drawing = useMemo(() => layout && makeDrawing(graph, layout.positions,layout.name==='Execution'), [graph, layout]);
   const [ready, setReady] = useState<{ drawing: Drawing; layout: NonNullable<typeof layout> }>();
@@ -428,8 +436,8 @@ export function GraphView({ graph, phases, theme, enabled, name, selected, signa
       : displayed ? <GraphViewport drawing={displayed.drawing} phases={phaseMap} theme={theme} enabled={enabled} name={name} toolbar={toolbar}
         onNode={onNode} selected={selected} signature={signature} membership={membership}
         positionsInTime={positionsInTime} reached={reached} divergence={divergence} compact={compact}
-        searchGraph={searchGraph} onLocate={onLocate} framingKey={framingKey} locateRequest={locateRequest} expansionRequest={expansionRequest}
-        layoutName={displayed.layout.name} layoutReason={displayed.layout.reason} />
+        searchGraph={searchGraph} onLocate={onLocate} onSourceJump={onSourceJump} framingKey={framingKey} locateRequest={locateRequest} expansionRequest={expansionRequest}
+        layoutName={displayed.layout.name} layoutReason={displayed.layout.reason} onWidth={setViewportWidth} />
       : <Loading>Laying out graph…</Loading>}
     {legend && graph.nodes.length > 0 && <GraphLegend phases={phases} theme={theme} />}
   </>;

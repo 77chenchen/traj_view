@@ -1,0 +1,77 @@
+{
+  "privateData": false,
+  "chrome": "157.0.8103.52",
+  "sourceSteps": 96,
+  "timestamps": 0,
+  "nativePatches": 12,
+  "derivedComparisons": 0,
+  "literalWriteSteps": 0,
+  "checks": [
+    {
+      "width": 1586,
+      "height": 912,
+      "readingOrder": true,
+      "inlineSummary": true,
+      "sequenceOnlyStart": true,
+      "connections": {
+        "pairedRows": true,
+        "noRowReturnStroke": true,
+        "endpointContrast": true,
+        "keyboardContinuation": true,
+        "reverseBoundary": true,
+        "multiMemberBoundary": true,
+        "exactSource": true,
+        "selectedRelationships": true,
+        "allRelationships": true
+      },
+      "exactSource": true,
+      "fullscreenInspector": true,
+      "sidebarTogglePreservesSelectionAndTab": true,
+      "collapseAll": true,
+      "pageErrors": 0
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "readingOrder": true,
+      "inlineSummary": true,
+      "sequenceOnlyStart": true,
+      "connections": {
+        "pairedRows": true,
+        "noRowReturnStroke": true,
+        "endpointContrast": true,
+        "keyboardContinuation": true,
+        "reverseBoundary": true,
+        "multiMemberBoundary": true,
+        "exactSource": true,
+        "selectedRelationships": true,
+        "allRelationships": true
+      },
+      "exactSource": true,
+      "fullscreenInspector": true,
+      "sidebarTogglePreservesSelectionAndTab": true,
+      "collapseAll": true,
+      "pageErrors": 0
+    }
+  ],
+  "captures": [
+    "overview-1586.png",
+    "content-groups-1586.png",
+    "code-evidence-1586.png",
+    "fullscreen-1586.png",
+    "failure-1586.png",
+    "overview-1280.png",
+    "content-groups-1280.png",
+    "code-evidence-1280.png",
+    "fullscreen-1280.png",
+    "failure-1280.png",
+    "offline-code-evidence.png",
+    "offline-fullscreen.png"
+  ],
+  "offline": {
+    "httpRequests": 0,
+    "pageErrors": 0,
+    "codeEvidence": true,
+    "fullscreen": true
+  }
+}

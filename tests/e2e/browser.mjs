@@ -9,6 +9,7 @@ const fixtureRuns = [
   'role-boundaries',
   'execution-long-synthetic',
   'node-types-synthetic',
+  'shell-writes-synthetic',
   'slug-empty', 'slug-messages-pass', 'slug-messages-provider', 'slug-skill-pass',
 ];
 export const renderSizes = [500, 2000];

@@ -8,7 +8,7 @@ import { frontendRequire, root } from './frontend-dependencies.mjs';
 const ts = frontendRequire('typescript');
 const source = readFileSync(join(root, 'frontend/src/graphData.ts'), 'utf8');
 const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
-const { foldGraph, filterGraph, actionSequence, comparePair, recordedFiles } = await import(`data:text/javascript;base64,${Buffer.from(compiled).toString('base64')}`);
+const { foldGraph, filterGraph, selectedRelationships, actionSequence, comparePair, recordedFiles } = await import(`data:text/javascript;base64,${Buffer.from(compiled).toString('base64')}`);
 const hierarchySource = readFileSync(join(root, 'frontend/src/hierarchy.ts'), 'utf8');
 const hierarchyCompiled = ts.transpileModule(hierarchySource, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
 const { hierarchyGraph } = await import(`data:text/javascript;base64,${Buffer.from(hierarchyCompiled).toString('base64')}`);
@@ -109,5 +109,25 @@ try {
   const ended = comparePair(actionSequence(graph.expanded), actionSequence(fixture('dag-short').graph.expanded));
   assert.equal(ended.offset, 2); assert.equal(ended.rightIndex, null);
   assert.deepEqual(recordedFiles(steps).get('src/alpha.py'), [7, 19, '9007199254740993', '9007199254741007']);
+  // Two different source calls share each rolled-up representative pair.
+  // Scoped mode must never borrow the other member's counts after collapse.
+  const exact=['9007199254741049','9007199254741057','9007199254741081','9007199254741123'];
+  const sourceNodes=exact.map((idx,i)=>({...graph.expanded.nodes[0],id:'member-'+i,first_idx:idx,step_indices:[idx],signature:i<2?'a':'b',count:1}));
+  const relationships={nodes:sourceNodes,edges:[
+    {id:'t',source:'member-1',target:'member-2',type:'temporal',count:1},
+    {id:'d0',source:'member-0',target:'member-2',type:'dependency',count:2},
+    {id:'d1',source:'member-1',target:'member-2',type:'dependency',count:3},
+    {id:'r0',source:'member-0',target:'member-3',type:'retry',count:1},
+    {id:'r1',source:'member-1',target:'member-3',type:'retry',count:4},
+  ]};
+  const original=JSON.stringify(relationships),collapsed=foldGraph(relationships);
+  assert.deepEqual(collapsed.edges.map(e=>[e.type,e.count]),[['temporal',1],['dependency',5],['retry',5]]);
+  for(const [idx,expected]of [[exact[0],[['temporal',1],['dependency',2],['retry',1]]],[exact[1],[['temporal',1],['dependency',3],['retry',4]]],[exact[3],[['temporal',1],['retry',5]]],[null,[['temporal',1]]]]){
+    const scoped=selectedRelationships(relationships,collapsed,idx);dag(scoped);
+    assert.deepEqual(scoped.edges.map(e=>[e.type,e.count]),expected,'Exact-source counts are computed before summary aggregation');
+  }
+  const filtered=filterGraph(collapsed,n=>n.signature==='a');
+  assert.equal(selectedRelationships(relationships,filtered,exact[0]).edges.length,0,'Hidden endpoints are never reconnected');
+  assert.equal(JSON.stringify(relationships),original);dag(collapsed);
   console.log(`PASS DAG transforms: ${checked} topological sorts; contiguous mapping, partial/full expansion, filters, retry/dependency, exact indices, divergence, recorded files`);
 } finally { rmSync(scratch, { recursive: true, force: true }); }

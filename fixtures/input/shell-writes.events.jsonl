@@ -1,0 +1,6 @@
+{"type":"run.start","id":"shell-writes-synthetic","task_id":"synthetic-recorded-writes","agent":"synthetic","model":"qa-model","condition":"literal-shell-writes"}
+{"type":"step","idx":9007199254741049,"thought":"Synthetic literal write; this fixture does not execute commands.","action":{"tool":"shell","command":"cat > src/example.py <<'PY'\nvalue = 1\nprint(value)\nPY","targets":["src/example.py"]},"observation":{"text":"Synthetic saved exit status. No filesystem snapshot recorded.","exit_code":0}}
+{"type":"step","idx":9007199254741057,"action":{"tool":"shell","command":"cat > src/example.py <<'PY'\nvalue = 2\nprint(value)\nPY","targets":["src/example.py"]},"observation":{"text":"Synthetic saved exit status. No native patch recorded.","exit_code":0}}
+{"type":"step","idx":9007199254741081,"action":{"tool":"shell","command":"python modify.py","targets":["src/example.py"]},"observation":{"text":"Synthetic failed command; the resulting file state is unknown.","exit_code":1,"error":true}}
+{"type":"step","idx":9007199254741123,"action":{"tool":"shell","command":"cat > src/example.py <<'PY'\nvalue = 3\nprint(value)\nPY","targets":["src/example.py"]},"observation":{"text":"Synthetic write after an intervening command: previous file version unrecorded.","exit_code":0}}
+{"type":"run.end","outcome":{"label":"synthetic unknown"}}

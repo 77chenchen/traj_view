@@ -3,8 +3,9 @@ import { useResource } from './data';
 import { Inspector } from './Inspector';
 import { number, sourceIndex, type GraphNode, type Phase, type Run, type RunGraphs, type Step, type StepIndex } from './model';
 import { CopyButton, download, Icon, LoadError, Loading } from './ui';
-import { categoryIcon, categoryName, evidenceKind, clock, eventStatus, eventTime, failed, fileContent, fullScreen, label, Output, patchStats, patchText, RecordedCode, RunMetadata, StageSnapshots, stepTitle } from './Evidence';
+import { categoryIcon, categoryName, evidenceKind, clock, eventStatus, eventTime, failed, fileContent, fullScreen, label, Output, patchStats, patchEvidence, RecordedCode, RunMetadata, StageSnapshots, stepTitle } from './Evidence';
 import { EventTimeline } from './Timeline';
+import { literalFileWrites } from './recordedEdits';
 export { RunMetadata as RunSummary } from './Evidence';
 export function Annotation({ run, step }: { run: Run; step: Step }) {
   const key = `trajviz-note:${run.id}:${step.raw_ref.file}:${step.idx}`;
@@ -84,9 +85,10 @@ function LoadedReplay({ run, graphs, steps, phases, timeline, index, onSelect }:
   const delta = step?.ts && previous?.ts ? (Date.parse(step.ts)-Date.parse(previous.ts))/1000 : NaN;
   const nodeMap = useMemo(() => new Map(graphs.expanded.nodes.map(n => [String(n.first_idx),n])),[graphs]);
   const node = nodeMap.get(String(step?.idx));
-  const automaticView = patchText(step) ? 'patch' : fileContent(step,node) ? 'workspace' : 'event';
+  const evidence=patchEvidence(step,steps),patch=evidence?.text??null;
+  const automaticView = patch ? 'patch' : fileContent(step,node) ? 'workspace' : 'event';
   const view = preferredView === 'auto' ? automaticView : preferredView;
-  const showOutput = outputOpen ?? Boolean(patchText(step) || fileContent(step,node));
+  const showOutput = outputOpen ?? Boolean(patch || fileContent(step,node));
   const setView = (next: typeof preferredView) => {
     setPreferredView(next);
     if (next !== 'auto') setOutputOpen(previous => previous ?? showOutput);
@@ -121,8 +123,9 @@ function LoadedReplay({ run, graphs, steps, phases, timeline, index, onSelect }:
     if (a.top < start) list.scrollTop += a.top-start;
     else if (a.bottom > b.bottom) list.scrollTop += a.bottom-b.bottom;
   },[timeline,showLog,step?.idx,filter,status,query]);
-  const patch = patchText(step), content = fileContent(step,node);
-  const stats = patchStats(step);
+  const content = fileContent(step,node);
+  const submitted=literalFileWrites(step)[0];
+  const stats = patchStats(step,patch);
   const contextStep = steps.slice(0,position+1).reverse().find(s => nodeMap.get(String(s.idx))?.category === 'read' && s.action?.targets.some(path => step?.action?.targets.includes(path)));
   const contextContent = contextStep?.observation?.text ?? null;
   const nextEdit = steps.slice(position+1).find(s => nodeMap.get(String(s.idx))?.category === 'edit');
@@ -168,8 +171,10 @@ function LoadedReplay({ run, graphs, steps, phases, timeline, index, onSelect }:
             <div className="workspace-tabs evidence-tabs" role="group" aria-label="Recorded content view"><button className="evidence-follow" aria-label="Automatic evidence view" aria-pressed={preferredView === 'auto'} title="Automatically follow the recorded evidence. Selecting another view keeps it across steps." onClick={() => setView('auto')}><Icon name="spark" size={15}/>Auto<span className="auto-indicator" aria-hidden="true"/></button><button aria-pressed={view === 'event'} onClick={() => setView('event')}><Icon name="terminal" size={15}/>Output</button><button aria-label="Diff" aria-pressed={view === 'patch'} onClick={() => setView('patch')}><Icon name="diff" size={15}/>Diff{patch && <small> ({(stats.added ?? 0)+(stats.removed ?? 0)})</small>}</button><button aria-pressed={view === 'workspace'} onClick={() => setView('workspace')}><Icon name="file" size={15}/>Updated File</button><button aria-pressed={view === 'text'} onClick={() => setView('text')}><Icon name="layers" size={15}/>File Context</button>
               <CopyButton text={view === 'patch' ? patch || '' : view === 'workspace' ? content || '' : view === 'event' ? step.observation?.text || step.thought || '' : contextContent || step.thought || ''} /><button className="button small icon-button" aria-label="Expand evidence" title="Expand evidence" onClick={e => fullScreen(e.currentTarget.closest('section'))}><Icon name="fit" size={15} /></button></div>
             <p className="selected-step-description" title={step.thought || label(step)}>{step.thought || label(step)}</p>
-            <div className="recorded-path"><Icon name="file" size={15} /><span title={step.action?.targets.join(', ') || ''}>{step.action?.targets.join(', ') || (typeof step.action?.args.path === 'string' ? step.action.args.path : 'No explicit file target')}</span>{patch && <span className="diff-count"><i>−{stats.removed}</i><b>+{stats.added}</b></span>}</div>
-            <div className="recorded-code">{view === 'event' ? step.action ? <Output step={step} ariaLabel="Selected step evidence"/> : <div className="recorded-prose"><pre>{step.thought || 'Text unrecorded for this step.'}</pre><p className="muted">Recorded text · message and reasoning roles unavailable</p></div> : view === 'patch' && patch || view === 'workspace' ? <RecordedCode value={view === 'patch' ? patch : content} patch={view === 'patch'} /> :
+            <div className="recorded-path"><Icon name="file" size={15} /><span title={evidence?.path||step.action?.targets.join(', ') || ''}>{evidence?.path||step.action?.targets.join(', ') || (typeof step.action?.args.path === 'string' ? step.action.args.path : 'No explicit file target')}</span>{patch && <span className="diff-count"><i>−{stats.removed}</i><b>+{stats.added}</b></span>}</div>
+            {view==='patch'&&evidence?.note&&<p className="recorded-caption">{evidence.note}</p>}
+            {view==='workspace'&&submitted&&<p className="recorded-caption">Submitted file · {submitted.path} · literal content in the saved command; filesystem version unrecorded.</p>}
+            <div className="recorded-code">{view === 'event' ? step.action ? <Output step={step} ariaLabel="Selected step evidence"/> : <div className="recorded-prose"><pre>{step.thought || 'Text unrecorded for this step.'}</pre><p className="muted">Recorded text · message and reasoning roles unavailable</p></div> : view === 'patch' && patch || view === 'workspace' ? <RecordedCode value={view === 'patch' ? patch : content} patch={view === 'patch'} ariaLabel={view==='patch'&&evidence?.derived?'Submitted write comparison':undefined} /> :
               view === 'patch' ? <RecordedCode value={null} patch /> : step.action?.targets.length ? <><p className="recorded-caption">{contextStep ? 'Recorded file context · source ' + sourceIndex(contextStep.idx) : 'File context unrecorded'} · excerpt line numbers</p><RecordedCode value={contextContent}/>{contextStep && contextStep.idx !== step.idx && <button className="button small quiet" onClick={() => choose(contextStep.idx)}>Go to file context {sourceIndex(contextStep.idx)}</button>}</> : <div className="recorded-prose"><pre>{step.thought || 'Text unrecorded for this step.'}</pre><p className="muted">Recorded text · message and reasoning roles unavailable</p></div>}</div>
           </section>
           <section className="panel terminal-panel replay-output" aria-label="Recorded terminal output"><div className="workspace-tabs" role="group" aria-label="Output view"><button aria-pressed={output === 'terminal' && showOutput} onClick={() => {setOutput('terminal');setOutputOpen(true);}}><Icon name="terminal" size={14} />Terminal</button><button aria-pressed={output === 'tests' && showOutput} onClick={() => {setOutput('tests');setOutputOpen(true);}}><Icon name="test" size={15}/>Tests</button><span className={'output-status ' + (failed(step) ? 'error-text' : '')}>{step.observation?.exit_code != null ? 'Exit ' + step.observation.exit_code : 'Exit unrecorded'}</span><button className="output-disclosure" aria-label={showOutput ? 'Hide terminal output' : 'Show terminal output'} aria-expanded={showOutput} onClick={()=>setOutputOpen(!showOutput)}><Icon name={showOutput ? 'minus' : 'plus'} size={14}/>{showOutput ? 'Collapse' : 'Expand'}</button>{showOutput && <CopyButton text={step.observation?.text || ''} />}</div>{showOutput && (output === 'tests' && node?.category !== 'validate' ? <pre aria-label="Current step output">No test output recorded for this step.</pre> : <Output step={step} />)}</section>

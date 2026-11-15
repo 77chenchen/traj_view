@@ -46,6 +46,27 @@ export function filterGraph(graph: Graph, keep: (node: GraphNode) => boolean): G
     ...(graph.groups ? {groups:graph.groups.map(group=>({...group,members:group.members.filter(id=>ids.has(id))})).filter(group=>group.members.length)} : {}) };
 }
 
+// Scope original relationships BEFORE aggregation. A representative may contain
+// many source calls; its full rolled-up count is not the selected call's count.
+export function selectedRelationships(source:Graph,display:Graph,index:StepIndex|null):Graph {
+  const selected=index==null?undefined:source.nodes.find(node=>String(node.first_idx)===String(index));
+  const edges=display.edges.filter(edge=>edge.type==='temporal'||edge.type==='structural');
+  if(!selected)return {...display,edges};
+  const originals=new Map(source.nodes.map(node=>[node.id,node]));
+  const representatives=new Map(display.nodes.flatMap(node=>node.step_indices.map(idx=>[String(idx),node.id] as const)));
+  const scoped=new Map<string,GraphEdge>();
+  for(const edge of source.edges){
+    if((edge.type!=='dependency'&&edge.type!=='retry')||(edge.source!==selected.id&&edge.target!==selected.id))continue;
+    const from=originals.get(edge.source),to=originals.get(edge.target);
+    const a=from&&representatives.get(String(from.first_idx)),b=to&&representatives.get(String(to.first_idx));
+    if(!a||!b||a===b)continue;
+    const key=JSON.stringify([a,b,edge.type]),prior=scoped.get(key);
+    if(prior)prior.count+=edge.count;
+    else scoped.set(key,{...edge,id:'selected-'+key,source:a,target:b});
+  }
+  return {...display,edges:[...edges,...scoped.values()]};
+}
+
 export function normalizeRecordedPath(value: string) {
   const path = value.trim().replace(/\\/g, '/');
   const parts: string[] = [];

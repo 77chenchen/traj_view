@@ -1,11 +1,11 @@
 import { memo, type ReactNode } from 'react';
 import { nodeHeight, nodeWidth, nodeSize, type Box, type Point } from './layout';
-import { executionRoutes } from './edgeRouting';
+import { executionRoutes, type RoutedEdge } from './edgeRouting';
 import { executionBoxes, type SectionBox } from './executionGeometry';
 import { nodeAppearances, nodeOutline, type NodeOutline } from './nodeAppearance';
 import {
   edgeTypes, capitalize, phaseColor, sourceIndex,
-  type Category, type EdgeType, type Graph, type GraphEdge, type GraphNode, type Phase,
+  type Category, type EdgeType, type Graph, type GraphNode, type Phase, type StepIndex,
 } from './model';
 
 export const palettes = {
@@ -79,12 +79,7 @@ function joinBoxes(left: Box, right: Box): Box {
     height: Math.max(left.y + left.height, right.y + right.height) - y };
 }
 
-interface DrawnEdge {
-  edge: GraphEdge;
-  path: string;
-  bounds: Box;
-  label: Point;
-}
+type DrawnEdge = RoutedEdge;
 
 interface DrawnNode { node: GraphNode; point: Point; bounds: Box }
 export interface Drawing { edges: DrawnEdge[]; nodes: DrawnNode[]; bounds: Box; groups: SectionBox[] }
@@ -92,7 +87,7 @@ export interface Drawing { edges: DrawnEdge[]; nodes: DrawnNode[]; bounds: Box; 
 export function makeDrawing(graph: Graph, positions: Map<string, Point>, execution = false): Drawing {
   const sections=execution?executionBoxes(graph,positions,nodeSize):[];
   const edges: DrawnEdge[] = executionRoutes(graph,positions,nodeWidth,nodeHeight,
-    new Map(graph.nodes.map(node=>[node.id,nodeSize(node)])),sections.map(s=>s.bounds));
+    new Map(graph.nodes.map(node=>[node.id,nodeSize(node)])),sections.map(s=>s.bounds),execution);
   const nodes = graph.nodes.flatMap((node) => {
     const point = positions.get(node.id);
     if (!point) return [];
@@ -165,9 +160,10 @@ function fitLabel(value: string, width: number, size: number) {
 
 export const GraphDrawing = memo(function GraphDrawing({
   drawing, phases, theme, enabled, selected, signature, membership, positionsInTime, reached, divergence, prefix,
-  clip, labels = true, onNode, onFocusNode, onTip,
+  clip, labels = true, onNode, onJump, onFocusNode, onTip,
 }: DrawingOptions & {
   prefix: string; clip?: Box; labels?: boolean; onNode?: (node: GraphNode) => void;
+  onJump?: (index:StepIndex)=>void;
   onFocusNode?: (point: Point) => void; onTip?: (text: string) => void;
 }) {
   const palette = palettes[theme];
@@ -196,7 +192,7 @@ export const GraphDrawing = memo(function GraphDrawing({
     const titleWidth=halfWidth-(outline==='validate'?20:10)+48-(node.count>1?labelWidth(`×${node.count}`,nodeType.count)+8:0);
     const title=fitLabel(node.label || node.tool || 'Message',titleWidth,nodeType.title);
     return <g key={node.id} transform={`translate(${point.x} ${point.y})`} className={onNode ? 'graph-node' : undefined}
-      data-node={onNode ? '' : undefined} data-node-id={node.id} data-source-index={node.first_idx} data-signature={node.signature} data-node-kind={outline} role={onNode ? 'button' : undefined} tabIndex={onNode ? 0 : undefined}
+      data-node={onNode ? '' : undefined} data-node-id={node.id} data-source-index={node.first_idx} data-last-source-index={node.step_indices.at(-1)??node.first_idx} data-signature={node.signature} data-node-kind={outline} role={onNode ? 'button' : undefined} tabIndex={onNode ? 0 : undefined}
       aria-label={onNode ? description : undefined} aria-pressed={onNode ? active : undefined}
       aria-expanded={onNode&&node.view?.kind==='section'?false:undefined}
       onClick={onNode ? () => onNode(node) : undefined}
@@ -250,15 +246,32 @@ export const GraphDrawing = memo(function GraphDrawing({
       <path d="M0 0 8 4 0 8Z" fill={palette.edges[type]} />
     </marker>)}</defs>
     {drawing.groups.map(({node,bounds})=><g key={node.id} data-expanded-section={node.id}>
-      <rect {...bounds} rx={8} pointerEvents="none" fill={palette.surface} fillOpacity={.65} stroke={selected===node.id?palette.selected:palette.muted} strokeOpacity={selected===node.id?1:.4}/>
+      <rect {...bounds} rx={8} pointerEvents="none" fill={palette.surface} fillOpacity={.65} stroke={selected===node.id?palette.selected:palette.muted}
+        strokeOpacity={selected===node.id ? .7 : drawing.groups.some(other=>other.node.id!==node.id&&other.bounds.x>=bounds.x&&other.bounds.y>=bounds.y&&other.bounds.y+other.bounds.height<=bounds.y+bounds.height) ? .13 : .25}/>
 
     </g>)}
-    {drawing.edges.map(({ edge, path, bounds, label }) => enabled.has(edge.type) && inView(bounds) &&
-      <g key={edge.id} data-edge-type={edge.type} data-source={edge.source} data-target={edge.target} opacity={unreached(edge.source) || unreached(edge.target) ? 0.35 : 0.82}>
-        <title>{`${capitalize(edge.type)} · ${edge.count}`}</title>
-        <path d={path} fill="none" stroke={palette.edges[edge.type]} strokeWidth={edge.type === 'temporal' ? 1.9 : 1.6}
+    {drawing.edges.map(({ edge, path, bounds, label,continuation }) => enabled.has(edge.type) && inView(bounds) &&
+      <g key={edge.id} data-edge-type={edge.type} data-source={edge.source} data-target={edge.target} data-edge-count={edge.count} data-continuation={continuation?.number}>
+        <title>{`${capitalize(edge.type)} · ${edge.count}${continuation?` · matching ${continuation.number} endpoints continue the same sequence edge`:''}`}</title>
+        <path d={path} fill="none" stroke={palette.edges[edge.type]} strokeWidth={edge.type === 'temporal' ? 1.5 : 1.8}
+          opacity={unreached(edge.source) || unreached(edge.target) ? .35 : selected&&selected!==edge.source&&selected!==edge.target ? .42 : .9}
           strokeDasharray={edgeDashes[edge.type]} markerEnd={`url(#${marker(edge.type)})`} />
-        {labels && edge.count > 1 && <text x={label.x} y={label.y - 4} textAnchor="middle"
+        {continuation&&[continuation.exit,continuation.entry].map((point,i)=>{
+          const target=drawing.nodes.find(item=>item.node.id===(i===0?edge.target:edge.source));
+          const index=i===0?target?.node.first_idx:target?.node.step_indices.at(-1)??target?.node.first_idx;
+          const description=`Sequence link ${continuation.number} · ${i===0?'Continue to':'Return to'} ${target?.node.label??'step'} · source ${sourceIndex(index)}`;
+          return <g key={i} data-sequence-jump={i===0?'next':'previous'} transform={`translate(${point.x} ${point.y})`}
+            data-jump-source={index}
+            role={onNode?'button':undefined} tabIndex={onNode?0:undefined} aria-label={onNode?description:undefined}
+            className={onNode?'graph-sequence-jump':undefined} onClick={onNode&&target?()=>onJump&&index!=null?onJump(index):onNode(target.node):undefined}
+            onKeyDown={onNode&&target?event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();if(onJump&&index!=null)onJump(index);else onNode(target.node);}}:undefined}
+            onFocus={onTip?event=>{if(event.currentTarget.matches(':focus-visible'))onFocusNode?.(point);onTip(description);}:undefined} onBlur={onTip?()=>onTip(''):undefined}>
+            <title>{description}</title>
+            <circle r={10} fill={palette.surface} stroke={palette.muted} strokeWidth={1.2}/>
+            <text y={4} textAnchor="middle" fontSize={11} fontWeight={600} fill={palette.text}>{continuation.number}</text>
+          </g>;
+        })}
+        {labels && edge.count > 1 && !continuation && <text x={label.x} y={label.y - 4} textAnchor="middle"
           fontSize={10} fill={palette.edges[edge.type]} stroke={palette.surface} strokeWidth={3} paintOrder="stroke">
           {edge.count}
         </text>}
@@ -271,10 +284,11 @@ export const GraphDrawing = memo(function GraphDrawing({
         onFocus={onTip?()=>onTip(`Expanded ${node.label} · ${node.count} source steps · click header to collapse`):undefined}
         onBlur={onTip?()=>onTip(''):undefined}>
         <title>{node.label} · {node.count} source steps · click header to collapse</title>
-        <rect x={bounds.x} y={bounds.y} width={bounds.width} height={28} rx={6} fill={palette.node}/>
+        <rect x={bounds.x} y={bounds.y} width={bounds.width} height={48} rx={6} fill={palette.node}/>
         <path d={`M${bounds.x+11} ${bounds.y+11}l4 5 4-5`} stroke={palette.selected} strokeWidth={1.5} fill="none"/>
         <text x={bounds.x+27} y={bounds.y+19} fontSize={14} fontWeight={600} fill={palette.text}>{fitLabel(node.label,Math.max(60,Math.min(bounds.width,620)-185),14)}</text>
         <text x={bounds.x+Math.min(bounds.width,620)-12} y={bounds.y+19} textAnchor="end" fontSize={12} fill={palette.selected}>{node.count} steps · Collapse</text>
+        <text x={bounds.x+12} y={bounds.y+39} fontSize={12} fill={palette.muted}>{fitLabel([node.view?.summary?.description,node.view?.summary?.focus].filter(Boolean).join(' · '),bounds.width-24,12)}</text>
       </g>
     </g>)}
     {drawing.nodes.map(renderNode)}

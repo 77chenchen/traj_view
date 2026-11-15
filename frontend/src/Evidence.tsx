@@ -1,6 +1,8 @@
 import { useState, type ReactNode } from 'react';
 import { type GraphNode, type Run, type Step, type StepIndex, number, sourceIndex } from './model';
 import { CopyButton, Icon, OutcomeBadge, exportMetrics, type IconName } from './ui';
+import { literalFileWrites, savedPatch } from './recordedEdits';
+export { patchEvidence } from './recordedEdits';
 
 export const clock = (s: number) => Math.floor(s / 60) + ':' + Math.floor(s % 60).toString().padStart(2, '0');
 export const failed = (s: Step) => Boolean(s.observation?.error || (s.observation?.exit_code != null && s.observation.exit_code !== 0));
@@ -17,24 +19,20 @@ export const categoryName = (s: Step, n?: GraphNode) => s.tags.includes('final_m
 export const categoryIcon = (s: Step, n?: GraphNode): IconName => failed(s) ? 'warning' : s.tags.includes('final_message') ? 'check' :
   n?.category === 'edit' ? 'edit' : n?.category === 'read' ? 'file' : n?.category === 'validate' ? 'test' : s.action ? 'terminal' : n?.category === 'plan' ? 'user' : 'message';
 export const evidenceKind = (s: Step, n?: GraphNode) => failed(s) ? 'failure' : n?.category || (s.action ? 'tool' : 'message');
-export const patchText = (s?: Step) => {
-  for (const value of [s?.action?.args.patch, s?.action?.args.input, s?.action?.args.diff, s?.action?.command])
-    if (typeof value === 'string' && /(?:^|\n)(?:@@|\*\*\* (?:Begin Patch|Update File)|--- )/m.test(value)) return value;
-  return null;
-};
-export const patchStats = (s?: Step) => {
-  const p = patchText(s);
+export const patchText = savedPatch;
+export const patchStats = (s?: Step,patch?:string|null) => {
+  const p = patch??patchText(s);
   return { added: p?.split('\n').filter(l => /^\+(?!\+)/.test(l)).length ?? null,
     removed: p?.split('\n').filter(l => /^-(?!-)/.test(l)).length ?? null };
 };
 export const fileContent = (s?: Step, n?: GraphNode) => typeof s?.action?.args.content === 'string' ? s.action.args.content :
-  n?.category === 'read' ? s?.observation?.text ?? null : null;
+  n?.category === 'read' ? s?.observation?.text ?? null : literalFileWrites(s)[0]?.content??null;
 
 export function Syntax({ text }: { text: string }) {
   const pattern = /(#.*$|\/\/.*$|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:def|return|class|import|from|if|else|elif|for|while|const|let|var|function|export|async|await|throw|new|try|except|true|false|null|None|True|False)\b|\b\d+(?:\.\d+)?\b)/g;
   return <>{text.split(pattern).map((part, i) => <span key={i} className={i % 2 === 0 ? undefined : /^(#|\/\/)/.test(part) ? 'syntax-comment' : /^["']/.test(part) ? 'syntax-string' : /^\d/.test(part) ? 'syntax-number' : 'syntax-keyword'}>{part}</span>)}</>;
 }
-export function RecordedCode({ value, patch = false }: { value: string | null; patch?: boolean }) {
+export function RecordedCode({ value, patch = false,ariaLabel }: { value: string | null; patch?: boolean;ariaLabel?:string }) {
   const [full, setFull] = useState(false);
   if (!value) return <div className="evidence-empty"><Icon name="file" size={27} /><strong>{patch ? 'No patch recorded' : 'No file content recorded'}</strong><p>未记录 · Full file versions cannot be recovered from this record.</p></div>;
   const lines = value.split('\n');
@@ -48,7 +46,7 @@ export function RecordedCode({ value, patch = false }: { value: string | null; p
     if (!meta) { if (!add && oldLine != null) oldLine++; if (!remove && newLine != null) newLine++; }
     return { line, add, remove, display };
   });
-  return <><div className="code-lines" aria-label={patch ? 'Recorded patch' : 'Recorded file excerpt'}>
+  return <><div className="code-lines" aria-label={ariaLabel??(patch ? 'Recorded patch' : 'Recorded file excerpt')}>
     {(full ? rows : rows.slice(0, 600)).map((r, i) => <div className={r.add ? 'line-added' : r.remove ? 'line-removed' : ''} key={i}>
       <span>{r.display}</span><i className="diff-sign" aria-hidden="true">{r.add ? '+' : r.remove ? '−' : ' '}</i><code><Syntax text={(r.add || r.remove ? r.line.slice(1) : r.line) || ' '} /></code>
     </div>)}</div>{!full && lines.length > 600 && <button className="button small" onClick={() => setFull(true)}>Show all {number.format(lines.length)} recorded lines</button>}</>;

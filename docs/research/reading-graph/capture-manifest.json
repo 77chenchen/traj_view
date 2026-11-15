@@ -1,0 +1,225 @@
+{
+  "chrome": "157.0.8103.52",
+  "captures": [
+    {
+      "file": "code-evidence-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "d88aaea49845fe2993cb2cfff1f593d6772d9a3dc8e58a3e4121ee0dd23d1c2f",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "code-evidence-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "6d78e45e1916482b1dbb92a356881885d284a4b2ae335d3ebe9949f4f4cc84b7",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "content-groups-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "d874ae5a712d18e4c5ae55ad800711936c12ba2d1fbac9fd49f51398b84d1e91",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "content-groups-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "3a9543c6724f94a99595470ce685a056b631f43ead30674cc793bd11cdd50e5d",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "failure-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "7b6fe302bbaa242e783f3385c1a07feb540392878732fd1543a7fa5fab75704c",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "failure-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "955667842dce186b535899e9c41e3486b6a6e217da01d6406ce6355895980137",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "fullscreen-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "320cf760f13b2858478ae3f6395d51865f7311c3e53193620defb48ee372663f",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "fullscreen-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "2b39c1f857d5714a8fbc05af5c808ccb936c578988016ee5a8334600964a9af0",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "lines-before-code-evidence-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "515db38321d24fdd3bfcad07ec20304516b685d8d75db9c2e664ed5a399fff87",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "pre-continuation working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "lines-before-code-evidence-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "60e5831666384d1242da1f1b6e62145b7e9ef184fe90e6aec98f3fb7d84e7371",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "pre-continuation working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "lines-before-content-groups-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "c4446f9a618989f8d4334646d6579fb8c49e8e7484d51cff6c20d8dc198b4f5a",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "pre-continuation working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "lines-before-content-groups-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "1106bac2ac8702a98ff294c0bb54cd784cb16154c1cfd8995a571dc59c9263f9",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "pre-continuation working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "offline-code-evidence.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "a57caf11b4bec9cba0df42cf7e13d5098a67df852f82af2e72c1eaa85d09480d",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "offline",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "offline-fullscreen.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "b968ac7afc4f75557abd2eeaa0c33dc489e56f29fce6a2bb89e08d56573054ac",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "offline",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "offline-submitted-file-content.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "6a61f499118bc45c44c769a6306bb0c457e29203f2b33f8bd75988435200625f",
+      "fixture": "shell-writes-synthetic",
+      "view": "replay",
+      "mode": "offline",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "offline-submitted-write-comparison.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "be51a7b36b52f3f720e6be1c97f544abc2b33628c647b70299fc46839971f407",
+      "fixture": "shell-writes-synthetic",
+      "view": "graph",
+      "mode": "offline",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "overview-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "43d67ddb8a4c4d28ca2fecf09a8283b5c8fce2d0ecb32630df1b0a08b4aa603b",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "overview-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "0673ae651d04368045e30fb3e238e577f60b21459be0e93889060f1914e9c4f7",
+      "fixture": "execution-long-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "submitted-file-content.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "4df5ff11c9896afb4a090ae2b0f229dc88dd6f6fe8f77db3d07aad18fadd5915",
+      "fixture": "shell-writes-synthetic",
+      "view": "replay",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    },
+    {
+      "file": "submitted-write-comparison.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "85e888c289f1b67a3049f593fdd18b6f8433b71c9e1128d7ca3257fc963e89ab",
+      "fixture": "shell-writes-synthetic",
+      "view": "graph",
+      "mode": "online",
+      "revision": "current working tree",
+      "origin": "Full-page Chrome 157.0.8103.52 screenshot from document top; public synthetic data only; no image generation, crop or composite; origin also embedded in PNG metadata"
+    }
+  ]
+}

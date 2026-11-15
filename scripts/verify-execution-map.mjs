@@ -50,8 +50,8 @@ try{
     await page.getByRole('button',{name:'Fit graph',exact:true}).click();
     await graph.locator(`[data-node-id="${largest.id}"]`).click();await graph.locator(`[data-section-toggle="${largest.id}"]`).waitFor();
     for(const id of rootIds.filter(id=>id!==largest.id))assert.equal(await graph.locator(`[data-node-id="${id}"]`).count(),1);
-    const sourceY=await graph.locator('[data-node]').evaluateAll(ns=>ns.map(n=>n.transform.baseVal.consolidate().matrix.f));
-    assert.ok(sourceY.every((y,j)=>!j||y>sourceY[j-1]),'Real NL2Repo frontiers preserve downward source order');
+    const sourcePoints=await graph.locator('[data-node]').evaluateAll(ns=>ns.map(n=>{const m=n.transform.baseVal.consolidate().matrix;return{x:m.e,y:m.f};}));
+    assert.ok(sourcePoints.every((p,j)=>!j||p.y>sourcePoints[j-1].y||(p.y===sourcePoints[j-1].y&&p.x>sourcePoints[j-1].x)),'Real NL2Repo frontiers preserve source reading order');
     const frameBox=await page.locator('.graph-frame').boundingBox(),beforeWheel=await graph.getAttribute('viewBox');
     await page.mouse.move(frameBox.x+frameBox.width*.6,frameBox.y+frameBox.height*.6);await page.mouse.wheel(0,280);await settle(page);
     const afterWheel=await graph.getAttribute('viewBox');

@@ -43,7 +43,7 @@ FIXTURE_CASES = {
 def test_fixture_coverage():
     dag_cases = {f"dag-{name}.events.jsonl" for name in ("baseline", "variant", "short")}
     dashboard_cases = {f"dashboard-{name}.events.jsonl" for name in ("baseline", "variant", "short")}
-    assert set(FIXTURE_CASES) | dag_cases | dashboard_cases | {"role-boundaries.events.jsonl", "execution-long.events.jsonl", "node-types.events.jsonl"} == {path.name for path in FIXTURES.iterdir() if path.is_file()}
+    assert set(FIXTURE_CASES) | dag_cases | dashboard_cases | {"role-boundaries.events.jsonl", "execution-long.events.jsonl", "node-types.events.jsonl", "shell-writes.events.jsonl"} == {path.name for path in FIXTURES.iterdir() if path.is_file()}
 
 
 def test_long_execution_fixture_has_lossless_sources_and_saved_failures():

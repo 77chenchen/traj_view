@@ -15,7 +15,7 @@ export interface Layout {
 }
 
 const cache = new WeakMap<Graph, Promise<Layout>>();
-const executionCache = new WeakMap<Graph, Promise<Layout>>();
+const executionCache = new WeakMap<Graph, Map<number,Promise<Layout>>>();
 
 function preset(graph: Graph, reason?: string): Layout {
   // A single monotonic time axis also handles disconnected filtered subgraphs.
@@ -66,10 +66,10 @@ async function cytoscapeLayout(graph: Graph, engine: 'elk' | 'dagre'): Promise<L
   }
 }
 
-async function arrange(graph: Graph, execution = false): Promise<Layout> {
+async function arrange(graph: Graph, execution = false,rowWidth=800): Promise<Layout> {
   if (execution) {
-    return { positions:executionPositions(graph,nodeSize),
-      name:'Execution', reason:'Source order ↓ · side links show dependencies and retries' };
+    return { positions:executionPositions(graph,nodeSize,3,rowWidth),
+      name:'Execution', reason:'Read left → right, then down · content groups expand in place · placement does not imply parallel execution' };
   }
   if (graph.nodes.some((node) => node.view)) return {
     positions: new Map(graph.nodes.map((node, index) => [node.id, { x: (node.view?.depth ?? node.depth ?? 0) * 80, y: index * 140 }])),
@@ -94,18 +94,19 @@ async function arrange(graph: Graph, execution = false): Promise<Layout> {
   }
 }
 
-export function useLayout(graph: Graph, execution = false): Layout | null {
-  const [result, setResult] = useState<{ graph: Graph; layout: Layout }>();
+export function useLayout(graph: Graph, execution = false,rowWidth=800): Layout | null {
+  const [result, setResult] = useState<{ graph: Graph; rowWidth:number; layout: Layout }>();
   useEffect(() => {
     let active = true;
-    const layouts = execution ? executionCache : cache;
-    let promise = layouts.get(graph);
+    let layouts=executionCache.get(graph);
+    if(execution&&!layouts){layouts=new Map();executionCache.set(graph,layouts);}
+    let promise = execution ? layouts!.get(rowWidth) : cache.get(graph);
     if (!promise) {
-      promise = arrange(graph, execution);
-      layouts.set(graph, promise);
+      promise = arrange(graph, execution,rowWidth);
+      if(execution)layouts!.set(rowWidth,promise);else cache.set(graph,promise);
     }
-    promise.then((layout) => { if (active) setResult({ graph, layout }); });
+    promise.then((layout) => { if (active) setResult({ graph,rowWidth, layout }); });
     return () => { active = false; };
-  }, [graph, execution]);
-  return result?.graph === graph ? result.layout : null;
+  }, [graph, execution,rowWidth]);
+  return result?.graph === graph&&(!execution||result.rowWidth===rowWidth) ? result.layout : null;
 }

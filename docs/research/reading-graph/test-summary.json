@@ -1,0 +1,107 @@
+{
+  "date": "2026-11-15",
+  "baseline": "f7265cbb30459289852943eddaac115272311bd6",
+  "scope": "Desktop content-group reading rows, clear sequence connections, on-demand relationships and source-bound code evidence",
+  "python": {
+    "command": ".venv/bin/python -m pytest",
+    "status": "passed",
+    "tests": 81,
+    "seconds": 4.15
+  },
+  "typescript": {
+    "command": "npm --prefix frontend run check",
+    "status": "passed"
+  },
+  "build": {
+    "command": "npm --prefix frontend run build",
+    "status": "passed",
+    "seconds": 7.73,
+    "jsKb": 2470.88,
+    "jsGzipKb": 766.23,
+    "warning": "Existing large-chunk warning"
+  },
+  "smoke": {
+    "status": "passed",
+    "scenarios": 48,
+    "passed": 48,
+    "details": "scenarios.json"
+  },
+  "invariants": {
+    "dagSorts": 948,
+    "executionScopes": 1908,
+    "exactSourcePaths": 3161,
+    "mixedRoutes": 5189,
+    "inlineStates": 61,
+    "inlineRoutes": 15615,
+    "pairedContinuations": 3919,
+    "timelineLayouts": 126,
+    "exactScopedRelationshipCounts": true,
+    "bidirectionalMultiMemberContinuation": true
+  },
+  "desktopViewports": [
+    [
+      1586,
+      912
+    ],
+    [
+      1280,
+      800
+    ]
+  ],
+  "specialist": {
+    "public": "verification.json",
+    "private": "local ignored report only",
+    "zeroOfflineHttp": true,
+    "zeroPageErrors": true
+  },
+  "firstRender": {
+    "chrome": "157.0.8103.52",
+    "timeoutMs": 30000,
+    "mode": "overview",
+    "excludesInitialBundleLoad": true,
+    "runs": [
+      {
+        "sourceSteps": 500,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 97.29999995231628
+      },
+      {
+        "sourceSteps": 2000,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 130.89999997615814
+      }
+    ]
+  },
+  "evidenceBoundaries": {
+    "privateSourceSteps": 87,
+    "stepTimestamps": 0,
+    "nativePatches": 0,
+    "safeDerivedComparisons": 0,
+    "literalWriteSteps": 5
+  },
+  "publicScreenshots": {
+    "count": 20,
+    "before": 4,
+    "manifest": "capture-manifest.json"
+  },
+  "review": {
+    "status": "ship",
+    "file": "finish-review.md",
+    "scope": "Verdict pass on the three targeted desktop corrections",
+    "findings": {
+      "endpointContrast": "resolved",
+      "exactSourceRelationshipProjection": "resolved",
+      "reverseSummaryBoundaryJump": "resolved"
+    }
+  },
+  "limitations": [
+    "Paired endpoints reduce crossing lines; fully expanded traces still require pan/zoom",
+    "All relationships intentionally restores full connection density",
+    "Step timestamps, filesystem versions and native patches cannot be recovered when absent",
+    "First paint draws 3 overview nodes after app load, not all source nodes",
+    "Existing large-bundle warning and inherited narrow-screen composition",
+    "Pre-existing design sidecar drift remains unchanged"
+  ]
+}

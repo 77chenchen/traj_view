@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useResource } from './data';
-import { filterGraph, foldGraph } from './graphData';
+import { filterGraph, foldGraph, selectedRelationships } from './graphData';
 import { NodeTypeLegend, type Theme } from './graphDrawing';
 import { EdgeControls, GraphView, useEdgeTypes } from './GraphView';
 import { hierarchyGraph } from './hierarchy';
@@ -81,6 +81,8 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   const [layers, setLayers] = useState<ReadonlySet<string>>(new Set(['reasoning','tools','results']));
   const [showLegend, setShowLegend] = useState(false);
   const [sidebarTab, setSidebarTab] = useState('Details');
+  const [inspectorOpen,setInspectorOpen]=useState(initialIndex!=null||graphs.expanded.nodes.length<executionThreshold);
+  const inspectorToggle=useRef<HTMLButtonElement>(null);
   const finalIndices = useMemo(() => new Set(steps.filter(s => s.tags.includes('final_message')).map(s => String(s.idx))), [steps]);
   const [unfolded, setUnfolded] = useState(graphs.expanded.nodes.length < foldThreshold);
   const [openBlocks, setOpenBlocks] = useState<ReadonlySet<string>>(new Set());
@@ -89,7 +91,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   const [expandedSections,setExpandedSections]=useState<string[]>([]);
   const [expansionRequest,setExpansionRequest]=useState<{id:string;open:boolean;sequence:number}>();
   const [resetVersion,setResetVersion]=useState(0);
-  const [allConnections, setAllConnections] = useState(graphs.expanded.nodes.length < executionThreshold);
+  const [allConnections, setAllConnections] = useState(false);
   const [locateRequest, setLocateRequest] = useState(0);
   const [navigatorFocus, setNavigatorFocus] = useState(0);
   const [openGroups, setOpenGroups] = useState<ReadonlySet<string>>(new Set());
@@ -130,6 +132,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   // exact call's evidence in place instead of inserting a group's member list.
   const inspectedNode = overview && index != null ? graphs.expanded.nodes[ordinals.get(index) ?? -1] ?? selected : selected;
   const chooseIndex = useCallback((idx: StepIndex) => {
+    setInspectorOpen(true);
     setSidebarTab('Details');
     setActiveId(null);
     setIndex(idx);
@@ -154,7 +157,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
       const descendants=new Set(executionView.groups?.filter(group=>group.node.view!.start!>=node.view!.start!&&group.node.view!.end!<=node.view!.end!).map(group=>group.node.id));
       setExpandedSections(previous=>previous.filter(id=>!descendants.has(id)));
     }
-    if(index==null)setActiveId(node.id);
+    if(index==null){setActiveId(node.id);setInspectorOpen(true);}
     setExpansionRequest(previous=>({id:node.id,open,sequence:(previous?.sequence??0)+1}));
   },[executionView,index]);
   const selectNode = useCallback((node: GraphNode) => {
@@ -172,12 +175,8 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
       });
     }
   }, [selectIndex,overview,toggleSection]);
-  const selectedFrontier = useMemo(()=>{
-    const indices=new Set(selected?.step_indices);
-    return new Set(graph.nodes.filter(node=>node.step_indices.some(idx=>indices.has(idx))).map(node=>node.id));
-  },[graph,selected]);
-  const connectionGraph = useMemo(()=>allConnections ? graph : {...graph,edges:graph.edges.filter(edge=>edge.type!=='dependency'||selectedFrontier.has(edge.source)||selectedFrontier.has(edge.target))},[graph,allConnections,selectedFrontier]);
-  const hiddenConnections = graph.edges.length-connectionGraph.edges.length;
+  const connectionGraph = useMemo(()=>allConnections ? graph : selectedRelationships(graphs.expanded,graph,index),[graph,graphs,index,allConnections]);
+  const hiddenConnections = graph.edges.reduce((sum,edge)=>sum+edge.count,0)-connectionGraph.edges.reduce((sum,edge)=>sum+edge.count,0);
   const lastExpanded=expandedSections.slice().reverse().flatMap(id=>executionView.groups?.find(group=>group.node.id===id)?.node??[])[0];
   const canCollapse = !overview || Boolean(executionView.groups?.length);
   const navigatorRanges = useMemo(()=>{
@@ -225,7 +224,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
         </div>}
         {(phase || category || errors) && <p className="filter-note">{graph.nodes.length} visible intervals. Folded blocks keep their full source interval when any member matches.</p>}
         <EdgeControls enabled={enabled} toggle={toggle} theme={theme} />
-        <label className="connection-detail"><input type="checkbox" checked={allConnections} onChange={event=>setAllConnections(event.target.checked)}/>All dependency connections <small>Otherwise only connections of the selected node. Retry and sequence links stay visible.</small></label>
+        <label className="connection-detail"><input type="checkbox" checked={allConnections} onChange={event=>setAllConnections(event.target.checked)}/>All relationships <small>Show every dependency and retry. By default, only relationships of the selected node are drawn; sequence links stay visible.</small></label>
           <div className="segments" role="group" aria-label="DAG detail level">
             <button aria-pressed={overview} onClick={() => { setOverview(true);setHierarchy(false);setExpandedSections([]);setResetVersion(v=>v+1);setActiveId(null); }}>Overview</button>
             <button aria-pressed={!overview&&!hierarchy} onClick={() => { setOverview(false);setHierarchy(false); setActiveId(null); }}>Steps</button>
@@ -237,6 +236,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
     <button className="button small graph-collapse-all" disabled={!canCollapse}
       title={canCollapse ? 'Return to the compact overview. Keep the selected source step and evidence view.' : 'All sections are already collapsed'}
       onClick={collapseAll}><Icon name="collapse" size={15}/>Collapse all</button>
+    <button ref={inspectorToggle} className="button small icon-button" aria-label={inspectorOpen?'Hide node inspector':'Show node inspector'} aria-expanded={inspectorOpen} title={inspectorOpen?'Hide node inspector':'Show node inspector'} onClick={()=>setInspectorOpen(!inspectorOpen)}><Icon name="panel" size={16}/></button>
   </>;
   function clearSelection() {
     const selectedIndex=index,selectedId=selected?.id;
@@ -256,7 +256,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   return <>
     <RunMetadata run={run} date={steps.find(s => !!s.ts)?.ts}/>
     <div className="graph-stage-previews"><StageSnapshots steps={steps} nodes={graphs.expanded.nodes} selected={index} select={locate} kind="graph"/></div>
-    <div className="graph-workspace">
+    <div className={'graph-workspace'+(inspectorOpen?'':' graph-inspector-closed')}>
       <div className="graph-fullscreen-bar"><Icon name="graph" size={19}/><strong title={run.id}>{run.id}</strong><span className="fullscreen-selection" aria-live="polite" title={fullscreenHint}>{fullscreenHint}</span>
         <details className="fullscreen-graph-help"><summary aria-label="Graph fullscreen help" title="Graph navigation help"><Icon name="help" size={19}/></summary><div><strong>Read the execution graph</strong><p>Scroll or drag to pan. Hold Ctrl / ⌘ while scrolling to zoom.</p><p>Fit shows all visible nodes. Locate brings the selected source back into view. Arrow keys move the focused canvas; Tab reaches nodes and controls.</p><p>Layers filters recorded steps and connections. Click a section to expand in place; Alt+↑ collapses the last section. Esc returns from fullscreen.</p></div></details>
         <button className="button small fullscreen-exit" onClick={() => fullScreen(null)}><Icon name="fit" size={15}/>Exit fullscreen</button></div>
@@ -275,14 +275,15 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
             const next=event.key==='Home'?0:event.key==='End'?navigatorRanges.length-1:event.key==='ArrowRight'?Math.min(i+1,navigatorRanges.length-1):event.key==='ArrowLeft'?Math.max(i-1,0):null;
             if(next==null)return;event.preventDefault();setNavigatorFocus(next);event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('button')[next]?.focus();
           }} onClick={()=>locate((range.failure??range.first).first_idx)} />)}</div>
-          <p><Icon name="info" size={13}/>Click a section to expand or collapse.{hiddenConnections>0&&` ${hiddenConnections} dependency ${hiddenConnections===1?'link':'links'} hidden; select a node or enable all in Layers.`}</p>
+          <p><Icon name="info" size={13}/>Read → then ↓ · matching numbers continue across rows.{!steps.some(step=>step.ts)&&' Timestamps unrecorded.'}{hiddenConnections>0&&` ${hiddenConnections} other ${hiddenConnections===1?'relationship':'relationships'} on selection · All in Layers.`}</p>
         </div>}
         {canvasMode === 'timeline' ? <><div className="graph-toolbar">{commands}</div><EventTimeline runId={run.id} steps={steps} nodes={graphs.expanded.nodes} selected={index ?? steps[0]?.idx ?? 0} select={locate}/></> : <GraphView toolbar={commands} graph={connectionGraph} phases={phases} theme={theme} enabled={enabled}
           name={`${run.id}-expanded`} onNode={selectNode} selected={selected?.id}
           execution={overview} searchGraph={overview?graphs.expanded:undefined} onLocate={overview?node=>locate(node.first_idx):undefined} locateRequest={locateRequest}
+          onSourceJump={locate}
           expansionRequest={overview?expansionRequest:undefined} framingKey={`${overview?'overview':hierarchy?'hierarchy':'steps'}-${resetVersion}`}
           positionsInTime={positionsInTime} reached={overview?undefined:position} legend={false} />}
-        {showLegend && <div className="execution-legend" aria-label="Execution graph semantics"><NodeTypeLegend/><span><Icon name="spark" size={15}/>Reasoning / text · recorded role unknown</span><span><Icon name="user" size={15}/>Sub-Agent · unrecorded</span><span className="error-text"><Icon name="info" size={15}/>Failure · red outline</span><span><Icon name="retry" size={15}/>Retry · forward dashed edge</span><span><Icon name="graph" size={15}/>Merge · dependency join</span><span className="success-text"><Icon name="check" size={15}/>Completion · final record</span></div>}
+        {showLegend && <div className="execution-legend" aria-label="Execution graph semantics"><NodeTypeLegend/>{overview&&<span><Icon name="right" size={15}/>Matching numbers · same sequence across rows</span>}<span><Icon name="spark" size={15}/>Reasoning / text · recorded role unknown</span><span><Icon name="user" size={15}/>Sub-Agent · unrecorded</span><span className="error-text"><Icon name="info" size={15}/>Failure · red outline</span><span><Icon name="retry" size={15}/>Retry · forward dashed edge</span><span><Icon name="graph" size={15}/>Merge · dependency join</span><span className="success-text"><Icon name="check" size={15}/>Completion · final record</span></div>}
 
         <section className="graph-secondary" aria-label="Execution activity">
           <Timeline nodes={graphs.expanded.nodes} position={position} change={playback} phases={phases} inspect={locate} />
@@ -291,7 +292,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
           </details>
         </section>
       </section>
-      <div className="trace-sidebar" onKeyDown={e=>{if(e.key==='Escape'&&index!=null){e.preventDefault();clearSelection();}}}>
+      <div className="trace-sidebar" hidden={!inspectorOpen} onKeyDown={e=>{if(e.key==='Escape'){e.preventDefault();setInspectorOpen(false);requestAnimationFrame(()=>inspectorToggle.current?.focus());}}}>
         <div className="focus-tabs sidebar-tabs" role="group" aria-label="Graph side panel">{['Details','Files & activity','Signatures'].map(name=><button key={name} aria-pressed={sidebarTab===name} onClick={()=>setSidebarTab(name)}>{name}</button>)}</div>
         <div className="graph-side-content" hidden={sidebarTab!=='Details'}><Inspector graphWorkspace run={run} node={inspectedNode} index={index} select={selectIndex} locate={locate}
           clear={clearSelection} phases={phases}

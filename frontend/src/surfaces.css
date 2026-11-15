@@ -41,6 +41,11 @@
 .reference-shell .graph-toolbar { background:var(--surface-2); border-color:transparent; }
 .reference-shell .graph-workspace .trace-sidebar { border-left-color:transparent; }
 .reference-shell .graph-workspace .graph-frame { border-color:var(--section-rule); }
+.reference-shell .graph-workspace.graph-inspector-closed { grid-template-columns:minmax(0,1fr); }
+.graph-sequence-jump { cursor:pointer; }
+.graph-sequence-jump:hover circle,.graph-sequence-jump:focus-visible circle { stroke:#235f9a; stroke-width:2; fill:#eaf3fc; }
+.graph-sequence-jump:focus-visible { outline:none; }
+.reference-shell .graph-workspace > .trace-sidebar[hidden] { display:none; }
 .reference-shell :is(.graph-caption,.execution-navigation,.execution-legend,
   .graph-activity-disclosure,.graph-secondary .agent-activity) { border-color:var(--section-rule); }
 .reference-shell .graph-secondary .timeline { border-color:transparent; }
