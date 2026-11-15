@@ -31,12 +31,12 @@ export function nodeOutline(kind: NodeOutline, width: number, height: number): s
 }
 
 export const nodeAppearances: Record<NodeOutline, { label: string; shape: string; fill: string; stroke: string }> = {
-  shell: { label: 'Terminal', shape: 'window', fill: '#f5f7f9', stroke: '#627d92' },
-  read: { label: 'Read file', shape: 'folded file', fill: '#f3f8f6', stroke: '#597b70' },
-  edit: { label: 'Code edit', shape: 'cut corners', fill: '#fbf8f1', stroke: '#947a46' },
-  validate: { label: 'Validation', shape: 'hexagon', fill: '#f1f8f3', stroke: '#597d63' },
-  plan: { label: 'Plan', shape: 'capsule', fill: '#f5f6f9', stroke: '#68778e' },
-  message: { label: 'Recorded text', shape: 'speech bubble', fill: '#f7f7f8', stroke: '#77808c' },
-  tool: { label: 'Other tool', shape: 'beveled block', fill: '#f6f8f7', stroke: '#697e74' },
-  group: { label: 'Merged steps', shape: 'folder', fill: '#f7f8f9', stroke: '#758591' },
+  shell: { label: 'Terminal', shape: 'window', fill: '#eef3f8', stroke: '#6a8199' },
+  read: { label: 'Read file', shape: 'folded file', fill: '#eef6f5', stroke: '#64867c' },
+  edit: { label: 'Code edit', shape: 'cut corners', fill: '#faf3e8', stroke: '#a38a5b' },
+  validate: { label: 'Validation', shape: 'hexagon', fill: '#eef6ef', stroke: '#678a70' },
+  plan: { label: 'Plan', shape: 'capsule', fill: '#f0f2f8', stroke: '#7986a0' },
+  message: { label: 'Recorded text', shape: 'speech bubble', fill: '#f3f4f6', stroke: '#7e8793' },
+  tool: { label: 'Other tool', shape: 'beveled block', fill: '#eef3f3', stroke: '#75878b' },
+  group: { label: 'Merged steps', shape: 'folder', fill: '#f3f5f7', stroke: '#81909d' },
 };

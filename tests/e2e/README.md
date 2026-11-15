@@ -2,7 +2,7 @@
 
 ## Graph fullscreen refinement · 2026-11-15
 
-Typography checks in the same local/offline scenario verify natural SVG label bounds, readable Inspector evidence, both tab rows and toolbar containment at both desktop sizes. Paired computed styles and four screenshots are indexed in [graph-typography.md](../../docs/research/graph-typography.md).
+Typography checks in the same local/offline scenario verify natural SVG label bounds, readable Inspector evidence, both tab rows and toolbar containment at both desktop sizes. The current code role is 15px JetBrains Mono, which must actually load in the offline document; selected headings are 18px and evidence tabs 14px. `node scripts/verify-readable-typography.mjs` captures the four desktop views plus local/offline fullscreen at both sizes, checks font roles and horizontal boundaries, and writes [computed styles and 12 new PNGs](../../docs/research/readable-typography.md). Two retained before captures complete the 14-image comparison. The earlier [smaller typography pass](../../docs/research/graph-typography.md) remains historical.
 
 `graph-fullscreen.mjs` adds local/offline coverage to the full smoke suite. It checks 1586×912 and 1280×800 against public synthetic data: all seven `dag-baseline` nodes completely inside the real SVG after Fit, centered framing, dynamic Final Answer guidance, exact large source IDs and copy feedback, missing-patch disabled state, Layers/Legend/help inside fullscreen, Graph ↔ Timeline source/focus return, both sidebar levels, activity/category and Playback linkage, Inspector/context navigation, camera recovery, PNG/SVG, long-source resize and exit focus. `node-appearance.mjs` also asserts the whole Inspector stays inside the viewport with long evidence and nested full Diff.
 

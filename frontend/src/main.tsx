@@ -16,6 +16,7 @@ import './workbench.css';
 import './density.css';
 import './hierarchy.css';
 import './neutral.css';
+import './typography.css';
 import './graphFullscreen.css';
 
 const pages = [

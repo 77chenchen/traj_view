@@ -13,19 +13,19 @@ colors:
   surface-hover: "#edf0f2"
   line: "#e0e4e7"
   line-strong: "#b6bfc7"
-  text: "#28313a"
-  muted: "#58636e"
-  subtle: "#626c76"
-  good: "#247143"
-  good-bg: "#e7f5eb"
-  bad: "#b53046"
-  bad-bg: "#fce9ed"
+  text: "#273442"
+  muted: "#556575"
+  subtle: "#5b6b7b"
+  good: "#276442"
+  good-bg: "#e9f3ec"
+  bad: "#ac3c4c"
+  bad-bg: "#fbecef"
   agent-a: "#27854e"
   agent-b: "#3377ad"
   graph-ground: "#ffffff"
   graph-header: "#f3f5f6"
-  graph-text: "#263039"
-  graph-muted: "#59636e"
+  graph-text: "#273442"
+  graph-muted: "#556575"
   graph-selected: "#3d596b"
   fullscreen-accent: "#195fa8"
   fullscreen-accent-hover: "#124f90"
@@ -37,22 +37,22 @@ colors:
   edge-dependency: "#52778d"
   edge-retry: "#9a763c"
   edge-structural: "#638375"
-  shell-fill: "#f5f7f9"
-  shell-stroke: "#627d92"
-  read-fill: "#f3f8f6"
-  read-stroke: "#597b70"
-  edit-fill: "#fbf8f1"
-  edit-stroke: "#947a46"
-  validate-fill: "#f1f8f3"
-  validate-stroke: "#597d63"
-  plan-fill: "#f5f6f9"
-  plan-stroke: "#68778e"
-  message-fill: "#f7f7f8"
-  message-stroke: "#77808c"
-  tool-fill: "#f6f8f7"
-  tool-stroke: "#697e74"
-  group-fill: "#f7f8f9"
-  group-stroke: "#758591"
+  shell-fill: "#eef3f8"
+  shell-stroke: "#6a8199"
+  read-fill: "#eef6f5"
+  read-stroke: "#64867c"
+  edit-fill: "#faf3e8"
+  edit-stroke: "#a38a5b"
+  validate-fill: "#eef6ef"
+  validate-stroke: "#678a70"
+  plan-fill: "#f0f2f8"
+  plan-stroke: "#7986a0"
+  message-fill: "#f3f4f6"
+  message-stroke: "#7e8793"
+  tool-fill: "#eef3f3"
+  tool-stroke: "#75878b"
+  group-fill: "#f3f5f7"
+  group-stroke: "#81909d"
   dark-bg: "#101b23"
   dark-surface: "#192a35"
   dark-surface-2: "#213540"
@@ -82,21 +82,21 @@ typography:
     letterSpacing: "-0.02em"
   workspace-headline:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
-    fontSize: "20px"
+    fontSize: "24px"
     fontWeight: 650
     lineHeight: 1.2
     letterSpacing: "-0.02em"
   headline-title:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
-    fontSize: "14px"
+    fontSize: "18px"
     fontWeight: 600
   body:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
-    fontSize: "13px"
+    fontSize: "16px"
     fontWeight: 400
   label:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
-    fontSize: "12px"
+    fontSize: "14px"
     fontWeight: 610
     lineHeight: 1.2
   navigation:
@@ -109,7 +109,7 @@ typography:
     fontWeight: 650
   support:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
-    fontSize: "11px"
+    fontSize: "13px"
     fontWeight: 400
   badge:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
@@ -117,17 +117,17 @@ typography:
     fontWeight: 650
     lineHeight: 1.15
   evidence:
-    fontFamily: "ui-monospace, SFMono-Regular, Consolas, monospace"
-    fontSize: "13px"
+    fontFamily: "JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    fontSize: "15px"
     fontWeight: 400
-    lineHeight: 1.85
+    lineHeight: 1.65
   graph-title:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
-    fontSize: "13px"
-    fontWeight: 650
+    fontSize: "15px"
+    fontWeight: 600
   graph-metadata:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
-    fontSize: "11px"
+    fontSize: "12px"
     fontWeight: 400
 rounded:
   row: "3px"
@@ -261,13 +261,13 @@ The dark appearance uses the `dark-*` frontmatter tokens from [workbench.css](fr
 
 ## Typography
 
-**Body and control font:** native system sans. **Evidence font:** system monospace. There is no web font or decorative display face.
+**Body and control font:** native system sans. **Evidence font:** locally bundled JetBrains Mono 2.304 Regular with system monospace fallback. The unmodified WOFF2 is inlined into production CSS and standalone HTML; no external font request is needed. Its OFL license is retained in the assets directory and third-party notices. Ligatures are disabled to preserve the literal appearance of operators.
 
-The compact hierarchy uses weight and whitespace instead of oversized type. The frontmatter `headline` applies to document-page view titles; `workspace-headline` applies to desktop Graph, Timeline and Replay. The `headline-title` role identifies selected evidence headings. Body text uses `body`; buttons, navigation, outcomes and supporting labels retain their own observed roles. Native navigation uses regular labels and a stronger active label.
+Desktop reading roles use 24px page headings, 18px selected evidence, 16px prose, 15px code and data values, 14px controls and 13px supporting metadata. Directory paths, source IDs and lane labels stay subordinate at 13px, with 12px axis labels and compact event markers. Body text has 1.5–1.65 leading; code uses 1.65–1.7. Native navigation remains 14px with stronger active weight. This references [Primer's 16px/14px body roles](https://primer.style/product/primitives/typography/) and [Linear's hierarchy through typography and alignment](https://linear.app/now/how-we-redesigned-the-linear-ui); the project does not claim to reproduce Linear's current app font sizes.
 
-Recorded Replay code uses the `evidence` role, with desktop line-height 1.7. Its subordinate Terminal/Tests uses 12px monospace with line-height 1.7. Graph fullscreen now uses the same 13px / 1.7 evidence type in the Inspector. Its selected-source name is 16px / 600, the Inspector heading 14px / 600, controls/body 13px and labels/tabs/support 12px. Exact source IDs remain 12px monospace, with a 100px metadata-label column and wrapping instead of clipping. Native system fonts remain local and offline. See the [computed typography and paired captures](docs/research/graph-typography.md).
+Replay evidence, Terminal/Tests and Inspector code share the 15px evidence face. Graph fullscreen uses an 18px / 600 selected name, 16px Inspector heading, 15px values, 14px controls/tabs and 13px labels/source IDs. A 112px label column and 8px gap avoid wrapping Type / Category; complete identifiers still wrap rather than clip. Code, logs and paths retain local scrolling. The latest [font, color and browser verification](docs/research/readable-typography.md) supersedes the [earlier smaller typography pass](docs/research/graph-typography.md).
 
-SVG node titles and metadata use their specific frontmatter roles; merged folders use 14px titles and 12px summaries. Natural-width ellipsis replaces forced glyph compression, with category-specific safe widths and complete source identities in accessible titles and Inspector. These renderer changes also apply to ordinary Graph, Compare DAGs and SVG/PNG exports. Fit may scale the complete diagram down; Locate restores the reading view. Type is not an evidence encoding: visual token widths never imply measured call duration.
+SVG node titles use 15px / 600, metadata 12px; merged folders use 16px titles, 13px summaries and 12px counts. Natural-width ellipsis uses matching font metrics and category-specific safe widths; complete source identities stay in accessible titles and Inspector. These renderer changes also apply to ordinary Graph, Compare DAGs and SVG/PNG exports. Fit may scale the complete diagram down; Locate restores the reading view. Type is not an evidence encoding: visual token widths never imply measured call duration.
 
 **The Evidence Reading Rule.** Reduce repeated metadata and close secondary detail before reducing evidence type. Long code and logs scroll within their own region.
 
@@ -289,7 +289,7 @@ Compare leads with one shared A/B alignment and three flat metrics. Rows have a 
 
 The reviewed scope is desktop (1586×912 and 1280×800). Existing narrow-screen access is retained: horizontal top navigation and stacked/drawer evidence behavior continue at the source breakpoints. These compatibility rules do not establish a newly designed or reviewed mobile composition.
 
-The effective stylesheet order in [main.tsx](frontend/src/main.tsx) is [styles.css](frontend/src/styles.css) → [workbench.css](frontend/src/workbench.css) → [density.css](frontend/src/density.css) → [hierarchy.css](frontend/src/hierarchy.css) → [neutral.css](frontend/src/neutral.css) → [graphFullscreen.css](frontend/src/graphFullscreen.css). Extract values from the effective selector and media-query cascade, not an earlier declaration alone. The last sheet scopes the new composition to Graph fullscreen; small support rules also preserve the ordinary Graph activity disclosure and its source-copy/missing-patch states.
+The effective stylesheet order in [main.tsx](frontend/src/main.tsx) is [styles.css](frontend/src/styles.css) → [workbench.css](frontend/src/workbench.css) → [density.css](frontend/src/density.css) → [hierarchy.css](frontend/src/hierarchy.css) → [neutral.css](frontend/src/neutral.css) → [typography.css](frontend/src/typography.css) → [graphFullscreen.css](frontend/src/graphFullscreen.css). The typography sheet owns reading roles and the coordinated light text/timeline palette; the final sheet scopes the fullscreen composition and its use of those roles. Extract values from the effective selector and media-query cascade, not an earlier declaration alone.
 
 ## Elevation & Depth
 
@@ -315,7 +315,7 @@ Navigation uses the single static row described in Layout, with line icons (16px
 
 ### Outcomes, source rows and evidence panels
 
-Written status accompanies semantic color. A selected Replay event row uses the selection wash and boundary and preserves outcome cues. Desktop rows use a 58px minimum with 10px / 8px padding; the retained narrow-screen row uses the frontmatter 72px role. Evidence panes use compact headings and local scrolling. Recorded diffs retain line numbers, context and +/− signs. Copy and expand apply to the evidence currently displayed. Unselected Inspectors begin with an explicit prompt.
+Written status accompanies semantic color. A selected Replay event row uses the selection wash and boundary and preserves outcome cues. Desktop rows use a 64px minimum with 10px / 8px padding; the retained narrow-screen row uses the frontmatter 72px role. Evidence panes use compact headings and local scrolling. Recorded diffs retain line numbers, context and +/− signs. Copy and expand apply to the evidence currently displayed. Unselected Inspectors begin with an explicit prompt.
 
 **The Stable Source Rule.** Run ID plus exact source idx identifies selection across views and shared URLs. Display ordinals and playback positions remain distinct from source identity.
 

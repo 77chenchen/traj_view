@@ -28,9 +28,10 @@ async function locate(page,source){
 }
 
 async function checkTypography(page){
-  const measurements=await page.locator('.graph-workspace').evaluate(workspace=>{
+  const measurements=await page.locator('.graph-workspace').evaluate(async workspace=>{
+    await document.fonts.ready;
     const roles={heading:'.inspection-status strong',label:'.step-meta dt',value:'.step-meta dd:not(.mono)',evidenceTab:'.inspector-tabs button',code:'.inspector .code-lines',status:'.graph-caption'};
-    const fonts=Object.fromEntries(Object.entries(roles).map(([role,selector])=>{const style=getComputedStyle(workspace.querySelector(selector));return[role,{size:parseFloat(style.fontSize),lineHeight:parseFloat(style.lineHeight)}];}));
+    const fonts=Object.fromEntries(Object.entries(roles).map(([role,selector])=>{const style=getComputedStyle(workspace.querySelector(selector));return[role,{size:parseFloat(style.fontSize),lineHeight:parseFloat(style.lineHeight),family:style.fontFamily}];}));
     const nodes=[...workspace.querySelectorAll('[data-node]')].map(node=>{
       const body=node.querySelector('[data-node-body]').getBBox();
       return{source:node.dataset.sourceIndex,labels:[...node.querySelectorAll('[data-node-title],[data-node-metadata]')].map(text=>{
@@ -40,11 +41,13 @@ async function checkTypography(page){
     });
     const toolbar=workspace.querySelector('.graph-toolbar').getBoundingClientRect(),sidebar=workspace.querySelector('.trace-sidebar').getBoundingClientRect();
     const tabs=[...workspace.querySelectorAll('.sidebar-tabs button,.inspector-tabs button')];
-    return{fonts,nodes,toolbarAndTabsFit:toolbar.right<=sidebar.left&&tabs.every(tab=>tab.scrollWidth<=tab.clientWidth&&tab.getBoundingClientRect().right<=sidebar.right)};
+    return{fonts,nodes,codeFontLoaded:[...document.fonts].some(font=>font.family==='JetBrains Mono'&&font.status==='loaded'),toolbarAndTabsFit:toolbar.right<=sidebar.left&&tabs.every(tab=>tab.scrollWidth<=tab.clientWidth&&tab.getBoundingClientRect().right<=sidebar.right)};
   });
   assert.ok(measurements.fonts.heading.size>measurements.fonts.value.size,'Selected title leads the metadata');
-  for(const [role,{size}] of Object.entries(measurements.fonts))assert.ok(size>=12,role+' remains readable in the narrow Inspector');
-  assert.ok(measurements.fonts.code.size>=13&&measurements.fonts.code.lineHeight>=21,'Code keeps readable type and leading');
+  for(const [role,{size}] of Object.entries(measurements.fonts))assert.ok(size>=13,role+' remains readable in the narrow Inspector');
+  assert.ok(measurements.fonts.heading.size>=18&&measurements.fonts.value.size>=15&&measurements.fonts.evidenceTab.size>=14,'Evidence, metadata and controls keep their reading roles');
+  assert.ok(measurements.fonts.code.size>=15&&measurements.fonts.code.lineHeight>=24,'Code keeps readable type and leading');
+  assert.ok(measurements.codeFontLoaded&&measurements.fonts.code.family.startsWith('"JetBrains Mono"'),'The bundled code face loads locally and offline');
   assert.ok(measurements.toolbarAndTabsFit,'Larger controls and both tab rows fit the desktop workspace');
   assert.ok(measurements.nodes.length>=11,'All recorded category nodes are checked');
   for(const node of measurements.nodes)for(const text of node.labels)assert.ok(text.natural&&text.inside,`Source ${node.source} label stays naturally proportioned and within its node: ${text.text}`);

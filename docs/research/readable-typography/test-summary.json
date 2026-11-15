@@ -1,0 +1,89 @@
+{
+  "scope": "Desktop typography, coordinated node/timeline palette and locally bundled code font; public synthetic fixtures",
+  "python": {
+    "command": "python -m pytest",
+    "passed": 81,
+    "seconds": 3.65,
+    "exitCode": 0
+  },
+  "typecheck": {
+    "command": "npm --prefix frontend run check",
+    "exitCode": 0
+  },
+  "build": {
+    "command": "npm --prefix frontend run build",
+    "seconds": 7.72,
+    "exitCode": 0,
+    "cssKB": 300.31,
+    "cssGzipKB": 126.99,
+    "javascriptKB": 2443.44,
+    "javascriptGzipKB": 757.87,
+    "warning": "Existing large JavaScript chunk warning"
+  },
+  "browser": {
+    "command": "PYTHON=\"$(command -v python)\" node scripts/smoke-e2e.mjs",
+    "chrome": "157.0.8103.52",
+    "passed": 40,
+    "exitCode": 0,
+    "finalPalette": true
+  },
+  "readability": {
+    "command": "node scripts/verify-readable-typography.mjs",
+    "afterCaptures": 12,
+    "beforeCaptures": 2,
+    "sizes": [
+      "1586x912",
+      "1280x800"
+    ],
+    "locallyLoadedJetBrainsMono": true,
+    "offlineHttpRequests": 0,
+    "pageErrors": 0
+  },
+  "fullscreen": {
+    "command": "node scripts/verify-graph-fullscreen.mjs",
+    "localAndExactRootHtmlOffline": true,
+    "allSevenFit": true,
+    "naturalNodeTextBounds": true,
+    "tabsFit": true,
+    "completeSourceIds": true,
+    "patchAndMissingPatch": true,
+    "activityAndPlayback": true,
+    "focusAndExports": true
+  },
+  "pureChecks": {
+    "dagSorts": 909,
+    "executionScopes": 1908,
+    "exactPaths": 3161,
+    "executionRoutes": 5189,
+    "inlineStates": 61,
+    "inlineRoutes": 1735,
+    "timelineLayouts": 126
+  },
+  "firstGraphPaint": {
+    "chrome": "157.0.8103.52",
+    "timeoutMs": 30000,
+    "mode": "overview",
+    "excludesInitialBundleLoad": true,
+    "runs": [
+      {
+        "sourceSteps": 500,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 96.70000004768372
+      },
+      {
+        "sourceSteps": 2000,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 130.19999998807907
+      }
+    ]
+  },
+  "typeDetector": [],
+  "intermediateFindings": [
+    "Expanded navigation text changed compact-width source expansion framing; corrected with subordinate navigation roles.",
+    "Larger lane labels and inherited leading clipped the final Timeline lane; corrected lane leading and minimum height.",
+    "Initial full smoke also hit existing 12-second browser wait timeouts; thresholds retained and final full rerun passed."
+  ],
+  "paletteContrast": "contrast.json"
+}

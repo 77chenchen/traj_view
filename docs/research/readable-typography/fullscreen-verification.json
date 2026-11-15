@@ -1,0 +1,715 @@
+{
+  "chrome": "157.0.8103.52",
+  "scope": "Graph fullscreen; desktop 1586×912 and 1280×800; public synthetic fixtures",
+  "local": {
+    "geometry": [
+      {
+        "width": 1586,
+        "height": 912,
+        "viewport": {
+          "x": 61,
+          "y": 114,
+          "width": 1162,
+          "height": 630.90625,
+          "top": 114,
+          "right": 1223,
+          "bottom": 744.90625,
+          "left": 61
+        },
+        "nodes": [
+          {
+            "source": "7",
+            "box": {
+              "x": 587.054443359375,
+              "y": 162.96731567382812,
+              "width": 118.1329345703125,
+              "height": 38.46186828613281,
+              "top": 162.96731567382812,
+              "right": 705.1873779296875,
+              "bottom": 201.42918395996094,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "19",
+            "box": {
+              "x": 587.054443359375,
+              "y": 248.1328887939453,
+              "width": 118.1329345703125,
+              "height": 38.46186828613281,
+              "top": 248.1328887939453,
+              "right": 705.1873779296875,
+              "bottom": 286.5947570800781,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "9007199254740993",
+            "box": {
+              "x": 587.054443359375,
+              "y": 333.2984619140625,
+              "width": 118.1329345703125,
+              "height": 38.46185302734375,
+              "top": 333.2984619140625,
+              "right": 705.1873779296875,
+              "bottom": 371.76031494140625,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "9007199254741007",
+            "box": {
+              "x": 587.054443359375,
+              "y": 418.4640197753906,
+              "width": 118.1329345703125,
+              "height": 38.46185302734375,
+              "top": 418.4640197753906,
+              "right": 705.1873779296875,
+              "bottom": 456.9258728027344,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "9007199254741021",
+            "box": {
+              "x": 587.054443359375,
+              "y": 503.62957763671875,
+              "width": 118.1329345703125,
+              "height": 38.46185302734375,
+              "top": 503.62957763671875,
+              "right": 705.1873779296875,
+              "bottom": 542.0914306640625,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "9007199254741033",
+            "box": {
+              "x": 587.054443359375,
+              "y": 588.795166015625,
+              "width": 118.1329345703125,
+              "height": 38.46185302734375,
+              "top": 588.795166015625,
+              "right": 705.1873779296875,
+              "bottom": 627.2570190429688,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "9007199254741049",
+            "box": {
+              "x": 587.054443359375,
+              "y": 673.960693359375,
+              "width": 118.1329345703125,
+              "height": 38.4619140625,
+              "top": 673.960693359375,
+              "right": 705.1873779296875,
+              "bottom": 712.422607421875,
+              "left": 587.054443359375
+            }
+          }
+        ],
+        "viewBox": "-757.9287242368902 -63.295799634750836 1691.8574484737803 918.5915992695017",
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 1586,
+          "height": 52,
+          "top": 0,
+          "right": 1586,
+          "bottom": 52,
+          "left": 0
+        },
+        "sidebar": {
+          "x": 1236,
+          "y": 52,
+          "width": 350,
+          "height": 860,
+          "top": 52,
+          "right": 1586,
+          "bottom": 912,
+          "left": 1236
+        },
+        "allSevenFit": true,
+        "selectedFinalVisible": true,
+        "missingPatchDisabled": true,
+        "exactSourceAndFocus": true,
+        "activityAndPlayback": true,
+        "popoversInsideFullscreen": true,
+        "exports": true,
+        "typography": {
+          "heading": {
+            "size": 18,
+            "lineHeight": 24.3,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "label": {
+            "size": 13,
+            "lineHeight": 18.2,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "value": {
+            "size": 15,
+            "lineHeight": 22.5,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "evidenceTab": {
+            "size": 14,
+            "lineHeight": 21,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "code": {
+            "size": 15,
+            "lineHeight": 24.75,
+            "family": "\"JetBrains Mono\", ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace"
+          },
+          "status": {
+            "size": 13,
+            "lineHeight": 19.5,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          }
+        }
+      },
+      {
+        "width": 1280,
+        "height": 800,
+        "viewport": {
+          "x": 61,
+          "y": 114,
+          "width": 876,
+          "height": 518.90625,
+          "top": 114,
+          "right": 937,
+          "bottom": 632.90625,
+          "left": 61
+        },
+        "nodes": [
+          {
+            "source": "7",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 156.80218505859375,
+              "width": 96.0411376953125,
+              "height": 31.269195556640625,
+              "top": 156.80218505859375,
+              "right": 550.370849609375,
+              "bottom": 188.07138061523438,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "19",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 226.0411376953125,
+              "width": 96.0411376953125,
+              "height": 31.26922607421875,
+              "top": 226.0411376953125,
+              "right": 550.370849609375,
+              "bottom": 257.31036376953125,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "9007199254740993",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 295.28009033203125,
+              "width": 96.0411376953125,
+              "height": 31.26922607421875,
+              "top": 295.28009033203125,
+              "right": 550.370849609375,
+              "bottom": 326.54931640625,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "9007199254741007",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 364.51904296875,
+              "width": 96.0411376953125,
+              "height": 31.26922607421875,
+              "top": 364.51904296875,
+              "right": 550.370849609375,
+              "bottom": 395.78826904296875,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "9007199254741021",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 433.7580261230469,
+              "width": 96.0411376953125,
+              "height": 31.269195556640625,
+              "top": 433.7580261230469,
+              "right": 550.370849609375,
+              "bottom": 465.0272216796875,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "9007199254741033",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 502.9969787597656,
+              "width": 96.0411376953125,
+              "height": 31.269256591796875,
+              "top": 502.9969787597656,
+              "right": 550.370849609375,
+              "bottom": 534.2662353515625,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "9007199254741049",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 572.2359619140625,
+              "width": 96.0411376953125,
+              "height": 31.2691650390625,
+              "top": 572.2359619140625,
+              "right": 550.370849609375,
+              "bottom": 603.505126953125,
+              "left": 454.3297119140625
+            }
+          }
+        ],
+        "viewBox": "-696.4138373660227 -68.65438675309673 1568.8276747320454 929.3087735061935",
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 52,
+          "top": 0,
+          "right": 1280,
+          "bottom": 52,
+          "left": 0
+        },
+        "sidebar": {
+          "x": 950,
+          "y": 52,
+          "width": 330,
+          "height": 748,
+          "top": 52,
+          "right": 1280,
+          "bottom": 800,
+          "left": 950
+        },
+        "allSevenFit": true,
+        "selectedFinalVisible": true,
+        "missingPatchDisabled": true,
+        "exactSourceAndFocus": true,
+        "activityAndPlayback": true,
+        "popoversInsideFullscreen": true,
+        "exports": true,
+        "typography": {
+          "heading": {
+            "size": 18,
+            "lineHeight": 24.3,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "label": {
+            "size": 13,
+            "lineHeight": 18.2,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "value": {
+            "size": 15,
+            "lineHeight": 22.5,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "evidenceTab": {
+            "size": 14,
+            "lineHeight": 21,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "code": {
+            "size": 15,
+            "lineHeight": 24.75,
+            "family": "\"JetBrains Mono\", ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace"
+          },
+          "status": {
+            "size": 13,
+            "lineHeight": 19.5,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          }
+        }
+      }
+    ],
+    "captures": [
+      "fullscreen-unselected-1586.png",
+      "fullscreen-final-no-patch-1586.png",
+      "fullscreen-activity-1586.png",
+      "fullscreen-patch-1586.png",
+      "fullscreen-unselected-1280.png",
+      "fullscreen-final-no-patch-1280.png",
+      "fullscreen-activity-1280.png",
+      "fullscreen-patch-1280.png",
+      "fullscreen-long-located.png",
+      "fullscreen-long-located-1280.png"
+    ],
+    "longTraceLocate": true,
+    "resizeAndActivityKeepSelectionVisible": true,
+    "darkSummaryContrast": true,
+    "ordinaryGraphReturn": true,
+    "pageErrors": []
+  },
+  "offline": {
+    "geometry": [
+      {
+        "width": 1586,
+        "height": 912,
+        "viewport": {
+          "x": 61,
+          "y": 114,
+          "width": 1162,
+          "height": 630.90625,
+          "top": 114,
+          "right": 1223,
+          "bottom": 744.90625,
+          "left": 61
+        },
+        "nodes": [
+          {
+            "source": "7",
+            "box": {
+              "x": 587.054443359375,
+              "y": 162.96731567382812,
+              "width": 118.1329345703125,
+              "height": 38.46186828613281,
+              "top": 162.96731567382812,
+              "right": 705.1873779296875,
+              "bottom": 201.42918395996094,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "19",
+            "box": {
+              "x": 587.054443359375,
+              "y": 248.1328887939453,
+              "width": 118.1329345703125,
+              "height": 38.46186828613281,
+              "top": 248.1328887939453,
+              "right": 705.1873779296875,
+              "bottom": 286.5947570800781,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "9007199254740993",
+            "box": {
+              "x": 587.054443359375,
+              "y": 333.2984619140625,
+              "width": 118.1329345703125,
+              "height": 38.46185302734375,
+              "top": 333.2984619140625,
+              "right": 705.1873779296875,
+              "bottom": 371.76031494140625,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "9007199254741007",
+            "box": {
+              "x": 587.054443359375,
+              "y": 418.4640197753906,
+              "width": 118.1329345703125,
+              "height": 38.46185302734375,
+              "top": 418.4640197753906,
+              "right": 705.1873779296875,
+              "bottom": 456.9258728027344,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "9007199254741021",
+            "box": {
+              "x": 587.054443359375,
+              "y": 503.62957763671875,
+              "width": 118.1329345703125,
+              "height": 38.46185302734375,
+              "top": 503.62957763671875,
+              "right": 705.1873779296875,
+              "bottom": 542.0914306640625,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "9007199254741033",
+            "box": {
+              "x": 587.054443359375,
+              "y": 588.795166015625,
+              "width": 118.1329345703125,
+              "height": 38.46185302734375,
+              "top": 588.795166015625,
+              "right": 705.1873779296875,
+              "bottom": 627.2570190429688,
+              "left": 587.054443359375
+            }
+          },
+          {
+            "source": "9007199254741049",
+            "box": {
+              "x": 587.054443359375,
+              "y": 673.960693359375,
+              "width": 118.1329345703125,
+              "height": 38.4619140625,
+              "top": 673.960693359375,
+              "right": 705.1873779296875,
+              "bottom": 712.422607421875,
+              "left": 587.054443359375
+            }
+          }
+        ],
+        "viewBox": "-757.9287242368902 -63.295799634750836 1691.8574484737803 918.5915992695017",
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 1586,
+          "height": 52,
+          "top": 0,
+          "right": 1586,
+          "bottom": 52,
+          "left": 0
+        },
+        "sidebar": {
+          "x": 1236,
+          "y": 52,
+          "width": 350,
+          "height": 860,
+          "top": 52,
+          "right": 1586,
+          "bottom": 912,
+          "left": 1236
+        },
+        "allSevenFit": true,
+        "selectedFinalVisible": true,
+        "missingPatchDisabled": true,
+        "exactSourceAndFocus": true,
+        "activityAndPlayback": true,
+        "popoversInsideFullscreen": true,
+        "exports": true,
+        "typography": {
+          "heading": {
+            "size": 18,
+            "lineHeight": 24.3,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "label": {
+            "size": 13,
+            "lineHeight": 18.2,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "value": {
+            "size": 15,
+            "lineHeight": 22.5,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "evidenceTab": {
+            "size": 14,
+            "lineHeight": 21,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "code": {
+            "size": 15,
+            "lineHeight": 24.75,
+            "family": "\"JetBrains Mono\", ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace"
+          },
+          "status": {
+            "size": 13,
+            "lineHeight": 19.5,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          }
+        }
+      },
+      {
+        "width": 1280,
+        "height": 800,
+        "viewport": {
+          "x": 61,
+          "y": 114,
+          "width": 876,
+          "height": 518.90625,
+          "top": 114,
+          "right": 937,
+          "bottom": 632.90625,
+          "left": 61
+        },
+        "nodes": [
+          {
+            "source": "7",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 156.80218505859375,
+              "width": 96.0411376953125,
+              "height": 31.269195556640625,
+              "top": 156.80218505859375,
+              "right": 550.370849609375,
+              "bottom": 188.07138061523438,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "19",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 226.0411376953125,
+              "width": 96.0411376953125,
+              "height": 31.26922607421875,
+              "top": 226.0411376953125,
+              "right": 550.370849609375,
+              "bottom": 257.31036376953125,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "9007199254740993",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 295.28009033203125,
+              "width": 96.0411376953125,
+              "height": 31.26922607421875,
+              "top": 295.28009033203125,
+              "right": 550.370849609375,
+              "bottom": 326.54931640625,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "9007199254741007",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 364.51904296875,
+              "width": 96.0411376953125,
+              "height": 31.26922607421875,
+              "top": 364.51904296875,
+              "right": 550.370849609375,
+              "bottom": 395.78826904296875,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "9007199254741021",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 433.7580261230469,
+              "width": 96.0411376953125,
+              "height": 31.269195556640625,
+              "top": 433.7580261230469,
+              "right": 550.370849609375,
+              "bottom": 465.0272216796875,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "9007199254741033",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 502.9969787597656,
+              "width": 96.0411376953125,
+              "height": 31.269256591796875,
+              "top": 502.9969787597656,
+              "right": 550.370849609375,
+              "bottom": 534.2662353515625,
+              "left": 454.3297119140625
+            }
+          },
+          {
+            "source": "9007199254741049",
+            "box": {
+              "x": 454.3297119140625,
+              "y": 572.2359619140625,
+              "width": 96.0411376953125,
+              "height": 31.2691650390625,
+              "top": 572.2359619140625,
+              "right": 550.370849609375,
+              "bottom": 603.505126953125,
+              "left": 454.3297119140625
+            }
+          }
+        ],
+        "viewBox": "-696.4138373660227 -68.65438675309673 1568.8276747320454 929.3087735061935",
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 52,
+          "top": 0,
+          "right": 1280,
+          "bottom": 52,
+          "left": 0
+        },
+        "sidebar": {
+          "x": 950,
+          "y": 52,
+          "width": 330,
+          "height": 748,
+          "top": 52,
+          "right": 1280,
+          "bottom": 800,
+          "left": 950
+        },
+        "allSevenFit": true,
+        "selectedFinalVisible": true,
+        "missingPatchDisabled": true,
+        "exactSourceAndFocus": true,
+        "activityAndPlayback": true,
+        "popoversInsideFullscreen": true,
+        "exports": true,
+        "typography": {
+          "heading": {
+            "size": 18,
+            "lineHeight": 24.3,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "label": {
+            "size": 13,
+            "lineHeight": 18.2,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "value": {
+            "size": 15,
+            "lineHeight": 22.5,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "evidenceTab": {
+            "size": 14,
+            "lineHeight": 21,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          },
+          "code": {
+            "size": 15,
+            "lineHeight": 24.75,
+            "family": "\"JetBrains Mono\", ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace"
+          },
+          "status": {
+            "size": 13,
+            "lineHeight": 19.5,
+            "family": "-apple-system, \"system-ui\", \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+          }
+        }
+      }
+    ],
+    "captures": [
+      "offline-fullscreen-unselected-1586.png",
+      "offline-fullscreen-final-no-patch-1586.png",
+      "offline-fullscreen-activity-1586.png",
+      "offline-fullscreen-patch-1586.png",
+      "offline-fullscreen-unselected-1280.png",
+      "offline-fullscreen-final-no-patch-1280.png",
+      "offline-fullscreen-activity-1280.png",
+      "offline-fullscreen-patch-1280.png",
+      "offline-fullscreen-long-located.png",
+      "offline-fullscreen-long-located-1280.png"
+    ],
+    "longTraceLocate": true,
+    "resizeAndActivityKeepSelectionVisible": true,
+    "darkSummaryContrast": true,
+    "ordinaryGraphReturn": true,
+    "httpRequests": 0,
+    "pageErrors": []
+  }
+}

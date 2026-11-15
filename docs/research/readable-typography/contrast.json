@@ -1,0 +1,120 @@
+{
+  "method": "WCAG relative luminance from shipped light palette; non-disabled text and category fills; intentionally unreached/disabled states excluded",
+  "nodes": [
+    {
+      "category": "shell",
+      "fill": "#eef3f8",
+      "stroke": "#6a8199",
+      "titleContrast": 11.36,
+      "metadataContrast": 5.37,
+      "outlineContrast": 3.61
+    },
+    {
+      "category": "read",
+      "fill": "#eef6f5",
+      "stroke": "#64867c",
+      "titleContrast": 11.55,
+      "metadataContrast": 5.46,
+      "outlineContrast": 3.65
+    },
+    {
+      "category": "edit",
+      "fill": "#faf3e8",
+      "stroke": "#a38a5b",
+      "titleContrast": 11.5,
+      "metadataContrast": 5.44,
+      "outlineContrast": 3.0
+    },
+    {
+      "category": "validate",
+      "fill": "#eef6ef",
+      "stroke": "#678a70",
+      "titleContrast": 11.51,
+      "metadataContrast": 5.44,
+      "outlineContrast": 3.5
+    },
+    {
+      "category": "plan",
+      "fill": "#f0f2f8",
+      "stroke": "#7986a0",
+      "titleContrast": 11.33,
+      "metadataContrast": 5.35,
+      "outlineContrast": 3.27
+    },
+    {
+      "category": "message",
+      "fill": "#f3f4f6",
+      "stroke": "#7e8793",
+      "titleContrast": 11.52,
+      "metadataContrast": 5.44,
+      "outlineContrast": 3.3
+    },
+    {
+      "category": "tool",
+      "fill": "#eef3f3",
+      "stroke": "#75878b",
+      "titleContrast": 11.32,
+      "metadataContrast": 5.35,
+      "outlineContrast": 3.35
+    },
+    {
+      "category": "group",
+      "fill": "#f3f5f7",
+      "stroke": "#81909d",
+      "titleContrast": 11.6,
+      "metadataContrast": 5.48,
+      "outlineContrast": 3.0
+    }
+  ],
+  "text": [
+    {
+      "role": "body",
+      "ink": "#273442",
+      "whiteContrast": 12.68,
+      "addedRowContrast": 11.17,
+      "removedRowContrast": 11.08
+    },
+    {
+      "role": "muted",
+      "ink": "#556575",
+      "whiteContrast": 5.99,
+      "addedRowContrast": 5.28,
+      "removedRowContrast": 5.23
+    },
+    {
+      "role": "support",
+      "ink": "#5b6b7b",
+      "whiteContrast": 5.48,
+      "addedRowContrast": 4.82,
+      "removedRowContrast": 4.79
+    },
+    {
+      "role": "keyword",
+      "ink": "#315f91",
+      "whiteContrast": 6.61,
+      "addedRowContrast": 5.82,
+      "removedRowContrast": 5.78
+    },
+    {
+      "role": "string",
+      "ink": "#326d51",
+      "whiteContrast": 6.1,
+      "addedRowContrast": 5.37,
+      "removedRowContrast": 5.33
+    },
+    {
+      "role": "number",
+      "ink": "#965d22",
+      "whiteContrast": 5.4,
+      "addedRowContrast": 4.76,
+      "removedRowContrast": 4.72
+    },
+    {
+      "role": "comment",
+      "ink": "#5e6e7d",
+      "whiteContrast": 5.25,
+      "addedRowContrast": 4.62,
+      "removedRowContrast": 4.58
+    }
+  ]
+}

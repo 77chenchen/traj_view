@@ -1,0 +1,102 @@
+[
+  {
+    "body": {
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "size": "13px",
+      "weight": "400",
+      "lineHeight": "normal"
+    },
+    "node": {
+      "font": "system-ui, sans-serif",
+      "size": "13px",
+      "weight": "650",
+      "lineHeight": "19.5px"
+    },
+    "title": {
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "size": "16px",
+      "weight": "600",
+      "lineHeight": "21.6px"
+    },
+    "label": {
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "size": "12px",
+      "weight": "400",
+      "lineHeight": "16.8px"
+    },
+    "value": {
+      "font": "ui-monospace, SFMono-Regular, Consolas, monospace",
+      "size": "12px",
+      "weight": "400",
+      "lineHeight": "18px"
+    },
+    "code": {
+      "font": "ui-monospace, SFMono-Regular, Consolas, monospace",
+      "size": "13px",
+      "weight": "400",
+      "lineHeight": "22.1px"
+    },
+    "tab": {
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "size": "12px",
+      "weight": "600",
+      "lineHeight": "18px"
+    },
+    "toolbar": {
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "size": "13px",
+      "weight": "610",
+      "lineHeight": "15.6px"
+    }
+  },
+  {
+    "body": {
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "size": "13px",
+      "weight": "400",
+      "lineHeight": "normal"
+    },
+    "node": {
+      "font": "system-ui, sans-serif",
+      "size": "13px",
+      "weight": "650",
+      "lineHeight": "19.5px"
+    },
+    "title": {
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "size": "16px",
+      "weight": "600",
+      "lineHeight": "21.6px"
+    },
+    "label": {
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "size": "12px",
+      "weight": "400",
+      "lineHeight": "16.8px"
+    },
+    "value": {
+      "font": "ui-monospace, SFMono-Regular, Consolas, monospace",
+      "size": "12px",
+      "weight": "400",
+      "lineHeight": "18px"
+    },
+    "code": {
+      "font": "ui-monospace, SFMono-Regular, Consolas, monospace",
+      "size": "13px",
+      "weight": "400",
+      "lineHeight": "22.1px"
+    },
+    "tab": {
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "size": "12px",
+      "weight": "600",
+      "lineHeight": "18px"
+    },
+    "toolbar": {
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "size": "13px",
+      "weight": "610",
+      "lineHeight": "15.6px"
+    }
+  }
+]

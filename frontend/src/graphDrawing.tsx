@@ -10,13 +10,13 @@ import {
 
 export const palettes = {
   light: {
-    surface: '#ffffff', node: '#f3f5f6', text: '#263039', muted: '#59636e',
+    surface: '#ffffff', node: '#f3f5f6', text: '#273442', muted: '#556575',
     selected: '#3d596b', error: '#b53c46', unique: '#8b681f',
     edges: { temporal: '#85909a', dependency: '#52778d', retry: '#9a763c', structural: '#638375' },
   },
   // The graph remains a white evidence surface in either application theme.
   dark: {
-    surface: '#ffffff', node: '#f3f5f6', text: '#263039', muted: '#59636e',
+    surface: '#ffffff', node: '#f3f5f6', text: '#273442', muted: '#556575',
     selected: '#3d596b', error: '#b53c46', unique: '#8b681f',
     edges: { temporal: '#85909a', dependency: '#52778d', retry: '#9a763c', structural: '#638375' },
   },
@@ -111,19 +111,21 @@ function overlaps(a: Box, b: Box) {
   return a.x <= b.x + b.width && a.x + a.width >= b.x && a.y <= b.y + b.height && a.y + a.height >= b.y;
 }
 
+const nodeType = { title:15, metadata:12, sectionTitle:16, summary:13, count:12 };
+
 function sectionTitle(text:string,width:number){
   const value=text.replace(/\s+/g,' ').trim();
-  if(labelWidth(value,14)<=width)return [value];
+  if(labelWidth(value,nodeType.sectionTitle)<=width)return [value];
   const chars=Array.from(value);
   let split=0,used=0;
   for(const char of chars){
-    const next=labelWidth(char,14);
+    const next=labelWidth(char,nodeType.sectionTitle);
     if(used+next>width)break;
     used+=next;split++;
   }
   const space=chars.slice(0,split).lastIndexOf(' ');
   if(space>split/2)split=space;
-  return [chars.slice(0,split).join(''),fitLabel(chars.slice(split).join('').trim(),width,14)];
+  return [chars.slice(0,split).join(''),fitLabel(chars.slice(split).join('').trim(),width,nodeType.sectionTitle)];
 }
 
 export interface DrawingOptions {
@@ -189,10 +191,10 @@ export const GraphDrawing = memo(function GraphDrawing({
       (dimmed ? ' · Timeline has not reached this node' : '') +
       (divergence?.has(node.id) ? ' · First divergence versus baseline' : '');
     const metaWidth = halfWidth - (outline==='validate'?29:24) + 48;
-    const meta = fitLabel(node.view?.kind === 'section' ? `${node.view.errors} ${node.view.errors===1?'error':'errors'} · ${phaseLabel}` : `${phaseLabel} · ${sourceIndex(node.first_idx)}`,metaWidth,11);
+    const meta = fitLabel(node.view?.kind === 'section' ? `${node.view.errors} ${node.view.errors===1?'error':'errors'} · ${phaseLabel}` : `${phaseLabel} · ${sourceIndex(node.first_idx)}`,metaWidth,nodeType.metadata);
     const metadataClip = `${prefix}-metadata-${ordinal}`;
-    const titleWidth=halfWidth-(outline==='validate'?20:10)+48-(node.count>1?labelWidth(`×${node.count}`,11)+8:0);
-    const title=fitLabel(node.label || node.tool || 'Message',titleWidth,13);
+    const titleWidth=halfWidth-(outline==='validate'?20:10)+48-(node.count>1?labelWidth(`×${node.count}`,nodeType.count)+8:0);
+    const title=fitLabel(node.label || node.tool || 'Message',titleWidth,nodeType.title);
     return <g key={node.id} transform={`translate(${point.x} ${point.y})`} className={onNode ? 'graph-node' : undefined}
       data-node={onNode ? '' : undefined} data-node-id={node.id} data-source-index={node.first_idx} data-signature={node.signature} data-node-kind={outline} role={onNode ? 'button' : undefined} tabIndex={onNode ? 0 : undefined}
       aria-label={onNode ? description : undefined} aria-pressed={onNode ? active : undefined}
@@ -225,15 +227,15 @@ export const GraphDrawing = memo(function GraphDrawing({
         <g transform={summary?`translate(${-halfWidth+17} -29)`:`translate(-62 ${outline==='shell'?0:-5})`}><Shape category={node.category} color={color} /></g>
         {unique && <circle cx={halfWidth - 5} cy={-halfHeight + 5} r={4} fill={palette.unique} />}
         {labels && summary ? <g data-section-summary="">
-          {groupTitle.map((line,i)=><text data-node-title="" key={i} x={-halfWidth+33} y={-28+i*17} fill={palette.text} fontWeight={650} fontSize={14}>{line}</text>)}
-          <text x={-halfWidth+14} y={9} fill={palette.muted} fontSize={12}>{fitLabel(summary.description,size.width-28,12)}</text>
-          <text x={-halfWidth+14} y={26} fill={palette.muted} fontSize={12}>{fitLabel(summary.focus,size.width-28,12)}</text>
-          <text x={-halfWidth+14} y={44} fill={summary.failures?palette.error:palette.muted} fontSize={11}>{fitLabel(`${node.count} steps · ${summary.failures} errors${summary.retries>0?` · ${summary.retries} retries`:''}`,size.width-35,11)}</text>
+          {groupTitle.map((line,i)=><text data-node-title="" key={i} x={-halfWidth+33} y={-27+i*19} fill={palette.text} fontWeight={600} fontSize={nodeType.sectionTitle}>{line}</text>)}
+          <text data-node-summary="" x={-halfWidth+14} y={11} fill={palette.muted} fontSize={nodeType.summary}>{fitLabel(summary.description,size.width-28,nodeType.summary)}</text>
+          <text data-node-summary="" x={-halfWidth+14} y={28} fill={palette.muted} fontSize={nodeType.summary}>{fitLabel(summary.focus,size.width-28,nodeType.summary)}</text>
+          <text data-node-summary="" x={-halfWidth+14} y={46} fill={summary.failures?palette.error:palette.muted} fontSize={nodeType.count}>{fitLabel(`${node.count} steps · ${summary.failures} errors${summary.retries>0?` · ${summary.retries} retries`:''}`,size.width-35,nodeType.count)}</text>
         </g> : labels && <>
-          <text data-node-title="" x={-48} y={outline==='shell'?2:-4} fill={palette.text} fontWeight={650} fontSize={13}>{title}</text>
-          <defs><clipPath id={metadataClip}><rect x={-48} y={outline==='shell'?6:2} width={metaWidth} height={14}/></clipPath></defs>
-          <text data-node-metadata="" x={-48} y={outline==='shell'?17:13} fill={palette.muted} fontSize={11} clipPath={`url(#${metadataClip})`}>{meta}</text>
-          {node.count > 1 && <text x={halfWidth - 9} y={-1} textAnchor="end" fill={palette.muted} fontSize={11}>
+          <text data-node-title="" x={-48} y={outline==='shell'?1:-4} fill={palette.text} fontWeight={600} fontSize={nodeType.title}>{title}</text>
+          <defs><clipPath id={metadataClip}><rect x={-48} y={outline==='shell'?6:2} width={metaWidth} height={16}/></clipPath></defs>
+          <text data-node-metadata="" x={-48} y={outline==='shell'?17:14} fill={palette.muted} fontSize={nodeType.metadata} clipPath={`url(#${metadataClip})`}>{meta}</text>
+          {node.count > 1 && <text x={halfWidth - 9} y={-1} textAnchor="end" fill={palette.muted} fontSize={nodeType.count}>
             ×{node.count}
           </text>}
         </>}
@@ -241,7 +243,7 @@ export const GraphDrawing = memo(function GraphDrawing({
     </g>;
   };
 
-  return <g fontFamily="system-ui, sans-serif">
+  return <g fontFamily='-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif'>
     <defs>{edgeTypes.map((type) => <marker key={type} id={marker(type)} viewBox="0 0 8 8" refX={7} refY={4}
       markerWidth={7} markerHeight={7} orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0 0 8 4 0 8Z" fill={palette.edges[type]} />
@@ -270,8 +272,8 @@ export const GraphDrawing = memo(function GraphDrawing({
         <title>{node.label} · {node.count} source steps · click header to collapse</title>
         <rect x={bounds.x} y={bounds.y} width={bounds.width} height={28} rx={6} fill={palette.node}/>
         <path d={`M${bounds.x+11} ${bounds.y+11}l4 5 4-5`} stroke={palette.selected} strokeWidth={1.5} fill="none"/>
-        <text x={bounds.x+27} y={bounds.y+18} fontSize={13} fontWeight={600} fill={palette.text}>{fitLabel(node.label,Math.max(60,Math.min(bounds.width,620)-170),13)}</text>
-        <text x={bounds.x+Math.min(bounds.width,620)-12} y={bounds.y+18} textAnchor="end" fontSize={11} fill={palette.selected}>{node.count} steps · Collapse</text>
+        <text x={bounds.x+27} y={bounds.y+19} fontSize={14} fontWeight={600} fill={palette.text}>{fitLabel(node.label,Math.max(60,Math.min(bounds.width,620)-185),14)}</text>
+        <text x={bounds.x+Math.min(bounds.width,620)-12} y={bounds.y+19} textAnchor="end" fontSize={12} fill={palette.selected}>{node.count} steps · Collapse</text>
       </g>
     </g>)}
     {drawing.nodes.map(renderNode)}

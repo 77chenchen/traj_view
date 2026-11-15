@@ -1,0 +1,119 @@
+/* Reading roles, shared by the live app and the standalone report. The code
+   face is bundled inline so offline evidence uses the same glyph metrics. */
+@font-face {
+  font-family:"JetBrains Mono";
+  src:url('./assets/fonts/JetBrainsMono-Regular.woff2?inline') format('woff2');
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+}
+:root {
+  --font-sans:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --type-body:16px;
+  --type-control:14px;
+  --type-support:13px;
+  --type-evidence:15px;
+  --type-section:16px;
+  --type-selected:18px;
+  font-family:var(--font-sans);
+  font-size:16px;
+}
+body { font-family:var(--font-sans); font-size:var(--type-body); line-height:1.5; }
+:root :is(pre,code,kbd,.mono,.code-lines) { font-family:var(--font-mono); font-variant-ligatures:none; }
+
+/* One quiet ink palette; semantic colors stay independent of selection. */
+:root:not([data-theme="dark"]) {
+  --text:#273442; --muted:#556575; --subtle:#5b6b7b;
+  --good:#276442; --good-bg:#e9f3ec; --bad:#ac3c4c; --bad-bg:#fbecef;
+}
+:root:not([data-theme="dark"]) .syntax-keyword { color:#315f91; }
+:root:not([data-theme="dark"]) .syntax-string { color:#326d51; }
+:root:not([data-theme="dark"]) .syntax-number { color:#965d22; }
+:root:not([data-theme="dark"]) .syntax-comment { color:#5e6e7d; }
+.code-lines > div > span { color:var(--subtle); }
+:root:not([data-theme="dark"]) .event-lane .timeline-event {
+  background:#eef3f8; border-color:#6a8199; color:#304c65;
+}
+:root:not([data-theme="dark"]) .event-lane .timeline-event.read { background:#eef6f5; border-color:#64867c; color:#365d50; }
+:root:not([data-theme="dark"]) .event-lane .timeline-event.edit { background:#faf3e8; border-color:#a38a5b; color:#735b2d; }
+:root:not([data-theme="dark"]) .event-lane .timeline-event.validate { background:#eef6ef; border-color:#678a70; color:#366346; }
+:root:not([data-theme="dark"]) .event-lane .timeline-event:is(.message,.plan,.tool) { background:#f0f2f6; border-color:#7986a0; color:#4d6075; }
+:root:not([data-theme="dark"]) .event-lane .timeline-event.failed { background:var(--bad-bg); border-color:#c5808a; color:var(--bad); }
+:root:not([data-theme="dark"]) .phase-arrow { background:#e7eef5; border-color:#6a8199; color:#304c65; }
+:root:not([data-theme="dark"]) .phase-arrow.phase-failed { background:#f7e4e8; border-color:#b66b78; color:#a13347; }
+:root:not([data-theme="dark"]) .phase-arrow.phase-success { background:#e7f1e9; border-color:#678a70; color:#366346; }
+
+@media(min-width:1101px) {
+  .button,.button.small,input:not([type="range"],[type="checkbox"]),select,
+  .reference-shell :is(.segments,.workspace-tabs,.focus-tabs) > button { font-size:var(--type-control); }
+  .workspace-navigation .nav-button { font-size:14px; }
+  .reference-shell main:is([data-page="graph"],[data-page="timeline"],[data-page="replay"]) .view-title h1 { font-size:24px; }
+  .view-title p,.run-metadata,.run-metadata .outcome,.run-recording > summary { font-size:var(--type-support); }
+  .run-metadata > strong { font-size:15px; }
+  .reference-shell .panel-head h2,.step-comparison-heading h2 { font-size:var(--type-section); font-weight:600; }
+  .stage-card > div,.agent-trajectory .stage-card > div { font-size:var(--type-control); }
+  .stage-card time { font-size:12px; }
+  .with-previews .stage-card pre { font-size:var(--type-support); line-height:1.6; }
+  .trace-tools .button { font-size:var(--type-control); }
+
+  /* The selected evidence leads; timestamps and source context support it. */
+  .event-description strong { font-size:15px; font-weight:600; }
+  .event-description small { font-size:var(--type-support); line-height:1.5; }
+  .event-time,.event-number { font-size:12px; font-variant-numeric:tabular-nums; }
+  main[data-page="replay"] .event-row { min-height:64px; }
+  .selected-step-head h2 { font-size:var(--type-selected); font-weight:600; }
+  .selected-step-head time,.type-badge { font-size:var(--type-support); }
+  main[data-page="replay"] .selected-step-description { font-size:var(--type-body); line-height:1.5; max-height:48px; }
+  .recorded-path { font-size:var(--type-support); }
+  .file-results summary,.inspection-files .button { font-family:var(--font-mono); font-size:var(--type-support); line-height:1.6; }
+  .file-results summary > span { font-family:var(--font-sans); font-size:12px; }
+  .recorded-workspace .code-lines,.final-patch .code-lines,
+  .recorded-code > pre,.recorded-prose pre,.replay-output pre,
+  .inspector .step-content :is(pre,.code-lines),.node-context pre {
+    font-family:var(--font-mono); font-size:var(--type-evidence); line-height:1.65;
+  }
+  .workspace-tabs button,.inspector-tabs > button { font-size:var(--type-control); }
+  .inspector-tabs { gap:2px; }
+  .inspector-tabs > button { padding-inline:2px; min-height:36px; }
+  .inspection-status strong { font-size:var(--type-selected); font-weight:600; line-height:1.35; }
+  .step-meta > div { grid-template-columns:112px minmax(0,1fr); gap:8px; }
+  .step-meta dt { font-size:var(--type-support); line-height:1.5; }
+  .step-meta dd { font-size:15px; line-height:1.5; }
+  .step-meta dd.mono { font-size:var(--type-support); }
+  .step-content details summary,.node-context,.internal-edges,.member-control { font-size:var(--type-control); line-height:1.6; }
+  .step-content p { font-size:var(--type-body); line-height:1.6; }
+  .step-content .content-note,.source-ref,.source-ref span,.recording-details,
+  .context-counts,.node-result,.inspection-subtitle,.inspection-subtitle > span { font-size:var(--type-support); line-height:1.6; }
+  .inspector-empty { font-size:var(--type-body); line-height:1.6; }
+  .sidebar-tabs > button { font-size:var(--type-control); }
+
+  .graph-toolbar :is(.button,.segments button,.graph-options > summary,.search-field input),
+  .graph-option-body select { font-size:var(--type-control); }
+  .graph-option-body,.graph-option-body h3,.execution-legend { font-size:var(--type-control); line-height:1.5; }
+  .graph-caption,
+  .graph-secondary .graph-activity-disclosure > summary > span { font-size:var(--type-support); line-height:1.5; }
+  .execution-navigation p,.execution-path > span { font-size:12px; line-height:1.5; }
+  .execution-path .button { font-size:var(--type-support); }
+  .graph-secondary .graph-activity-disclosure > summary { font-size:var(--type-control); }
+  .graph-secondary :is(.timeline-position,.timeline-phase),.activity-row { font-size:var(--type-support); }
+  .activity-ruler time { font-size:12px; }
+  .transport-time,.transport-position,.speed-control,.speed-control select { font-size:var(--type-control); }
+
+  .timeline-records :is(input,select),.timeline-event-table,.timeline-zoom :is(button,label) { font-size:var(--type-control); }
+  .event-lane > strong { font-size:var(--type-support); line-height:1.2; }
+  .event-axis > span,.stage-axis > strong { font-size:12px; line-height:1.3; }
+  .reference-shell main[data-page="timeline"] .event-timeline-inner { min-height:254px; }
+  main[data-page="timeline"] .event-lane,main[data-page="timeline"] .event-lane > div { min-height:32px; }
+  .timeline-footnote,.timeline-records .panel-head > span { font-size:var(--type-support); }
+  /* Tiny timeline event marks are intentionally scale-dependent. */
+  .run-comparison-picker select,.comparison-quick-metrics > div { font-size:var(--type-control); }
+  .align-pair > button > span > strong { font-size:15px; }
+  .align-pair > button small,.alignment-identities small,.alignment-legend,
+  .align-connector,.align-connector :is(strong,small),.alignment-method,.alignment-pagination,
+  .comparison-source-label,.patch-provenance,.selected-patch-source,.signature-match-summary,
+  .agent-disclosure > summary span,.comparison-analysis > summary span { font-size:var(--type-support); line-height:1.5; }
+  .compare-overview .divergence-callout,.comparison-analysis p,.comparison-analysis .findings ul { font-size:var(--type-control); line-height:1.65; }
+  .comparison-analysis h3,.agent-disclosure > summary,.comparison-analysis > summary { font-size:var(--type-section); }
+  .metric-comparison,.runs-table,.dataset-utilities { font-size:var(--type-control); }
+}
