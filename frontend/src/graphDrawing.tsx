@@ -111,14 +111,19 @@ function overlaps(a: Box, b: Box) {
   return a.x <= b.x + b.width && a.x + a.width >= b.x && a.y <= b.y + b.height && a.y + a.height >= b.y;
 }
 
-function shortened(text: string, limit: number) {
-  const characters = Array.from(text.replace(/\s+/g, ' ').trim());
-  return characters.length > limit ? characters.slice(0, limit - 1).join('') + '…' : characters.join('');
-}
-function sectionTitle(text:string){
-  if(text.length<=24)return [text];
-  const space=text.lastIndexOf(' ',24),split=space>12?space:24;
-  return [text.slice(0,split),shortened(text.slice(split).trim(),25)];
+function sectionTitle(text:string,width:number){
+  const value=text.replace(/\s+/g,' ').trim();
+  if(labelWidth(value,14)<=width)return [value];
+  const chars=Array.from(value);
+  let split=0,used=0;
+  for(const char of chars){
+    const next=labelWidth(char,14);
+    if(used+next>width)break;
+    used+=next;split++;
+  }
+  const space=chars.slice(0,split).lastIndexOf(' ');
+  if(space>split/2)split=space;
+  return [chars.slice(0,split).join(''),fitLabel(chars.slice(split).join('').trim(),width,14)];
 }
 
 export interface DrawingOptions {
@@ -147,9 +152,13 @@ function labelWidth(value: string, size: number) {
 }
 function fitLabel(value: string, width: number, size: number) {
   if(labelWidth(value,size)<=width)return value;
-  const chars=Array.from(value);
-  while(chars.length&&labelWidth(chars.join('')+'…',size)>width)chars.pop();
-  return chars.join('')+'…';
+  let prefix='',used=labelWidth('…',size);
+  for(const char of value){
+    const next=labelWidth(char,size);
+    if(used+next>width)break;
+    prefix+=char;used+=next;
+  }
+  return prefix+'…';
 }
 
 export const GraphDrawing = memo(function GraphDrawing({
@@ -168,7 +177,7 @@ export const GraphDrawing = memo(function GraphDrawing({
     const phase = phases.get(node.phase);
     const phaseLabel = phase?.label ?? node.phase;
     const size=nodeSize(node),halfWidth=size.width/2,halfHeight=size.height/2,summary=node.view?.summary;
-    const groupTitle=sectionTitle(node.label);
+    const groupTitle=sectionTitle(node.label,size.width-49);
     const outline: NodeOutline = node.view || node.count > 1 ? 'group' : node.category;
     const appearance = nodeAppearances[outline];
     const color = appearance.stroke;
@@ -180,10 +189,10 @@ export const GraphDrawing = memo(function GraphDrawing({
       (dimmed ? ' · Timeline has not reached this node' : '') +
       (divergence?.has(node.id) ? ' · First divergence versus baseline' : '');
     const metaWidth = halfWidth - (outline==='validate'?29:24) + 48;
-    const meta = fitLabel(node.view?.kind === 'section' ? `${node.view.errors} ${node.view.errors===1?'error':'errors'} · ${phaseLabel}` : `${phaseLabel} · ${sourceIndex(node.first_idx)}`,metaWidth,10);
+    const meta = fitLabel(node.view?.kind === 'section' ? `${node.view.errors} ${node.view.errors===1?'error':'errors'} · ${phaseLabel}` : `${phaseLabel} · ${sourceIndex(node.first_idx)}`,metaWidth,11);
     const metadataClip = `${prefix}-metadata-${ordinal}`;
-    const title = shortened(node.label || node.tool || 'Message', node.count > 1 ? 15 : 20);
-    const titleWidth = Math.max(0, Math.min(node.count > 1 ? 98 : 126, Array.from(title).length * 6.7));
+    const titleWidth=halfWidth-(outline==='validate'?20:10)+48-(node.count>1?labelWidth(`×${node.count}`,11)+8:0);
+    const title=fitLabel(node.label || node.tool || 'Message',titleWidth,13);
     return <g key={node.id} transform={`translate(${point.x} ${point.y})`} className={onNode ? 'graph-node' : undefined}
       data-node={onNode ? '' : undefined} data-node-id={node.id} data-source-index={node.first_idx} data-signature={node.signature} data-node-kind={outline} role={onNode ? 'button' : undefined} tabIndex={onNode ? 0 : undefined}
       aria-label={onNode ? description : undefined} aria-pressed={onNode ? active : undefined}
@@ -216,16 +225,15 @@ export const GraphDrawing = memo(function GraphDrawing({
         <g transform={summary?`translate(${-halfWidth+17} -29)`:`translate(-62 ${outline==='shell'?0:-5})`}><Shape category={node.category} color={color} /></g>
         {unique && <circle cx={halfWidth - 5} cy={-halfHeight + 5} r={4} fill={palette.unique} />}
         {labels && summary ? <g data-section-summary="">
-          {groupTitle.map((line,i)=><text key={i} x={-halfWidth+33} y={-28+i*15} fill={palette.text} fontWeight={650} fontSize={12.5}>{line}</text>)}
-          <text x={-halfWidth+14} y={7} fill={palette.muted} fontSize={11}>{shortened(summary.description,34)}</text>
-          <text x={-halfWidth+14} y={25} fill={palette.muted} fontSize={11}>{shortened(summary.focus,34)}</text>
-          <text x={-halfWidth+14} y={43} fill={summary.failures?palette.error:palette.muted} fontSize={10.5}>{node.count} steps · {summary.failures} errors{summary.retries>0?` · ${summary.retries} retries`:''}</text>
+          {groupTitle.map((line,i)=><text data-node-title="" key={i} x={-halfWidth+33} y={-28+i*17} fill={palette.text} fontWeight={650} fontSize={14}>{line}</text>)}
+          <text x={-halfWidth+14} y={9} fill={palette.muted} fontSize={12}>{fitLabel(summary.description,size.width-28,12)}</text>
+          <text x={-halfWidth+14} y={26} fill={palette.muted} fontSize={12}>{fitLabel(summary.focus,size.width-28,12)}</text>
+          <text x={-halfWidth+14} y={44} fill={summary.failures?palette.error:palette.muted} fontSize={11}>{fitLabel(`${node.count} steps · ${summary.failures} errors${summary.retries>0?` · ${summary.retries} retries`:''}`,size.width-35,11)}</text>
         </g> : labels && <>
-          <text x={-48} y={outline==='shell'?3:-3} fill={palette.text} fontWeight={650} fontSize={12}
-            textLength={title.length > 12 ? titleWidth : undefined} lengthAdjust="spacingAndGlyphs">{title}</text>
+          <text data-node-title="" x={-48} y={outline==='shell'?2:-4} fill={palette.text} fontWeight={650} fontSize={13}>{title}</text>
           <defs><clipPath id={metadataClip}><rect x={-48} y={outline==='shell'?6:2} width={metaWidth} height={14}/></clipPath></defs>
-          <text data-node-metadata="" x={-48} y={outline==='shell'?17:13} fill={palette.muted} fontSize={10} clipPath={`url(#${metadataClip})`}>{meta}</text>
-          {node.count > 1 && <text x={halfWidth - 9} y={-1} textAnchor="end" fill={palette.muted} fontSize={10}>
+          <text data-node-metadata="" x={-48} y={outline==='shell'?17:13} fill={palette.muted} fontSize={11} clipPath={`url(#${metadataClip})`}>{meta}</text>
+          {node.count > 1 && <text x={halfWidth - 9} y={-1} textAnchor="end" fill={palette.muted} fontSize={11}>
             ×{node.count}
           </text>}
         </>}
@@ -262,8 +270,8 @@ export const GraphDrawing = memo(function GraphDrawing({
         <title>{node.label} · {node.count} source steps · click header to collapse</title>
         <rect x={bounds.x} y={bounds.y} width={bounds.width} height={28} rx={6} fill={palette.node}/>
         <path d={`M${bounds.x+11} ${bounds.y+11}l4 5 4-5`} stroke={palette.selected} strokeWidth={1.5} fill="none"/>
-        <text x={bounds.x+27} y={bounds.y+18} fontSize={12} fontWeight={600} fill={palette.text}>{shortened(node.label,Math.max(12,Math.floor((Math.min(bounds.width,620)-170)/6.5)))}</text>
-        <text x={bounds.x+Math.min(bounds.width,620)-12} y={bounds.y+18} textAnchor="end" fontSize={10.5} fill={palette.selected}>{node.count} steps · Collapse</text>
+        <text x={bounds.x+27} y={bounds.y+18} fontSize={13} fontWeight={600} fill={palette.text}>{fitLabel(node.label,Math.max(60,Math.min(bounds.width,620)-170),13)}</text>
+        <text x={bounds.x+Math.min(bounds.width,620)-12} y={bounds.y+18} textAnchor="end" fontSize={11} fill={palette.selected}>{node.count} steps · Collapse</text>
       </g>
     </g>)}
     {drawing.nodes.map(renderNode)}

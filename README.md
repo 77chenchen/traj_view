@@ -33,6 +33,10 @@ The viewer exports PNG and SVG from the current DAG, including folding, step/edg
 
 Graph nodes now use distinct whole-node outlines for terminal, file read, edit, validation, plan, text and other tools; merged intervals use folders. Legend explains the shapes, phase dots, errors and selection. Fullscreen includes the source Inspector, and compared Run DAGs retain Step comparison. The shared shell uses a single light top navigation and neutral dividers. The graph stays white in both appearances. Scroll normally to move down the trace; hold Ctrl/⌘ while scrolling to zoom.
 
+Desktop Graph fullscreen has a 52px header, a wide white canvas and a 350px Inspector (330px at compact desktop widths). Graph is selected in blue; workspace and evidence tabs use a lighter blue. **Fit** measures the actual SVG area, including safe margins, and shows all seven `dag-baseline` nodes at 1586×912 and 1280×800. Search, activity, Inspector navigation and **Locate** reveal the exact selected source; returning from fullscreen restores focus. Playback remains visible while **Agent activity** is collapsed. The Inspector scrolls independently, copies complete source IDs and keeps Code Diff accessible when no patch was recorded; View Full Diff is then disabled. See [comparison screenshots, function mapping and reproduction](docs/research/graph-fullscreen.md).
+
+The [typography refinement](docs/research/graph-typography.md) gives the selected source a 16px heading, code/body 13px, and labels/tabs 12px. DAG labels keep their natural proportions and shorten with ellipsis; **Locate** restores a reading-scale view after Fit.
+
 Replay's **Auto** view follows the available recorded evidence. Choosing **Diff**, **Updated File**, **File Context** or **Output** keeps that view as actions play, step or seek; missing evidence shows its empty state. Terminal/Tests, output expansion and Inspector tabs also retain their selection. See [behavior, screenshots and verification](docs/research/graph-appearance.md).
 
 ## Debugging workspace

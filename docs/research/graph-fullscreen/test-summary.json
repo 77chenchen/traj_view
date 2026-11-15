@@ -1,0 +1,93 @@
+{
+  "scope": "Desktop Graph fullscreen, 1586x912 and 1280x800; public synthetic data",
+  "python": {
+    "command": "python -m pytest",
+    "passed": 81,
+    "seconds": 3.89,
+    "exitCode": 0
+  },
+  "typecheck": {
+    "command": "npm --prefix frontend run check",
+    "exitCode": 0
+  },
+  "build": {
+    "command": "npm --prefix frontend run build",
+    "exitCode": 0,
+    "seconds": 7.35,
+    "cssKB": 169.81,
+    "javascriptKB": 2443.09,
+    "javascriptGzipKB": 757.71,
+    "warning": "Existing chunk >500kB warning retained"
+  },
+  "browser": {
+    "command": "PYTHON=\"$(command -v python)\" node scripts/smoke-e2e.mjs",
+    "chrome": "157.0.8103.52",
+    "passed": 40,
+    "exitCode": 0
+  },
+  "standalone": {
+    "command": "node scripts/verify-graph-fullscreen.mjs",
+    "local": true,
+    "exactRootHtmlOffline": true,
+    "offlineHttpRequests": 0,
+    "pageErrors": 0,
+    "darkSummaryContrast": true,
+    "nodeAppearanceAndPinnedPlayback": true
+  },
+  "pureChecks": {
+    "dagSorts": 909,
+    "executionScopes": 1908,
+    "exactPaths": 3161,
+    "executionRoutes": 5189,
+    "inlineStates": 61,
+    "inlineRoutes": 1735,
+    "timelineLayouts": 126
+  },
+  "firstGraphPaint": {
+    "chrome": "157.0.8103.52",
+    "timeoutMs": 30000,
+    "mode": "overview",
+    "excludesInitialBundleLoad": true,
+    "runs": [
+      {
+        "sourceSteps": 500,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 95.19999998807907
+      },
+      {
+        "sourceSteps": 2000,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 129.9000000357628
+      }
+    ]
+  },
+  "captures": {
+    "count": 14,
+    "mode": "independent full-page synthetic screenshots",
+    "manifest": "capture-manifest.json"
+  },
+  "intermediateWaitFailures": [
+    "Langutory timeout-message wait",
+    "PNG screenshot capture",
+    "Fullscreen node click stability wait"
+  ],
+  "intermediateNote": "Existing 12-second waits and assertions were retained; standalone and final complete reruns passed.",
+  "typography": {
+    "scope": "Graph fullscreen and shared DAG labels",
+    "selectedSourcePx": 16,
+    "inspectorHeadingPx": 14,
+    "bodyAndCodePx": 13,
+    "tabsAndSupportPx": 12,
+    "nodeTitlePx": 13,
+    "nodeMetadataPx": 11,
+    "naturalSvgLabelBounds": true,
+    "desktopSizes": [
+      "1586x912",
+      "1280x800"
+    ],
+    "captures": 4,
+    "report": "../graph-typography.md"
+  }
+}

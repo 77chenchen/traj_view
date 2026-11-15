@@ -95,7 +95,7 @@ try{
       await capture(page,'run-0-appearance-fullscreen-1280');await page.setViewportSize({width:1586,height:912});
     }
     const selectedSource=new URLSearchParams(new URL(page.url()).hash.slice(1)).get('step');
-    await page.getByRole('button',{name:'Exit fullscreen graph',exact:true}).click();await page.waitForFunction(()=>!document.fullscreenElement);
+    await page.getByRole('button',{name:'Exit fullscreen',exact:true}).click();await page.waitForFunction(()=>!document.fullscreenElement);
     await inspector.locator('.step-meta').getByText('#'+selectedSource,{exact:true}).waitFor();
     const last=source.nodes.at(-1);await search.fill('#'+last.first_idx);await search.press('Enter');await inspector.locator('.step-meta').getByText('#'+last.first_idx,{exact:true}).waitFor();await settle(page);
     const fullyVisible=async()=>{

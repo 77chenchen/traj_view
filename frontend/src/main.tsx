@@ -16,6 +16,7 @@ import './workbench.css';
 import './density.css';
 import './hierarchy.css';
 import './neutral.css';
+import './graphFullscreen.css';
 
 const pages = [
   { id: 'replay', label: 'Trajectory replay', short: 'Replay', title: 'Trajectory Replay', icon: 'play' },

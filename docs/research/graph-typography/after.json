@@ -1,0 +1,174 @@
+[
+  {
+    "viewport": {
+      "width": 1586,
+      "height": 912
+    },
+    "fonts": {
+      "run": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "15px",
+        "lineHeight": "22.5px",
+        "fontWeight": "650"
+      },
+      "guidance": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "13px",
+        "lineHeight": "19.5px",
+        "fontWeight": "400"
+      },
+      "toolbar": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "13px",
+        "lineHeight": "19.5px",
+        "fontWeight": "620"
+      },
+      "workspace": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "fontWeight": "500"
+      },
+      "heading": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "18.2px",
+        "fontWeight": "600"
+      },
+      "selected": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "21.6px",
+        "fontWeight": "600"
+      },
+      "label": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "16.8px",
+        "fontWeight": "400"
+      },
+      "value": {
+        "fontFamily": "ui-monospace, SFMono-Regular, Consolas, monospace",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "fontWeight": "400"
+      },
+      "evidenceTab": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "fontWeight": "600"
+      },
+      "code": {
+        "fontFamily": "ui-monospace, SFMono-Regular, Consolas, monospace",
+        "fontSize": "13px",
+        "lineHeight": "22.1px",
+        "fontWeight": "400"
+      },
+      "status": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "fontWeight": "400"
+      },
+      "node": {
+        "fontFamily": "system-ui, sans-serif",
+        "fontSize": "13px",
+        "lineHeight": "19.5px",
+        "fontWeight": "650"
+      },
+      "metadata": {
+        "fontFamily": "system-ui, sans-serif",
+        "fontSize": "11px",
+        "lineHeight": "16.5px",
+        "fontWeight": "400"
+      }
+    }
+  },
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "fonts": {
+      "run": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "15px",
+        "lineHeight": "22.5px",
+        "fontWeight": "650"
+      },
+      "guidance": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "13px",
+        "lineHeight": "19.5px",
+        "fontWeight": "400"
+      },
+      "toolbar": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "13px",
+        "lineHeight": "19.5px",
+        "fontWeight": "620"
+      },
+      "workspace": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "fontWeight": "500"
+      },
+      "heading": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "18.2px",
+        "fontWeight": "600"
+      },
+      "selected": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "16px",
+        "lineHeight": "21.6px",
+        "fontWeight": "600"
+      },
+      "label": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "16.8px",
+        "fontWeight": "400"
+      },
+      "value": {
+        "fontFamily": "ui-monospace, SFMono-Regular, Consolas, monospace",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "fontWeight": "400"
+      },
+      "evidenceTab": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "fontWeight": "600"
+      },
+      "code": {
+        "fontFamily": "ui-monospace, SFMono-Regular, Consolas, monospace",
+        "fontSize": "13px",
+        "lineHeight": "22.1px",
+        "fontWeight": "400"
+      },
+      "status": {
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "fontWeight": "400"
+      },
+      "node": {
+        "fontFamily": "system-ui, sans-serif",
+        "fontSize": "13px",
+        "lineHeight": "19.5px",
+        "fontWeight": "650"
+      },
+      "metadata": {
+        "fontFamily": "system-ui, sans-serif",
+        "fontSize": "11px",
+        "lineHeight": "16.5px",
+        "fontWeight": "400"
+      }
+    }
+  }
+]

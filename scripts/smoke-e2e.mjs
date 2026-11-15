@@ -21,6 +21,7 @@ import { checkPlaybackPreferences } from '../tests/e2e/playback-preferences.mjs'
 import { checkTimelineWorkspace } from '../tests/e2e/timeline-workspace.mjs';
 import { checkNeutralVertical } from '../tests/e2e/neutral-vertical.mjs';
 import { checkDocumentWorkspace } from '../tests/e2e/document-workspace.mjs';
+import { checkGraphFullscreen } from '../tests/e2e/graph-fullscreen.mjs';
 import { frontendRequire, results, root } from './frontend-dependencies.mjs';
 
 const python = process.env.PYTHON || 'python';
@@ -186,6 +187,7 @@ async function main() {
       await scenario(browser, 'three-page-desktop', (page) => checkThreePage(page, url, artifacts));
       await scenario(browser, 'execution-map', (page) => checkExecutionMap(page, url, artifacts));
       await scenario(browser, 'node-appearance', (page) => checkNodeAppearance(page, url, artifacts));
+      await scenario(browser, 'graph-fullscreen', (page) => checkGraphFullscreen(page, url, artifacts));
       await scenario(browser, 'playback-preferences', (page) => checkPlaybackPreferences(page, url, artifacts));
       await scenario(browser, 'document-workspace', (page) => checkDocumentWorkspace(page, url, artifacts));
       await scenario(browser, 'neutral-vertical', (page) => checkNeutralVertical(page, url, artifacts));
@@ -228,6 +230,7 @@ async function main() {
       await scenario(browser, 'three-page-desktop-offline', (page) => checkThreePage(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'execution-map-offline', (page) => checkExecutionMap(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'node-appearance-offline', (page) => checkNodeAppearance(page, pathToFileURL(reportFile).href, artifacts, true), true);
+      await scenario(browser, 'graph-fullscreen-offline', (page) => checkGraphFullscreen(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'playback-preferences-offline', (page) => checkPlaybackPreferences(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'document-workspace-offline', (page) => checkDocumentWorkspace(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'neutral-vertical-offline', (page) => checkNeutralVertical(page, pathToFileURL(reportFile).href, artifacts, true), true);

@@ -1,0 +1,57 @@
+{
+  "count": 4,
+  "captures": [
+    {
+      "file": "after-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "beb5477d54d636ff7c1b3b69f2ed33f8615e7cbabcc911456ab7850c38a9912c",
+      "capturedAt": "2026-11-15T04:14:15.290971+00:00",
+      "fixture": "node-types-synthetic",
+      "source": "60",
+      "mode": "local",
+      "state": "after",
+      "url": "http://127.0.0.1:8765/#view=graph&run=node-types-synthetic&step=60",
+      "provenance": "Origin: independent full-page Chrome/Playwright screenshot of the real TrajViz Graph fullscreen React UI; public synthetic fixture node-types-synthetic; source 60; Code Diff; Fit overview; desktop viewport 1280x800; document scroll 0; paused; Agent activity closed. Captured after the typography refinement. Local public fixture server. No crop, composite or design-image overlay."
+    },
+    {
+      "file": "after-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "ed544097254c75d60e3ce407dd3fac69dd874901b391cd0464d977e4c9f8c11e",
+      "capturedAt": "2026-11-15T04:14:14.844339+00:00",
+      "fixture": "node-types-synthetic",
+      "source": "60",
+      "mode": "local",
+      "state": "after",
+      "url": "http://127.0.0.1:8765/#view=graph&run=node-types-synthetic&step=60",
+      "provenance": "Origin: independent full-page Chrome/Playwright screenshot of the real TrajViz Graph fullscreen React UI; public synthetic fixture node-types-synthetic; source 60; Code Diff; Fit overview; desktop viewport 1586x912; document scroll 0; paused; Agent activity closed. Captured after the typography refinement. Local public fixture server. No crop, composite or design-image overlay."
+    },
+    {
+      "file": "before-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "8e78dbfc97554a16ee67cfad2c3bcfff4d06836a1f48d795ffc8861d61f39e3c",
+      "capturedAt": "2026-11-15T04:08:20.598917+00:00",
+      "fixture": "node-types-synthetic",
+      "source": "60",
+      "mode": "local",
+      "state": "before",
+      "url": "http://127.0.0.1:8765/#view=graph&run=node-types-synthetic&step=60",
+      "provenance": "Origin: independent full-page Chrome/Playwright screenshot of the real TrajViz Graph fullscreen React UI; public synthetic fixture node-types-synthetic; source 60; Code Diff; Fit overview; desktop viewport 1280x800; document scroll 0; paused; Agent activity closed. Captured before the typography refinement. Local public fixture server. No crop, composite or design-image overlay."
+    },
+    {
+      "file": "before-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "484e91091ca132e35e73140f904f25104c387cf9c74f46286903f45c0cc10b15",
+      "capturedAt": "2026-11-15T04:08:20.257837+00:00",
+      "fixture": "node-types-synthetic",
+      "source": "60",
+      "mode": "local",
+      "state": "before",
+      "url": "http://127.0.0.1:8765/#view=graph&run=node-types-synthetic&step=60",
+      "provenance": "Origin: independent full-page Chrome/Playwright screenshot of the real TrajViz Graph fullscreen React UI; public synthetic fixture node-types-synthetic; source 60; Code Diff; Fit overview; desktop viewport 1586x912; document scroll 0; paused; Agent activity closed. Captured before the typography refinement. Local public fixture server. No crop, composite or design-image overlay."
+    }
+  ]
+}

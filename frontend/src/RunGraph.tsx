@@ -7,7 +7,7 @@ import { hierarchyGraph } from './hierarchy';
 import { inlineExecutionGraph, executionPath, executionSection, executionThreshold } from './executionMap';
 import { Inspector } from './Inspector';
 import { TraceOverview } from './TraceOverview';
-import { fullScreen, RunMetadata, StageSnapshots } from './Evidence';
+import { fullScreen, RunMetadata, StageSnapshots, stepTitle } from './Evidence';
 import { AgentActivity, EventTimeline } from './Timeline';
 import { categories, capitalize, number, percent, phaseColor, sourceIndex, type GraphNode, type Phase, type Run, type RunGraphs, type Step, type StepIndex } from './model';
 import { Icon, LoadError, Loading } from './ui';
@@ -49,7 +49,7 @@ function Timeline({ nodes, position, change, phases, inspect }: {
   return <section className="timeline" aria-label="Playback timeline">
     <div className="timeline-top">
       <div className="timeline-position">
-        <strong>Timeline</strong>
+        <strong><Icon name="play" size={14}/>Playback</strong>
         <span className="mono">{number.format(position)} / {number.format(total)}</span>
         {current && <span className="timeline-phase">
           <i className="phase-dot" style={{ background: phaseColor(phase) }} />{phase?.label ?? current.phase} {sourceIndex(current.first_idx)}
@@ -192,7 +192,7 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   function playback(next: number) {
     setPosition(next);
     const current = graphs.expanded.nodes[next - 1];
-    if (current && index != null) locate(current.first_idx);
+    if (current) locate(current.first_idx);
   }
 
 
@@ -242,11 +242,16 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
   }
   if(overview&&details.state.status==='loading')return <Loading>Loading execution evidence…</Loading>;
   if(overview&&details.state.status==='error')return <LoadError message={details.state.message} retry={details.retry}/>;
+  const currentStep = steps.find(step=>String(step.idx)===String(index));
+  const currentTitle = currentStep ? stepTitle(currentStep,selected) : selected?.label;
+  const fullscreenHint = index!=null ? `${currentTitle ?? 'Source step'} · ${sourceIndex(index)}` : selected ? `${selected.label} · ${selected.count} source steps` : 'Select a node to inspect its recorded evidence';
   return <>
     <RunMetadata run={run} date={steps.find(s => !!s.ts)?.ts}/>
     <div className="graph-stage-previews"><StageSnapshots steps={steps} nodes={graphs.expanded.nodes} selected={index} select={locate} kind="graph"/></div>
     <div className="graph-workspace">
-      <div className="graph-fullscreen-bar"><Icon name="graph" size={17}/><strong>{run.id}</strong><span>Select a node to inspect its recorded evidence</span><button className="button small" onClick={() => fullScreen(null)}><Icon name="close" size={14}/>Exit fullscreen</button></div>
+      <div className="graph-fullscreen-bar"><Icon name="graph" size={19}/><strong title={run.id}>{run.id}</strong><span className="fullscreen-selection" aria-live="polite" title={fullscreenHint}>{fullscreenHint}</span>
+        <details className="fullscreen-graph-help"><summary aria-label="Graph fullscreen help" title="Graph navigation help"><Icon name="help" size={19}/></summary><div><strong>Read the execution graph</strong><p>Scroll or drag to pan. Hold Ctrl / ⌘ while scrolling to zoom.</p><p>Fit shows all visible nodes. Locate brings the selected source back into view. Arrow keys move the focused canvas; Tab reaches nodes and controls.</p><p>Layers filters recorded steps and connections. Click a section to expand in place; Alt+↑ collapses the last section. Esc returns from fullscreen.</p></div></details>
+        <button className="button small fullscreen-exit" onClick={() => fullScreen(null)}><Icon name="fit" size={15}/>Exit fullscreen</button></div>
       <section className="panel graph-panel" aria-label="Run process graph" onKeyDownCapture={event => {
         if (!overview || canvasMode !== 'graph' || !lastExpanded || !event.altKey || event.key !== 'ArrowUp') return;
         if (event.target instanceof Element && event.target.closest('input,textarea,select,[contenteditable="true"]')) return;
@@ -273,15 +278,15 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
         {showLegend && <div className="execution-legend" aria-label="Execution graph semantics"><NodeTypeLegend/><span><Icon name="spark" size={15}/>Reasoning / text · recorded role unknown</span><span><Icon name="user" size={15}/>Sub-Agent · unrecorded</span><span className="error-text"><Icon name="info" size={15}/>Failure · red outline</span><span><Icon name="retry" size={15}/>Retry · forward dashed edge</span><span><Icon name="graph" size={15}/>Merge · dependency join</span><span className="success-text"><Icon name="check" size={15}/>Completion · final record</span></div>}
 
         <section className="graph-secondary" aria-label="Execution activity">
-          <details className="graph-activity-disclosure"><summary>Agent activity <span>Playback · {number.format(graphs.expanded.nodes.length)} source steps</span></summary>
-            <Timeline nodes={graphs.expanded.nodes} position={position} change={playback} phases={phases} inspect={locate} />
-            <AgentActivity run={run} steps={steps} nodes={graphs.expanded.nodes} select={locate}/>
+          <Timeline nodes={graphs.expanded.nodes} position={position} change={playback} phases={phases} inspect={locate} />
+          <details className="graph-activity-disclosure"><summary>Agent activity <span>{number.format(graphs.expanded.nodes.length)} source steps</span></summary>
+            <AgentActivity run={run} steps={steps} nodes={graphs.expanded.nodes} selected={index} select={locate}/>
           </details>
         </section>
       </section>
       <div className="trace-sidebar" onKeyDown={e=>{if(e.key==='Escape'&&index!=null){e.preventDefault();clearSelection();}}}>
         <div className="focus-tabs sidebar-tabs" role="group" aria-label="Graph side panel">{['Details','Files & activity','Signatures'].map(name=><button key={name} aria-pressed={sidebarTab===name} onClick={()=>setSidebarTab(name)}>{name}</button>)}</div>
-        <div className="graph-side-content" hidden={sidebarTab!=='Details'}><Inspector run={run} node={selected} index={index} select={selectIndex} locate={locate}
+        <div className="graph-side-content" hidden={sidebarTab!=='Details'}><Inspector graphWorkspace run={run} node={selected} index={index} select={selectIndex} locate={locate}
           clear={clearSelection} phases={phases}
           relatedGraph={graphs.expanded} internalEdges={internalEdges} variant="node" expand={selected && selected.count > 1 ? () => {
             if (selected.view?.kind === 'section') {toggleSection(selected);return;}

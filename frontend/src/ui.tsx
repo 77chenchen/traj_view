@@ -135,7 +135,7 @@ export function exportMetrics(runs: Run[]) {
     { type: 'text/csv;charset=utf-8' }), 'trajviz-metrics.csv');
 }
 
-export function CopyButton({ text }: { text: string }) {
+export function CopyButton({ text, label = 'Copy' }: { text: string; label?: string }) {
   const [status, setStatus] = useState('');
   async function copy() {
     try {
@@ -165,7 +165,7 @@ export function CopyButton({ text }: { text: string }) {
     }
   }
 
-  return <button className="button small quiet" onClick={copy}>
+  return <button className="button small quiet" aria-label={status || label} title={status || label} onClick={copy}>
     <Icon name="copy" size={14} /><span aria-live="polite">{status || 'Copy'}</span>
   </button>;
 }

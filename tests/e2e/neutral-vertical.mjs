@@ -47,7 +47,7 @@ export async function checkNeutralVertical(page,url,artifacts,offline=false){
     assert.ok(await inspector.evaluate(e=>document.fullscreenElement.contains(e)));
     const ib=await inspector.boundingBox();assert.ok(ib.width>=290&&ib.x+ib.width<=width+1&&ib.y+ib.height<=height+1);
     await capture('fullscreen-'+width);
-    await page.getByRole('button',{name:'Exit fullscreen graph',exact:true}).click();await page.waitForFunction(()=>!document.fullscreenElement);
+    await page.getByRole('button',{name:'Exit fullscreen',exact:true}).click();await page.waitForFunction(()=>!document.fullscreenElement);
     assert.equal(await inspector.getByRole('button',{name:'Code Diff',exact:true}).getAttribute('aria-pressed'),'true');
     const [svg]=await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'Download SVG of execution-long-synthetic-expanded',exact:true}).click()]);
     const text=readFileSync(await svg.path(),'utf8');assert.ok(text.includes('fill="#ffffff"'));assert.ok(text.includes('data-expanded-section='));

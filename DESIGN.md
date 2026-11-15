@@ -27,6 +27,10 @@ colors:
   graph-text: "#263039"
   graph-muted: "#59636e"
   graph-selected: "#3d596b"
+  fullscreen-accent: "#195fa8"
+  fullscreen-accent-hover: "#124f90"
+  fullscreen-accent-soft: "#eaf3fe"
+  fullscreen-accent-line: "#8cb7e7"
   graph-error: "#b53c46"
   graph-divergence: "#8b681f"
   edge-temporal: "#85909a"
@@ -119,11 +123,11 @@ typography:
     lineHeight: 1.85
   graph-title:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
-    fontSize: "12px"
+    fontSize: "13px"
     fontWeight: 650
   graph-metadata:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
-    fontSize: "10px"
+    fontSize: "11px"
     fontWeight: 400
 rounded:
   row: "3px"
@@ -228,7 +232,7 @@ One working area leads each page. Named disclosures keep secondary detail availa
 - A vertical source DAG with category silhouettes and in-place content expansion.
 - Readable recorded code, stable exact source identity and explicit missing-evidence states.
 
-The current authority is [PRODUCT.md](PRODUCT.md), the [neutral vertical workspace direction and quality bar](docs/research/neutral-vertical-workspace.md) and the subsequent [Replay layout refinement](docs/research/replay-layout.md). There is no approved comp. The [prior full review and scoped ship verdict](docs/research/neutral-vertical-workspace/review.md) record the preceding desktop finish. The public [capture index](docs/research/neutral-vertical-workspace/captures.json), [manifest](docs/research/neutral-vertical-workspace/capture-manifest.json) and [appearance/playback supplements](docs/research/graph-appearance/) preserve that revision's synthetic evidence. New Replay captures are separate. This document merges the current system into the prior specification; it does not reinstate earlier compositions.
+The current authority is [PRODUCT.md](PRODUCT.md), the [neutral vertical workspace direction and quality bar](docs/research/neutral-vertical-workspace.md) and the subsequent [Replay layout refinement](docs/research/replay-layout.md). Desktop Graph fullscreen additionally follows the user's [explicit target](docs/design-references/graph-fullscreen-comparison/01-graph-fullscreen.png) and [scoped comparison report](docs/research/graph-fullscreen.md); there is no single product-wide approved comp. The [prior full review and scoped ship verdict](docs/research/neutral-vertical-workspace/review.md) record the preceding desktop finish. The public [capture index](docs/research/neutral-vertical-workspace/captures.json), [manifest](docs/research/neutral-vertical-workspace/capture-manifest.json) and [appearance/playback supplements](docs/research/graph-appearance/) preserve that revision's synthetic evidence. New Replay and Graph fullscreen captures are separate. This document merges the current system into the prior specification; it does not reinstate earlier compositions.
 
 ## Colors
 
@@ -261,7 +265,9 @@ The dark appearance uses the `dark-*` frontmatter tokens from [workbench.css](fr
 
 The compact hierarchy uses weight and whitespace instead of oversized type. The frontmatter `headline` applies to document-page view titles; `workspace-headline` applies to desktop Graph, Timeline and Replay. The `headline-title` role identifies selected evidence headings. Body text uses `body`; buttons, navigation, outcomes and supporting labels retain their own observed roles. Native navigation uses regular labels and a stronger active label.
 
-Recorded Replay code uses the `evidence` role, with desktop line-height 1.7. Its subordinate Terminal/Tests uses 12px monospace with line-height 1.7. Inspector code uses smaller type within its narrower region. SVG node titles and metadata use their specific frontmatter roles, with complete source identities available in accessible titles and Inspector. Type is not an evidence encoding: visual token widths never imply measured call duration.
+Recorded Replay code uses the `evidence` role, with desktop line-height 1.7. Its subordinate Terminal/Tests uses 12px monospace with line-height 1.7. Graph fullscreen now uses the same 13px / 1.7 evidence type in the Inspector. Its selected-source name is 16px / 600, the Inspector heading 14px / 600, controls/body 13px and labels/tabs/support 12px. Exact source IDs remain 12px monospace, with a 100px metadata-label column and wrapping instead of clipping. Native system fonts remain local and offline. See the [computed typography and paired captures](docs/research/graph-typography.md).
+
+SVG node titles and metadata use their specific frontmatter roles; merged folders use 14px titles and 12px summaries. Natural-width ellipsis replaces forced glyph compression, with category-specific safe widths and complete source identities in accessible titles and Inspector. These renderer changes also apply to ordinary Graph, Compare DAGs and SVG/PNG exports. Fit may scale the complete diagram down; Locate restores the reading view. Type is not an evidence encoding: visual token widths never imply measured call duration.
 
 **The Evidence Reading Rule.** Reduce repeated metadata and close secondary detail before reducing evidence type. Long code and logs scroll within their own region.
 
@@ -275,13 +281,15 @@ The shared document container has a maximum width (1720px), desktop horizontal i
 
 At widths of at least 1101px, Graph, Timeline and Replay use the screen below the topbar, with main padding (14px top / 16px bottom), gaps (12px), compact metadata and stage navigation. Graph/Timeline Inspector is (340px), or (320px) in the compact desktop band. Graph activity expands inside the work surface with local scrolling. Timeline keeps six lanes, a searchable Event Log and Event Inspector together; its lane/log split and long evidence scroll locally. Fullscreen Graph, Timeline and Compare Run DAGs retain inspection and exit controls.
 
+Desktop Graph fullscreen follows the user's [target reference](docs/design-references/graph-fullscreen-comparison/01-graph-fullscreen.png): a 52px run/current-source header and a two-column work surface, with a 350px Inspector (330px at 1101–1370px). Graph/Timeline, Layers, Legend, search and PNG/SVG share a tool band with a 56px minimum. The white canvas reserves a 48px navigation gutter and a fine independent boundary; the 34px-minimum status line aligns visible node/edge counts with the actual layout name. The layout name is plain text because there is no layout picker. Playback remains visible below; Agent activity starts as a 36px disclosure, expanding to at most 24dvh/220px with local scrolling. This screen uses the `fullscreen-accent*` roles: filled blue for the primary view, pale blue for workspace and evidence tabs. These do not replace category, failure or graph-selection encodings. The sidebar's Inspector has a bounded independently scrolling body, a 51px sticky heading and subordinate sticky evidence tabs. Missing Code Diff remains accessible with a short empty state and a disabled View Full Diff. The [fullscreen report](docs/research/graph-fullscreen.md) records paired captures, camera rules and tested boundaries; ordinary Graph and the other routes retain their own layouts.
+
 Desktop Replay gives the remaining height to a joined workbench: source list (264px, compact desktop 248px), dominant evidence and optional Step details (320px / 300px). Evidence tabs sit below the selected-step heading and above the locally scrollable content. Terminal/Tests occupies the center column's second row: 40px collapsed, or 26% with a 112px minimum expanded. The playback bar occupies its own 64px-minimum row, separated from the workbench by 12px and from the viewport end by 16px; it never overlays code or output. Current source rows remain visible after resize. Below the desktop breakpoint, the retained fallback uses a 760px workbench, document scrolling and fixed 72px playback with 112px page-bottom clearance.
 
 Compare leads with one shared A/B alignment and three flat metrics. Rows have a minimum height (76px), with a shared relationship column (140px). Step comparison is optional and does not replace the alignment. Named alternative workspaces and separate supporting disclosures follow the document rhythm. Analytics and Datasets use readable independent sections and natural document scrolling.
 
 The reviewed scope is desktop (1586×912 and 1280×800). Existing narrow-screen access is retained: horizontal top navigation and stacked/drawer evidence behavior continue at the source breakpoints. These compatibility rules do not establish a newly designed or reviewed mobile composition.
 
-The effective stylesheet order in [main.tsx](frontend/src/main.tsx) is [styles.css](frontend/src/styles.css) → [workbench.css](frontend/src/workbench.css) → [density.css](frontend/src/density.css) → [hierarchy.css](frontend/src/hierarchy.css) → [neutral.css](frontend/src/neutral.css). Extract values from the effective selector and media-query cascade, not an earlier declaration alone.
+The effective stylesheet order in [main.tsx](frontend/src/main.tsx) is [styles.css](frontend/src/styles.css) → [workbench.css](frontend/src/workbench.css) → [density.css](frontend/src/density.css) → [hierarchy.css](frontend/src/hierarchy.css) → [neutral.css](frontend/src/neutral.css) → [graphFullscreen.css](frontend/src/graphFullscreen.css). Extract values from the effective selector and media-query cascade, not an earlier declaration alone. The last sheet scopes the new composition to Graph fullscreen; small support rules also preserve the ordinary Graph activity disclosure and its source-copy/missing-patch states.
 
 ## Elevation & Depth
 

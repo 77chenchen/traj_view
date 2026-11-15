@@ -23,6 +23,7 @@ export function EventTimeline({ runId, steps, nodes, selected, select, revealDet
   const scroll = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLElement>(null);
   const fullscreenButton = useRef<HTMLButtonElement>(null);
+  const wasFullscreen = useRef(false);
   const groupButton = useRef<HTMLButtonElement | null>(null);
   const [viewportWidth,setViewportWidth] = useState(650);
   useEffect(() => {
@@ -52,8 +53,15 @@ export function EventTimeline({ runId, steps, nodes, selected, select, revealDet
     else if(a.right>end)viewport.scrollLeft+=a.right-end;
   },[selected,zoom,viewportWidth,events,fullscreen]);
   useEffect(() => {
-    const update=()=>setFullscreen(Boolean(document.fullscreenElement?.contains(panel.current)));
-    document.addEventListener('fullscreenchange',update);return()=>document.removeEventListener('fullscreenchange',update);
+    const update=()=>{
+      const next=Boolean(document.fullscreenElement?.contains(panel.current));
+      if(wasFullscreen.current&&!next&&!document.fullscreenElement&&panel.current?.closest('.graph-workspace'))requestAnimationFrame(()=>{
+        const selectedEvent=panel.current?.querySelector<HTMLButtonElement>('.timeline-event[aria-pressed="true"]');
+        (selectedEvent??fullscreenButton.current)?.focus({preventScroll:true});
+      });
+      wasFullscreen.current=next;setFullscreen(next);
+    };
+    document.addEventListener('fullscreenchange',update);update();return()=>document.removeEventListener('fullscreenchange',update);
   },[]);
   useEffect(()=>setOpenGroup(null),[zoom,events,runId]);
   useEffect(()=>{if(openGroup)panel.current?.querySelector<HTMLButtonElement>('.timeline-cluster-popover .node-result')?.focus({preventScroll:true});},[openGroup]);
@@ -115,14 +123,14 @@ export function EventTimeline({ runId, steps, nodes, selected, select, revealDet
     {openGroup&&<aside className="timeline-cluster-popover" aria-label="Timeline event group" onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();closeGroup();}}}><div className="panel-head"><h3>{openGroup.length} recorded events</h3><button className="button small icon-button" aria-label="Close event group" onClick={closeGroup}><Icon name="close" size={14}/></button></div><div>{openGroup.map(i=><button className="node-result" key={String(steps[i].idx)} onClick={()=>{select(steps[i].idx);closeGroup();}}><Icon name={categoryIcon(steps[i],by.get(String(steps[i].idx)))} size={14}/><strong>{sourceIndex(steps[i].idx)}</strong><span>{steps[i].action?.tool||'Recorded text'}</span>{failed(steps[i])&&<span className="error-text">Failed</span>}</button>)}</div></aside>}
   </section>;
 }
-export function AgentActivity({ run,steps,nodes,select }: {run:Run;steps:Step[];nodes:GraphNode[];select:(idx:StepIndex)=>void}) {
+export function AgentActivity({ run,steps,nodes,select,selected }: {run:Run;steps:Step[];nodes:GraphNode[];select:(idx:StepIndex)=>void;selected?:StepIndex|null}) {
   const [view,setView]=useState('agent');
   const {timed,values,span}=useTimeAxis(steps);
   const by=new Map(nodes.map(n=>[String(n.first_idx),n]));
   const rows=view==='agent'?[run.agent||'Agent unrecorded']:['Reasoning','Tool Calls','File Changes','Final Answer'];
   return <section className="panel agent-activity" aria-label="Agent activity timeline"><div className="panel-head"><div><h2>Agent Activity Timeline <Icon name="info" size={14}/></h2><p>{timed?'Recorded event points over '+clock(span):'Source step position'} · active duration and per-step agents unrecorded</p></div><label>View: <select aria-label="Activity grouping" value={view} onChange={e=>setView(e.target.value)}><option value="agent">By Agent</option><option value="category">By Category</option></select></label><button className="button small icon-button" aria-label="Expand activity timeline" onClick={e=>fullScreen(e.currentTarget.closest('section'))}><Icon name="fit" size={14}/></button></div>
     <div className="activity-table"><div className="activity-row activity-ruler"><strong>Agent / Category</strong><span>Total Active</span><div>{[0,.25,.5,.75,1].map(v=><time key={v} style={{left:v*100+'%'}}>{timed?clock(v*span):Math.round(v*span)+1}</time>)}</div></div>
-      {rows.map(row=><div className="activity-row" key={row}><strong><Icon name={view==='agent'?'user':'events'} size={15}/>{row}</strong><span className="muted">Unrecorded</span><div>{steps.map((s,i)=>(view==='agent'||categoryName(s,by.get(String(s.idx)))===row)&&<button key={String(s.idx)} className={failed(s)?'failed':''} style={{left:values[i]/span*100+'%'}} title={sourceIndex(s.idx)+' · '+label(s)} aria-label={'Activity '+sourceIndex(s.idx)} onClick={()=>select(s.idx)}/>)}</div></div>)}
+      {rows.map(row=><div className="activity-row" key={row}><strong><Icon name={view==='agent'?'user':'events'} size={15}/>{row}</strong><span className="muted">Unrecorded</span><div>{steps.map((s,i)=>(view==='agent'||categoryName(s,by.get(String(s.idx)))===row)&&<button key={String(s.idx)} className={failed(s)?'failed':''} style={{left:values[i]/span*100+'%'}} title={sourceIndex(s.idx)+' · '+label(s)} aria-label={'Activity '+sourceIndex(s.idx)} aria-pressed={selected==null?undefined:String(selected)===String(s.idx)} onClick={()=>select(s.idx)}/>)}</div></div>)}
     </div>
   </section>;
 }

@@ -105,7 +105,7 @@ export async function checkFourReference(page,url,artifacts,offline=false) {
   await search.fill('#60');await search.press('Enter');await source(page,60);
   await inspector(page).getByRole('button',{name:'Code Diff',exact:true}).click();
   await inspector(page).getByLabel('Recorded patch',{exact:true}).waitFor();
-  await page.getByRole('button',{name:'Exit fullscreen graph',exact:true}).click();
+  await page.getByRole('button',{name:'Exit fullscreen',exact:true}).click();
   await page.waitForFunction(()=>!document.fullscreenElement);
   await source(page,60);
 

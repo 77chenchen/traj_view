@@ -79,7 +79,7 @@ export async function checkTimelineWorkspace(page,url,artifacts,offline=false){
       await inspector(page).getByRole('button',{name:'Close Event details',exact:true}).click();
       await page.getByRole('button',{name:'Event details',exact:true}).click();await inspector(page).getByText('#'+selected,{exact:true}).waitFor();
     }
-    await timeline.getByRole('button',{name:'Exit fullscreen timeline',exact:true}).click();await page.waitForFunction(()=>!document.fullscreenElement);assert.equal(source(page),selected);
+    await (view==='graph' ? page.getByRole('button',{name:'Exit fullscreen',exact:true}) : timeline.getByRole('button',{name:'Exit fullscreen timeline',exact:true})).click();await page.waitForFunction(()=>!document.fullscreenElement);assert.equal(source(page),selected);
   }
   assert.deepEqual(errors,[]);if(offline)assert.equal(http.length,0);
   page.off('pageerror',onError);page.off('request',onRequest);
