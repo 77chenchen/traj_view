@@ -1,0 +1,192 @@
+{
+  "chrome": "157.0.8103.52",
+  "scenarios": [
+    {
+      "name": "run-list",
+      "status": "ok"
+    },
+    {
+      "name": "graph",
+      "status": "ok"
+    },
+    {
+      "name": "compare",
+      "status": "ok"
+    },
+    {
+      "name": "dag",
+      "status": "ok"
+    },
+    {
+      "name": "dag-compare",
+      "status": "ok"
+    },
+    {
+      "name": "hierarchy",
+      "status": "error",
+      "error": "Camera controls have a reserved gutter outside the SVG"
+    },
+    {
+      "name": "workbench",
+      "status": "ok"
+    },
+    {
+      "name": "dashboard",
+      "status": "ok"
+    },
+    {
+      "name": "dashboard-compare",
+      "status": "ok"
+    },
+    {
+      "name": "four-reference",
+      "status": "error",
+      "error": "The input did not match the regular expression /Reasoning \\(recorded text\\)/. Input:\n\n'User Task | Recorded text | Tool Calls | File Changes | Sub-agents | Final Answer'\n"
+    },
+    {
+      "name": "density",
+      "status": "ok"
+    },
+    {
+      "name": "three-page-desktop",
+      "status": "ok"
+    },
+    {
+      "name": "execution-map",
+      "status": "ok"
+    },
+    {
+      "name": "node-appearance",
+      "status": "ok"
+    },
+    {
+      "name": "graph-fullscreen",
+      "status": "ok"
+    },
+    {
+      "name": "playback-preferences",
+      "status": "ok"
+    },
+    {
+      "name": "document-workspace",
+      "status": "ok"
+    },
+    {
+      "name": "neutral-vertical",
+      "status": "ok"
+    },
+    {
+      "name": "timeline-workspace",
+      "status": "ok"
+    },
+    {
+      "name": "sankey",
+      "status": "ok"
+    },
+    {
+      "name": "analytics",
+      "status": "ok"
+    },
+    {
+      "name": "collapse-all",
+      "status": "ok"
+    },
+    {
+      "name": "visual-affordances",
+      "status": "ok"
+    },
+    {
+      "name": "theme",
+      "status": "ok"
+    },
+    {
+      "name": "folding",
+      "status": "ok"
+    },
+    {
+      "name": "narrow",
+      "status": "ok"
+    },
+    {
+      "name": "live",
+      "status": "ok"
+    },
+    {
+      "name": "first-render-500",
+      "status": "ok"
+    },
+    {
+      "name": "first-render-2000",
+      "status": "ok"
+    },
+    {
+      "name": "workbench-offline",
+      "status": "ok"
+    },
+    {
+      "name": "dashboard-offline",
+      "status": "ok"
+    },
+    {
+      "name": "four-reference-offline",
+      "status": "error",
+      "error": "The input did not match the regular expression /Reasoning \\(recorded text\\)/. Input:\n\n'User Task | Recorded text | Tool Calls | File Changes | Sub-agents | Final Answer'\n"
+    },
+    {
+      "name": "density-offline",
+      "status": "ok"
+    },
+    {
+      "name": "three-page-desktop-offline",
+      "status": "ok"
+    },
+    {
+      "name": "execution-map-offline",
+      "status": "ok"
+    },
+    {
+      "name": "node-appearance-offline",
+      "status": "ok"
+    },
+    {
+      "name": "graph-fullscreen-offline",
+      "status": "ok"
+    },
+    {
+      "name": "analytics-offline",
+      "status": "ok"
+    },
+    {
+      "name": "collapse-all-offline",
+      "status": "ok"
+    },
+    {
+      "name": "visual-affordances-offline",
+      "status": "ok"
+    },
+    {
+      "name": "playback-preferences-offline",
+      "status": "ok"
+    },
+    {
+      "name": "document-workspace-offline",
+      "status": "ok"
+    },
+    {
+      "name": "neutral-vertical-offline",
+      "status": "ok"
+    },
+    {
+      "name": "timeline-workspace-offline",
+      "status": "ok"
+    },
+    {
+      "name": "offline",
+      "status": "ok"
+    },
+    {
+      "name": "delivered-offline",
+      "status": "ok"
+    }
+  ]
+}

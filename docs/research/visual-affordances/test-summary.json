@@ -1,0 +1,140 @@
+{
+  "date": "2026-11-15",
+  "scope": "Six-route desktop semantic colors, reduced duplicate prose, direct actions; public synthetic fixtures",
+  "python": {
+    "command": ".venv/bin/python -m pytest",
+    "status": "passed",
+    "tests": 81,
+    "seconds": 4.62
+  },
+  "typescript": {
+    "command": "npm --prefix frontend run check",
+    "status": "passed"
+  },
+  "build": {
+    "command": "npm --prefix frontend run build",
+    "status": "passed",
+    "seconds": 7.66,
+    "warning": "Existing chunk exceeds500kB",
+    "jsKb": 2462.49,
+    "jsGzipKb": 762.88,
+    "cssKb": 321.38,
+    "cssGzipKb": 130.93
+  },
+  "smoke": {
+    "command": "PYTHON=\"$PWD/.venv/bin/python\" node scripts/smoke-e2e.mjs",
+    "status": "passed",
+    "scenarios": 46,
+    "chrome": "157.0.8103.52",
+    "details": "scenarios.json"
+  },
+  "dataInvariants": {
+    "dagSorts": 909,
+    "executionScopes": 1908,
+    "exactSourcePaths": 3161,
+    "mixedRoutes": 5189,
+    "inlineStates": 61,
+    "forwardInlineRoutes": 1735,
+    "timelineLayouts": 126
+  },
+  "specialist": {
+    "command": "node scripts/verify-visual-affordances.mjs",
+    "status": "passed",
+    "details": "verification.json",
+    "desktopViewports": [
+      [
+        1586,
+        912
+      ],
+      [
+        1280,
+        800
+      ]
+    ],
+    "zeroOfflineHttp": true,
+    "zeroPageErrors": true,
+    "minimumSampledContrast": 5.234604451882848,
+    "contrastSamples": 103
+  },
+  "firstRender": {
+    "chrome": "157.0.8103.52",
+    "timeoutMs": 30000,
+    "mode": "overview",
+    "excludesInitialBundleLoad": true,
+    "runs": [
+      {
+        "sourceSteps": 500,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 96.89999997615814
+      },
+      {
+        "sourceSteps": 2000,
+        "displayedNodes": 3,
+        "status": "ok",
+        "ms": 131.0999999642372
+      }
+    ]
+  },
+  "review": {
+    "initial": "finish-review.md",
+    "initialDisposition": "fix",
+    "targetedFix": "Consistent Recorded text name in category, lane title, Inspector and category activity; original source membership preserved",
+    "final": "finish-verdict.md",
+    "finalDisposition": "ship",
+    "finalScope": "Single material terminology fix scored resolved, against initial six-route desktop review"
+  },
+  "detector": {
+    "runs": 1,
+    "findings": 0,
+    "file": "detector.json"
+  },
+  "sourceDiffCheck": {
+    "status": "passed",
+    "command": "git diff --check -- . ':!trajviz-report.html'",
+    "generatedHtmlException": "generated-whitespace.json"
+  },
+  "earlierRuns": [
+    {
+      "file": "initial-smoke.json",
+      "failedScenarios": [
+        "hierarchy",
+        "four-reference",
+        "four-reference-offline"
+      ],
+      "fix": "54px tool gutter and updated visible lane label expectations"
+    },
+    {
+      "file": "intermediate-smoke.json",
+      "failedScenarios": [
+        "node-appearance",
+        "node-appearance-offline"
+      ],
+      "fix": "Compare SVG selection stroke to actual canvas instead of old hard-coded color"
+    },
+    {
+      "file": "pre-terminology-smoke.json",
+      "passedScenarios": 46,
+      "note": "Passed before independent review requested terminology consistency"
+    },
+    {
+      "scope": "first terminology specialist run",
+      "status": "failed",
+      "fix": "Corrected test selector from .event-log to actual .timeline-event-table; no data change"
+    }
+  ],
+  "limitations": [
+    "Existing large bundle warning",
+    "First render excludes initial bundle and draws3 Overview nodes",
+    "Desktop design scope only",
+    "Frozen v1 missing fields remain unrecorded",
+    "No new model requests, keys or private trace publication"
+  ],
+  "screenshots": {
+    "count": 46,
+    "before": 6,
+    "localAfter": 20,
+    "offlineAfter": 20,
+    "manifest": "capture-manifest.json"
+  }
+}

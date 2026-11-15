@@ -11,13 +11,13 @@ import {
 export const palettes = {
   light: {
     surface: '#ffffff', node: '#f3f5f6', text: '#273442', muted: '#556575',
-    selected: '#3d596b', error: '#b53c46', unique: '#8b681f',
+    selected: '#235f9a', error: '#b53c46', unique: '#8b681f',
     edges: { temporal: '#85909a', dependency: '#52778d', retry: '#9a763c', structural: '#638375' },
   },
   // The graph remains a white evidence surface in either application theme.
   dark: {
     surface: '#ffffff', node: '#f3f5f6', text: '#273442', muted: '#556575',
-    selected: '#3d596b', error: '#b53c46', unique: '#8b681f',
+    selected: '#235f9a', error: '#b53c46', unique: '#8b681f',
     edges: { temporal: '#85909a', dependency: '#52778d', retry: '#9a763c', structural: '#638375' },
   },
 };
@@ -218,8 +218,9 @@ export const GraphDrawing = memo(function GraphDrawing({
         <path d={`M${-halfWidth} ${-halfHeight - 10}H${halfWidth}`} stroke={palette.unique} strokeWidth={3} />
         <text x={-halfWidth} y={-halfHeight - 16} fill={palette.unique} fontSize={10}>First divergence</text>
       </g>}
-      <g opacity={dimmed ? .22 : undefined}>
+      <g>
         <path data-node-body="" d={nodeOutline(outline, size.width, size.height)} fill={appearance.fill}
+          fillOpacity={dimmed ? .45 : undefined} strokeOpacity={dimmed && !node.error ? .55 : undefined}
           stroke={node.error ? palette.error : color} strokeWidth={node.error ? 3 : 1.5} />
         {outline === 'shell' && <path d={`M${-halfWidth+5} ${-halfHeight+9}H${halfWidth-5}`} stroke={color} strokeOpacity={.55} fill="none"/>}
         {outline === 'read' && <path d={`M${halfWidth-14} ${-halfHeight}V${-halfHeight+14}H${halfWidth}`} stroke={color} fill="none"/>}
@@ -253,7 +254,7 @@ export const GraphDrawing = memo(function GraphDrawing({
 
     </g>)}
     {drawing.edges.map(({ edge, path, bounds, label }) => enabled.has(edge.type) && inView(bounds) &&
-      <g key={edge.id} data-edge-type={edge.type} data-source={edge.source} data-target={edge.target} opacity={unreached(edge.source) || unreached(edge.target) ? 0.16 : 0.82}>
+      <g key={edge.id} data-edge-type={edge.type} data-source={edge.source} data-target={edge.target} opacity={unreached(edge.source) || unreached(edge.target) ? 0.35 : 0.82}>
         <title>{`${capitalize(edge.type)} · ${edge.count}`}</title>
         <path d={path} fill="none" stroke={palette.edges[edge.type]} strokeWidth={edge.type === 'temporal' ? 1.9 : 1.6}
           strokeDasharray={edgeDashes[edge.type]} markerEnd={`url(#${marker(edge.type)})`} />

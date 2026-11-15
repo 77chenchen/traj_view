@@ -249,14 +249,14 @@ export function Sankey({ runs, phases, openRun }: { runs: Run[]; phases: Phase[]
     </div>
     {!runs.length ? <Empty icon="chart" title="No runs to analyze">Import traces in Datasets to compare recorded outcomes and phase transitions.</Empty> : !cohort.length ? <Empty icon="search" title="No matching runs" actions={<button className="button" onClick={reset}>Clear filters</button>}>Try another run, task or model, or include all outcomes.</Empty> : <>
       <dl className="analytics-summary" aria-label="Analytics summary">
-        <div><dt>Runs in scope</dt><dd data-stat="runs">{number.format(summary.count)}<span>{number.format(options.length)} {groupLabel[dimension].toLowerCase()} {options.length === 1 ? 'group' : 'groups'}</span></dd></div>
-        <div><dt>Recorded pass rate</dt><dd data-stat="pass-rate">{summary.passed + summary.failed ? percent.format(summary.passed / (summary.passed + summary.failed)) : 'Unrecorded'}<span>{summary.passed} / {summary.passed + summary.failed} reported · {summary.unrecorded} unrecorded</span></dd></div>
-        <div><dt>Median source steps</dt><dd data-stat="median-steps">{summary.median == null ? 'Unrecorded' : number.format(summary.median)}<span>Per run · recorded step count</span></dd></div>
-        <div><dt>Repeated actions</dt><dd data-stat="repeats">{number.format(summary.repeats)}<span>Extra occurrences of a signature</span></dd></div>
+        <div><dt><Icon name="runs" size={17}/>Runs in scope</dt><dd data-stat="runs">{number.format(summary.count)}<span>{number.format(options.length)} {groupLabel[dimension].toLowerCase()} {options.length === 1 ? 'group' : 'groups'}</span></dd></div>
+        <div><dt><Icon name="check" size={17}/>Recorded pass rate</dt><dd data-stat="pass-rate">{summary.passed + summary.failed ? percent.format(summary.passed / (summary.passed + summary.failed)) : 'Unrecorded'}<span>{summary.passed} / {summary.passed + summary.failed} reported · {summary.unrecorded} unrecorded</span></dd></div>
+        <div><dt><Icon name="events" size={17}/>Median source steps</dt><dd data-stat="median-steps">{summary.median == null ? 'Unrecorded' : number.format(summary.median)}<span>Per run · recorded step count</span></dd></div>
+        <div><dt><Icon name="retry" size={17}/>Repeated actions</dt><dd data-stat="repeats">{number.format(summary.repeats)}<span>Extra occurrences of a signature</span></dd></div>
       </dl>
       <section className="analytics-overview" aria-labelledby="analytics-groups-title">
         <div className="analytics-group-workspace">
-          <header className="analytics-section-head"><div><h2 id="analytics-groups-title">Group comparison</h2><p>Ordered by run count. Select a group to explore its traces.</p></div>
+          <header className="analytics-section-head"><div><h2 id="analytics-groups-title">Group comparison</h2><p>Select a group to inspect its runs.</p></div>
             <div className="analytics-outcome-legend" aria-label="Outcome order"><span className="passed">Passed</span><span className="failed">Not passed</span><span className="unrecorded">Unrecorded</span></div>
           </header>
           <div className="analytics-table-scroll" tabIndex={0} role="region" aria-label="Group comparison table">
@@ -265,7 +265,7 @@ export function Sankey({ runs, phases, openRun }: { runs: Run[]; phases: Phase[]
                 const stats = groupStats.get(name)!;
                 return <tr key={name} className={name === first ? 'selected' : ''} data-group={name}>
                   <th scope="row"><button className="analytics-group-select" aria-label={`Select ${groupName(name)} group`} aria-pressed={name === first} onClick={() => selectGroup(name)}><span>{groupName(name)}</span><Icon name="right" size={14}/></button><small>{stats.tasks} {stats.tasks === 1 ? 'task' : 'tasks'}</small></th>
-                  <td>{number.format(stats.count)}</td><td><Outcomes stats={stats}/></td><td>{stats.median == null ? 'Unrecorded' : number.format(stats.median)}</td>
+                  <td>{number.format(stats.count)}</td><td><Outcomes stats={stats}/></td><td><span className="metric-inline" title="Bar: median source steps, shared scale across all groups in scope"><span>{stats.median == null ? 'Unrecorded' : number.format(stats.median)}</span>{stats.median != null && <i aria-hidden="true"><b style={{width:(stats.median/Math.max(1,...[...groupStats.values()].map(value=>value.median??0))*100)+'%'}}/></i>}</span></td>
                   <td><button className="analytics-count-link" aria-label={`Review ${stats.errors} runs with errors in ${groupName(name)}`} disabled={!stats.errors} title={stats.errors ? 'Show runs with a recorded error' : 'No recorded errors in this group'} onClick={() => review(name, 'errors')}>{stats.errors}<Icon name="arrow" size={12}/></button></td>
                   <td>{number.format(stats.repeats)}</td>
                 </tr>;
@@ -281,7 +281,7 @@ export function Sankey({ runs, phases, openRun }: { runs: Run[]; phases: Phase[]
           <h3>{groupName(first)}</h3><p>Selected {groupLabel[dimension].toLowerCase()} · {selectedStats.count} {selectedStats.count === 1 ? 'run' : 'runs'} across {selectedStats.tasks} {selectedStats.tasks === 1 ? 'task' : 'tasks'}. Review signals do not imply a failed outcome.</p>
           <h4>Review this group</h4>
           {([['errors', selectedStats.errors, 'With a recorded error'], ['unvalidated', selectedStats.unvalidated, 'No validation after last edit'], ['limit', selectedStats.limit, 'Step limit reached']] as const).map(([signal, count, label]) =>
-            <button key={signal} className="analytics-signal" disabled={!count} title={count ? `Show ${count} matching runs` : `No matching runs in this group`} onClick={() => review(first, signal)}><Icon name={signal === 'errors' ? 'info' : signal === 'unvalidated' ? 'check' : 'target'} size={16}/><span>{label}</span><strong>{count}</strong><Icon name="right" size={14}/></button>)}
+            <button key={signal} className="analytics-signal" data-signal={signal} disabled={!count} title={count ? `Show ${count} matching runs` : `No matching runs in this group`} onClick={() => review(first, signal)}><Icon name={signal === 'errors' ? 'warning' : signal === 'unvalidated' ? 'test' : 'target'} size={16}/><span>{label}</span><strong>{count}</strong><Icon name="right" size={14}/></button>)}
           <button className="button analytics-review-runs" onClick={() => review(first, 'all')}>View {selectedStats.count} run {selectedStats.count === 1 ? 'record' : 'records'}<Icon name="arrow" size={15}/></button>
           <button className="button quiet" onClick={() => { setFlowOpen(true); requestAnimationFrame(() => { flowSection.current?.scrollIntoView({ block: 'start' }); flowSection.current?.querySelector('summary')?.focus({ preventScroll: true }); }); }}><Icon name="sankey" size={16}/>Explore phase flow</button>
         </aside>}
@@ -318,8 +318,8 @@ export function Sankey({ runs, phases, openRun }: { runs: Run[]; phases: Phase[]
         </> : <Empty icon="search" title="No runs match this signal" actions={<button className="button small" onClick={() => setRecordFilter('all')}>Show all group runs</button>}>Choose another review signal for {groupName(first)}.</Empty>}
       </details>
       <details className="analytics-disclosure analytics-definitions"><summary><Icon name="info" size={18}/><h2>Metric definitions</h2><span>Counting rules and missing data</span><Icon name="down" size={16}/></summary><dl>
-        <div><dt>Recorded pass rate</dt><dd>Passed ÷ runs with an explicit pass status. Unrecorded outcomes stay outside the denominator; this is not a test-case pass rate.</dd></div>
-        <div><dt>Repeated actions</dt><dd>Extra occurrences of normalized tool/target signatures, including nonconsecutive repeats. This count does not assert retries or failures.</dd></div>
+        <div><dt><Icon name="check" size={17}/>Recorded pass rate</dt><dd>Passed ÷ runs with an explicit pass status. Unrecorded outcomes stay outside the denominator; this is not a test-case pass rate.</dd></div>
+        <div><dt><Icon name="retry" size={17}/>Repeated actions</dt><dd>Extra occurrences of normalized tool/target signatures, including nonconsecutive repeats. This count does not assert retries or failures.</dd></div>
         <div><dt>Recorded errors</dt><dd>The run's saved error rate is greater than zero. A run with errors can still have a passed outcome.</dd></div>
         <div><dt>Validation after last edit</dt><dd>The saved metric records a later validation step, not whether that validation passed. No prior edit is unrecorded.</dd></div>
         <div><dt>Phase transitions</dt><dd>Counts of adjacent recorded phases, including self and reverse transitions. Side-by-side bands share one count scale; they do not measure time.</dd></div>

@@ -73,7 +73,8 @@ export async function checkNodeAppearance(page,url,artifacts,offline=false){
     const [download]=await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'Download SVG of node-types-synthetic-expanded',exact:true}).click()]);
     const svg=readFileSync(await download.path(),'utf8');assert.ok(svg.includes('fill="#ffffff"'));
     for(const s of shapes)assert.ok(svg.includes(`d="${s.path}"`),'Export preserves the same silhouette');
-    assert.ok(svg.includes('stroke="#3d596b"'));
+    const selectedStroke=await graph.locator('[data-source-index="60"] [data-node-body]').getAttribute('stroke');
+    assert.ok(selectedStroke&&svg.includes(`stroke="${selectedStroke}"`),'Export preserves the current selected-node outline');
     if(width===1586)await download.saveAs(join(artifacts,prefix+'appearance-types.svg'));
     geometry.push({width,height,sourceKinds:7,distinctSilhouettes:7,fullscreenInspector:true,sourcePreserved:true,nestedPatchFullscreen:true});
   }

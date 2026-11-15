@@ -165,14 +165,14 @@ export function RunList({ dataset, selected, onSelect, openGraph, openCompare }:
                       aria-describedby="selection-help" disabled={Boolean(unavailable)} onChange={() => onSelect(run.id)} />
                   </label></td>
                   <th scope="row">
-                    <button className="text-button run-name" title={run.id} onClick={() => openGraph(run.id)}>{run.id}</button>
+                    <button className="text-button run-name" title={run.id} onClick={() => openGraph(run.id)}><Icon name="graph" size={16}/>{run.id}<Icon name="right" size={14}/></button>
                     <span className="run-task" title={run.task_id}>{run.task_id}</span>
                   </th>
                   <td className="run-value">{run.model}</td><td className="run-value">{run.condition}</td>
                   <td><OutcomeBadge outcome={run.outcome} /></td>
                   <td className="numeric">{number.format(run.metrics.steps)}</td>
-                  <td className="numeric">{percent.format(run.metrics.error_rate)}</td>
-                  <td className="numeric">{number.format(run.metrics.cycles)}</td>
+                  <td className="numeric"><span className={'catalog-error-rate ' + (run.metrics.error_rate ? 'has-errors' : '')}><i aria-hidden="true"><b style={{width:(run.metrics.error_rate*100)+'%'}}/></i>{percent.format(run.metrics.error_rate)}</span></td>
+                  <td className="numeric"><span className="catalog-cycles" data-active={run.metrics.cycles>0}><Icon name="retry" size={13}/>{number.format(run.metrics.cycles)}</span></td>
                 </tr>;
               })}
             </tbody>

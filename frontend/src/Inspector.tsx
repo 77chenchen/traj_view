@@ -3,7 +3,7 @@ import { useResource } from './data';
 import { phaseColor, sourceIndex, type Graph, type GraphEdge, type GraphNode, type Phase, type Run, type Step, type StepIndex } from './model';
 import { CopyButton, Icon, LoadError, Loading } from './ui';
 import { ExecutionContents } from './ExecutionContents';
-import { categoryName, eventStatus, eventTime, failed, label, patchStats, patchText, RecordedCode, fullScreen } from './Evidence';
+import { categoryIcon, categoryName, evidenceKind, eventStatus, eventTime, failed, label, patchStats, patchText, RecordedCode, fullScreen } from './Evidence';
 
 const previewLength = 1000;
 
@@ -14,9 +14,9 @@ function Content({ label, value, note, initialOpen = true }: { label: string; va
     <details open={initialOpen}>
     <summary><strong>{label}</strong></summary>
     <div className="step-content-head">{value && <CopyButton text={value} />}</div>
-    {note && <p className="content-note">{note}</p>}
     {value == null || value === '' ? <p className="muted">None recorded</p> : label === 'Arguments' ? <RecordedCode value={value}/> :
       <pre>{long && !expanded ? value.slice(0, previewLength) + '…' : value}</pre>}
+    {note && <details className="record-note"><summary><Icon name="info" size={13}/>Recording note</summary><p>{note}</p></details>}
     {long && <button className="button small quiet" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>
       {expanded ? 'Show less' : `Show all ${value!.length.toLocaleString()} characters`}
     </button>}
@@ -24,28 +24,28 @@ function Content({ label, value, note, initialOpen = true }: { label: string; va
   </section>;
 }
 
-function StepContent({ step, phases, tabbed = false, variant = 'node', graphWorkspace = false, first, priorFailure, earlierFailure, locate, tab, setTab }: { step: Step; phases: Phase[]; tabbed?: boolean; variant?: 'node' | 'event' | 'replay'; graphWorkspace?: boolean; first?: Step; priorFailure?: Step; earlierFailure?: Step; locate: () => void; tab: string; setTab: (tab: string) => void }) {
+function StepContent({ step, node, phases, tabbed = false, variant = 'node', graphWorkspace = false, first, priorFailure, earlierFailure, locate, tab, setTab }: { step: Step; node?: GraphNode; phases: Phase[]; tabbed?: boolean; variant?: 'node' | 'event' | 'replay'; graphWorkspace?: boolean; first?: Step; priorFailure?: Step; earlierFailure?: Step; locate: () => void; tab: string; setTab: (tab: string) => void }) {
   const phase = phases.find(item => item.id === step.phase);
   const action = step.action, observation = step.observation;
   const patch = patchText(step), stats = patchStats(step);
   const notes = [observation?.truncated && 'Truncated in the source', observation?.exit_code != null && 'Exit code ' + observation.exit_code, observation?.error && 'Source flagged an error'].filter(Boolean).join(' · ');
   return <>
-    <div className={'inspection-status ' + (failed(step) ? 'error-text' : '')}><span className={'inspection-status-icon ' + (failed(step) ? 'failed' : '')}><Icon name={failed(step) ? 'close' : action ? 'terminal' : 'spark'} size={18}/></span><div><strong>{failed(step) ? 'Tool Call – Failure' : action?.tool || (step.tags.includes('final_message') ? 'Final Answer' : 'Recorded text')}</strong><p>{label(step)}</p></div></div>
+    <div className={'inspection-status ' + (failed(step) ? 'error-text' : '')}><span className="inspection-status-icon kind-icon" data-kind={evidenceKind(step,node)}><Icon name={categoryIcon(step,node)} size={18}/></span><div><strong>{failed(step) ? 'Tool Call – Failure' : action?.tool || (step.tags.includes('final_message') ? 'Final Answer' : 'Recorded text')}</strong><p>{label(step)}</p></div></div>
     <dl className="step-meta">
       <div><dt>{variant === 'replay' ? 'Step ID' : 'Node / Source'}</dt><dd className={'mono' + (graphWorkspace ? ' source-identity' : '')}><span>{sourceIndex(step.idx)}</span>{graphWorkspace && <span className="source-copy"><CopyButton key={String(step.idx)} label="Copy source ID" text={sourceIndex(step.idx)}/></span>}</dd></div>
-      <div><dt>{variant === 'event' ? 'Category' : 'Type / Category'}</dt><dd>{variant === 'event' ? categoryName(step) : action?.tool || categoryName(step)}</dd></div>
+      <div><dt>{variant === 'event' ? 'Category' : 'Type / Category'}</dt><dd>{variant === 'event' ? categoryName(step,node) : action?.tool || categoryName(step,node)}</dd></div>
       {variant === 'event' && <div><dt>Tool Name</dt><dd>{action?.tool || 'Unrecorded'}</dd></div>}
       <div><dt>{variant === 'event' ? 'Timestamp' : 'Time'}</dt><dd className="mono" title={step.ts || 'Unrecorded'}>{step.ts ? first ? eventTime(step,first) : step.ts : 'Unrecorded'}</dd></div>
       <div><dt>Status</dt><dd className={failed(step) ? 'error-text' : observation?.exit_code === 0 ? 'success-text' : 'muted'}>{eventStatus(step)}</dd></div>
-      {variant === 'node' && <div><dt>Attempts</dt><dd className="muted">Unrecorded</dd></div>}
     </dl>
     <details className="recording-details"><summary>Recording details</summary><dl className="step-meta">
+      {variant === 'node' && <div><dt>Attempts</dt><dd className="muted">Unrecorded</dd></div>}
       <div><dt>Duration</dt><dd className="muted">Unrecorded</dd></div>
       {step.phase && <div><dt>Phase</dt><dd><i className="phase-dot" style={{ background: phaseColor(phase) }}/>{phase?.label ?? step.phase}<small> · {step.phase_source}</small></dd></div>}
       <div><dt>Tokens in / out</dt><dd>{step.tokens?.in ?? 'Unrecorded'} / {step.tokens?.out ?? 'Unrecorded'}</dd></div>
     </dl></details>
     {variant === 'node' && <div className="workspace-tabs inspector-tabs" role="group" aria-label="Step detail view">
-      {['Details','Code Diff','Output','Context'].map(name=><button key={name} aria-pressed={tab===name} onClick={()=>setTab(name)}>{name==='Output' ? 'Error Output' : name}</button>)}
+      {['Details','Code Diff','Output','Context'].map(name=><button key={name} aria-pressed={tab===name} onClick={()=>setTab(name)}><Icon name={name==='Details'?'events':name==='Code Diff'?'diff':name==='Output'?'terminal':'layers'} size={14}/>{name==='Output' ? 'Error Output' : name}</button>)}
     </div>}
     {tab === 'Details' && <>
       {variant === 'replay' && <>{patch && <><h3 className="inspection-subtitle">Edit Summary</h3><div className="edit-summary"><span className="error-text">− {stats.removed} lines removed</span><span className="success-text">+ {stats.added} lines added</span></div></>}
@@ -54,7 +54,7 @@ function StepContent({ step, phases, tabbed = false, variant = 'node', graphWork
         <h3 className="inspection-subtitle">Agent Reasoning <span className="muted">· Unrecorded</span></h3>
         <Content label="Recorded text" value={step.thought} note="The source does not distinguish messages from agent reasoning." initialOpen={false}/></>}
       {variant === 'node' && <Content label={step.tags.includes('final_message') ? 'Message' : 'Description (recorded text)'} value={step.thought} note="Message and reasoning roles are not recorded separately."/>}
-      <Content label={variant === 'event' ? 'Arguments' : tabbed ? 'Tool arguments' : 'Action'} value={action ? JSON.stringify(action, null, 2) : null} note={action?.tool} initialOpen={false}/>
+      <Content label={variant === 'event' ? 'Arguments' : tabbed ? 'Tool arguments' : 'Action'} value={action ? JSON.stringify(action, null, 2) : null} initialOpen={false}/>
     </>}
     {tab === 'Code Diff' && <section className="step-content node-diff"><details open><summary><strong>Related Code Diff</strong></summary><button className="button small quiet" disabled={!patch} title={patch ? "Expand the recorded patch" : "Patch unrecorded"} onClick={e=>fullScreen(e.currentTarget.parentElement)}>View Full Diff</button>{graphWorkspace && !patch ? <p className="node-diff-missing"><Icon name="file" size={16}/><span>No patch recorded</span></p> : <><div className="recorded-path"><Icon name="file" size={14}/><span title={action?.targets.join(', ')}>{action?.targets.join(', ') || 'File unrecorded'}</span>{patch && <CopyButton text={patch}/>}</div><RecordedCode value={patch} patch/></>}</details></section>}
     {(tab === 'Output' || variant === 'event' || variant === 'replay') && <Content label={variant === 'event' ? 'Output / Stderr' : 'Observation'} value={observation?.text ?? null} note={notes} initialOpen={variant !== 'replay'}/>}
@@ -129,7 +129,7 @@ export function Inspector({ run, node, index, select, clear, clearLabel = 'Clear
       {resource.state.status === 'error' && <div className="panel-inset">
         <LoadError message={resource.state.message} retry={resource.retry} />
       </div>}
-      {step && <StepContent step={step} phases={phases} tabbed={tabbed} variant={variant} graphWorkspace={graphWorkspace} tab={tab} setTab={setTab} first={steps?.[0]}
+      {step && <StepContent step={step} node={node} phases={phases} tabbed={tabbed} variant={variant} graphWorkspace={graphWorkspace} tab={tab} setTab={setTab} first={steps?.[0]}
         priorFailure={steps?.slice(0,steps.indexOf(step)).reverse().find(s=>failed(s) && (relatedGraph ? relatedGraph.nodes.find(n=>String(n.first_idx)===String(s.idx))?.signature===relatedGraph.nodes.find(n=>String(n.first_idx)===String(step!.idx))?.signature : s.action?.tool===step!.action?.tool))}
         earlierFailure={steps?.slice(0,steps.indexOf(step)).reverse().find(failed)} locate={() => (locate ?? select)(step.idx)} />}
       {relatedGraph && (variant!=='node'||tab==='Context') && <details className="node-context" open={variant==='node' ? true : undefined}><summary>Context · Files &amp; relationships</summary><div className="context-counts">

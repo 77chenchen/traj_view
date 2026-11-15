@@ -1,0 +1,85 @@
+{
+  "chrome": "157.0.8103.52",
+  "scope": "Six-route semantic colors and direct evidence navigation. Public synthetic fixtures only.",
+  "local": {
+    "desktopSizes": [
+      [
+        1586,
+        912
+      ],
+      [
+        1280,
+        800
+      ]
+    ],
+    "sixRoutes": true,
+    "keyboardFailureEditValidation": true,
+    "pinnedDiff": true,
+    "fullscreenEvidence": true,
+    "unknownAttemptsDisclosure": true,
+    "readingGuide": true,
+    "recordedTextCategoryAndActivity": true,
+    "comparisonDivergence": true,
+    "sharedMedianScale": true,
+    "semanticContrast": {
+      "minimum": 5.234604451882848,
+      "samples": 103
+    },
+    "captures": [
+      "replay-1586.png",
+      "timeline-1586.png",
+      "graph-1586.png",
+      "compare-1586.png",
+      "analytics-1586.png",
+      "datasets-1586.png",
+      "replay-1280.png",
+      "timeline-1280.png",
+      "graph-1280.png",
+      "compare-1280.png",
+      "analytics-1280.png",
+      "datasets-1280.png"
+    ],
+    "pageErrors": []
+  },
+  "offline": {
+    "desktopSizes": [
+      [
+        1586,
+        912
+      ],
+      [
+        1280,
+        800
+      ]
+    ],
+    "sixRoutes": true,
+    "keyboardFailureEditValidation": true,
+    "pinnedDiff": true,
+    "fullscreenEvidence": true,
+    "unknownAttemptsDisclosure": true,
+    "readingGuide": true,
+    "recordedTextCategoryAndActivity": true,
+    "comparisonDivergence": true,
+    "sharedMedianScale": true,
+    "semanticContrast": {
+      "minimum": 5.234604451882848,
+      "samples": 103
+    },
+    "captures": [
+      "offline-replay-1586.png",
+      "offline-timeline-1586.png",
+      "offline-graph-1586.png",
+      "offline-compare-1586.png",
+      "offline-analytics-1586.png",
+      "offline-datasets-1586.png",
+      "offline-replay-1280.png",
+      "offline-timeline-1280.png",
+      "offline-graph-1280.png",
+      "offline-compare-1280.png",
+      "offline-analytics-1280.png",
+      "offline-datasets-1280.png"
+    ],
+    "offlineHttp": 0,
+    "pageErrors": []
+  }
+}

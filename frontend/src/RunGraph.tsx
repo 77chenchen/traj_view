@@ -201,9 +201,9 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
 
 
   const commands = <>
-    <strong className="graph-tool-title">Source DAG</strong>
-    <div className="segments" role="group" aria-label="Graph workspace view"><button aria-pressed={canvasMode === 'graph'} onClick={() => setCanvasMode('graph')}>Graph</button><button aria-pressed={canvasMode === 'timeline'} onClick={() => setCanvasMode('timeline')}>Timeline</button></div>
-    <details className="graph-options"><summary>Layers <Icon name="down" size={13}/></summary><div className="graph-option-body">
+
+    <div className="segments" role="group" aria-label="Graph workspace view"><button aria-pressed={canvasMode === 'graph'} onClick={() => setCanvasMode('graph')}><Icon name="graph" size={15}/>Graph</button><button aria-pressed={canvasMode === 'timeline'} onClick={() => setCanvasMode('timeline')}><Icon name="events" size={15}/>Timeline</button></div>
+    <details className="graph-options"><summary><Icon name="layers" size={15}/>Layers <Icon name="down" size={13}/></summary><div className="graph-option-body">
       <h3>Layers &amp; filters</h3>
         <div className="graph-layers"><label>Layers: <select aria-label="Graph layers" value={layers.size === 3 ? 'all' : layers.size === 1 && layers.has('tools') ? 'tools' : 'custom'} onChange={e => setLayers(new Set(e.target.value === 'all' ? ['reasoning','tools','results'] : e.target.value === 'tools' ? ['tools'] : ['reasoning','results']))}><option value="all">All Layers (4)</option><option value="tools">Tool Calls only</option><option value="custom">Custom / evidence</option></select></label>
           <label title="Per-step agent identity and parent links are unrecorded"><input type="checkbox" disabled/>Agents <small>(unrecorded)</small></label>
@@ -233,10 +233,10 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
           </div>
           {!overview&&!hierarchy && savings > 0 && <button className="button small" aria-pressed={unfolded} title={unfolded ? `${savings} consecutive repeat steps can be folded` : `${graphs.expanded.nodes.length - intervals.nodes.length} repeat steps are folded`} onClick={() => { setUnfolded(!unfolded); setOpenBlocks(new Set()); }}>{unfolded ? 'Fold repeats' : 'Expand all steps'}</button>}
     </div></details>
-    <button className="button small" aria-expanded={showLegend} onClick={() => setShowLegend(!showLegend)}>Legend <Icon name="info" size={13}/></button>
+    <button className="button small" aria-expanded={showLegend} onClick={() => setShowLegend(!showLegend)}><Icon name="info" size={15}/>Legend</button>
     <button className="button small graph-collapse-all" disabled={!canCollapse}
       title={canCollapse ? 'Return to the compact overview. Keep the selected source step and evidence view.' : 'All sections are already collapsed'}
-      onClick={collapseAll}><Icon name="layers" size={15}/>Collapse all</button>
+      onClick={collapseAll}><Icon name="collapse" size={15}/>Collapse all</button>
   </>;
   function clearSelection() {
     const selectedIndex=index,selectedId=selected?.id;
@@ -269,13 +269,13 @@ function LoadedGraph({ run, graphs, phases, theme, initialIndex, onInspect }: {
           <div className="execution-path">
             <button className="button small execution-back" disabled={!lastExpanded} title="Collapse the most recently expanded section (Alt+↑)" aria-keyshortcuts="Alt+ArrowUp" onClick={() => lastExpanded&&toggleSection(lastExpanded)}><Icon name="left" size={14}/>Collapse last</button>
             <span className="execution-expanded-count">{executionView.groups?.length??0} sections expanded</span>
-            <button className="button small quiet" disabled={!nextFailure} onClick={()=>nextFailure&&locate(nextFailure.first_idx)}>Next failure</button><span>{graphs.expanded.nodes.length} / {graphs.expanded.nodes.length} source steps</span>
+            <button className="button small jump-action" data-kind="failure" aria-label="Next failure" title="Locate the next recorded failure" disabled={!nextFailure} onClick={()=>nextFailure&&locate(nextFailure.first_idx)}><Icon name="warning" size={15}/>Failure<Icon name="right" size={12}/></button><span>{graphs.expanded.nodes.length} / {graphs.expanded.nodes.length} source steps</span>
           </div>
           <div className="execution-overview-strip" role="toolbar" aria-label="Source step navigator. Use arrow keys, Home or End, then Enter to locate.">{navigatorRanges.map((range,i)=><button key={range.start} tabIndex={i===navigatorFocus?0:-1} title={`Steps ${range.start+1}–${range.end} · source ${sourceIndex(range.first.first_idx)} → ${sourceIndex(range.last.first_idx)}${range.failure?' · contains failure':''}`} aria-label={`Locate ${range.failure?'failure in ':''}source range ${sourceIndex(range.first.first_idx)} to ${sourceIndex(range.last.first_idx)}`} className={`${range.failure?'failed':''} ${range.selected?'selected':''} ${executionView.groups?.some(group=>range.start<group.node.view!.end!&&range.end>group.node.view!.start!)?'in-scope':''}`} onFocus={()=>setNavigatorFocus(i)} onKeyDown={event=>{
             const next=event.key==='Home'?0:event.key==='End'?navigatorRanges.length-1:event.key==='ArrowRight'?Math.min(i+1,navigatorRanges.length-1):event.key==='ArrowLeft'?Math.max(i-1,0):null;
             if(next==null)return;event.preventDefault();setNavigatorFocus(next);event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('button')[next]?.focus();
           }} onClick={()=>locate((range.failure??range.first).first_idx)} />)}</div>
-          <p>Expand a section in place · click its header to collapse · other sections stay on the canvas.{hiddenConnections>0&&` ${hiddenConnections} dependency ${hiddenConnections===1?'link':'links'} hidden; select a node or enable all in Layers.`}</p>
+          <p><Icon name="info" size={13}/>Click a section to expand or collapse.{hiddenConnections>0&&` ${hiddenConnections} dependency ${hiddenConnections===1?'link':'links'} hidden; select a node or enable all in Layers.`}</p>
         </div>}
         {canvasMode === 'timeline' ? <><div className="graph-toolbar">{commands}</div><EventTimeline runId={run.id} steps={steps} nodes={graphs.expanded.nodes} selected={index ?? steps[0]?.idx ?? 0} select={locate}/></> : <GraphView toolbar={commands} graph={connectionGraph} phases={phases} theme={theme} enabled={enabled}
           name={`${run.id}-expanded`} onNode={selectNode} selected={selected?.id}

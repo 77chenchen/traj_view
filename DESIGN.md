@@ -2,11 +2,11 @@
 name: "TrajViz"
 description: "A local workspace for inspecting recorded coding-agent evidence."
 colors:
-  accent: "#405a6b"
-  accent-hover: "#2f4757"
+  accent: "#235f9a"
+  accent-hover: "#194b7b"
   on-accent: "#ffffff"
-  accent-soft: "#eaf0f3"
-  accent-line: "#8a9da9"
+  accent-soft: "#eaf3fc"
+  accent-line: "#85add0"
   bg: "#ffffff"
   surface: "#ffffff"
   surface-2: "#f6f8fa"
@@ -26,7 +26,7 @@ colors:
   graph-header: "#f3f5f6"
   graph-text: "#273442"
   graph-muted: "#556575"
-  graph-selected: "#3d596b"
+  graph-selected: "#235f9a"
   fullscreen-accent: "#195fa8"
   fullscreen-accent-hover: "#124f90"
   fullscreen-accent-soft: "#eaf3fe"
@@ -37,22 +37,29 @@ colors:
   edge-dependency: "#52778d"
   edge-retry: "#9a763c"
   edge-structural: "#638375"
-  shell-fill: "#eef3f8"
-  shell-stroke: "#6a8199"
-  read-fill: "#eef6f5"
-  read-stroke: "#64867c"
-  edit-fill: "#faf3e8"
-  edit-stroke: "#a38a5b"
-  validate-fill: "#eef6ef"
-  validate-stroke: "#678a70"
-  plan-fill: "#f0f2f8"
-  plan-stroke: "#7986a0"
-  message-fill: "#f3f4f6"
-  message-stroke: "#7e8793"
-  tool-fill: "#eef3f3"
-  tool-stroke: "#75878b"
-  group-fill: "#f3f5f7"
-  group-stroke: "#81909d"
+  shell-fill: "#eaf2fc"
+  shell-stroke: "#5d86b4"
+  shell-ink: "#2d5885"
+  read-fill: "#e6f4f2"
+  read-stroke: "#538d84"
+  read-ink: "#276b62"
+  edit-fill: "#fff2da"
+  edit-stroke: "#b28a43"
+  edit-ink: "#825c1b"
+  validate-fill: "#eaf5e9"
+  validate-stroke: "#66915e"
+  validate-ink: "#366a34"
+  plan-fill: "#eef0f8"
+  plan-stroke: "#7a83a3"
+  plan-ink: "#556184"
+  message-fill: "#f1f3f6"
+  message-stroke: "#818b9b"
+  message-ink: "#516071"
+  tool-fill: "#e9f3f6"
+  tool-stroke: "#6694a2"
+  tool-ink: "#376b7c"
+  group-fill: "#eef2f6"
+  group-stroke: "#788c9f"
   dark-bg: "#101b23"
   dark-surface: "#192a35"
   dark-surface-2: "#213540"
@@ -221,7 +228,7 @@ components:
 
 **Creative North Star: "The recorded-evidence workspace"**
 
-TrajViz is a desktop Operate interface for reading saved agent traces. White workspaces, near-white headers, fine neutral boundaries and dark text keep recorded evidence easy to scan. Blue-gray selection belongs to the default light appearance; green and red retain outcome and diff meaning.
+TrajViz is a desktop Operate interface for reading saved agent traces. White workspaces, near-white headers, fine neutral boundaries and dark text keep recorded evidence easy to scan. Blue selection belongs to the default light appearance; green and red retain outcome and diff meaning. Action colors and line icons provide a shared reading path across the six views.
 
 One working area leads each page. Named disclosures keep secondary detail available, and source identity stays close to the evidence. The default appearance is light; the saved dark appearance remains available, with the graph retaining its white ground and category silhouettes.
 
@@ -236,11 +243,11 @@ The current authority is [PRODUCT.md](PRODUCT.md), the [neutral vertical workspa
 
 ## Colors
 
-The default palette uses neutral white surfaces, blue-gray interaction and restrained semantic color. Frontmatter owns all color primitives, including the retained dark overrides and fixed graph/category encodings; prose describes their use.
+The default palette uses neutral white surfaces, blue interaction and restrained semantic color. Frontmatter records the effective shared light values and fixed graph/category encodings; the retained dark overrides remain separate.
 
 ### Primary
 
-- **Selection blue-gray** (`accent`, `accent-hover`): principal actions, selected source state and focus in light appearance.
+- **Selection blue** (`accent`, `accent-hover`): principal actions, selected source state and focus in light appearance.
 - **Selection wash and boundary** (`accent-soft`, `accent-line`): selected rows, evidence tabs and subordinate action states.
 - **On-accent white** (`on-accent`): text and icons on filled actions.
 
@@ -258,6 +265,10 @@ The default palette uses neutral white surfaces, blue-gray interaction and restr
 **The Selection and Outcome Rule.** Selection marks the current source; it never replaces the source outcome. Keep failure borders, written status and diff signs visible inside selected content.
 
 The dark appearance uses the `dark-*` frontmatter tokens from [workbench.css](frontend/src/workbench.css); its existing teal interaction accent remains. The graph uses the same fixed white palette in both appearances, defined in [graphDrawing.tsx](frontend/src/graphDrawing.tsx). Category fill/stroke pairs come from [nodeAppearance.ts](frontend/src/nodeAppearance.ts). Phase dots retain validated dataset colors; they are data encodings rather than brand colors. Selection, category, phase, error and divergence remain independent meanings.
+
+### Action wayfinding
+
+Terminal uses blue, reads teal, edits amber, validation green and recorded text slate. Each has a consistent line icon and written name across stage navigation, source rows, alignment, Timeline and inspection. Failures keep their warning icon, red outcome and error boundary even while selected. Completion alone remains neutral. Action surfaces and their darker ink use `--kind-*-bg` / `--kind-*-ink` in [affordances.css](frontend/src/affordances.css), including separate dark-appearance pairs. These colors provide classification rather than decoration or an inferred result. The [six-route verification](docs/research/visual-affordances.md) documents examples and measured contrast.
 
 ## Typography
 
@@ -281,7 +292,7 @@ The shared document container has a maximum width (1720px), desktop horizontal i
 
 At widths of at least 1101px, Graph, Timeline and Replay use the screen below the topbar, with main padding (14px top / 16px bottom), gaps (12px), compact metadata and stage navigation. Graph/Timeline Inspector is (340px), or (320px) in the compact desktop band. Graph activity expands inside the work surface with local scrolling. Timeline keeps six lanes, a searchable Event Log and Event Inspector together; its lane/log split and long evidence scroll locally. Fullscreen Graph, Timeline and Compare Run DAGs retain inspection and exit controls.
 
-Desktop Graph fullscreen follows the user's [target reference](docs/design-references/graph-fullscreen-comparison/01-graph-fullscreen.png): a 52px run/current-source header and a two-column work surface, with a 350px Inspector (330px at 1101–1370px). Graph/Timeline, Layers, Legend, search and PNG/SVG share a tool band with a 56px minimum. The white canvas reserves a 48px navigation gutter and a fine independent boundary; the 34px-minimum status line aligns visible node/edge counts with the actual layout name. The layout name is plain text because there is no layout picker. Playback remains visible below; Agent activity starts as a 36px disclosure, expanding to at most 24dvh/220px with local scrolling. This screen uses the `fullscreen-accent*` roles: filled blue for the primary view, pale blue for workspace and evidence tabs. These do not replace category, failure or graph-selection encodings. The sidebar's Inspector has a bounded independently scrolling body, a 51px sticky heading and subordinate sticky evidence tabs. Missing Code Diff remains accessible with a short empty state and a disabled View Full Diff. The [fullscreen report](docs/research/graph-fullscreen.md) records paired captures, camera rules and tested boundaries; ordinary Graph and the other routes retain their own layouts.
+Desktop Graph fullscreen follows the user's [target reference](docs/design-references/graph-fullscreen-comparison/01-graph-fullscreen.png): a 52px run/current-source header and a two-column work surface, with a 350px Inspector (330px at 1101–1370px). Graph/Timeline, Layers, Legend, search and PNG/SVG share a tool band with a 56px minimum. The white canvas reserves a 54px navigation gutter and a fine independent boundary; the 34px-minimum status line aligns visible node/edge counts with the actual layout name. The layout name is plain text because there is no layout picker. Playback remains visible below; Agent activity starts as a 36px disclosure, expanding to at most 24dvh/220px with local scrolling. This screen uses the `fullscreen-accent*` roles: filled blue for the primary view, pale blue for workspace and evidence tabs. These do not replace category, failure or graph-selection encodings. The sidebar's Inspector has a bounded independently scrolling body, a 51px sticky heading and subordinate sticky evidence tabs. Missing Code Diff remains accessible with a short empty state and a disabled View Full Diff. The [fullscreen report](docs/research/graph-fullscreen.md) records paired captures, camera rules and tested boundaries; ordinary Graph and the other routes retain their own layouts.
 
 Desktop Replay gives the remaining height to a joined workbench: source list (264px, compact desktop 248px), dominant evidence and optional Step details (320px / 300px). Evidence tabs sit below the selected-step heading and above the locally scrollable content. Terminal/Tests occupies the center column's second row: 40px collapsed, or 26% with a 112px minimum expanded. The playback bar occupies its own 64px-minimum row, separated from the workbench by 12px and from the viewport end by 16px; it never overlays code or output. Current source rows remain visible after resize. Below the desktop breakpoint, the retained fallback uses a 760px workbench, document scrolling and fixed 72px playback with 112px page-bottom clearance.
 
@@ -289,7 +300,7 @@ Compare leads with one shared A/B alignment and three flat metrics. Rows have a 
 
 The reviewed scope is desktop (1586×912 and 1280×800). Existing narrow-screen access is retained: horizontal top navigation and stacked/drawer evidence behavior continue at the source breakpoints. These compatibility rules do not establish a newly designed or reviewed mobile composition.
 
-The effective stylesheet order in [main.tsx](frontend/src/main.tsx) is [styles.css](frontend/src/styles.css) → [workbench.css](frontend/src/workbench.css) → [density.css](frontend/src/density.css) → [hierarchy.css](frontend/src/hierarchy.css) → [neutral.css](frontend/src/neutral.css) → [typography.css](frontend/src/typography.css) → [graphFullscreen.css](frontend/src/graphFullscreen.css). The typography sheet owns reading roles and the coordinated light text/timeline palette; the final sheet scopes the fullscreen composition and its use of those roles. Extract values from the effective selector and media-query cascade, not an earlier declaration alone.
+The effective stylesheet order in [main.tsx](frontend/src/main.tsx) is [styles.css](frontend/src/styles.css) → [workbench.css](frontend/src/workbench.css) → [density.css](frontend/src/density.css) → [hierarchy.css](frontend/src/hierarchy.css) → [neutral.css](frontend/src/neutral.css) → [typography.css](frontend/src/typography.css) → [graphFullscreen.css](frontend/src/graphFullscreen.css) → [affordances.css](frontend/src/affordances.css). Typography owns reading roles, graphFullscreen scopes the fullscreen composition, and affordances supplies the final shared semantic colors and labeled controls. The 54px canvas navigation gutter keeps Fit/Locate labels clear of the SVG in ordinary and fullscreen Graph. Extract values from the effective selector and media-query cascade, not an earlier declaration alone.
 
 ## Elevation & Depth
 
@@ -316,6 +327,8 @@ Navigation uses the single static row described in Layout, with line icons (16px
 ### Outcomes, source rows and evidence panels
 
 Written status accompanies semantic color. A selected Replay event row uses the selection wash and boundary and preserves outcome cues. Desktop rows use a 64px minimum with 10px / 8px padding; the retained narrow-screen row uses the frontmatter 72px role. Evidence panes use compact headings and local scrolling. Recorded diffs retain line numbers, context and +/− signs. Copy and expand apply to the evidence currently displayed. Unselected Inspectors begin with an explicit prompt.
+
+Failure, Edit and Validation are short icon-and-label jump actions with arrows and keyboard-accessible names. Evidence tabs retain labels as well as icons; Inspector places the icon above the label so all four fit the compact side pane. Auto uses a separate follow-state dot rather than a second filled evidence selection. Copy sits on the evidence section’s heading row. Recording details keeps absent attempts and other source gaps discoverable; Recording note and Timeline’s Reading guide disclose repeated explanatory text on demand. Neither disclosure hides recorded evidence.
 
 **The Stable Source Rule.** Run ID plus exact source idx identifies selection across views and shared URLs. Display ordinals and playback positions remain distinct from source identity.
 

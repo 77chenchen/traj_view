@@ -1,0 +1,15 @@
+{
+  "artifact": "trajviz-report.html",
+  "details": [
+    "trajviz-report.html:254: trailing whitespace.",
+    "trajviz-report.html:411: trailing whitespace.",
+    "trajviz-report.html:471: trailing whitespace.",
+    "trajviz-report.html:472: trailing whitespace.",
+    "trajviz-report.html:490: trailing whitespace."
+  ],
+  "note": "Existing generated third-party bundle contains spaces inside multiline strings; left unmodified to preserve exported JavaScript semantics.",
+  "baselineAndCurrentTrailingLines": [
+    19,
+    19
+  ]
+}

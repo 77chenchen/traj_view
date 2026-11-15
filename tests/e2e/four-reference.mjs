@@ -111,7 +111,7 @@ export async function checkFourReference(page,url,artifacts,offline=false) {
 
   // Timeline: 1m/2m/5m and zoom resize points with the same coordinate system.
   await nav(page,'Execution timeline').click();await source(page,60);
-  assert.match(await page.locator('.event-lane > strong').allTextContents().then(labels=>labels.join(' | ')),/Reasoning \(recorded text\)/);
+  assert.match(await page.locator('.event-lane > strong').allTextContents().then(labels=>labels.join(' | ')),/Recorded text/);
   assert.match(await page.getByRole('button',{name:'Phase Validation Passed source #100',exact:true}).getAttribute('class'),/phase-success/);
   assert.doesNotMatch(await page.getByRole('button',{name:'Phase Completion source #120',exact:true}).getAttribute('class'),/phase-success/);
   const point=page.locator('.event-lane').nth(2).locator('.timeline-event').and(page.locator('[data-timeline-sources="50"],[data-timeline-sources^="50,"],[data-timeline-sources*=",50,"],[data-timeline-sources$=",50"]'));

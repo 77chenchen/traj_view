@@ -73,7 +73,7 @@ export function EventTimeline({ runId, steps, nodes, selected, select, revealDet
   };
   const lanes=[
     {name:'User Task',icon:'user' as const,accepts:(s:Step,i:number)=>i===0&&!s.action},
-    {name:'Reasoning (recorded text)',icon:'spark' as const,accepts:(s:Step)=>Boolean(s.thought)&&!s.tags.includes('final_message')},
+    {name:'Recorded text',icon:'message' as const,accepts:(s:Step)=>Boolean(s.thought)&&!s.tags.includes('final_message')},
     {name:'Tool Calls',icon:'terminal' as const,accepts:(s:Step)=>Boolean(s.action)},
     {name:'File Changes',icon:'file' as const,accepts:(s:Step)=>by.get(String(s.idx))?.category==='edit'},
     {name:'Sub-agents',icon:'layers' as const,accepts:()=>false},
@@ -100,9 +100,9 @@ export function EventTimeline({ runId, steps, nodes, selected, select, revealDet
       <div className="event-axis"><span>{timed?'Elapsed':'Step'}</span><div style={{marginInline:edgePadding}}>{ticks.map(v=><span key={v} data-timeline-tick={v} style={{left:toX(v)}}>{format(v)}</span>)}</div></div>
       {stages&&<div className="stage-axis"><strong>Stages</strong><div style={{marginInline:edgePadding}}>{segments.map((s,i)=>{
         const width=Math.max(3,toX((values[s.end+1]??span)-values[s.start]));
-        return <button key={i} className={'phase-arrow '+(failed(s.step)?'phase-failed':s.name==='Validation Passed'?'phase-success':'')} data-phase-source={String(s.step.idx)} data-stage-density={width<20?'mark':width<64?'icon':'label'} aria-label={'Phase '+s.name+' source '+sourceIndex(s.step.idx)} style={{left:toX(values[s.start]),width}} title={s.name+' · '+sourceIndex(s.step.idx)+' · phase band between recorded events'} onClick={()=>select(s.step.idx)}>{width>=64?s.name:width>=20?<Icon name={failed(s.step)?'info':categoryIcon(s.step,by.get(String(s.step.idx)))} size={12}/>:null}</button>;
+        return <button key={i} data-kind={failed(s.step)?'failure':s.name==='Validation Passed'?'validate':by.get(String(s.step.idx))?.category} className={'phase-arrow '+(failed(s.step)?'phase-failed':s.name==='Validation Passed'?'phase-success':'')} data-phase-source={String(s.step.idx)} data-stage-density={width<20?'mark':width<64?'icon':'label'} aria-label={'Phase '+s.name+' source '+sourceIndex(s.step.idx)} style={{left:toX(values[s.start]),width}} title={s.name+' · '+sourceIndex(s.step.idx)+' · phase band between recorded events'} onClick={()=>select(s.step.idx)}>{width>=64?s.name:width>=20?<Icon name={failed(s.step)?'info':categoryIcon(s.step,by.get(String(s.step.idx)))} size={12}/>:null}</button>;
       })}</div></div>}
-      {lanes.map((lane,laneIndex)=><div className="event-lane" key={lane.name}><strong><Icon name={lane.icon} size={16}/>{lane.name}</strong><div style={{marginInline:edgePadding}}>
+      {lanes.map((lane,laneIndex)=><div className="event-lane" key={lane.name}><strong title={lane.name}><Icon name={lane.icon} size={16}/>{lane.name}</strong><div style={{marginInline:edgePadding}}>
         {ticks.map(v=><i key={v} className="timeline-gridline" data-timeline-tick={v} style={{left:toX(v)}} aria-hidden="true"/>)}
         {events&&laneTokens[laneIndex].map(token=>{
           const members=token.positions.map(i=>steps[i]),s=members[0],i=token.positions[0],multiple=members.length>1;
@@ -119,7 +119,7 @@ export function EventTimeline({ runId, steps, nodes, selected, select, revealDet
         {lane.name==='Sub-agents'&&<span className="empty-lane">Per-step agent identity unrecorded</span>}
       </div></div>)}
     </div></div>
-    <p className="timeline-footnote"><span>{timed?'Recorded timestamp points · no call durations recorded':'Source step position · complete monotonic timestamps unavailable'}</span> <span>· Phase bands connect event positions; lanes do not imply parallelism.</span>{grouped&&<span> · Numbered groups contain nearby events; zoom in or choose a source.</span>}</p>
+    <div className="timeline-footnote"><span>{timed?'Recorded timestamp points · no call durations recorded':'Source step position · complete monotonic timestamps unavailable'}</span><details className="timeline-reading-guide"><summary><Icon name="info" size={13}/>Reading guide</summary><p>Phase bands connect event positions; lanes do not imply parallelism. Numbered groups contain nearby events; zoom in or click a group to choose a source.{grouped?' Nearby events are grouped at this scale.':''}</p></details></div>
     {openGroup&&<aside className="timeline-cluster-popover" aria-label="Timeline event group" onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();closeGroup();}}}><div className="panel-head"><h3>{openGroup.length} recorded events</h3><button className="button small icon-button" aria-label="Close event group" onClick={closeGroup}><Icon name="close" size={14}/></button></div><div>{openGroup.map(i=><button className="node-result" key={String(steps[i].idx)} onClick={()=>{select(steps[i].idx);closeGroup();}}><Icon name={categoryIcon(steps[i],by.get(String(steps[i].idx)))} size={14}/><strong>{sourceIndex(steps[i].idx)}</strong><span>{steps[i].action?.tool||'Recorded text'}</span>{failed(steps[i])&&<span className="error-text">Failed</span>}</button>)}</div></aside>}
   </section>;
 }
@@ -127,7 +127,7 @@ export function AgentActivity({ run,steps,nodes,select,selected }: {run:Run;step
   const [view,setView]=useState('agent');
   const {timed,values,span}=useTimeAxis(steps);
   const by=new Map(nodes.map(n=>[String(n.first_idx),n]));
-  const rows=view==='agent'?[run.agent||'Agent unrecorded']:['Reasoning','Tool Calls','File Changes','Final Answer'];
+  const rows=view==='agent'?[run.agent||'Agent unrecorded']:['Recorded text','Tool Calls','File Changes','Final Answer'];
   return <section className="panel agent-activity" aria-label="Agent activity timeline"><div className="panel-head"><div><h2>Agent Activity Timeline <Icon name="info" size={14}/></h2><p>{timed?'Recorded event points over '+clock(span):'Source step position'} · active duration and per-step agents unrecorded</p></div><label>View: <select aria-label="Activity grouping" value={view} onChange={e=>setView(e.target.value)}><option value="agent">By Agent</option><option value="category">By Category</option></select></label><button className="button small icon-button" aria-label="Expand activity timeline" onClick={e=>fullScreen(e.currentTarget.closest('section'))}><Icon name="fit" size={14}/></button></div>
     <div className="activity-table"><div className="activity-row activity-ruler"><strong>Agent / Category</strong><span>Total Active</span><div>{[0,.25,.5,.75,1].map(v=><time key={v} style={{left:v*100+'%'}}>{timed?clock(v*span):Math.round(v*span)+1}</time>)}</div></div>
       {rows.map(row=><div className="activity-row" key={row}><strong><Icon name={view==='agent'?'user':'events'} size={15}/>{row}</strong><span className="muted">Unrecorded</span><div>{steps.map((s,i)=>(view==='agent'||categoryName(s,by.get(String(s.idx)))===row)&&<button key={String(s.idx)} className={failed(s)?'failed':''} style={{left:values[i]/span*100+'%'}} title={sourceIndex(s.idx)+' · '+label(s)} aria-label={'Activity '+sourceIndex(s.idx)} aria-pressed={selected==null?undefined:String(selected)===String(s.idx)} onClick={()=>select(s.idx)}/>)}</div></div>)}

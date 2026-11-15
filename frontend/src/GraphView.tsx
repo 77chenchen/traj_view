@@ -357,8 +357,8 @@ function GraphViewport({ drawing, phases, theme, enabled, onNode, selected, sign
         <button className="button small icon-button" aria-label="Zoom out" title="Zoom out" onClick={() => zoom(1 / 1.3)}>
           <Icon name="minus" size={16} /></button>
         <button className="button small icon-button" aria-label="Fit graph" title="Fit all visible nodes" onClick={() => {fitted.current=true;setCamera(fit);}}>
-          <Icon name="fit" size={16} /></button>
-        <button className="button small icon-button" aria-label="Locate selected graph node" title={selected ? 'Locate selected node' : 'Locate first node'} onClick={() => {const node=drawing.nodes.find(n=>n.node.id===selected) ?? drawing.nodes[0];if(node){fitted.current=false;setCamera({...node.point,scale:Math.max(current.scale,.9)});}}}><Icon name="target" size={16}/></button>
+          <Icon name="fit" size={16} /><span>Fit</span></button>
+        <button className="button small icon-button" aria-label="Locate selected graph node" title={selected ? 'Locate selected node' : 'Locate first node'} onClick={() => {const node=drawing.nodes.find(n=>n.node.id===selected) ?? drawing.nodes[0];if(node){fitted.current=false;setCamera({...node.point,scale:Math.max(current.scale,.9)});}}}><Icon name="target" size={16}/><span>Locate</span></button>
         {!(fullscreen && frame.current?.closest('.graph-workspace')) && <button className="button small icon-button" aria-label={fullscreen ? 'Exit fullscreen graph' : 'Fullscreen graph'} title={fullscreen ? 'Exit fullscreen · Esc' : 'Fullscreen graph with details'} onClick={e => {fullscreenReturn.current=e.currentTarget;void fullScreen(frame.current?.closest<HTMLElement>('.graph-workspace,.compare-focus-workspace') ?? frame.current?.parentElement ?? null);}}><Icon name={fullscreen ? 'close' : 'fit'} size={16}/></button>}
       </div>
       <svg ref={canvas} viewBox={`${view.x} ${view.y} ${view.width} ${view.height}`} tabIndex={0}

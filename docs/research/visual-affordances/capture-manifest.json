@@ -1,0 +1,419 @@
+{
+  "chrome": "157.0.8103.52",
+  "captures": [
+    {
+      "file": "analytics-1280.png",
+      "width": 1280,
+      "height": 1955,
+      "sha256": "1179b221f4246b071da5e1fd61785dc2d522d21cca1123f51eff3272476fbedd",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "analytics-1586.png",
+      "width": 1586,
+      "height": 1925,
+      "sha256": "ccb365fbfd35b06b44c1ac9aa5019f275ebc613a3f3a21382c5d92d41988f995",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "analytics-before.png",
+      "width": 1586,
+      "height": 1925,
+      "sha256": "4afcf33e43a1af0688513cac3a263ea78df9f9e3335e92666dbd004cec955fb2",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "2d4ab83",
+      "mode": "local"
+    },
+    {
+      "file": "compare-1280.png",
+      "width": 1280,
+      "height": 1488,
+      "sha256": "0932285d78bbceb3b39c45a6863380044d06ed77c8c3d5d5a8752e63e64720b3",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "compare-1586.png",
+      "width": 1586,
+      "height": 1488,
+      "sha256": "11c227c1f4f47090ab19777dac6568ef09796b963f0cf8ed9d55e335e0d082bd",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "compare-before.png",
+      "width": 1586,
+      "height": 1496,
+      "sha256": "727857fe99c11516ccf5168f7f6c3b854c96b8bf399c3905c41d2a3636df0148",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "2d4ab83",
+      "mode": "local"
+    },
+    {
+      "file": "compare-divergence-1280.png",
+      "width": 1280,
+      "height": 1488,
+      "sha256": "07fd67c4183cd1d247d8a81e312e2e8f31861a9dc4ef3b2e35f72a7fa6bf41bb",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "datasets-1280.png",
+      "width": 1280,
+      "height": 2141,
+      "sha256": "9e2d1b151a62eea2737d5c9d5f2410990a071d0cf007137c97460df7fc1a4071",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "datasets-1586.png",
+      "width": 1586,
+      "height": 2141,
+      "sha256": "218059b9f0f209ba06b583be1b8ae29d75c07b9ef5acfc1efad59b040e72d495",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "datasets-before.png",
+      "width": 1586,
+      "height": 2134,
+      "sha256": "185a648d1bf6675f40d5277a3349a58a78c7c23f504a07b1cb45fac9e75aa17e",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "2d4ab83",
+      "mode": "local"
+    },
+    {
+      "file": "graph-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "197ca36ecd6f1a99420e504c46250b29d80e83bccc40957c40dce27a6404c210",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "graph-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "f7bb69b8d98418eb9d4dfb411c6c2974f9cf6408891b52825aba3f53b58b3680",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "graph-activity-recorded-text-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "1cb83772ceb29e5b0453eb6db6ed3d526d819dc5cfab724ca75823b4ab3f74f4",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "graph-before.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "f1601df86dbbd4e6b4eb64000511f696818fa0b0f011e8e1a4b14448e10e3e47",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "2d4ab83",
+      "mode": "local"
+    },
+    {
+      "file": "graph-dark-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "b1d70bfc390450c2ae5201280647db908dc63225a6b3d2accc90dea97eba7eeb",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "graph-fullscreen-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "cbfeb35d1386874567d901e218430abac5741ce1105a2832521aa08667332051",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "offline-analytics-1280.png",
+      "width": 1280,
+      "height": 1955,
+      "sha256": "1179b221f4246b071da5e1fd61785dc2d522d21cca1123f51eff3272476fbedd",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-analytics-1586.png",
+      "width": 1586,
+      "height": 1925,
+      "sha256": "ccb365fbfd35b06b44c1ac9aa5019f275ebc613a3f3a21382c5d92d41988f995",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-compare-1280.png",
+      "width": 1280,
+      "height": 1488,
+      "sha256": "0932285d78bbceb3b39c45a6863380044d06ed77c8c3d5d5a8752e63e64720b3",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-compare-1586.png",
+      "width": 1586,
+      "height": 1488,
+      "sha256": "11c227c1f4f47090ab19777dac6568ef09796b963f0cf8ed9d55e335e0d082bd",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-compare-divergence-1280.png",
+      "width": 1280,
+      "height": 1488,
+      "sha256": "07fd67c4183cd1d247d8a81e312e2e8f31861a9dc4ef3b2e35f72a7fa6bf41bb",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-datasets-1280.png",
+      "width": 1280,
+      "height": 2141,
+      "sha256": "9e2d1b151a62eea2737d5c9d5f2410990a071d0cf007137c97460df7fc1a4071",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-datasets-1586.png",
+      "width": 1586,
+      "height": 2141,
+      "sha256": "218059b9f0f209ba06b583be1b8ae29d75c07b9ef5acfc1efad59b040e72d495",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-graph-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "197ca36ecd6f1a99420e504c46250b29d80e83bccc40957c40dce27a6404c210",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-graph-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "f7bb69b8d98418eb9d4dfb411c6c2974f9cf6408891b52825aba3f53b58b3680",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-graph-activity-recorded-text-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "1cb83772ceb29e5b0453eb6db6ed3d526d819dc5cfab724ca75823b4ab3f74f4",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-graph-dark-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "b1d70bfc390450c2ae5201280647db908dc63225a6b3d2accc90dea97eba7eeb",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-graph-fullscreen-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "189ea29a064b6f1bf675e627a33fe869ad3b7c23afe27c457d24de9cfdbc1dd5",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-replay-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "adae4e9a9fd48737e24191055ece1e9ae180901cf2c1d87bb8bbc27cbb883e48",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-replay-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "8f739a7ef9ced6513eee54fc09fd3f9a3306c5601c4585bc98a32b042155e5bd",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-replay-dark-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "be40d30561155c6ead05e78b3de2917fd2afe47e3f3b95855310ad8ae5607905",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-replay-edit-details-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "c3946d48e8aab8e4de8f94f73f610e8d1dce661def96408aad95aa2fd46eef81",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-replay-failure-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "4a696e5cb2f71a3658bb1ac45a06373477f6238ca14d7ffeaefa1498a0fa2794",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-timeline-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "2592d8b41743ab8c77b09f931b3f89bb0ddd1cbb5ac3f0593daa3be1083706c6",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-timeline-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "427d6c996bbd0254bc61edf3e5180e135425b5c7e05ab6ecd9c420472fea49b8",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "offline-timeline-reading-guide-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "b639e1022bf64b7e5da4e1bced84d2d635fd6f748d0af2301ee1eb8e62c50e03",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "network-disabled standalone HTML"
+    },
+    {
+      "file": "replay-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "adae4e9a9fd48737e24191055ece1e9ae180901cf2c1d87bb8bbc27cbb883e48",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "replay-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "8f739a7ef9ced6513eee54fc09fd3f9a3306c5601c4585bc98a32b042155e5bd",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "replay-before.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "d6bc7054e2a4c0fec4362c5852539c67db242e9f24777f6cdd0b4579a355a7d4",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "2d4ab83",
+      "mode": "local"
+    },
+    {
+      "file": "replay-dark-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "be40d30561155c6ead05e78b3de2917fd2afe47e3f3b95855310ad8ae5607905",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "replay-edit-details-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "c3946d48e8aab8e4de8f94f73f610e8d1dce661def96408aad95aa2fd46eef81",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "replay-failure-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "4a696e5cb2f71a3658bb1ac45a06373477f6238ca14d7ffeaefa1498a0fa2794",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "timeline-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "2592d8b41743ab8c77b09f931b3f89bb0ddd1cbb5ac3f0593daa3be1083706c6",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "timeline-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "427d6c996bbd0254bc61edf3e5180e135425b5c7e05ab6ecd9c420472fea49b8",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    },
+    {
+      "file": "timeline-before.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "a9897025c69369cbdfe161abf106526e59d37fd89ca2e729d38318953290602d",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "2d4ab83",
+      "mode": "local"
+    },
+    {
+      "file": "timeline-reading-guide-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "b639e1022bf64b7e5da4e1bced84d2d635fd6f748d0af2301ee1eb8e62c50e03",
+      "origin": "Full-page Chrome screenshot from document top; synthetic fixtures; no crop/compositing",
+      "revision": "current working tree",
+      "mode": "local"
+    }
+  ]
+}

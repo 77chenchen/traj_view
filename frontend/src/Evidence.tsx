@@ -13,9 +13,10 @@ export const eventStatus = (s: Step) => failed(s) ? 'Failed' : s.observation?.ex
 export const stepTitle = (s: Step, n?: GraphNode) => failed(s) ? 'Test / tool failure' : s.tags.includes('final_message') ? 'Final Answer' :
   s.action?.tool || (n?.category === 'plan' ? 'Plan' : 'Recorded text');
 export const categoryName = (s: Step, n?: GraphNode) => s.tags.includes('final_message') ? 'Final Answer' : n?.category === 'edit' ? 'File Changes' :
-  s.action ? 'Tool Calls' : n?.category === 'plan' ? 'User Task' : 'Reasoning';
-export const categoryIcon = (s: Step, n?: GraphNode): IconName => failed(s) ? 'info' : s.tags.includes('final_message') ? 'check' :
-  n?.category === 'edit' || n?.category === 'read' ? 'file' : s.action ? 'terminal' : n?.category === 'plan' ? 'user' : 'spark';
+  s.action ? 'Tool Calls' : n?.category === 'plan' ? 'User Task' : 'Recorded text';
+export const categoryIcon = (s: Step, n?: GraphNode): IconName => failed(s) ? 'warning' : s.tags.includes('final_message') ? 'check' :
+  n?.category === 'edit' ? 'edit' : n?.category === 'read' ? 'file' : n?.category === 'validate' ? 'test' : s.action ? 'terminal' : n?.category === 'plan' ? 'user' : 'message';
+export const evidenceKind = (s: Step, n?: GraphNode) => failed(s) ? 'failure' : n?.category || (s.action ? 'tool' : 'message');
 export const patchText = (s?: Step) => {
   for (const value of [s?.action?.args.patch, s?.action?.args.input, s?.action?.args.diff, s?.action?.command])
     if (typeof value === 'string' && /(?:^|\n)(?:@@|\*\*\* (?:Begin Patch|Update File)|--- )/m.test(value)) return value;
@@ -129,11 +130,12 @@ export function StageSnapshots({ steps, nodes, selected, select, count = 6, head
     {heading && <button className="button small icon-button stage-scroll-control" aria-label="Previous stage snapshot" disabled={!offset} onClick={() => setOffset(Math.max(0, offset - 1))}><Icon name="left" /></button>}
     <div className="stage-cards" style={{gridTemplateColumns:'repeat(' + (count - offset) + ', minmax(0, 1fr))'}}>
       {stages.slice(offset).map((s, i) => <button key={s.name} className={'stage-card ' + (s.step && failed(s.step) ? 'stage-failed' : s.passed ? 'stage-success' : '')}
+        data-kind={s.step ? evidenceKind(s.step,nodes.find(n=>String(n.first_idx)===String(s.step!.idx))) : undefined}
         aria-label={'Snapshot ' + s.name + (s.step ? ' source ' + sourceIndex(s.step.idx) : ': unrecorded')}
         aria-pressed={s.step?.idx === selected} disabled={!s.step} title={s.step ? sourceIndex(s.step.idx) + ' · ' + label(s.step) : 'No matching stage recorded'}
         data-active-stage={!!s.step && s===active}
         onClick={() => s.step && select(s.step.idx)}>
-        <div><span className="stage-number">{i + offset + 1}</span><strong>{s.name}</strong><time>{s.step ? eventTime(s.step, steps[0]) : '—'}</time></div>
+        <div><span className="stage-number">{i + offset + 1}</span><span className="stage-kind-icon kind-icon"><Icon name={s.step ? categoryIcon(s.step,nodes.find(n=>String(n.first_idx)===String(s.step!.idx))) : 'minus'} size={16}/></span><strong>{s.name}</strong><time>{s.step ? eventTime(s.step, steps[0]) : '—'}</time></div>
         {previews && <pre>{s.step ? (patchText(s.step) || s.step.observation?.text || s.step.thought || s.step.action?.command || 'Unrecorded').split('\n').slice(0, 4).map((line, j) =>
           <span key={j} className={line.startsWith('+') ? 'terminal-success' : line.startsWith('-') || /FAIL|assert |^E /.test(line) ? 'terminal-error' : ''}>{line}{'\n'}</span>) : '未记录 / Unrecorded'}</pre>
         }
