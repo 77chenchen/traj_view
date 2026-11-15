@@ -1,0 +1,149 @@
+{
+  "source": "Public generated qa-recording synthetic fixture; independent full-page Chrome screenshots",
+  "captures": [
+    {
+      "file": "offline-recording-messages-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "7ed19dcd5c8eed571f9cdbb6c21dd5efd2d6ab10c498e539f93761167e44dfd1",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "offline-recording-messages-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "c1c4d65697ea326217dd8c767d11d408331e092b68d94cb7069fef0d67ba453e",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "offline-recording-patch-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "acdbe471c4c9e44cef75862efd75a72eec2348d844272558f3a4d88a7799de82",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "offline-recording-patch-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "045d93445ddb876da0732e45399a6eb38c7c4386a366269c90dc35be8ae63dbb",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "offline-recording-session-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "188b855b33307e24f3f860794014590973c4a5539dc8fde2b3a64b12d6a5fab3",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "offline-recording-session-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "86a8f36d0459e25cb1d3e344ee18ca365de03b7916113875aec2df02f9be36d3",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "offline-recording-step-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "7850f520fa4cb3acfebed298ff31092918a3df786288d5cf8644d2f9f699031b",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "offline-recording-step-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "c9eec49af6aafba0c7ee6610f5044c6c5e2242dd2923c08f44dc32f1e207c412",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "recording-messages-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "7ed19dcd5c8eed571f9cdbb6c21dd5efd2d6ab10c498e539f93761167e44dfd1",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "recording-messages-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "c1c4d65697ea326217dd8c767d11d408331e092b68d94cb7069fef0d67ba453e",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "recording-patch-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "acdbe471c4c9e44cef75862efd75a72eec2348d844272558f3a4d88a7799de82",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "recording-patch-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "045d93445ddb876da0732e45399a6eb38c7c4386a366269c90dc35be8ae63dbb",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "recording-session-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "188b855b33307e24f3f860794014590973c4a5539dc8fde2b3a64b12d6a5fab3",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "recording-session-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "86a8f36d0459e25cb1d3e344ee18ca365de03b7916113875aec2df02f9be36d3",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "recording-step-1280.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "7850f520fa4cb3acfebed298ff31092918a3df786288d5cf8644d2f9f699031b",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    },
+    {
+      "file": "recording-step-1586.png",
+      "width": 1586,
+      "height": 912,
+      "sha256": "c9eec49af6aafba0c7ee6610f5044c6c5e2242dd2923c08f44dc32f1e207c412",
+      "fullPage": true,
+      "documentScroll": 0,
+      "synthetic": true
+    }
+  ]
+}

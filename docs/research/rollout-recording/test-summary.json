@@ -1,0 +1,56 @@
+{
+  "python": {
+    "passed": 94,
+    "seconds": 3.75
+  },
+  "typecheck": "passed",
+  "build": {
+    "status": "passed",
+    "seconds": 12.74,
+    "javascriptKB": 2478.26,
+    "javascriptGzipKB": 768.09,
+    "warning": "Existing large-chunk warning"
+  },
+  "chrome": {
+    "version": "157.0.8103.52",
+    "scenarios": 50,
+    "passed": 50
+  },
+  "recordingVerification": "verification.json",
+  "capturedPNGs": 16,
+  "privateEvidence": "Retained only under ignored local storage; no private logs or identifying screenshots published",
+  "firstPaintScope": "Click to visible SVG plus next frame after app load; initial view is 3 Overview nodes; excludes bundle load and all-source rendering",
+  "detectorFindings": [],
+  "graphTransforms": {
+    "dagSorts": 948,
+    "executionScopes": 1908,
+    "exactSourcePaths": 3161,
+    "mixedSizeRoutes": 5189,
+    "inlineStates": 61,
+    "inlineForwardRoutes": 15615,
+    "pairedContinuations": 3919,
+    "timelineLayouts": 126
+  },
+  "sourceDownload": {
+    "records": 13,
+    "originalUserMessage": true,
+    "originalPatchWrapper": true
+  },
+  "generatedWhitespace": "Five bundled vendor/generated source lines carry trailing whitespace in the generated HTML; the source-code diff passes git diff --check. Bundled source literals are retained.",
+  "recordingTypography": {
+    "metadataPX": 13,
+    "caveatsPX": 13,
+    "sourceEvidencePX": 15,
+    "sourceEvidenceFont": "JetBrains Mono",
+    "onlineAndOffline": true
+  },
+  "sourceReferenceWrap": "Passed at both desktop sizes online/offline",
+  "finishReview": {
+    "disposition": "ship",
+    "scope": "Listed TYPE correction and R1 source-reference wrapping only",
+    "scoredFixes": {
+      "TYPE": "resolved",
+      "R1": "resolved"
+    }
+  }
+}

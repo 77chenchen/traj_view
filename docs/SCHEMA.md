@@ -4,6 +4,14 @@
 
 `meta.raw_text` preserves the complete UTF-8 source. Adapters preserve unrecognized input there and may also expose it in structured metadata. `meta.final_message` is a normalized source final message when available. Use the `final_message` tag on its actionless step. Unspecified outcomes have label `unknown`. Preserve source labels and nullable pass status. A nonzero observation exit code indicates a process error even if the source omits the error flag.
 
+## Native rollout metadata (optional; v1 unchanged)
+
+`meta.rollout` retains source-backed session fields, raw record/category counts, messages, start/completion events and their references, detailed usage records and cumulative token counters. Its `steps` object is keyed by the exact decimal canonical `idx`. Entries preserve source type/role/channel, call ID and source reference; matched outputs add their timestamp/reference, nonnegative timezone-aware call/output interval and separately scoped reported wall time. These intervals include wrapper/wait overhead; Timeline continues to display event points and does not infer active intervals. Missing or invalid times stay unknown. The full source remains in `meta.raw_text`, including records not promoted into the structured view.
+
+The adapter decodes only complete known single-literal `exec` wrappers around `exec_command`/`write_stdin`, or a literal `apply_patch` argument. It never evaluates JavaScript. The original wrapper is retained in `action.args.recorded_wrapper`. Conditional, dynamic, multi-call and otherwise unmatched code stays as the original outer action. One source call still maps to one canonical step. Saved native patches, commands and explicit patch targets then use existing phase rules and evidence components. Phase labels are derived classifications with `phase_source`, not source-supplied execution spans.
+
+`token_count.last_token_usage` is attributed once to the last source step of that model response; shared reasoning/message steps do not receive duplicate usage. Duplicate cumulative events are ignored. Per-response details and their raw references remain in metadata. Cumulative run input/output totals remain authoritative; cache and reasoning counters are subsets, not additions. A run's `usage.wall_s` may use its recorded start-to-completion session span, including waits, when no wall time was already supplied. An outer wrapper reporting completion does not prove a subprocess exit code. Unknown exit codes, cost and filesystem versions remain unknown. See [field mapping and acceptance](research/rollout-recording.md).
+
 ## Build output
 
 - `index.json` is `{schema_version: 1, phases, runs, search_file: "search.json"}`. Each phase is `{id, label, symbol, color}`. Each run summary is `{id, source_format, task_id, model, agent, condition, outcome, limits, usage, metrics, langutory, file, steps_file, canonical_file}`. Paths are relative to the index.

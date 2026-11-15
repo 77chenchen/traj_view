@@ -75,7 +75,7 @@ export async function checkRunList(page, url, index, artifacts, requests) {
   await page.goto(url);
   await visible(role(page, 'heading', /^Runs$/i));
   const ids = index.runs.map((run) => run.id);
-  await checkRows(page, ids, [...fixtureRuns, ...renderSizes.map((size) => `qa-render-${size}`), foldedRun, 'qa-exact-indices', 'qa-zero-steps']);
+  await checkRows(page, ids, [...fixtureRuns, ...renderSizes.map((size) => `qa-render-${size}`), foldedRun, 'qa-exact-indices', 'qa-zero-steps', 'qa-recording']);
   assert.ok(!requests.some((path) => /\/(runs|steps)\/|\/search\.json$/.test(path)),
     'Opening the catalog fetched graph, step, or search data before it was needed');
   await page.screenshot({ path: join(artifacts, 'runs.png'), fullPage: true });

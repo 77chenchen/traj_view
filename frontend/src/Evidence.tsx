@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { type GraphNode, type Run, type Step, type StepIndex, number, sourceIndex } from './model';
 import { CopyButton, Icon, OutcomeBadge, exportMetrics, type IconName } from './ui';
 import { literalFileWrites, savedPatch } from './recordedEdits';
+import { SessionRecording } from './Recording';
 export { patchEvidence } from './recordedEdits';
 
 export const clock = (s: number) => Math.floor(s / 60) + ':' + Math.floor(s % 60).toString().padStart(2, '0');
@@ -73,16 +74,19 @@ export function ShareView() {
   }}><Icon name="share" size={15} />{shared ? 'Link copied' : 'Share'}</button>;
 }
 export function RunMetadata({ run, date }: { run: Run; date?: string | null }) {
+  const [recordingOpen,setRecordingOpen]=useState(false);
   return <div className="run-metadata" aria-label="Run summary"><Icon name="terminal" size={20} /><strong title={run.id}>{run.id}</strong><OutcomeBadge outcome={run.outcome} />
     <span className="metadata-task" title={run.task_id}><b>{run.task_id}</b></span>
     <span className="metadata-duration"><Icon name="clock" size={15} />{run.usage?.wall_s == null ? 'Duration unrecorded' : clock(run.usage.wall_s)}</span>
-    <details className="run-recording"><summary>Run details <Icon name="down" size={13}/></summary><dl>
+    <details className="run-recording" onToggle={event=>setRecordingOpen(event.currentTarget.open)}><summary>Run details <Icon name="down" size={13}/></summary><div className="run-recording-body"><dl>
       <div><dt>Agent</dt><dd>{run.agent || 'Unrecorded'}</dd></div><div><dt>Model</dt><dd>{run.model || 'Unrecorded'}</dd></div>
       <div><dt>Date</dt><dd>{date ? new Date(date).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : 'Unrecorded'}</dd></div>
       <div><dt>Source steps</dt><dd>{number.format(run.metrics.steps)}</dd></div>
       <div><dt>Duration</dt><dd>{run.usage?.wall_s == null ? 'Unrecorded' : clock(run.usage.wall_s)}</dd></div>
+      <div><dt>Input / output tokens</dt><dd>{run.usage?.input_tokens==null?'Unrecorded':number.format(run.usage.input_tokens)} / {run.usage?.output_tokens==null?'Unrecorded':number.format(run.usage.output_tokens)}</dd></div>
+      <div><dt>Cost (USD)</dt><dd>Unrecorded</dd></div>
       <div><dt>Dataset</dt><dd>{run.agent === 'synthetic' ? 'Synthetic fixture' : 'Local traces'}</dd></div>
-    </dl></details>
+    </dl><SessionRecording run={run} open={recordingOpen}/></div></details>
     <ShareView />
     <details className="more-menu"><summary className="button small icon-button" aria-label="Run actions" title="Run actions"><Icon name="more" /></summary><div>
       <button className="button small" onClick={() => exportMetrics([run])}>Export CSV</button>

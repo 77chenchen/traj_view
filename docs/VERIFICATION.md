@@ -12,6 +12,12 @@ PYTHON="$(command -v python)" node scripts/smoke-e2e.mjs
 
 Set `CHROME_PATH` if Chrome is installed elsewhere. The smoke command runs pure graph-transform checks, builds the public fixtures plus generated performance traces, launches system Chrome, stops the server, then opens both a fresh single-file export and the delivered report in offline browser contexts. Screenshots, `scenarios.json` and `first-render.json` go to `test-results/e2e/`. See [browser QA](../tests/e2e/README.md) for details and report regeneration commands.
 
+## Native rollout data coverage · 2026-11-15
+
+The current extension preserves native rollout times, recorded roles/messages, call/output references, token attribution and safe literal-wrapper commands/patches. Source coverage and Recording details disclose these fields without increasing the default page density. All unrecognized records remain in the redacted downloadable source. No persisted v1 fields were added. See [field mapping, screenshots, results and reproduction](research/rollout-recording.md).
+
+Python has **94 passing tests**; TypeScript and production build pass. The Chrome suite now has **50 scenarios**, including recording metadata online/offline at 1586×912 and 1280×800, source download, native Diff, pinned evidence and exact source selection across Replay/Timeline. The authorized local enriched rollout was separately checked at both desktop sizes and offline; its full captures and identifying details remain ignored. The existing large-bundle warning remains. Earlier results below are historical.
+
 ## Content groups, reading rows and clear connections · 2026-11-15
 
 Long-run Graph now uses the available width: content sections expand in place, calls read left → right, then down. Short same-row arrows and matching numbered endpoints replace the long cross-row return strokes. Dependency/retry disclosure defaults to edges incident to the exact selected source, projected before aggregation; Layers → All relationships restores the full connection set. Endpoint keyboard jumps preserve both forward first-source and reverse last-source boundaries, including collapsed multi-member summaries. The on-demand Inspector retains source and pinned evidence when closed. See [semantics, function mapping and reproduction](research/reading-graph.md), [20-PNG manifest](research/reading-graph/capture-manifest.json) and [structured results](research/reading-graph/test-summary.json).

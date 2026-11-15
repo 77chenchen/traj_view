@@ -1,0 +1,57 @@
+{
+  "chrome": "157.0.8103.52",
+  "source": "Generated qa-recording synthetic fixture",
+  "checks": [
+    {
+      "literalPatch": true,
+      "timestamps": true,
+      "sourceRoles": true,
+      "phases": true,
+      "responseTokens": true,
+      "callInterval": true,
+      "sourceDownload": true,
+      "pinnedDiff": true,
+      "timelineSource": true,
+      "recordingTypography": true,
+      "sourceReferenceWrap": true,
+      "offline": false,
+      "pageErrors": 0,
+      "viewports": [
+        [
+          1586,
+          912
+        ],
+        [
+          1280,
+          800
+        ]
+      ]
+    },
+    {
+      "literalPatch": true,
+      "timestamps": true,
+      "sourceRoles": true,
+      "phases": true,
+      "responseTokens": true,
+      "callInterval": true,
+      "sourceDownload": true,
+      "pinnedDiff": true,
+      "timelineSource": true,
+      "recordingTypography": true,
+      "sourceReferenceWrap": true,
+      "offline": true,
+      "pageErrors": 0,
+      "viewports": [
+        [
+          1586,
+          912
+        ],
+        [
+          1280,
+          800
+        ]
+      ],
+      "httpRequests": 0
+    }
+  ]
+}

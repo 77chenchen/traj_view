@@ -25,6 +25,7 @@ import { checkGraphFullscreen } from '../tests/e2e/graph-fullscreen.mjs';
 import { checkAnalytics, checkCollapseAll } from '../tests/e2e/analytics.mjs';
 import { checkVisualAffordances } from '../tests/e2e/visual-affordances.mjs';
 import { checkRecordedWrites } from '../tests/e2e/recorded-writes.mjs';
+import { checkRecording } from '../tests/e2e/recording.mjs';
 import { frontendRequire, results, root } from './frontend-dependencies.mjs';
 
 const python = process.env.PYTHON || 'python';
@@ -177,6 +178,7 @@ async function main() {
       failed('serve', error);
     }
     if (url) {
+      await scenario(browser, 'recording', (page) => checkRecording(page, url, artifacts));
       await scenario(browser, 'run-list', (page, requests) => checkRunList(page, url, index, artifacts, requests));
       await scenario(browser, 'graph', (page, requests) => checkGraph(page, url, graph, steps, artifacts, requests));
       await scenario(browser, 'compare', (page) => checkCompare(page, url, artifacts));
@@ -231,6 +233,7 @@ async function main() {
     }
     await stopServer(server);
     if (exported) {
+      await scenario(browser, 'recording-offline', (page) => checkRecording(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'workbench-offline', (page) => checkWorkbench(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'dashboard-offline', (page) => checkDashboard(page, pathToFileURL(reportFile).href, artifacts, true), true);
       await scenario(browser, 'four-reference-offline', (page) => checkFourReference(page, pathToFileURL(reportFile).href, artifacts, true), true);

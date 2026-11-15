@@ -16,6 +16,8 @@ The complete source text is in `meta.raw_text`. Structured step data supports gr
 
 The adapter keeps recoverable parse diagnostics in `meta.parse_errors`, and the CLI reports them while building the usable records. Unreadable inputs, invalid UTF-8, and wholly malformed inputs produce an error.
 
+Codex Desktop rollouts preserve additional source metadata under optional `meta.rollout`: source roles/channels and messages, call/output references and intervals, session events and detailed usage counters. Complete known single-literal `exec` wrappers expose submitted commands or native patches while retaining their original wrapper; the parser never executes log text. Other wrappers remain unchanged. Response tokens are attributed once to the ending step of each response. Wrapper completion is not a subprocess-success signal. See [the metadata contract](SCHEMA.md#native-rollout-metadata-optional-v1-unchanged) and [recording verification](research/rollout-recording.md).
+
 ## Add an adapter
 
 1. Implement a parser returning one or more `schema.Trajectory` objects and add its detection to `backend/adapters/__init__.py`.

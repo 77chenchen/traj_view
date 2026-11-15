@@ -5,6 +5,7 @@ import { CopyButton, Icon, LoadError, Loading } from './ui';
 import { ExecutionContents } from './ExecutionContents';
 import { categoryIcon, categoryName, evidenceKind, eventStatus, eventTime, failed, label, patchStats, patchEvidence, RecordedCode, fullScreen } from './Evidence';
 import { literalFileWrites } from './recordedEdits';
+import { StepRecordingFields } from './Recording';
 
 const previewLength = 1000;
 
@@ -25,7 +26,8 @@ function Content({ label, value, note, initialOpen = true }: { label: string; va
   </section>;
 }
 
-function StepContent({ step, node, phases, tabbed = false, variant = 'node', graphWorkspace = false, first, priorFailure, earlierFailure, locate, tab, setTab,steps }: { step: Step; node?: GraphNode; phases: Phase[]; tabbed?: boolean; variant?: 'node' | 'event' | 'replay'; graphWorkspace?: boolean; first?: Step; priorFailure?: Step; earlierFailure?: Step; locate: () => void; tab: string; setTab: (tab: string) => void;steps:readonly Step[] }) {
+function StepContent({ run, step, node, phases, tabbed = false, variant = 'node', graphWorkspace = false, first, priorFailure, earlierFailure, locate, tab, setTab,steps }: { run:Run;step: Step; node?: GraphNode; phases: Phase[]; tabbed?: boolean; variant?: 'node' | 'event' | 'replay'; graphWorkspace?: boolean; first?: Step; priorFailure?: Step; earlierFailure?: Step; locate: () => void; tab: string; setTab: (tab: string) => void;steps:readonly Step[] }) {
+  const [recordingOpen,setRecordingOpen]=useState(false);
   const phase = phases.find(item => item.id === step.phase);
   const action = step.action, observation = step.observation;
   const evidence=patchEvidence(step,steps),patch=evidence?.text??null,stats=patchStats(step,patch),writes=literalFileWrites(step);
@@ -39,9 +41,9 @@ function StepContent({ step, node, phases, tabbed = false, variant = 'node', gra
       <div><dt>{variant === 'event' ? 'Timestamp' : 'Time'}</dt><dd className="mono" title={step.ts || 'Unrecorded'}>{step.ts ? first ? eventTime(step,first) : step.ts : 'Unrecorded'}</dd></div>
       <div><dt>Status</dt><dd className={failed(step) ? 'error-text' : observation?.exit_code === 0 ? 'success-text' : 'muted'}>{eventStatus(step)}</dd></div>
     </dl>
-    <details className="recording-details"><summary>Recording details</summary><dl className="step-meta">
+    <details className="recording-details" onToggle={event=>setRecordingOpen(event.currentTarget.open)}><summary>Recording details</summary><dl className="step-meta">
       {variant === 'node' && <div><dt>Attempts</dt><dd className="muted">Unrecorded</dd></div>}
-      <div><dt>Duration</dt><dd className="muted">Unrecorded</dd></div>
+      <StepRecordingFields run={run} step={step} open={recordingOpen}/>
       {step.phase && <div><dt>Phase</dt><dd><i className="phase-dot" style={{ background: phaseColor(phase) }}/>{phase?.label ?? step.phase}<small> · {step.phase_source}</small></dd></div>}
       <div><dt>Tokens in / out</dt><dd>{step.tokens?.in ?? 'Unrecorded'} / {step.tokens?.out ?? 'Unrecorded'}</dd></div>
     </dl></details>
@@ -52,16 +54,16 @@ function StepContent({ step, node, phases, tabbed = false, variant = 'node', gra
       {variant === 'replay' && <>{patch && <><h3 className="inspection-subtitle">Edit Summary</h3><div className="edit-summary"><span className="error-text">− {stats.removed} lines removed</span><span className="success-text">+ {stats.added} lines added</span></div></>}
         <h3 className="inspection-subtitle">{patch ? 'Files Changed' : 'File Targets'} ({action?.targets.length ?? 0})</h3><div className="inspection-files">{action?.targets.length ? action.targets.map(path=><button className="button small quiet" key={path} title={'Show recorded evidence for ' + path} onClick={locate}><Icon name="file" size={14}/>{path}</button>) : <span className="muted">Unrecorded</span>}</div>
         <Content label="Description" value={step.thought ?? label(step)} />
-        <h3 className="inspection-subtitle">Agent Reasoning <span className="muted">· Unrecorded</span></h3>
-        <Content label="Recorded text" value={step.thought} note="The source does not distinguish messages from agent reasoning." initialOpen={false}/></>}
-      {variant === 'node' && <Content label={step.tags.includes('final_message') ? 'Message' : 'Description (recorded text)'} value={step.thought} note="Message and reasoning roles are not recorded separately."/>}
+        <h3 className="inspection-subtitle">Recorded messages &amp; reasoning</h3>
+        <Content label="Recorded text" value={step.thought} note="Check Recording details for saved source role and channel; absent roles remain unrecorded." initialOpen={false}/></>}
+      {variant === 'node' && <Content label={step.tags.includes('final_message') ? 'Message' : 'Description (recorded text)'} value={step.thought} note="Saved source roles and channels are available in Recording details."/>}
       <Content label={variant === 'event' ? 'Arguments' : tabbed ? 'Tool arguments' : 'Action'} value={action ? JSON.stringify(action, null, 2) : null} initialOpen={false}/>
     </>}
     {tab === 'Code Diff' && <section className="step-content node-diff"><details open><summary><strong>{evidence?.derived?'Submitted write comparison':'Related Code Diff'}</strong></summary><button className="button small quiet" disabled={!patch} title={patch ? "Expand the code comparison" : "Patch unrecorded"} onClick={e=>fullScreen(e.currentTarget.parentElement)}>View Full Diff</button>{evidence?.note&&<p className="recorded-caption">{evidence.note}</p>}{graphWorkspace && !patch ? <p className="node-diff-missing"><Icon name="file" size={16}/><span>No patch recorded</span></p> : <><div className="recorded-path"><Icon name="file" size={14}/><span title={evidence?.path??action?.targets.join(', ')}>{evidence?.path||action?.targets.join(', ') || 'File unrecorded'}</span>{patch && <CopyButton text={patch}/>}</div><RecordedCode value={patch} patch ariaLabel={evidence?.derived?'Submitted write comparison':undefined}/></>}{!patch&&writes.map(file=><details key={file.path}><summary>Submitted file · {file.path}</summary><p className="recorded-caption">Literal content in the saved command. Previous file version unrecorded.</p><RecordedCode value={file.content}/></details>)}</details></section>}
     {(tab === 'Output' || variant === 'event' || variant === 'replay') && <Content label={variant === 'event' ? 'Output / Stderr' : 'Observation'} value={observation?.text ?? null} note={notes} initialOpen={variant !== 'replay'}/>}
     {tab === 'Output' && <Content label="Error Output (from prior attempt)" value={priorFailure?.observation?.text ?? null} note={priorFailure ? 'Earlier failed action with the same normalized signature · source ' + sourceIndex(priorFailure.idx) : 'No earlier failed action with the same normalized signature recorded.'} initialOpen={true}/>}
     {tab === 'Output' && !priorFailure && earlierFailure && <Content label="Earlier failure evidence" value={earlierFailure.observation?.text ?? null} note={'Earlier source ' + sourceIndex(earlierFailure.idx) + ' · a different action, not a recorded attempt of this call.'} initialOpen={false}/>}
-    {variant === 'event' && <Content label="Analysis" value={step.thought} note="Message and reasoning roles are not recorded separately." initialOpen={false}/>}
+    {variant === 'event' && <Content label="Analysis" value={step.thought} note="Check Recording details for the source role; this text is not an inferred diagnosis." initialOpen={false}/>}
     <details className="source-ref"><summary>Raw reference</summary><span className="mono">{step.raw_ref.file}{step.raw_ref.line != null ? ':' + step.raw_ref.line : ' · line not recorded'}</span>{step.tags.length > 0 && <p>Tags: {step.tags.join(', ')}</p>}</details>
   </>;
 }
@@ -130,7 +132,7 @@ export function Inspector({ run, node, index, select, clear, clearLabel = 'Clear
       {resource.state.status === 'error' && <div className="panel-inset">
         <LoadError message={resource.state.message} retry={resource.retry} />
       </div>}
-      {step && <StepContent step={step} node={node} phases={phases} tabbed={tabbed} variant={variant} graphWorkspace={graphWorkspace} tab={tab} setTab={setTab} first={steps?.[0]} steps={steps??[]}
+      {step && <StepContent run={run} step={step} node={node} phases={phases} tabbed={tabbed} variant={variant} graphWorkspace={graphWorkspace} tab={tab} setTab={setTab} first={steps?.[0]} steps={steps??[]}
         priorFailure={steps?.slice(0,steps.indexOf(step)).reverse().find(s=>failed(s) && (relatedGraph ? relatedGraph.nodes.find(n=>String(n.first_idx)===String(s.idx))?.signature===relatedGraph.nodes.find(n=>String(n.first_idx)===String(step!.idx))?.signature : s.action?.tool===step!.action?.tool))}
         earlierFailure={steps?.slice(0,steps.indexOf(step)).reverse().find(failed)} locate={() => (locate ?? select)(step.idx)} />}
       {relatedGraph && (variant!=='node'||tab==='Context') && <details className="node-context" open={variant==='node' ? true : undefined}><summary>Context · Files &amp; relationships</summary><div className="context-counts">
